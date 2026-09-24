@@ -1,0 +1,1343 @@
+<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<title>Who's That Alloy?</title>
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link rel="stylesheet" href="https://fonts.googleapis.com/css2?family=Press+Start+2P&family=Nunito:wght@500;700;800;900&display=swap">
+<style>
+:root{
+  color-scheme: dark;
+  --night:#0C1A44; --night-2:#132760; --dot:#1A3278;
+  --ray-a:#2F7BEA; --ray-b:#1E5BCB;
+  --sun:#FFD23F; --sun-deep:#C98E00;
+  --ink:#121B40; --paper:#F4F6FF; --paper-2:#E3E8FA; --line:#243A73; --soft:#4A5791;
+  --text:#EAF0FF; --muted:#9FB0DE;
+  --red:#E8412C; --green:#2FB463; --blue:#3B7BF0;
+  --pix:"Press Start 2P", ui-monospace, "Courier New", monospace;
+  --body:"Nunito", ui-rounded, "Segoe UI", system-ui, sans-serif;
+}
+*{box-sizing:border-box}
+[hidden]{display:none!important}
+html,body{background:var(--night)}
+body{font-family:var(--body);color:var(--text);font-size:15px;line-height:1.5;
+  background:radial-gradient(var(--dot) 1.2px,transparent 1.4px) 0 0/14px 14px,var(--night);
+  padding-inline:16px;padding-block:18px 40px}
+.app{max-width:1180px;margin:0 auto;display:flex;flex-direction:column;gap:16px}
+button{font:inherit;color:inherit;cursor:pointer}
+button:focus-visible,input:focus-visible{outline:3px solid var(--sun);outline-offset:2px}
+
+/* Header */
+header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-between;gap:14px 24px}
+.logo{font-family:var(--pix);line-height:1.15;user-select:none}
+.logo .l1{display:block;font-size:13px;color:#fff;letter-spacing:2px;text-shadow:2px 2px 0 var(--line)}
+.logo .l2{display:block;font-size:clamp(28px,6vw,44px);color:var(--sun);letter-spacing:1px;margin-top:6px;
+  text-shadow:3px 0 0 #1F4FB8,-3px 0 0 #1F4FB8,0 3px 0 #1F4FB8,0 -3px 0 #1F4FB8,3px 3px 0 #1F4FB8,-3px -3px 0 #1F4FB8,3px -3px 0 #1F4FB8,-3px 3px 0 #1F4FB8,6px 7px 0 #07112E}
+.tabs{display:flex;gap:6px;flex-wrap:wrap}
+.tab{font-family:var(--pix);font-size:10px;padding:11px 12px;border-radius:8px;border:3px solid var(--line);background:var(--night-2);color:var(--muted)}
+.tab[aria-selected="true"]{background:var(--sun);color:var(--ink);border-color:var(--sun-deep);box-shadow:0 4px 0 var(--sun-deep)}
+
+/* HUD */
+.hud{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.modes{display:flex;flex-wrap:wrap;border:3px solid var(--line);border-radius:10px;overflow:hidden;background:var(--night-2)}
+.mode{border:0;background:transparent;padding:9px 12px;font-weight:800;font-size:13px;color:var(--muted)}
+.mode + .mode{border-left:2px solid var(--line)}
+.mode[aria-pressed="true"]{background:var(--blue);color:#fff}
+.stats{display:flex;gap:8px;flex-wrap:wrap}
+.stat{font-family:var(--pix);font-size:9px;background:var(--night-2);border:2px solid var(--line);border-radius:8px;padding:8px 10px;display:flex;gap:8px;align-items:center;color:var(--muted);font-variant-numeric:tabular-nums}
+.stat b{color:#fff;font-weight:400;font-size:11px}
+
+/* Arena */
+.arena{display:grid;grid-template-columns:minmax(0,1.15fr) minmax(0,1fr);gap:16px;align-items:start}
+@media (max-width:860px){.arena{grid-template-columns:1fr}}
+.stagecol{display:flex;flex-direction:column;gap:10px}
+.stage{position:relative;border-radius:16px;overflow:hidden;border:4px solid var(--line);height:360px;background:var(--ray-b);display:flex;align-items:center;justify-content:center;isolation:isolate}
+.stage::before{content:"";position:absolute;inset:-60%;z-index:-2;background:repeating-conic-gradient(from 0deg at 50% 50%,var(--ray-a) 0 9deg,var(--ray-b) 9deg 18deg);animation:spin 60s linear infinite}
+.stage::after{content:"";position:absolute;inset:0;z-index:-1;background:radial-gradient(circle at 50% 48%,rgba(236,241,250,.97) 0,rgba(226,233,246,.9) 24%,rgba(255,255,255,0) 44%,rgba(8,20,60,.5) 100%)}
+@keyframes spin{to{transform:rotate(360deg)}}
+.q{position:absolute;left:14px;top:12px;font-family:var(--pix);font-size:11px;color:#fff;text-shadow:2px 2px 0 #0B2A78}
+.dexno{position:absolute;right:14px;top:12px;font-family:var(--pix);font-size:10px;color:var(--sun);text-shadow:2px 2px 0 #0B2A78}
+.specimen{position:relative;z-index:1;width:min(420px,92%);aspect-ratio:300/240;max-width:100%;cursor:grab;touch-action:none;transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+.specimen svg{width:100%;height:100%;display:block;pointer-events:none}
+.specimen.pulled{transform:translate(-6px,-10px) rotate(-3deg)}
+.specimen.slosh svg{animation:slosh .9s ease}
+@keyframes slosh{25%{transform:rotate(4deg)}60%{transform:rotate(-3deg)}}
+.specimen.held,.tool.held{filter:drop-shadow(0 0 6px var(--sun)) drop-shadow(0 0 2px var(--sun))}
+.flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:6}
+.stage.reveal .flash{animation:flash .7s ease-out}
+@keyframes flash{15%{opacity:.95}100%{opacity:0}}
+.nameplate{position:absolute;bottom:12px;left:50%;transform:translateX(-50%);z-index:5;font-family:var(--pix);font-size:clamp(12px,2.6vw,16px);color:var(--sun);white-space:nowrap;max-width:94%;overflow:hidden;text-overflow:ellipsis;
+  text-shadow:2px 0 0 #1F4FB8,-2px 0 0 #1F4FB8,0 2px 0 #1F4FB8,0 -2px 0 #1F4FB8,3px 4px 0 #07112E}
+.stagehint{position:absolute;left:14px;bottom:44px;z-index:5;font-size:12px;font-weight:800;color:#fff;background:rgba(12,26,68,.65);padding:3px 8px;border-radius:6px}
+.stagemag{position:absolute;z-index:4;width:70px;left:50%;top:50%;margin:-60px 0 0 -35px;pointer-events:none;opacity:0}
+.stagemag.stick{opacity:1;animation:stick .35s cubic-bezier(.3,1.8,.5,1) forwards}
+.stagemag.slip{opacity:1;animation:slip 2.2s ease-in forwards}
+.stagemag.fall{opacity:1;animation:fall 1s ease-in forwards}
+@keyframes stick{0%{transform:translateY(-60px) rotate(-25deg)}100%{transform:translate(-4px,4px) rotate(-8deg)}}
+@keyframes slip{0%{transform:translateY(-60px)}15%{transform:translateY(2px) rotate(-6deg)}55%{transform:translateY(14px) rotate(-10deg)}100%{transform:translateY(260px) rotate(40deg);opacity:0}}
+@keyframes fall{0%{transform:translateY(-60px)}35%{transform:translateY(0)}100%{transform:translateY(260px) rotate(70deg);opacity:0}}
+.streak{animation:fade 2.6s ease forwards}
+@keyframes fade{0%{opacity:.8}100%{opacity:0}}
+
+/* Field kit */
+.stage,.kit,.bench{user-select:none;-webkit-user-select:none}
+.kit{background:var(--night-2);border:3px solid var(--line);border-radius:12px;padding:10px 12px;display:flex;flex-direction:column;gap:8px}
+.kit h3,.bench h3,.panel h3{margin:0;font-family:var(--pix);font-size:10px;color:var(--sun);line-height:1.6;letter-spacing:.5px}
+.tools{display:flex;gap:8px;flex-wrap:wrap}
+.tool{touch-action:none;cursor:grab;border:2px solid var(--line);background:#1B3274;border-radius:10px;padding:6px 8px;display:flex;align-items:center;gap:6px;color:#fff;font-weight:800;font-size:12px;user-select:none}
+.tool svg{width:30px;height:30px;flex:none}
+.tool small{display:block;font-size:10px;color:var(--muted);font-weight:700;line-height:1.1}
+.ghost{position:fixed;z-index:100;pointer-events:none;transform:translate(-50%,-50%) rotate(-8deg);filter:drop-shadow(0 6px 8px rgba(0,0,0,.45))}
+.ghost svg{width:64px;height:64px;display:block}
+
+/* Dex card */
+.dex{background:var(--paper);color:var(--ink);border-radius:16px;border:4px solid var(--line);box-shadow:inset 0 0 0 3px var(--paper-2);padding:16px 18px;display:flex;flex-direction:column;gap:10px}
+.dex h2{margin:0;font-family:var(--pix);font-size:14px;line-height:1.5;display:flex;justify-content:space-between;gap:10px;flex-wrap:wrap}
+.dex h2 small{font-size:9px;color:#5C6A9E}
+.origin{font-size:12px;font-weight:900;color:var(--soft);text-transform:uppercase;letter-spacing:.8px}
+.types{display:flex;gap:6px;flex-wrap:wrap}
+.type{font-family:var(--pix);font-size:8px;color:#fff;padding:6px 9px;border-radius:999px;text-shadow:1px 1px 0 rgba(0,0,0,.35);box-shadow:inset 0 -2px 0 rgba(0,0,0,.2)}
+.clue{margin:0;font-size:15px;line-height:1.55;font-weight:700;color:#22306A;background:#fff;border-radius:10px;padding:10px 12px;border:2px dashed #C3CCEA}
+.uses{margin:0;font-size:13px;color:var(--soft);font-weight:700}
+.notes h4{margin:0 0 6px;font-family:var(--pix);font-size:9px;color:var(--soft)}
+.notes ul{margin:0;padding:0;list-style:none;display:flex;flex-direction:column;gap:4px}
+.notes li{display:flex;gap:8px;align-items:center;font-size:13px;font-weight:700;background:var(--paper-2);border-radius:8px;padding:5px 9px;font-variant-numeric:tabular-nums}
+.notes li b{font-weight:900;min-width:88px;color:#2A3670}
+.notes .empty{color:#6A77A8;background:transparent;padding:0}
+.sw{display:inline-block;width:34px;height:16px;border-radius:5px;border:2px solid var(--line);vertical-align:middle}
+.dot{display:inline-block;width:8px;height:8px;border-radius:50%;margin-left:3px;border:1px solid rgba(0,0,0,.3)}
+.comp{display:flex;height:34px;border-radius:8px;overflow:hidden;border:2px solid var(--line)}
+.comp span{display:flex;align-items:center;justify-content:center;font-weight:900;font-size:12px;color:var(--ink);min-width:0;overflow:hidden;white-space:nowrap;border-right:2px solid rgba(18,27,64,.25)}
+.comp span:last-child{border-right:0}
+
+/* Bench */
+.bench{background:var(--night-2);border:3px solid var(--line);border-radius:14px;padding:12px;display:flex;flex-direction:column;gap:10px}
+.bench .note{margin:0;color:var(--muted);font-size:13px;font-weight:700}
+.stations{display:grid;grid-template-columns:repeat(3,minmax(0,1fr));gap:10px}
+@media (max-width:620px){.stations{grid-template-columns:repeat(2,minmax(0,1fr))}}
+.station{background:#EEF2FC;color:var(--ink);border:3px solid var(--line);border-radius:12px;padding:8px;display:flex;flex-direction:column;align-items:center;gap:6px;transition:transform .12s, box-shadow .12s;min-width:0}
+.station.over{transform:translateY(-3px);box-shadow:0 0 0 4px var(--sun)}
+.station.armed{box-shadow:0 0 0 3px var(--sun)}
+.station h4{margin:0;font-family:var(--pix);font-size:8px;color:var(--soft);text-align:center;line-height:1.5}
+.station svg,.station canvas{width:100%;max-width:170px;height:auto;display:block}
+.readout{font-family:var(--pix);font-size:9px;color:var(--ink);text-align:center;min-height:14px;line-height:1.6}
+.ctrl{display:flex;flex-wrap:wrap;gap:5px;width:100%}
+.ctrl button{flex:1 1 40%;border:2px solid var(--line);border-radius:8px;padding:6px 4px;font-family:var(--pix);font-size:7px;line-height:1.4;background:#fff;color:var(--ink);touch-action:none;user-select:none}
+.ctrl button.on{background:#BFF0CF;box-shadow:inset 0 0 0 2px #136B37}
+.ctrl button:disabled{opacity:.4;cursor:not-allowed}
+.hold{display:flex;gap:6px;width:100%}
+.hold button{flex:1;border:2px solid var(--line);border-radius:8px;padding:6px 4px;font-family:var(--pix);font-size:8px;touch-action:none;user-select:none}
+.hold .heat{background:#FFD7C8}.hold .chill{background:#CFE6FF}
+.hold button:disabled{opacity:.4;cursor:not-allowed}
+.hold button.on{box-shadow:inset 0 0 0 3px var(--ink)}
+
+/* Dialog */
+.dialog{background:#fff;color:var(--ink);border:4px solid var(--line);border-radius:12px;box-shadow:inset 0 0 0 3px #fff,inset 0 0 0 6px #7FA0E8;padding:18px 20px;display:flex;flex-direction:column;gap:14px}
+.say{font-family:var(--pix);font-size:12px;line-height:2;min-height:48px;margin:0}
+.say::after{content:"▼";display:inline-block;margin-left:8px;color:var(--red);font-size:9px;animation:blink 1s steps(2) infinite}
+@keyframes blink{50%{opacity:0}}
+.actions{display:flex;flex-wrap:wrap;gap:10px;align-items:center}
+.guess{display:flex;gap:10px;flex-wrap:wrap;width:100%;align-items:center}
+.guess input{flex:1 1 220px;min-width:0;border:3px solid var(--line);border-radius:10px;padding:10px 12px;font:inherit;font-weight:900;font-size:16px;color:var(--ink);background:var(--paper)}
+.guess input.shake{animation:shake .35s}
+@keyframes shake{25%{transform:translateX(-6px)}75%{transform:translateX(6px)}}
+.pattern{font-family:var(--pix);font-size:12px;letter-spacing:3px;color:var(--soft);width:100%}
+.btn{border:3px solid var(--line);border-radius:10px;padding:10px 14px;font-family:var(--pix);font-size:10px;background:var(--paper);color:var(--ink);box-shadow:0 4px 0 var(--line)}
+.btn:active:not(:disabled){transform:translateY(3px);box-shadow:0 1px 0 var(--line)}
+.btn.go{background:var(--red);color:#fff;border-color:#8E1D10;box-shadow:0 4px 0 #8E1D10}
+.btn.next{background:var(--green);color:#fff;border-color:#136B37;box-shadow:0 4px 0 #136B37}
+.btn:disabled{opacity:.45;cursor:not-allowed}
+.pips{display:flex;gap:6px;align-items:center;font-family:var(--pix);font-size:8px;color:var(--soft);margin-left:auto}
+.pip{width:10px;height:18px;border-radius:3px;border:2px solid var(--line);background:linear-gradient(#7CF0B0,#2FB463);position:relative}
+.pip::before{content:"";position:absolute;left:1px;right:1px;top:-5px;height:3px;background:var(--line);border-radius:1px}
+.pip.off{background:#D5DAEA}
+.tray{display:flex;gap:6px;flex-wrap:wrap;align-items:center;font-size:13px;font-weight:800;color:var(--soft);min-height:34px;width:100%}
+.tray .t{font-family:var(--pix);font-size:10px;padding:7px 8px;border-radius:6px;border:2px solid var(--line);background:#FFF1B8;color:var(--ink)}
+.tray .t.hit{background:var(--green);color:#fff;border-color:#136B37}
+
+/* Periodic tables */
+.panel{background:var(--night-2);border:3px solid var(--line);border-radius:14px;padding:14px;display:flex;flex-direction:column;gap:12px}
+.panel .note{margin:0;color:var(--muted);font-size:13px;font-weight:700}
+.scroll{overflow-x:auto;padding-bottom:6px}
+.ptable{display:grid;grid-template-columns:repeat(18,minmax(40px,1fr));grid-template-rows:repeat(7,auto) 12px repeat(2,auto);gap:3px;min-width:760px}
+.ptable.ref{grid-template-columns:repeat(18,minmax(52px,1fr));min-width:980px}
+.el{position:relative;border:0;border-radius:6px;padding:4px 3px 5px;display:flex;flex-direction:column;align-items:center;justify-content:center;color:var(--ink);background:var(--c);min-height:44px;line-height:1.05;box-shadow:inset 0 -3px 0 rgba(0,0,0,.18);transition:transform .08s}
+.ptable.ref .el{min-height:58px}
+.el .z{font-size:9px;font-weight:800;opacity:.75;align-self:flex-start;padding-left:2px}
+.el .s{font-weight:900;font-size:15px}
+.el .m{font-size:9px;font-weight:700;opacity:.75}
+.el:hover{transform:translateY(-2px)}
+.el.sel{box-shadow:0 0 0 3px #fff,0 0 0 6px var(--sun);transform:translateY(-3px);z-index:2}
+.el.hit{background:var(--green);color:#fff}
+.el.miss{background:#3B4670;color:#8C96BD;cursor:not-allowed}
+.el.miss::after{content:"";position:absolute;inset:6px;background:linear-gradient(45deg,transparent 46%,var(--red) 46% 54%,transparent 54%)}
+.el.answer{box-shadow:0 0 0 3px var(--green),0 0 0 6px #fff;z-index:2}
+.el.cur{box-shadow:0 0 0 3px #fff,0 0 0 6px var(--blue);z-index:2}
+.ph{border:2px dashed #3D5496;border-radius:6px;color:var(--muted);font-size:9px;font-weight:800;display:flex;align-items:center;justify-content:center;text-align:center}
+.pickbar{display:flex;flex-wrap:wrap;gap:10px;align-items:center;justify-content:space-between}
+.info{font-size:13px;font-weight:700;color:var(--text);min-height:20px}
+.info b{color:var(--sun)}
+.legend{display:flex;flex-wrap:wrap;gap:6px 14px;font-size:12px;font-weight:700;color:var(--muted)}
+.legend span{display:inline-flex;align-items:center;gap:6px}
+.legend i{width:12px;height:12px;border-radius:3px;background:var(--c);display:inline-block}
+.refgrid{display:grid;grid-template-columns:minmax(0,1fr) 310px;gap:16px;align-items:start}
+@media (max-width:900px){.refgrid{grid-template-columns:1fr}}
+.card{background:var(--paper);color:var(--ink);border:4px solid var(--line);border-radius:14px;padding:16px;display:flex;flex-direction:column;gap:12px}
+.bigtile{display:flex;gap:14px;align-items:center}
+.bigtile .tile{width:86px;height:86px;border-radius:10px;background:var(--c);display:flex;flex-direction:column;align-items:center;justify-content:center;box-shadow:inset 0 -5px 0 rgba(0,0,0,.18);flex:none}
+.bigtile .tile b{font-size:34px;font-weight:900;line-height:1}
+.bigtile .tile small{font-size:11px;font-weight:800}
+.bigtile h4{margin:0;font-size:22px;font-weight:900;line-height:1.1}
+.bigtile p{margin:4px 0 0;font-size:13px;font-weight:800;color:var(--soft)}
+dl.props{margin:0;display:grid;grid-template-columns:auto 1fr;gap:7px 12px}
+dl.props dt{font-family:var(--pix);font-size:8px;color:var(--soft);align-self:center}
+dl.props dd{margin:0;font-weight:800;font-variant-numeric:tabular-nums;text-align:right}
+.inalloys{font-size:13px;font-weight:700;color:#2A3670}
+.chip{display:inline-block;font-size:12px;font-weight:800;background:var(--paper-2);border:2px solid #CCD4F0;border-radius:8px;padding:2px 8px;color:#2A3670;margin:2px 4px 2px 0}
+
+/* Dex */
+.dexhead{display:flex;flex-wrap:wrap;gap:10px;justify-content:space-between;align-items:center}
+.filters{display:flex;gap:6px;flex-wrap:wrap;align-items:center}
+.filters button{border:2px solid var(--line);background:#1B3274;color:var(--muted);border-radius:8px;padding:6px 10px;font-weight:800;font-size:13px}
+.filters button[aria-pressed="true"]{background:var(--sun);color:var(--ink)}
+.dexgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(170px,1fr));gap:10px}
+.dexcard{background:var(--paper);color:var(--ink);border:3px solid var(--line);border-radius:12px;padding:8px 10px 10px;display:flex;flex-direction:column;gap:4px}
+.dexcard .mini{height:74px;border-radius:8px;background:radial-gradient(circle,#F0F3FA 30%,#C9D8F6 100%);display:flex;align-items:center;justify-content:center}
+.rodmini{width:70%;height:22px;border-radius:4px;transform:rotate(-14deg);box-shadow:2px 3px 0 rgba(0,0,0,.15)}
+.vialmini{width:26px;height:56px;border-radius:4px 4px 13px 13px;border:2px solid #fff;position:relative;overflow:hidden;background:rgba(255,255,255,.4)}
+.vialmini i{position:absolute;left:0;right:0;bottom:0;height:60%}
+.dexcard.locked .rodmini,.dexcard.locked .vialmini,.dexcard.locked .vialmini i{background:#0B1330!important;border-color:#0B1330}
+.dexcard .no{font-family:var(--pix);font-size:8px;color:#5C6A9E}
+.dexcard .nm{font-weight:900;font-size:15px;line-height:1.2}
+.dexcard .cp{font-size:12px;font-weight:800;color:var(--soft)}
+.pager{display:flex;gap:8px;align-items:center;justify-content:center;font-weight:800;color:var(--muted)}
+
+
+/* Exploration */
+.explore{display:flex;flex-direction:column;gap:12px;background:var(--night-2);border:3px solid var(--line);border-radius:16px;padding:14px;user-select:none;-webkit-user-select:none}
+.zonebar{display:flex;flex-wrap:wrap;gap:8px 16px;justify-content:space-between;align-items:baseline}
+.zonebar h3{margin:0;font-family:var(--pix);font-size:12px;color:var(--sun);line-height:1.6}
+.zonebar span{font-weight:800;color:var(--muted);font-size:13px}
+.mapwrap{position:relative;width:100%;max-width:820px;margin:0 auto;aspect-ratio:13/8;border:4px solid var(--line);border-radius:12px;overflow:hidden;background:#000}
+.map{position:absolute;inset:0;display:grid;grid-template-columns:repeat(13,1fr);grid-template-rows:repeat(8,1fr)}
+.tile{position:relative;background:var(--floor);box-shadow:inset 0 0 0 .5px rgba(0,0,0,.12)}
+.tile.f{background:radial-gradient(circle at 30% 40%,rgba(255,255,255,.06) 0 6%,transparent 7%),radial-gradient(circle at 70% 75%,rgba(0,0,0,.12) 0 5%,transparent 6%),var(--floor)}
+.tile.w{background:linear-gradient(var(--wall-top) 0 22%,var(--wall) 22%);box-shadow:inset 0 -4px 0 rgba(0,0,0,.35)}
+.tile.w::after{content:"";position:absolute;inset:34% 12% 20%;border-radius:40%;background:var(--wall-bump);opacity:.55}
+.tile.l{background:linear-gradient(var(--wall-top) 0 22%,var(--wall) 22%)}
+.tile.l::after{content:"";position:absolute;left:38%;top:36%;width:24%;height:30%;border-radius:40%;background:#FFD66B;box-shadow:0 0 18px 8px rgba(255,200,90,.55)}
+.tile.rail{background:repeating-linear-gradient(90deg,transparent 0 16%,#5A3E26 16% 24%,transparent 24% 33%),linear-gradient(transparent 28%,#9AA3AE 28% 34%,transparent 34% 66%,#9AA3AE 66% 72%,transparent 72%),var(--floor)}
+.tile.r{background:
+  radial-gradient(ellipse at 25% 70%,var(--rock) 0 18%,transparent 19%),radial-gradient(ellipse at 70% 60%,var(--rock2) 0 20%,transparent 21%),
+  radial-gradient(ellipse at 48% 32%,var(--rock) 0 16%,transparent 17%),radial-gradient(ellipse at 80% 22%,var(--rock2) 0 11%,transparent 12%),var(--floor)}
+.tile.r::after{content:"";position:absolute;inset:0;background:radial-gradient(circle at 44% 28%,var(--glint) 0 3%,transparent 4%),radial-gradient(circle at 72% 58%,var(--glint) 0 2.5%,transparent 3.5%),radial-gradient(circle at 24% 66%,var(--glint) 0 2.5%,transparent 3.5%);animation:glint 2.4s ease-in-out infinite;animation-delay:var(--d,0s)}
+@keyframes glint{0%,100%{opacity:.25}50%{opacity:1}}
+.tile.r.rustle{animation:rustle .3s}
+@keyframes rustle{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
+.z-mine{--floor:#6E5B47;--wall:#3B2F27;--wall-top:#54443A;--wall-bump:#2A211B;--rock:#8C7A66;--rock2:#A08C74;--glint:#FFD27A}
+.z-scrap{--floor:#8A8579;--wall:#565B63;--wall-top:#7A5A44;--wall-bump:#8B4A2A;--rock:#9CA3AD;--rock2:#B07048;--glint:#FFFFFF}
+.z-crater{--floor:#4B4562;--wall:#2A2638;--wall-top:#3C3552;--wall-bump:#1C1928;--rock:#6D6488;--rock2:#877DA6;--glint:#BFE3FF}
+.player{position:absolute;width:calc(100%/13);height:calc(100%/8);transition:left .16s linear,top .16s linear;z-index:2;pointer-events:none}
+.player svg{width:100%;height:100%;display:block;transform:scaleX(var(--face,1))}
+.player.walk svg{animation:hop .16s}
+@keyframes hop{50%{transform:scaleX(var(--face,1)) translateY(-8%)}}
+.bang{position:absolute;left:50%;bottom:92%;transform:translateX(-50%);font-family:var(--pix);font-size:14px;color:var(--red);background:#fff;border:3px solid var(--ink);border-radius:8px;padding:3px 7px 2px;opacity:0}
+.player.alert .bang{opacity:1;animation:pop .25s}
+@keyframes pop{0%{transform:translate(-50%,40%) scale(.3)}100%{transform:translate(-50%,0) scale(1)}}
+.wipe{position:absolute;inset:0;z-index:5;pointer-events:none;display:grid;grid-template-rows:repeat(8,1fr)}
+.wipe i{background:#0B1330;transform:scaleX(0)}
+.wipe i:nth-child(odd){transform-origin:left}.wipe i:nth-child(even){transform-origin:right}
+.wipe.go{animation:blink3 .45s steps(1)}
+.wipe.go i{animation:bar .45s ease-in forwards;animation-delay:calc(.4s + var(--k)*.04s)}
+@keyframes bar{to{transform:scaleX(1)}}
+@keyframes blink3{0%,34%,68%{background:rgba(255,255,255,.9)}17%,51%,85%{background:transparent}}
+.expbar{display:flex;flex-wrap:wrap;gap:12px;align-items:center;justify-content:space-between}
+.expmsg{font-family:var(--pix);font-size:11px;line-height:1.9;color:#fff;margin:0;flex:1 1 260px}
+.dpad{display:grid;grid-template-columns:repeat(3,44px);grid-template-rows:repeat(2,40px);gap:4px;touch-action:none}
+.dpad button{border:3px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);font-weight:900;font-size:16px;touch-action:none}
+.dpad button:active{background:var(--sun)}
+.dpad .u{grid-column:2;grid-row:1}.dpad .l{grid-column:1;grid-row:2}.dpad .d{grid-column:2;grid-row:2}.dpad .r{grid-column:3;grid-row:2}
+@media (prefers-reduced-motion:reduce){.tile.r::after{animation:none}.wipe.go,.wipe.go i{animation-duration:.01s;animation-delay:0s}}
+.endwrap{display:flex;justify-content:center}
+.end{max-width:520px;width:100%;text-align:center;align-items:center}
+.end .big{font-family:var(--pix);font-size:28px;color:var(--red);margin:4px 0}
+.end ol{text-align:left;margin:0;padding-left:22px;font-weight:700;width:100%}
+.ok{color:var(--green);font-weight:900}.bad{color:var(--red);font-weight:900}
+
+@media (prefers-reduced-motion:reduce){
+  .stage::before,.say::after{animation:none}
+  .stage.reveal .flash{animation:none}
+}
+</style>
+
+<div class="app">
+  <header>
+    <div class="logo" aria-label="Who's That Alloy?"><span class="l1">WHO'S THAT</span><span class="l2">ALLOY?</span></div>
+    <nav class="tabs" role="tablist">
+      <button class="tab" role="tab" id="tab-play" aria-selected="true" data-view="play">Play</button>
+      <button class="tab" role="tab" id="tab-table" aria-selected="false" data-view="table">Periodic Table</button>
+      <button class="tab" role="tab" id="tab-dex" aria-selected="false" data-view="dex">Alloydex</button>
+    </nav>
+  </header>
+
+  <section id="view-play" style="display:flex;flex-direction:column;gap:16px">
+    <div class="hud">
+      <div class="modes" role="group" aria-label="Game mode">
+        <button class="mode" id="mode-mixed" data-mode="mixed" aria-pressed="true">Mixed</button>
+        <button class="mode" id="mode-recipe" data-mode="recipe" aria-pressed="false">Name → Elements</button>
+        <button class="mode" id="mode-who" data-mode="who" aria-pressed="false">Mystery → Name + Elements</button>
+      </div>
+      <div class="stats">
+        <span class="stat">ROUND <b id="hud-round">1/10</b></span>
+        <span class="stat">SCORE <b id="hud-score">0</b></span>
+        <span class="stat">STREAK <b id="hud-streak">0</b></span>
+        <span class="stat">BEST <b id="hud-best">0</b></span>
+      </div>
+    </div>
+
+    <div class="explore" id="explore" hidden>
+      <div class="zonebar"><h3 id="zone-name">RUSTVEIN MINE</h3><span id="zone-sub">Wild alloys hide in the glittering rubble.</span></div>
+      <div class="mapwrap" id="mapwrap"><div class="map" id="map"></div><div class="player" id="player"><span class="bang">!</span></div><div class="wipe" id="wipe"></div></div>
+      <div class="expbar">
+        <p class="expmsg" id="expmsg">Walk through the rubble to find a wild alloy.</p>
+        <div class="dpad" aria-label="Move"><button class="u" data-dx="0" data-dy="-1" aria-label="Up">▲</button><button class="l" data-dx="-1" data-dy="0" aria-label="Left">◀</button><button class="d" data-dx="0" data-dy="1" aria-label="Down">▼</button><button class="r" data-dx="1" data-dy="0" aria-label="Right">▶</button></div>
+      </div>
+      <p class="note" style="margin:0;color:var(--muted);font-weight:700;font-size:13px">Move with the arrow keys or WASD, tap a spot on the map, or use the pad.</p>
+    </div>
+
+    <div id="game" hidden style="display:flex;flex-direction:column;gap:16px">
+      <div class="arena">
+        <div class="stagecol">
+          <div class="stage" id="stage" data-drop="sample">
+            <span class="q" id="stage-q">WHO'S THAT ALLOY?</span>
+            <span class="dexno" id="stage-no">No.001</span>
+            <div class="specimen" id="specimen" role="button" tabindex="0" aria-label="Alloy sample. Drag it onto a lab station."></div>
+            <div class="stagemag" id="stagemag"></div>
+            <span class="stagehint" id="stagehint">Drag the sample to a station ↓</span>
+            <div class="nameplate" id="nameplate">???</div>
+            <div class="flash"></div>
+          </div>
+          <div class="kit">
+            <h3>FIELD KIT · drag a tool onto the sample</h3>
+            <div class="tools" id="tools"></div>
+          </div>
+        </div>
+        <div class="dex" id="dexcard"></div>
+      </div>
+
+      <div class="bench">
+        <h3>LAB BENCH</h3>
+        <p class="note">Set up each station first: power it on, fill it, light it, or switch it on. Then drag the sample onto it (or tap the sample, then tap the station). Readings go into your lab notebook.</p>
+        <div class="stations">
+          <div class="station" data-drop="scale" id="st-scale">
+            <h4>DIGITAL SCALE</h4>
+            <svg viewBox="0 0 180 140" aria-hidden="true">
+              <defs><linearGradient id="gs-scale" x1="0" y1="0" x2="0" y2="1"><stop class="s1" offset="0"/><stop class="s0" offset=".45"/><stop class="s2" offset="1"/></linearGradient></defs>
+              <path d="M22 132 L158 132 L146 84 L34 84 Z" fill="#DADFEA" stroke="#243A73" stroke-width="3"/>
+              <rect x="52" y="96" width="70" height="26" rx="4" fill="#18263F"/>
+              <text id="sc-lcd" x="87" y="115" text-anchor="middle" font-family="Press Start 2P, monospace" font-size="10" fill="#8CFF9E"></text>
+              <circle id="sc-led" cx="134" cy="109" r="4" fill="#4A4F5A" stroke="#243A73" stroke-width="1.5"/>
+              <rect x="84" y="62" width="12" height="22" fill="#9AA4BC"/>
+              <ellipse cx="90" cy="60" rx="62" ry="10" fill="#C9D0DE" stroke="#243A73" stroke-width="3"/>
+              <g id="sc-chunk" opacity="0"><rect x="72" y="36" width="36" height="20" rx="3" fill="url(#gs-scale)" stroke="rgba(0,0,0,.35)"/></g>
+            </svg>
+            <div class="ctrl"><button id="sc-pow">POWER</button><button id="sc-tare">TARE</button><button id="sc-clear">CLEAR PAN</button></div>
+            <div class="readout" id="rd-scale">Scale is off</div>
+          </div>
+          <div class="station" data-drop="cyl" id="st-cyl">
+            <h4>GRADUATED CYLINDER</h4>
+            <svg viewBox="0 0 180 200" aria-hidden="true">
+              <defs><linearGradient id="gs-cyl" x1="0" y1="0" x2="0" y2="1"><stop class="s1" offset="0"/><stop class="s0" offset=".45"/><stop class="s2" offset="1"/></linearGradient></defs>
+              <path d="M128 4 L150 4 L150 12 L138 12 L138 20" fill="none" stroke="#7F8CA8" stroke-width="5"/>
+              <rect id="cy-stream" x="136" y="20" width="3" height="0" fill="#6FB7FF"/>
+              <g id="cy-grad"></g>
+              <rect id="cy-water" x="72" y="188" width="36" height="0" fill="#6FB7FF" opacity=".55"/>
+              <rect id="cy-chunk" x="80" y="-30" width="20" height="14" rx="3" fill="url(#gs-cyl)" stroke="rgba(0,0,0,.35)"/>
+              <g id="cy-fx" opacity="0">
+                <path d="M84 100 Q90 70 96 100 Q92 88 90 96 Q88 88 84 100Z" fill="#FFB22E"/>
+                <circle cx="82" cy="120" r="3" fill="#fff" opacity=".8"/><circle cx="98" cy="130" r="2.5" fill="#fff" opacity=".8"/><circle cx="90" cy="112" r="2" fill="#fff" opacity=".8"/>
+              </g>
+              <rect x="70" y="12" width="40" height="178" rx="4" fill="rgba(255,255,255,.12)" stroke="#243A73" stroke-width="3"/>
+              <rect x="60" y="188" width="60" height="8" rx="3" fill="#243A73"/>
+            </svg>
+            <div class="ctrl"><button id="cy-fill" class="cool">HOLD TO FILL</button><button id="cy-empty">EMPTY</button></div>
+            <div class="readout" id="rd-cyl">Cylinder is empty</div>
+          </div>
+          <div class="station" data-drop="furnace" id="st-furnace">
+            <h4>FURNACE · 3500 °C MAX</h4>
+            <svg viewBox="0 0 180 170" aria-hidden="true">
+              <defs><linearGradient id="gs-fz" x1="0" y1="0" x2="0" y2="1"><stop class="s1" offset="0"/><stop class="s0" offset=".45"/><stop class="s2" offset="1"/></linearGradient></defs>
+              <rect x="20" y="4" width="140" height="28" rx="5" fill="#18263F"/>
+              <text id="fz-t" x="90" y="24" text-anchor="middle" font-family="Press Start 2P, monospace" font-size="11" fill="#FFB38A"></text>
+              <rect x="28" y="40" width="124" height="122" rx="12" fill="#3B2F33" stroke="#243A73" stroke-width="3"/>
+              <rect id="fz-cham" x="38" y="50" width="104" height="102" rx="8" fill="#1D1518"/>
+              <rect id="fz-heat" x="38" y="50" width="104" height="102" rx="8" fill="#FF6A00" opacity="0"/>
+              <path d="M58 116 L122 116 L114 146 L66 146 Z" fill="#D8D2C8" opacity=".9" stroke="#8A8378" stroke-width="2"/>
+              <g id="fz-sample" opacity="0">
+                <rect id="fz-solid" x="72" y="84" width="36" height="32" rx="3" fill="url(#gs-fz)"/>
+                <rect id="fz-solidglow" x="72" y="84" width="36" height="32" rx="3" fill="#FF3000" opacity="0"/>
+                <ellipse id="fz-liq" cx="90" cy="117" rx="0" ry="0" fill="url(#gs-fz)"/>
+                <ellipse id="fz-liqglow" cx="90" cy="117" rx="0" ry="0" fill="#FF3000" opacity="0"/>
+                <rect id="fz-frost" x="72" y="84" width="36" height="32" rx="3" fill="#EAF6FF" opacity="0"/>
+              </g>
+              <circle id="fz-led" cx="142" cy="18" r="4" fill="#4A4F5A"/>
+            </svg>
+            <div class="ctrl"><button id="fz-pow">POWER</button><button id="fz-out">TAKE OUT</button></div>
+            <div class="hold"><button class="heat" id="btn-heat" disabled>HOLD HEAT</button><button class="chill" id="btn-chill" disabled>HOLD CHILL</button></div>
+            <div class="readout" id="rd-fz">Furnace is off</div>
+          </div>
+          <div class="station" data-drop="circuit" id="st-circuit">
+            <h4>CONDUCTIVITY TESTER</h4>
+            <svg viewBox="0 0 180 160" aria-hidden="true">
+              <defs>
+                <linearGradient id="gs-ci" x1="0" y1="0" x2="0" y2="1"><stop class="s1" offset="0"/><stop class="s0" offset=".45"/><stop class="s2" offset="1"/></linearGradient>
+                <radialGradient id="bulbglow"><stop offset="0" stop-color="#FFF7B0"/><stop offset=".5" stop-color="#FFD84A" stop-opacity=".6"/><stop offset="1" stop-color="#FFD84A" stop-opacity="0"/></radialGradient>
+              </defs>
+              <circle id="ci-glow" cx="90" cy="40" r="60" fill="url(#bulbglow)" opacity="0"/>
+              <path d="M90 64 L90 80 L150 80 L150 92 M150 118 L150 130 L118 130 M62 130 L30 130 L30 80 L90 80" fill="none" stroke="#243A73" stroke-width="3"/>
+              <circle cx="150" cy="92" r="3.5" fill="#243A73"/><circle cx="150" cy="118" r="3.5" fill="#243A73"/>
+              <line id="ci-lever" x1="150" y1="118" x2="166" y2="96" stroke="#E8412C" stroke-width="4" stroke-linecap="round"/>
+              <circle id="ci-bulb" cx="90" cy="40" r="20" fill="#F4F1E2" stroke="#243A73" stroke-width="3"/>
+              <path d="M82 44 q4 -10 8 0 q4 -10 8 0" fill="none" stroke="#8A6A2A" stroke-width="2"/>
+              <rect x="80" y="58" width="20" height="10" fill="#9AA4BC" stroke="#243A73" stroke-width="2"/>
+              <rect x="18" y="92" width="24" height="34" rx="3" fill="#E8412C" stroke="#243A73" stroke-width="2"/><rect x="24" y="88" width="12" height="5" fill="#243A73"/>
+              <rect x="56" y="124" width="12" height="12" rx="2" fill="#C33"/><rect x="112" y="124" width="12" height="12" rx="2" fill="#222"/>
+              <rect id="ci-chunk" x="66" y="122" width="48" height="16" rx="3" fill="url(#gs-ci)" stroke="rgba(0,0,0,.35)" opacity="0"/>
+            </svg>
+            <div class="ctrl"><button id="ci-sw">SWITCH</button><button id="ci-un">UNCLAMP</button></div>
+            <div class="readout" id="rd-ci">Switch is off</div>
+          </div>
+          <div class="station" data-drop="geiger" id="st-geiger">
+            <h4>GEIGER COUNTER</h4>
+            <svg viewBox="0 0 180 150" aria-hidden="true">
+              <defs><linearGradient id="gs-gm" x1="0" y1="0" x2="0" y2="1"><stop class="s1" offset="0"/><stop class="s0" offset=".45"/><stop class="s2" offset="1"/></linearGradient></defs>
+              <path d="M128 112 Q142 128 150 104" fill="none" stroke="#222" stroke-width="3"/>
+              <rect x="10" y="8" width="120" height="134" rx="10" fill="#F2C53D" stroke="#243A73" stroke-width="3"/>
+              <rect x="18" y="16" width="104" height="72" rx="6" fill="#FFFDF2" stroke="#243A73" stroke-width="2"/>
+              <path d="M26 78 A44 44 0 0 1 114 78" fill="none" stroke="#C9CED8" stroke-width="6"/>
+              <path d="M92 40 A44 44 0 0 1 114 78" fill="none" stroke="#E8412C" stroke-width="6" opacity=".7"/>
+              <g id="gm-ticks"></g>
+              <line id="gm-needle" x1="70" y1="78" x2="70" y2="38" stroke="#121B40" stroke-width="2.5" stroke-linecap="round" transform="rotate(-90 70 78)"/>
+              <circle cx="70" cy="78" r="4" fill="#121B40"/>
+              <text x="70" y="86" text-anchor="middle" font-size="7" font-weight="800" fill="#4A5791" font-family="Nunito,sans-serif">CPM</text>
+              <rect x="24" y="96" width="92" height="22" rx="4" fill="#18263F"/>
+              <text id="gm-cpm" x="70" y="112" text-anchor="middle" font-family="Press Start 2P, monospace" font-size="9" fill="#8CFF9E"></text>
+              <circle id="gm-led" cx="112" cy="130" r="4" fill="#4A4F5A"/>
+              <rect x="142" y="26" width="18" height="78" rx="8" fill="#3A3F48" stroke="#243A73" stroke-width="2"/>
+              <rect x="145" y="30" width="12" height="20" rx="4" fill="#8A93A6"/>
+              <rect id="gm-chunk" x="136" y="118" width="32" height="14" rx="3" fill="url(#gs-gm)" stroke="rgba(0,0,0,.35)" opacity="0"/>
+            </svg>
+            <div class="ctrl"><button id="gm-pow">POWER</button><button id="gm-snd">SOUND</button><button id="gm-out">REMOVE</button></div>
+            <div class="readout" id="rd-gm">Counter is off</div>
+          </div>
+          <div class="station" data-drop="flame" id="st-flame">
+            <h4>BUNSEN BURNER</h4>
+            <canvas id="flame" width="180" height="170" aria-hidden="true"></canvas>
+            <div class="ctrl"><button id="fl-gas">GAS VALVE</button><button id="fl-air">AIR VENT</button><button id="fl-ign">IGNITE</button></div>
+            <div class="readout" id="rd-fl">Gas off · air vent closed</div>
+          </div>
+        </div>
+      </div>
+
+      <div class="dialog">
+        <p class="say" id="say" aria-live="polite"></p>
+        <div class="actions" id="actions"></div>
+      </div>
+
+      <div class="panel" id="picker">
+        <div class="pickbar">
+          <h3>ELEMENT SCANNER · up to 5 per scan</h3>
+          <div class="info" id="pickinfo">Hover or focus an element to compare its properties with your readings.</div>
+        </div>
+        <div class="scroll"><div class="ptable" id="pick-table"></div></div>
+      </div>
+    </div>
+    <div class="endwrap" id="endscreen" hidden></div>
+  </section>
+
+  <section id="view-table" hidden>
+    <div class="refgrid">
+      <div class="panel">
+        <h3>PERIODIC TABLE OF THE ELEMENTS</h3>
+        <p class="note">Select an element to see how it behaves under each lab test. Values are approximate, measured near room temperature; gas densities are in g/L.</p>
+        <div class="scroll"><div class="ptable ref" id="ref-table"></div></div>
+        <div class="legend" id="legend"></div>
+      </div>
+      <div class="card" id="elcard"></div>
+    </div>
+  </section>
+
+  <section id="view-dex" hidden>
+    <div class="panel">
+      <div class="dexhead">
+        <h3>ALLOYDEX</h3>
+        <span class="stat">REGISTERED <b id="dex-count">0</b></span>
+      </div>
+      <p class="note">Solve an alloy's full recipe to register it. Real-world alloys come first, followed by synthetic alloys designed at the Quillmoor Metallurgy Institute from real element data.</p>
+      <div class="filters" id="dexfilters">
+        <button data-f="all" aria-pressed="true">All</button>
+        <button data-f="real" aria-pressed="false">Real-world</button>
+        <button data-f="syn" aria-pressed="false">Synthetic</button>
+        <button data-f="caught" aria-pressed="false">Registered</button>
+      </div>
+      <div class="dexgrid" id="dexgrid"></div>
+      <div class="pager" id="pager"></div>
+    </div>
+  </section>
+</div>
+
+<script>
+/* =============== ELEMENT DATA =============== */
+const CATS={a:{name:"Alkali metal",c:"#F2837A"},e:{name:"Alkaline earth",c:"#F5B06A"},t:{name:"Transition metal",c:"#EDD36A"},p:{name:"Post-transition metal",c:"#9CDB8F"},m:{name:"Metalloid",c:"#6FD3C0"},n:{name:"Reactive nonmetal",c:"#8DBBF5"},h:{name:"Halogen",c:"#B3A6F5"},g:{name:"Noble gas",c:"#DCA3F0"},l:{name:"Lanthanide",c:"#F7A6C6"},c:{name:"Actinide",c:"#E892B0"},u:{name:"Unknown properties",c:"#AEB6CC"}};
+const RAW=`H,Hydrogen,1.008,n,0.00009,-259.1,2.20;He,Helium,4.0026,g,0.00018,,;Li,Lithium,6.94,a,0.534,180.5,0.98;Be,Beryllium,9.0122,e,1.85,1287,1.57;B,Boron,10.81,m,2.34,2076,2.04;C,Carbon,12.011,n,2.27,3550,2.55;N,Nitrogen,14.007,n,0.00125,-210,3.04;O,Oxygen,15.999,n,0.00143,-218.8,3.44;F,Fluorine,18.998,h,0.0017,-219.7,3.98;Ne,Neon,20.180,g,0.0009,-248.6,;Na,Sodium,22.990,a,0.968,97.8,0.93;Mg,Magnesium,24.305,e,1.738,650,1.31;Al,Aluminium,26.982,p,2.70,660.3,1.61;Si,Silicon,28.085,m,2.33,1414,1.90;P,Phosphorus,30.974,n,1.82,44.2,2.19;S,Sulfur,32.06,n,2.07,115.2,2.58;Cl,Chlorine,35.45,h,0.0032,-101.5,3.16;Ar,Argon,39.948,g,0.0018,-189.3,;K,Potassium,39.098,a,0.862,63.5,0.82;Ca,Calcium,40.078,e,1.55,842,1.00;Sc,Scandium,44.956,t,2.99,1541,1.36;Ti,Titanium,47.867,t,4.51,1668,1.54;V,Vanadium,50.942,t,6.0,1910,1.63;Cr,Chromium,51.996,t,7.19,1907,1.66;Mn,Manganese,54.938,t,7.21,1246,1.55;Fe,Iron,55.845,t,7.87,1538,1.83;Co,Cobalt,58.933,t,8.90,1495,1.88;Ni,Nickel,58.693,t,8.91,1455,1.91;Cu,Copper,63.546,t,8.96,1084.6,1.90;Zn,Zinc,65.38,t,7.14,419.5,1.65;Ga,Gallium,69.723,p,5.91,29.8,1.81;Ge,Germanium,72.630,m,5.32,938.3,2.01;As,Arsenic,74.922,m,5.73,817,2.18;Se,Selenium,78.971,n,4.81,221,2.55;Br,Bromine,79.904,h,3.10,-7.2,2.96;Kr,Krypton,83.798,g,0.0037,-157.4,3.00;Rb,Rubidium,85.468,a,1.53,39.3,0.82;Sr,Strontium,87.62,e,2.64,777,0.95;Y,Yttrium,88.906,t,4.47,1526,1.22;Zr,Zirconium,91.224,t,6.52,1855,1.33;Nb,Niobium,92.906,t,8.57,2477,1.6;Mo,Molybdenum,95.95,t,10.28,2623,2.16;Tc,Technetium,98,t,11.5,2157,1.9;Ru,Ruthenium,101.07,t,12.45,2334,2.2;Rh,Rhodium,102.91,t,12.41,1964,2.28;Pd,Palladium,106.42,t,12.02,1554.9,2.20;Ag,Silver,107.87,t,10.49,961.8,1.93;Cd,Cadmium,112.41,t,8.65,321.1,1.69;In,Indium,114.82,p,7.31,156.6,1.78;Sn,Tin,118.71,p,7.29,231.9,1.96;Sb,Antimony,121.76,m,6.70,630.6,2.05;Te,Tellurium,127.60,m,6.24,449.5,2.1;I,Iodine,126.90,h,4.93,113.7,2.66;Xe,Xenon,131.29,g,0.0059,-111.8,2.6;Cs,Caesium,132.91,a,1.93,28.4,0.79;Ba,Barium,137.33,e,3.51,727,0.89;La,Lanthanum,138.91,l,6.16,920,1.10;Ce,Cerium,140.12,l,6.77,795,1.12;Pr,Praseodymium,140.91,l,6.77,935,1.13;Nd,Neodymium,144.24,l,7.01,1024,1.14;Pm,Promethium,145,l,7.26,1042,;Sm,Samarium,150.36,l,7.52,1072,1.17;Eu,Europium,151.96,l,5.24,826,;Gd,Gadolinium,157.25,l,7.90,1312,1.20;Tb,Terbium,158.93,l,8.23,1356,;Dy,Dysprosium,162.50,l,8.54,1407,1.22;Ho,Holmium,164.93,l,8.79,1461,1.23;Er,Erbium,167.26,l,9.07,1529,1.24;Tm,Thulium,168.93,l,9.32,1545,1.25;Yb,Ytterbium,173.05,l,6.90,824,;Lu,Lutetium,174.97,l,9.84,1652,1.27;Hf,Hafnium,178.49,t,13.31,2233,1.3;Ta,Tantalum,180.95,t,16.69,3017,1.5;W,Tungsten,183.84,t,19.25,3422,2.36;Re,Rhenium,186.21,t,21.02,3186,1.9;Os,Osmium,190.23,t,22.59,3033,2.2;Ir,Iridium,192.22,t,22.56,2446,2.20;Pt,Platinum,195.08,t,21.45,1768.3,2.28;Au,Gold,196.97,t,19.32,1064.2,2.54;Hg,Mercury,200.59,t,13.53,-38.8,2.00;Tl,Thallium,204.38,p,11.85,304,1.62;Pb,Lead,207.2,p,11.34,327.5,1.87;Bi,Bismuth,208.98,p,9.78,271.4,2.02;Po,Polonium,209,p,9.20,254,2.0;At,Astatine,210,h,,302,2.2;Rn,Radon,222,g,0.0097,-71,2.2;Fr,Francium,223,a,,27,0.7;Ra,Radium,226,e,5.5,700,0.9;Ac,Actinium,227,c,10.07,1050,1.1;Th,Thorium,232.04,c,11.72,1750,1.3;Pa,Protactinium,231.04,c,15.37,1572,1.5;U,Uranium,238.03,c,19.1,1132,1.38;Np,Neptunium,237,c,20.45,644,1.36;Pu,Plutonium,244,c,19.82,640,1.28;Am,Americium,243,c,12,1176,1.13;Cm,Curium,247,c,13.51,1340,1.28;Bk,Berkelium,247,c,14.78,986,1.3;Cf,Californium,251,c,15.1,900,1.3;Es,Einsteinium,252,c,8.84,860,1.3;Fm,Fermium,257,c,,1527,1.3;Md,Mendelevium,258,c,,827,1.3;No,Nobelium,259,c,,827,1.3;Lr,Lawrencium,266,c,,1627,;Rf,Rutherfordium,267,t,,,;Db,Dubnium,268,t,,,;Sg,Seaborgium,269,t,,,;Bh,Bohrium,270,t,,,;Hs,Hassium,277,t,,,;Mt,Meitnerium,278,u,,,;Ds,Darmstadtium,281,u,,,;Rg,Roentgenium,282,u,,,;Cn,Copernicium,285,t,,,;Nh,Nihonium,286,u,,,;Fl,Flerovium,289,u,,,;Mc,Moscovium,290,u,,,;Lv,Livermorium,293,u,,,;Ts,Tennessine,294,u,,,;Og,Oganesson,294,u,,,`;
+const MP_NOTE={C:"sublimes ~3640 °C",As:"sublimes 615 °C",He:"no solid at 1 atm"};
+const EL=RAW.split(";").map((r,i)=>{const[s,name,mass,cat,d,mp,en]=r.split(",");return{z:i+1,s,name,mass:+mass,cat,d:d===""?null:+d,mp:mp===""?null:+mp,en:en===""?null:+en}});
+const BY=Object.fromEntries(EL.map(e=>[e.s,e]));
+// Lab behaviour: symbol:mohs:conductivity MS/m:ferromagnetic(0-2):appearance:flame colour:sparks
+const EXRAW="Li:0.6:10.8:0:C2C2BD:D8203A:;Be:5.5:25:0:A8ACA8::;B:9.5:0:0:3A3530:5AE85A:;C:1.5:0.07:0:2E2E30::burst;Na:0.5:21:0:D8D8D0:FFB020:;Mg:2.5:22.6:0:C9CCCF::flash;Al:2.75:37.7:0:CDD2D6::white;Si:6.5:0:0:6F7580::;K:0.4:13.9:0:C8C8C0:B79CF0:;Ca:1.75:29.8:0:C6C3B8:FF6A2A:;Sc:3:1.8:0:C8C8C2::;Ti:6:2.4:0:9A9A96::white;V:7:4.9:0:A8ADB1::;Cr:8.5:7.9:0:C9D0D6::;Mn:6:0.69:0:A8A39B:C8E070:;Fe:4:10:2:8A8E93::gold;Co:5:17.2:2:9AA0A8::;Ni:4:14.3:2:B8B4A8::;Cu:3:59.6:0:B87333:2FD6A0:;Zn:2.5:16.9:0:A9B2B5:A0E6D0:;Ga:1.5:7.1:0:C6CBD1:9A8CFF:;Ge:6:0:0:A0A4A8::;As:3.5:3.45:0:707378:A8BCFF:;Rb:0.3:8.3:0:CCCCC4:C43A7A:;Sr:1.5:7.6:0:D0CEC0:E0202A:;Y:3:1.8:0:BDBDB8::;Zr:5:2.4:0:B7B9B4::white;Nb:6:6.9:0:9FA3AF::;Mo:5.5:18.7:0:A9ACAF:D8F07A:;Ru:6.5:14.1:0:BEC2C4::;Rh:6:21:0:D8D9DA::;Pd:4.75:9.5:0:CFCFCB::;Ag:2.5:63:0:E6E8EA::;Cd:2:13.8:0:B5BCC2::;In:1.2:11.6:0:C8CCD2:5A5AFF:;Sn:1.5:9.2:0:C2C6C8::;Sb:3:2.9:0:B3B7BC:C8D8FF:;Te:2.25:0:0:9EA3A8::;Cs:0.2:4.8:0:E0C872:6C6CF0:;Ba:1.25:3:0:C0BEB4:A8E060:;La:2.5:1.6:0:B8B6AE::yellow;Ce:2.5:1.35:0:B0ADA2::yellow;Pr:2.5:1.4:0:B2B0A6::yellow;Nd:2.5:1.6:0:B0AFA6::yellow;Sm:2.5:1.1:0:B4B2A8::;Gd:2.5:0.76:1:B4B4B0::;Tb:2.5:0.87:0:B6B6B0::;Dy:2.5:1.1:0:B8B8B2::;Hf:5.5:3.3:0:A5A7A9::white;Ta:6.5:7.6:0:8E97A6::;W:7.5:18.9:0:9B9C9E::;Re:7:5.6:0:B8BBBE::;Os:7:10.9:0:A6B2C0::;Ir:6.5:21:0:D0D2D4::;Pt:3.5:9.4:0:D5D5D2::;Au:2.5:45.2:0:E6BE5A::;Hg:0:1.04:0:D3D6D9::;Tl:1.2:6.7:0:9DA0A2:7AE040:;Pb:1.5:4.8:0:7F8590:B0C8FF:;Bi:2.25:0.77:0:C9B8C8::;Th:3:6.7:0:A8A8A4::;U:6:3.6:0:9A9C9A::";
+const EX={};EXRAW.split(";").forEach(r=>{const[s,h,c,m,col,fl,sp]=r.split(":");EX[s]={h:+h,c:+c,m:+m,col:"#"+col,fl:fl?"#"+fl:"",sp:sp||""}});
+const RAD={U:3,Th:2.5,Pu:5,Am:5,Ra:6,Po:6,Tc:4,Pm:5,Np:5,Cm:6,Ac:6,Pa:5,Fr:6,At:6,Rn:6,K:.25,Rb:.2,La:.08,Lu:.15,Sm:.03,In:.01,Re:.02};
+const radLabel=v=>!v?"none":v<.1?"trace":v<1?"weak":v<4?"strong":"intense";
+const SPARK={gold:{c:"#FFB84A",t:"gold streaks"},burst:{c:"#FFD27A",t:"forking star bursts"},white:{c:"#FFFFFF",t:"bright white sparks"},yellow:{c:"#FFE45A",t:"yellow sparks"},flash:{c:"#FFFFFF",t:"blinding white flash"}};
+
+/* =============== REAL ALLOYS =============== */
+// name|aliases|composition|density g/cm3|melting °C|magnet 0-2|Mohs|conductivity MS/m|colour|name-leaks-elements|finish|uses|lore
+const REAL_RAW=`Bronze|tin bronze|Cu88 Sn12|8.8|950|0|3|7|#B5773A|0|p|Bells, statues, ship propellers|An entire age of human history is named after it. Greek sculptors cast their heroes in it.
+Brass|yellow brass,cartridge brass|Cu70 Zn30|8.53|915|0|3.5|16|#D2B04C|0|p|Trumpets, door handles, shell casings|A whole section of the orchestra is named after it, and door knobs made from it slowly kill germs.
+Muntz Metal|yellow metal|Cu60 Zn40|8.39|900|0|3.5|16|#D3AC4A|0|p|Ship hull sheathing, bolts|Patented in 1832 as a cheaper way to sheath wooden hulls against shipworms and barnacles.
+Gilding Metal||Cu95 Zn5|8.86|1050|0|3|32|#C98A4E|0|p|Bullet jackets, badges, enamel pins|Soft enough to press into military badges and wrap around bullets. It takes vitreous enamel beautifully.
+Red Brass|rose brass|Cu85 Zn15|8.75|1000|0|3|21|#C7864B|0|p|Plumbing fittings, valves|Plumbers once trusted it for pipes that would last a century in the walls of old houses.
+Tombac|tombak,dutch metal|Cu88 Zn12|8.8|1020|0|3|24|#CF9A58|0|p|Imitation gold leaf, medals|Beaten into thin leaf as a cheap stand-in for real gilding. Canada minted wartime 5-cent coins from it.
+Pinchbeck||Cu83 Zn17|8.7|950|0|3|20|#D6A652|0|p|18th-century watch cases, buckles|Invented by a London clockmaker. Its name became slang for anything cheap pretending to be precious.
+Prince's Metal|prince rupert's metal,princes metal|Cu75 Zn25|8.6|950|0|3|18|#D4A94E|0|p|17th-century trinkets|Named for a royal cavalry commander who dabbled in metallurgy between battles.
+Naval Brass|naval bronze|Cu60 Zn39 Sn1|8.41|890|0|3.5|15|#D2AE4E|0|p|Propeller shafts, marine hardware|Made for ships: one extra pinch of metal stops seawater from eating it away.
+Admiralty Brass||Cu71 Zn28 Sn1|8.53|900|0|3.5|14|#D1AC50|0|p|Condenser tubes, heat exchangers|Specified by the Royal Navy for the steam condenser tubes of its warships.
+Aich's Metal|aichs metal|Cu60 Zn38 Fe2|8.4|900|0|3.5|14|#D0A850|0|p|Naval fittings, small cannons|A 19th-century Austrian recipe that was tougher than ordinary brass.
+Orichalcum|aurichalcum|Cu78 Zn18 Pb4|8.6|920|0|3|15|#C9934E|0|p|Roman coins|Plato said it gleamed on the walls of Atlantis. Ingots from a 2,600-year-old shipwreck off Sicily finally revealed its recipe.
+Aluminium Bronze|aluminum bronze|Cu90 Al10|7.6|1040|0|4|7|#C9A04E|1|p|Marine propellers, non-sparking tools|Tough enough for giant ship propellers and safe for tools used around explosive gases.
+Phosphor Bronze||Cu95 Sn5|8.86|1000|0|3.5|9|#BE8448|1|p|Springs, guitar strings, connectors|Wound around acoustic guitar strings for a warm tone.
+Beryllium Copper|becu,beryllium bronze|Cu98 Be2|8.25|870|0|5|14|#C68A55|1|p|Non-sparking tools, springs|Oil rig and mine workers use wrenches made from it because they won't strike sparks.
+Cupronickel|copper-nickel,cupro-nickel|Cu75 Ni25|8.94|1200|0|3.5|3|#C9CAC7|1|p|US 5-cent coins, seawater pipes|Sits in American pockets as small change and lines ships' seawater pipes.
+Nickel Silver|german silver,alpaca,nickel brass|Cu60 Ni20 Zn20|8.7|1100|0|3.5|3.3|#CFCDC4|1|p|Keys, zippers, flutes, model railway track|Despite its name, there's none of the precious metal in it.
+Paktong|baitong,pakfong|Cu52 Zn34 Ni14|8.6|1000|0|3.5|4|#D0CCBE|0|p|Candlesticks, fireplace grates|Imported from China in the 1700s; European chemists spent decades trying to copy it.
+Constantan|eureka,advance|Cu55 Ni45|8.9|1220|0|3.5|2|#C9BBA8|0|p|Thermocouples, strain gauges|Its electrical resistance barely changes with temperature, which is where its name comes from.
+Manganin||Cu86 Mn12 Ni2|8.4|1000|0|3|2.3|#C79A73|1|p|Precision resistors|Laboratories use it for resistors that must stay exact for decades.
+Isabellin||Cu84 Mn13 Al3|8.0|1000|0|3|2|#C4A07E|0|p|Precision resistors, heating wire|A German resistance alloy from the early 1900s, rarely seen outside electrical labs.
+Nordic Gold||Cu89 Al5 Zn5 Sn1|7.7|1050|0|3|5.5|#D6B04E|0|p|Euro 10, 20 and 50 cent coins|Named like treasure but contains none. First used for Swedish crowns, now jingles in European pockets.
+Tumbaga||Cu60 Au40|12|900|0|3|10|#D69A5A|0|p|Pre-Columbian ornaments|Artisans of ancient Colombia and Panama treated it with plant acids so the surface looked richer than the metal inside.
+Shakudo|shakudō|Cu96 Au4|9.2|1060|0|3|25|#3A2E35|0|k|Japanese sword fittings|Japanese artisans pickle it in a special bath until its surface transforms. Prized on samurai sword guards.
+Shibuichi||Cu75 Ag25|9.4|900|0|3|25|#9C958C|0|m|Japanese ornaments|Its name means 'one-fourth' in Japanese, a hint at its recipe.
+Corinthian Bronze||Cu80 Ag10 Au10|10|950|0|3|12|#C99A5A|0|p|Ancient luxury vessels|Roman writers claimed it was born when Corinth burned in 146 BCE and molten treasures ran together.
+Gunmetal|red bronze,admiralty gunmetal|Cu88 Sn8 Zn4|8.7|1000|0|3|7.5|#B98046|0|p|Cannons, valves, pump parts|Once the standard metal for cannons. Now it's in valves and pumps.
+Bell Metal||Cu78 Sn22|8.6|880|0|4.5|5|#B8905E|0|p|Church bells, gongs, cymbals|Cathedral bells and orchestral gongs are cast from it for their long, rich ring.
+Speculum Metal|speculum|Cu67 Sn33|8.7|760|0|5|4|#D9D6CF|0|p|Telescope mirrors|Isaac Newton ground the mirror of his first reflecting telescope from it.
+Potin||Cu70 Sn15 Pb15|8.9|850|0|3|6|#A9824A|0|m|Celtic coins|Poured into strips of clay molds by Iron Age Celts to make coins.
+Arsenical Bronze||Cu96 As4|8.9|1050|0|3|15|#B8743C|1|p|Early Bronze Age tools|Smiths used it for tools centuries before they learned the classic recipe.
+Silicon Bronze|everdur|Cu96 Si3 Mn1|8.53|1025|0|3.5|3.8|#C08050|1|p|Boat fasteners, sculpture|Sculptors love welding it, and boat builders trust it for underwater screws.
+Devarda's Alloy|devardas alloy|Cu50 Al45 Zn5|5.8|600|0|4|5|#B8A58A|0|m|Chemistry lab reagent|Ground into powder by chemists to test for nitrates. Named after an Italian chemist.
+Elkonite|copper-tungsten|W70 Cu30|14|1085|0|5|20|#9C8A7E|0|m|Welding electrodes, heat sinks|Pressed from powder and soaked with molten metal so it survives the arc of a welder.
+Mild Steel|low-carbon steel,low carbon steel|Fe99.8 C0.2|7.87|1480|2|4|7|#8C9299|1|p|Car bodies, nails, beams|The most-made metal on Earth, rolled into car bodies, nails and I-beams.
+Carbon Steel|high-carbon steel,high carbon steel|Fe99 C1|7.85|1450|2|5.5|5.5|#858B92|1|p|Knives, springs, hand tools|The backbone of skyscrapers and railways; its high-end grades become chef's knives.
+Stainless Steel|18/8 stainless,304 stainless,304|Fe71 Cr19 Ni10|8.0|1420|1|5.5|1.4|#C4CAD0|1|p|Sinks, cutlery, surgical tools|An invisible film heals itself whenever it's scratched, so it refuses to rust.
+Surgical Steel|316 stainless,marine stainless,316|Fe68 Cr17 Ni12 Mo3|8.0|1390|0|5.5|1.35|#C2C8CE|1|p|Implants, piercings, boat fittings|The upgraded kitchen-sink recipe that survives salt spray and the human body.
+Cutlery Stainless|420 stainless,420|Fe86.6 Cr13 C0.4|7.74|1450|2|6|1.8|#B9BFC5|1|p|Knife blades, scissors|Can be hardened for a sharp edge, unlike the kitchen-sink kind.
+Precipitation Stainless|17-4 ph,17-4ph,17-4|Fe75 Cr16.5 Ni4.5 Cu4|7.8|1400|2|6|1.25|#BCC2C8|1|p|Turbine parts, golf club heads|Strengthened by baking it at low heat after forming.
+Cast Iron|grey iron,gray iron|Fe95 C3.5 Si1.5|7.2|1175|2|4.5|1.5|#5E656D|1|m|Skillets, engine blocks, manhole covers|Pours easily into molds but snaps instead of bending. A kitchen favorite for searing.
+Damascus Steel|wootz,wootz steel|Fe98.5 C1.5|7.8|1400|2|6|5|#7E858C|1|d|Legendary sword blades|Swords forged from it were said to slice silk scarves falling through the air.
+Weathering Steel|cor-ten,corten|Fe98 Cr1 Cu1|7.85|1500|2|4.5|5|#7A4A2E|1|r|Bridges, sculptures, building facades|It's left bare on purpose; its crust protects the metal underneath.
+Electrical Steel|silicon steel|Fe97 Si3|7.65|1500|2|5|2.1|#8E949A|1|p|Transformer cores, motors|Stacked in thin sheets inside every transformer humming on a power pole.
+Hadfield Steel|manganese steel,mangalloy|Fe86 Mn13 C1|7.9|1400|0|5.5|1.5|#8E9197|1|p|Rock crushers, railway crossings, prison bars|Gets harder the more you hammer it, so rock crushers and prison bars are made of it.
+High-Speed Steel|m2,hss|Fe84 W6 Mo5 Cr4 C1|8.16|1430|2|7|2|#8A9096|1|p|Drill bits, lathe tools|Keeps its edge while cutting other metal so fast it glows.
+Maraging Steel||Fe67 Ni18 Co9 Mo5 Ti1|8.1|1413|2|6|2|#9A9FA5|1|p|Rocket casings, fencing blades|Olympic fencing blades are forged from it so they snap less often.
+Tool Steel|d2|Fe85.5 Cr12 C1.5 Mo1|7.7|1420|2|7|1.8|#8E949A|1|p|Dies, industrial knives|Stamps and cuts other metals all day in factories.
+Bearing Steel|52100|Fe97.5 Cr1.5 C1|7.81|1425|2|7|3.5|#8A9097|1|p|Ball bearings|Almost every ball bearing in the world is made from it.
+Chromoly|4130|Fe98 Cr1 Mn0.5 C0.3 Mo0.2|7.85|1430|2|5|4|#8B9198|1|p|Bike frames, roll cages|Loved by bike frame builders and race-car roll cage makers.
+Ferrochrome|ferrochromium|Fe35 Cr60 C5|7.0|1500|1|7|1|#9CA0A4|1|m|Additive for stainless production|Almost all of it gets dumped into furnaces to make another famous alloy.
+Ferrosilicon||Si75 Fe25|3.1|1300|1|6.5|0.5|#7A7E86|1|m|Deoxidizing steel, making hydrogen|The military once used it to make hydrogen for observation balloons.
+Invar||Fe64 Ni36|8.05|1427|2|4|1.25|#9A9EA4|0|p|Clock pendulums, precision instruments|Its discovery earned a Swiss physicist the 1920 Nobel Prize in Physics. Its name comes from 'invariable'.
+Elinvar||Fe52 Ni36 Cr12|8.1|1440|2|4.5|0.9|#A0A4A8|0|p|Watch hairsprings, tuning forks|Invented by the same Nobel laureate as its famous sibling, so watch springs keep time in any weather.
+Kovar||Fe54 Ni29 Co17|8.36|1450|2|4.5|2|#9EA2A6|0|p|Glass-to-metal seals, vacuum tubes|Designed to expand exactly like hard glass, so the two can be fused together in vacuum tubes.
+Permalloy||Ni80 Fe20|8.7|1450|2|4|6|#B3B2AC|0|p|Transformer cores, tape heads|Developed at Bell Labs to wrap undersea telegraph cables so they could carry messages faster.
+Mu-metal|mu metal,mumetal|Ni77 Fe16 Cu5 Mo2|8.7|1450|2|4|1.8|#B0B3B7|0|p|Shielding sensitive electronics|Named after the Greek letter physicists use for permeability. Wrapped around sensitive instruments as a shield.
+Permendur|hiperco|Fe49 Co49 V2|8.12|1480|2|5|2.5|#9A9EA3|0|p|Aircraft generators, electromagnet poles|Packed into aircraft generators where every gram counts.
+Sendust||Fe85 Si10 Al5|7.0|1400|2|6.5|1.2|#8F959B|0|p|Magnetic recording heads|Invented in Sendai, Japan, in 1936 and first used as a dust.
+Kanthal|fecral|Fe72 Cr22 Al6|7.1|1500|2|6|0.72|#A5A8AA|0|p|Kiln elements, electric heaters|Named after a Swedish town. Coiled inside kilns and space heaters.
+Metglas|amorphous metal|Fe81 B13.5 Si3.5 C2|7.18|1100|2|6|0.77|#9FA4A8|0|p|Transformer cores, anti-shoplifting tags|Cooled so fast (a million degrees per second) that its atoms never had time to form crystals.
+Alnico|alnico 5|Fe51 Co24 Ni14 Al8 Cu3|7.3|1260|2|6|2|#7C838A|1|m|Guitar pickups, sensors|Before rare-earth magnets arrived, this was the strongest permanent magnet around.
+Neodymium Magnet|ndfeb,neo magnet|Fe72 Nd27 B1|7.5|1150|2|6|0.7|#AEB2B6|1|p|Hard drives, earbuds, EV motors|Invented in 1982 and now inside nearly every pair of earbuds.
+Samarium Cobalt Magnet|smco|Co66 Sm34|8.4|1300|2|6|1.8|#6F7479|1|m|Aerospace motors, sensors|The magnet of choice where things get too hot for its newer rival.
+Kamacite||Fe93 Ni7|7.9|1500|2|4|8|#8D9196|0|m|Found in meteorites|A natural alloy that falls from space. Etched slices of meteorites show its broad crystal bands.
+Taenite||Fe70 Ni30|8.1|1450|2|5|3|#A3A3A0|0|p|Found in meteorites|Another natural meteorite alloy, forming thin ribbons between wider bands in etched meteorite slices.
+Tetrataenite||Fe50 Ni50|8.3|1450|2|5|3|#ACAAA4|0|m|Meteorites; a future magnet|Takes millions of years of slow cooling in space to form. Scientists hope to make it in factories.
+Awaruite|josephinite|Ni75 Fe25|8.4|1450|2|5|5|#B1B0AA|0|m|Natural nuggets in river gravels|A natural alloy first found in the gravels of Awarua Bay, New Zealand.
+Vicalloy||Fe38 Co52 V10|8.2|1450|2|5.5|2|#999DA2|1|p|Magnetic recording tape|An early magnetic recording material that could be drawn into thin wire.
+Terfenol-D|terfenol|Dy42 Fe41 Tb17|9.2|1240|2|5|1.7|#8D9094|1|p|Sonar transducers, actuators|Invented at the US Naval Ordnance Laboratory. It changes shape in a magnetic field more than almost anything.
+Galfenol||Fe81 Ga19|7.8|1450|2|4.5|2|#9A9EA3|1|p|Sensors, energy harvesters|A tougher cousin of a famous shape-changing sonar material.
+Nichrome|nickel-chrome|Ni80 Cr20|8.4|1400|0|4.5|0.91|#A9ABA5|1|p|Toaster wires, hair dryers|Glows inside your toaster every morning without burning away.
+Chromel||Ni90 Cr10|8.73|1420|0|4.5|1.4|#AAACA8|1|p|Thermocouples|One half of the world's most common thermocouple.
+Alumel||Ni95 Mn2 Al2 Si1|8.6|1400|2|4|3.4|#ACAEA9|1|p|Thermocouples|The other half of the world's most common thermocouple.
+Monel|monel 400|Ni67 Cu31 Fe2|8.8|1320|1|4|1.9|#B5B0A6|0|p|Propeller shafts, saxophone springs, marine valves|Named after the president of the company that first made it, around 1905.
+Inconel 600|inconel|Ni76 Cr15.5 Fe8.5|8.47|1370|0|5|0.97|#A2A5A8|0|p|Furnace parts, nuclear steam generators|The original member of a famous family of superalloys.
+Inconel 625|inconel|Ni61 Cr22 Mo9 Fe5 Nb3|8.44|1320|0|5.5|0.78|#9EA1A5|0|p|Rocket nozzles, race-car exhausts|Stays strong while glowing and resists almost every acid.
+Inconel 718|inconel|Ni53 Fe19 Cr19 Nb5 Mo3|8.19|1300|0|6|0.8|#9CA0A4|0|p|Jet engine discs, rocket engines|The most-used superalloy in jet engines; 3D-printed into rocket engines.
+Hastelloy C|hastelloy,hastelloy c-276,c-276|Ni57 Mo16 Cr16 Fe6 W4|8.89|1350|0|6|0.77|#9DA0A4|0|p|Chemical plant piping|Shrugs off wet chlorine and bleach that destroy most metals.
+Hastelloy B|hastelloy b-2|Ni70 Mo28 Fe2|9.2|1330|0|5.5|0.73|#9FA2A6|0|p|Hydrochloric acid tanks|Built to survive boiling hydrochloric acid.
+Waspaloy||Ni59.5 Cr19.5 Co13.5 Mo4.5 Ti3|8.2|1330|0|6|0.8|#9B9EA2|0|p|Jet engine turbine discs|Spins at the heart of jet engines.
+Rene 41|rené 41|Ni57 Cr19 Co11 Mo10 Ti3|8.25|1320|0|6|0.75|#9C9FA3|0|p|Afterburners, spacecraft heat shields|Protected the Mercury space capsules on re-entry.
+Nimonic 80A|nimonic|Ni76 Cr20 Ti2.5 Al1.5|8.19|1340|0|5.5|0.8|#A0A3A6|1|p|Jet engine exhaust valves|Developed in Britain for Frank Whittle's first jet engines.
+Incoloy 800|incoloy|Fe46 Ni33 Cr21|7.94|1370|0|5|1|#A2A5A8|0|p|Heat exchangers, furnace tubes|Lives in the hottest pipes of power stations and chemical plants.
+Evanohm||Ni75 Cr20 Al2.5 Cu2.5|8.1|1400|0|5|0.75|#A5A7A6|0|p|Precision resistors|Wound into precision resistors for measuring instruments.
+Nitinol||Ni55 Ti45|6.45|1310|0|5.5|1.2|#9DA3AA|1|p|Heart stents, braces wire|Bend it out of shape, warm it up, and it springs back. Named partly after a Navy lab in Maryland.
+Stellite|stellite 6|Co62 Cr28 W5 C1|8.4|1350|0|7|0.9|#8F959C|0|p|Saw teeth, valve seats|So wear-proof it tips saw teeth. Invented by an American auto pioneer around 1907.
+Vitallium||Co63 Cr30 Mo7|8.3|1400|0|6|0.9|#A3A7AB|0|p|Hip implants, dentures|The first metal widely used for joint implants, in the 1930s.
+Elgiloy||Co41 Cr20 Fe16 Ni15 Mo8|8.3|1450|0|6|1|#A2A5A9|0|p|Watch mainsprings, pacemaker leads|Created for watch mainsprings in Elgin, Illinois.
+Haynes 25|l-605,l605|Co52 Cr20 W15 Ni10 Fe3|9.13|1330|0|6|1.1|#9A9EA3|0|p|Gas turbines, heart valve springs|Used both inside gas turbines and in artificial heart valves.
+Duralumin|dural|Al94 Cu4.5 Mg1.5|2.79|600|0|3|17|#C2C9D1|1|p|Airship frames, aircraft rivets|Framed the first rigid airships and gets stronger for days after heat treatment.
+Zicral|7075,7075 aluminium,ergal|Al90 Zn6 Mg2.5 Cu1.5|2.81|550|0|3.5|19|#C0C6CC|0|p|Aircraft wings, climbing gear|First made in secret by Japan for the wings of WWII fighter planes.
+Silumin|alpax|Al88 Si12|2.65|577|0|3|20|#B8BEC5|1|m|Engine blocks, cast housings|Pours into thin molds perfectly, so it's everywhere in car engines.
+Magnalium||Al70 Mg30|2.2|450|0|3|10|#C8CCD0|1|m|Fireworks, telescope mirrors|Powdered in fireworks for sparkling white crackles.
+Y Alloy|y-alloy|Al92.5 Cu4 Ni2 Mg1.5|2.78|600|0|3|17|#BFC5CB|0|p|Pistons, cylinder heads|Developed during WWI in Britain for aero-engine pistons.
+Birmabright||Al95 Mg4 Mn1|2.66|600|0|3|18|#C3C8CD|0|p|Early Land Rover bodies|Post-war steel shortages pushed a British off-road carmaker to build bodies from it.
+Weldalite|2195,al-li 2195|Al95 Cu4 Li1|2.71|560|0|3.5|15|#C2C8CE|0|p|Space Shuttle external tank|Swapped into the Space Shuttle's giant fuel tank in 1998 to shave off 3,400 kg.
+Magnox||Mg99 Al1|1.74|650|0|2.5|20|#C9CCCF|1|p|Nuclear fuel cladding|Named after the first British nuclear power stations, which it wrapped fuel rods for.
+Elektron|elektron metal|Mg90 Al8 Zn1 Mn1|1.8|600|0|2.5|7|#C8CBCE|0|p|Racing wheels, aircraft parts|A German brand from 1908 that later ended up in race-car wheels and aircraft gearboxes.
+Grade 5 Titanium|ti64,ti-6al-4v,titanium alloy|Ti90 Al6 V4|4.43|1630|0|6|0.58|#A6A8AD|1|p|Jet engine parts, hip implants|The workhorse of aerospace and medical implants.
+Gum Metal||Ti74 Nb23 Zr2 Ta1|5.7|1700|0|5|0.6|#A2A5AA|0|p|Flexible eyeglass frames|Invented by Toyota researchers in 2003; it bends like rubber and springs back.
+Liquidmetal|vitreloy,vitreloy 1|Zr41 Ti14 Cu12.5 Ni10 Be22.5|6.1|720|0|6|0.5|#9EA2A6|0|p|Golf clubs, phone parts|A glassy metal with no crystal grains. It can be molded almost like plastic.
+Niobium-Titanium|nbti,niobium titanium|Nb53 Ti47|6.0|2200|0|6|1.6|#9FA3AF|1|p|MRI magnets, particle accelerators|Kilometers of it are coiled inside MRI scanners and the Large Hadron Collider.
+Triniobium Tin|nb3sn|Nb70 Sn30|8.9|2130|0|6|1|#8F95A0|1|m|Fusion reactor magnets|Wound into the giant magnets of the ITER fusion reactor.
+TZM|tzm molybdenum|Mo99 Ti0.5 Zr0.5|10.2|2620|0|5.5|17|#A9ACAF|1|p|Furnace parts, rocket nozzles|Its name is an acronym of its recipe.
+Zircaloy|zircaloy-4|Zr98.5 Sn1.5|6.56|1850|0|5|1.4|#B7B9B4|1|p|Nuclear fuel rod cladding|Wraps the fuel in most of the world's nuclear reactors.
+Zamak|zamak 3,zamac|Zn96 Al4|6.6|385|0|2.5|15.7|#B6BABE|0|p|Die-cast toy cars, zippers|Its name is a German acronym. Pressure-cast into toy cars, zipper pulls and faucets.
+Kirksite||Zn93 Al4 Cu3|6.7|380|0|3|15|#B3B8BC|0|p|Stamping dies, prototype molds|Car makers cast quick prototype dies from it.
+Eutectic Solder|63/37 solder,tin-lead solder,solder,6337|Sn63 Pb37|8.4|183|0|1.5|6.9|#A7ACB2|0|p|Circuit boards, old electronics|For decades every circuit board on Earth was joined with it, until new laws pushed it out in 2006.
+SAC305|lead-free solder,sac solder,sac|Sn96.5 Ag3 Cu0.5|7.4|218|0|1.5|7|#B7BBBF|1|p|Modern circuit boards|The replacement that took over electronics after 2006.
+Pewter||Sn92 Sb6 Cu2|7.3|230|0|1.8|7.4|#9EA3A7|0|m|Tankards, figurines, plates|The tableware of medieval taverns. Modern versions leave out a toxic heavy metal older recipes contained.
+Britannia Metal|britannium,britannia|Sn93 Sb5 Cu2|7.3|250|0|2|8|#B8BCC0|0|p|Teapots, trophies|Invented in Sheffield around 1770. Film award statuettes are cast from it before plating.
+Babbitt Metal|babbitt,white metal|Sn89 Sb7 Cu4|7.4|240|0|2|7|#B5B8BC|0|p|Engine and turbine bearings|Patented by a Massachusetts goldsmith in 1839 to line bearings.
+Queen's Metal|queens metal|Sn89 Sb7 Cu3.5 Zn0.5|7.3|240|0|2|7|#BFC2C5|0|p|Teapots, tableware|A Georgian-era tableware alloy named in honor of royalty.
+Type Metal||Pb82 Sb15 Sn3|10|240|0|2|4|#8F949B|0|p|Movable type for printing presses|Every letter in newspapers for 400 years was cast from it.
+Terne|terneplate,terne metal|Pb85 Sn15|10.5|260|0|1.5|5|#8C9198|0|m|Roofing sheet, old fuel tanks|Coated onto steel for roofs and old car fuel tanks.
+Hard Lead|antimonial lead|Pb94 Sb6|10.9|290|0|1.5|4|#848A92|1|m|Car battery grids, bullets|Stiffened so car battery plates don't sag.
+Wood's Metal|lipowitz's alloy,cerrobend,woods metal|Bi50 Pb26.7 Sn13.3 Cd10|9.7|70|0|2|2|#B8BCC1|0|p|Fire sprinkler plugs, bending thin tubes|Old fire sprinklers used a plug of it that gave way when a room got hot.
+Field's Metal|fields metal|In51 Bi32.5 Sn16.5|7.88|62|0|1.5|2|#C2C6CB|0|p|Molds, rapid prototyping|Named after its inventor, Simon Quellen Field, as a safer replacement for an older fusible alloy.
+Rose's Metal|roses metal|Bi50 Pb28 Sn22|9.6|98|0|2|2|#BDBFC4|0|p|Thermal fuses, safety plugs|Named after an 18th-century German chemist.
+Newton's Metal|newtons metal|Bi50 Pb31.2 Sn18.8|9.4|97|0|2|2|#BEC1C5|0|p|Casting, safety plugs|Credited, maybe wrongly, to Isaac Newton, who experimented with fusible metals.
+Cerrosafe||Bi42.5 Pb37.7 Sn11.3 Cd8.5|9.4|80|0|2|2|#B9BDC1|0|p|Gunsmiths' chamber casts|Gunsmiths pour it into barrels to make exact casts.
+Cerrolow 117|cerrolow|Bi44.7 Pb22.6 In19.1 Sn8.3 Cd5.3|9.2|47|0|1.5|1.5|#BCC0C4|0|p|Lens-grinding blocks|Melts from the warmth of a hand on a hot day.
+Galinstan||Ga68.5 In21.5 Sn10|6.44|-19|0|0|3.46|#C3CAD2|1|p|Thermometers, liquid-metal cooling|Replaced a toxic liquid in thermometers. Its name is a mash-up of its ingredients.
+EGaIn||Ga75.5 In24.5|6.25|15.5|0|0|3.4|#C4CAD1|1|p|Stretchy electronics|Squeezed into rubber tubes to make wires that stretch.
+NaK|nak|K78 Na22|0.87|-12.6|0|0|2.9|#D5D8CC|1|p|Reactor coolant|Pumped through experimental nuclear reactors as a coolant. Always stored under oil.
+Sterling Silver|sterling,925 silver|Ag92.5 Cu7.5|10.36|893|0|2.8|50|#E4E7EC|1|p|Jewelry, flatware, trophies|Stamped with the number 925.
+Coin Silver||Ag90 Cu10|10.3|880|0|3|48|#E1E3E6|1|p|Old US dimes and quarters|US dimes and quarters were made of it until 1965.
+Argentium|argentium silver|Ag93.5 Cu5 Ge1.5|10.3|880|0|2.8|48|#E7E9EC|1|p|Tarnish-resistant jewelry|Invented in 1990s England to fight tarnish.
+Electrum||Au60 Ag40|15.2|1010|0|2.6|15|#E2CF7E|0|p|The world's first coins|Found naturally in river sands. The kingdom of Lydia struck the first coins from it around 600 BCE.
+Yellow Gold 14K|14k gold,14 karat gold,14k yellow gold|Au58.5 Cu30 Ag11.5|13.1|880|0|3|10|#DDB85A|1|p|Wedding bands|Stamped 585.
+Rose Gold|red gold,pink gold,18k rose gold|Au75 Cu22.25 Ag2.75|15.1|900|0|3|8|#E3A488|1|p|Rings, watch cases|Stamped 750. Fashionable in 19th-century Russia.
+White Gold||Au75 Pd13 Ag12|15.6|1100|0|3|5|#D8D5CC|1|p|Engagement rings|Usually plated with rhodium for extra shine.
+Green Gold||Au75 Ag25|15.9|1030|0|2.8|10|#D4C87A|1|p|Jewelry accents|Mixed into floral jewelry for leaves.
+Blue Gold||Au46 In54|10.3|540|0|3|5|#8C9DC8|1|p|Novelty jewelry|An intermetallic compound; too brittle to bend.
+Purple Gold|amethyst gold|Au79 Al21|7.7|1060|0|3|5|#9A5CA8|1|p|Gemstone-like settings|Cut like a gem because it shatters if bent.
+Crown Gold|22k gold,22 karat gold|Au91.7 Cu5 Ag3.3|17.8|1000|0|2.7|15|#E6BE58|1|p|Coins, jewelry|Used for British sovereigns and bullion coins.
+Platiniridium|platinum-iridium,platinum iridium|Pt90 Ir10|21.55|1790|0|4.5|4|#D2D3D2|1|p|The old international kilogram|Defined the kilogram from 1889 to 2019.
+Osmiridium|iridosmine|Os50 Ir50|22.3|2700|0|7|12|#B8BEC6|1|m|Fountain pen nib tips|Tipped fountain pen nibs; found naturally with alluvial gold.
+Mischmetal|misch metal|Ce50 La25 Nd18 Pr7|6.7|800|1|2.5|1.3|#A8A398|0|m|Lighter flints, steelmaking|Its name means 'mixed metal': a blend of rare earths taken straight from ore.
+Ferrocerium|ferro rod|Ce40 La22 Fe20 Nd12 Mg6|6.7|700|1|3|1.2|#8A8780|1|m|Fire starters, lighter flints|Invented by Carl Auer von Welsbach in 1903; survivalists scrape it to start campfires.
+Staballoy|du-ti,depleted uranium alloy|U99.25 Ti0.75|18.6|1130|0|5.5|3.4|#6E7275|0|m|Armor-piercing penetrators, aircraft counterweights|Made from the leftovers of nuclear fuel enrichment. Tank crews and airplane makers both prized its heft.
+Thoriated Tungsten|wt20,thoriated tungsten electrode|W98 Th2|19.2|3380|0|7.5|17|#9A9C9F|1|p|TIG welding electrodes|Welders are warned never to breathe the dust from sharpening it.
+Mag-Thor|hk31a,mag thor,magthor|Mg96.3 Th3 Zr0.7|1.79|600|0|2.5|13|#C7CACD|1|p|Missile and early spacecraft parts|Flew in 1950s missiles and early spacecraft because it stayed strong when hot.
+Densimet|tungsten heavy alloy|W90 Ni7 Fe3|17|1450|1|6|8|#8F9296|0|m|Aircraft counterweights, radiation shields|Packed into race-car ballast and airplane counterweights.`;
+
+/* =============== HELPERS =============== */
+const $=s=>document.querySelector(s);
+const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
+const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
+const pad=n=>String(n).padStart(3,"0");
+const hex2rgb=h=>{const n=parseInt(h.slice(1),16);return[n>>16,n>>8&255,n&255]};
+const rgb2hex=a=>"#"+a.map(v=>Math.round(clamp(v,0,255)).toString(16).padStart(2,"0")).join("");
+function shade(hex,amt){const c=hex2rgb(hex);return rgb2hex(c.map(v=>amt<0?v*(1+amt):v+(255-v)*amt))}
+function mix(a,b,t){const x=hex2rgb(a),y=hex2rgb(b);return rgb2hex(x.map((v,i)=>v+(y[i]-v)*t))}
+const store={get(k,d){try{const v=localStorage.getItem(k);return v==null?d:JSON.parse(v)}catch(e){return d}},set(k,v){try{localStorage.setItem(k,JSON.stringify(v))}catch(e){}}};
+function mulberry(a){return function(){a|=0;a=a+0x6D2B79F5|0;let t=Math.imul(a^a>>>15,1|a);t=t+Math.imul(t^t>>>7,61|t)^t;return((t^t>>>14)>>>0)/4294967296}}
+function fmtDensity(d){if(d==null)return"unknown";if(d<0.02)return(d*1000).toFixed(2)+" g/L";return d+" g/cm³"}
+function fmtMp(e){if(MP_NOTE[e.s])return MP_NOTE[e.s];return e.mp==null?"unknown":e.mp+" °C"}
+function pos(z){if(z===1)return[1,1];if(z===2)return[1,18];if(z<=4)return[2,z-2];if(z<=10)return[2,z+8];if(z<=12)return[3,z-10];if(z<=18)return[3,z];if(z<=36)return[4,z-18];if(z<=54)return[5,z-36];if(z<=56)return[6,z-54];if(z<=71)return[9,z-54];if(z<=86)return[6,z-68];if(z<=88)return[7,z-86];if(z<=103)return[10,z-86];return[7,z-100]}
+const frac=a=>Object.fromEntries(a.comp.map(([s,p])=>[s,p/100]));
+
+/* =============== BUILD ALLOY LIST =============== */
+const TYPES={"Radioactive":"#5FAF22","Liquid":"#2E9BE0","Low-melt":"#D95F9E","Magnetic":"#B8315F","Reactive":"#EF6A36","Precious":"#D9A92A","Lightweight":"#5E9ED8","Heavy":"#5B4E8C","Tough":"#7C5E45","Heat-proof":"#D83D27","Conductive":"#E0AF10","Structural":"#667A95"};
+function typesOf(a){const w=frac(a),t=[];
+  if(a.comp.reduce((s,[e,p])=>s+(RAD[e]||0)*p/100,0)>=.03)t.push("Radioactive");
+  if(a.mp<25)t.push("Liquid");else if(a.mp<350)t.push("Low-melt");
+  if(a.mag===2)t.push("Magnetic");
+  if(a.reactive||(w.Ce||0)>=.3)t.push("Reactive");
+  if(["Au","Ag","Pt","Pd","Ir","Os","Rh"].reduce((s,k)=>s+(w[k]||0),0)>=.5)t.push("Precious");
+  if(a.d<4.6)t.push("Lightweight");else if(a.d>12)t.push("Heavy");
+  if(a.hard>=6)t.push("Tough");
+  if(a.mp>=1300&&a.hard>=5)t.push("Heat-proof");
+  if(a.cond>=25)t.push("Conductive");
+  if(!t.length)t.push("Structural");
+  return t.slice(0,2)}
+const isReactive=w=>["Li","Na","K","Rb","Cs"].reduce((s,k)=>s+(w[k]||0),0)>=.3;
+
+const ALLOYS=[];
+REAL_RAW.trim().split("\n").forEach(line=>{
+  const f=line.split("|");
+  const comp=f[2].trim().split(/\s+/).map(t=>{const m=t.match(/^([A-Z][a-z]?)([\d.]+)$/);return[m[1],+m[2]]});
+  const a={name:f[0],aliases:f[1]?f[1].split(","):[],comp,d:+f[3],mp:+f[4],mag:+f[5],hard:+f[6],cond:+f[7],color:f[8],leak:f[9]==="1",finish:f[10],uses:f[11],lore:f[12],real:true};
+  a.reactive=isReactive(frac(a)); ALLOYS.push(a);
+});
+
+/* Synthetic alloys: designed from the element data above */
+const FAM={Fe:[14,"C Cr Ni Mn Mo V W Co Si Cu Nb Ti Al",60],Cu:[12,"Zn Sn Ni Al Be Si Mn Fe Ag Pb Cr Zr",55],Al:[9,"Cu Mg Si Zn Mn Li Sc Fe Ni",80],Ni:[9,"Cr Fe Mo Co Ti Al Cu W Nb",45],Ti:[6,"Al V Mo Nb Zr Sn Cr Fe",70],Co:[5,"Cr W Ni Mo Fe",45],Mg:[4,"Al Zn Mn Zr Y Li Ce Th",80],Zn:[3,"Al Cu Mg",85],Sn:[4,"Pb Sb Cu Ag Bi In Zn",55],Pb:[3,"Sn Sb Ca Bi",60],Au:[4,"Ag Cu Pd Ni Pt Zn",40],Ag:[3,"Cu Zn Pd Sn Au",50],Pt:[2,"Ir Rh Ru Pd Au Co",60],Pd:[2,"Ag Au Cu Ru",50],W:[2,"Re Ni Fe Cu Th",70],U:[1,"Mo Zr Ti Nb",85],Mo:[1,"Re Ti Zr W",70],Nb:[2,"Ti Sn Zr Hf",50],Ta:[1,"W Nb Hf",70],Zr:[2,"Sn Nb Fe Cr",80],Ga:[2,"In Sn Zn",55],Bi:[2,"Pb Sn In Cd",35],In:[1,"Sn Bi Ag",45],Hg:[1,"Ag Sn Cu In",40],K:[1,"Na Cs Rb",40],Ce:[1,"La Nd Pr Fe",40],Li:[1,"Mg Al",60]};
+const SYL1="Vex Kor Zan Quel Thar Mor Dra Brix Jol Nym Pyr Oru Skarn Vel Tor Kyr Lum Zeph Hald Fen Grav Obr Pex Rav Sor Tul Umb Wyr Yor Zel Crag Dun Esk Glim Hax Ist Jak Kest Lorn Myr Nox Prax Quor Rhen Sael Tyv Vorn Xal Yrr Bael Cael Dorn Eld Fyr Gael Hyr Ivo Jyn Kael Lyx".split(" ");
+const SYL2="a o i e u ar or en ul ith ex an ir os".split(" ");
+const SUF="ite ex ar ond el yx orn ane ix ade oth ine ule asta en or".split(" ");
+const BAD=/(cupr|ferr|nick|chrom|tita|alum|aur|arg|stan|plumb|zinc|gold|silv|cob|mang|tung|moly|plat|pall|magn|lith|sod|pot|merc|bism|indi|gall|vana|zirc|niob|tant|rhen|osm|irid|rhod|ruth|ceri|lanth|gado|yttr|beryl|carb|sil|bor|nitr|nak)/i;
+const PURPOSE={lowmelt:["fusible safety plugs","quick-cast molds","thermal fuses"],liquid:["liquid-metal cooling loops","self-healing circuits"],magnetic:["motor cores","magnetic latches","sensor shielding"],cond:["power busbars","high-current contacts"],resist:["heating elements","precision resistors"],light:["drone frames","racing bike parts","satellite brackets"],heavy:["counterweights","radiation shielding"],hard:["drill bits","armor plating","cutting dies"],hot:["turbine blades","rocket nozzles","furnace racks"],precious:["jewelry","luxury watch cases"],reactive:["fire starters","chemical reagents"],plain:["structural brackets","machine housings","pipe fittings"]};
+const FLAV=["The team nicknamed it '%N'.","Only %K ingots of the first batch survived testing.","Prototype batch #%K passed every test on the first try.","Its first sample was poured on a rainy Tuesday in Bay %B.","A technician reportedly kept a rod of it as a lucky charm.","Its lab log is %K pages long.","Nobody agrees on how to pronounce its name."];
+(function genSynthetic(target){
+  const rnd=mulberry(20260924), pick=a=>a[rnd()*a.length|0];
+  const bases=[];Object.entries(FAM).forEach(([b,[w]])=>{for(let i=0;i<w;i++)bases.push(b)});
+  const seen=new Set(ALLOYS.map(a=>a.comp.map(c=>c[0]).sort().join("-")));
+  const names=new Set(ALLOYS.map(a=>a.name.toLowerCase()));
+  let tries=0;
+  while(ALLOYS.length<target&&tries<200000){tries++;
+    const base=pick(bases),[,solStr,min]=FAM[base],sols=shuffle.call(null,solStr.split(" "));
+    const r=rnd(),k=r<.35?1:r<.75?2:3; const chosen=[];
+    for(let i=0;i<sols.length&&chosen.length<k;i++){const s=sols[Math.floor(rnd()*sols.length)];if(!chosen.includes(s))chosen.push(s)}
+    if(chosen.length!==k)continue;
+    const key=[base,...chosen].sort().join("-"); if(seen.has(key))continue;
+    let basePct=min+rnd()*(97-min); let rest=100-basePct;
+    let ws=chosen.map(()=>0.2+rnd()).sort((a,b)=>b-a); const sw=ws.reduce((a,b)=>a+b,0);
+    let parts=chosen.map((s,i)=>{let p=Math.round(rest*ws[i]/sw*2)/2;if(s==="C")p=Math.min(p,2);if(s==="B")p=Math.min(p,4);return[s,Math.max(0.5,p)]});
+    const bp=Math.round((100-parts.reduce((a,[,p])=>a+p,0))*2)/2; if(bp<30)continue;
+    const comp=[[base,bp],...parts].sort((a,b)=>b[1]-a[1]);
+    const w=Object.fromEntries(comp.map(([s,p])=>[s,p/100]));
+    if(comp.some(([s])=>!EX[s]||BY[s].d==null))continue;
+    const d=+(1/comp.reduce((t,[s,p])=>t+p/100/BY[s].d,0)).toFixed(2);
+    const mpK=comp.reduce((t,[s,p])=>t+p/100*(BY[s].mp+273.15),0)*(k===1?.93:k===2?.88:.85);
+    const mp=Math.round(mpK-273.15);
+    const F=(w.Fe||0)+(w.Co||0)+.9*(w.Ni||0)+.5*(w.Gd||0); const sc=F-.6*(1-F);
+    const mag=sc>.5?2:sc>.15?1:0;
+    let hard=comp.reduce((t,[s,p])=>t+p/100*EX[s].h,0)+.4*k+((w.C&&base==="Fe")?1.5:0)+(w.B?1:0);
+    hard=mp<25?0:+clamp(hard,0.5,8.5).toFixed(1);
+    const cond=+Math.max(0.3,EX[base].c/(1+.25*(100-bp))).toFixed(1);
+    // colour: average, then let whiteners wash out copper/gold hue
+    let rgb=[0,0,0];comp.forEach(([s,p])=>{const c=hex2rgb(EX[s].col);rgb=rgb.map((v,i)=>v+c[i]*p/100)});
+    let color=rgb2hex(rgb); const lum=(rgb[0]+rgb[1]+rgb[2])/3;
+    const white=(w.Ni||0)+(w.Pd||0)+(w.Pt||0)+(w.Mn||0)+.5*(w.Ag||0)+.5*(w.Al||0);
+    color=mix(color,rgb2hex([lum,lum,lum*1.02]),clamp(white*2.2,0,1));
+    if(base==="Cu"&&(w.Zn||0)>.1)color=mix(color,"#D6B04C",clamp((w.Zn-.1)*3,0,.8));
+    const finish=(base==="Fe"&&(w.C||0)>=.015)||rnd()<.15?"m":"p";
+    let nm;for(let g=0;g<50;g++){nm=pick(SYL1)+(rnd()<.55?pick(SYL2):"")+pick(SUF);if(!BAD.test(nm)&&!names.has(nm.toLowerCase()))break;nm=null}
+    if(!nm)continue;
+    const a={name:nm,aliases:[],comp,d,mp,mag,hard,cond,color,leak:false,finish,real:false};
+    a.reactive=isReactive(w);
+    const P=mp<25?PURPOSE.liquid:a.reactive?PURPOSE.reactive:mp<350?PURPOSE.lowmelt:(w.Au||0)+(w.Pt||0)+(w.Ag||0)+(w.Pd||0)>=.5?PURPOSE.precious:mag===2?PURPOSE.magnetic:d<4.6?PURPOSE.light:d>12?PURPOSE.heavy:hard>=6.5?PURPOSE.hard:mp>1300&&hard>=5?PURPOSE.hot:cond>=25?PURPOSE.cond:cond<1.2?PURPOSE.resist:PURPOSE.plain;
+    const use=pick(P);
+    a.uses=use.charAt(0).toUpperCase()+use.slice(1);
+    a.lore=`Designed at the Quillmoor Metallurgy Institute for ${use}. `+pick(FLAV).replace("%N",pick(SYL1)+pick(SUF)).replace("%K",2+(rnd()*40|0)).replace("%B",1+(rnd()*12|0));
+    seen.add(key);names.add(nm.toLowerCase());ALLOYS.push(a);
+  }
+})(1000);
+ALLOYS.forEach((a,i)=>{a.no=i+1;a.types=typesOf(a);a.form=a.mp<25?"vial":"rod"});
+const REAL=ALLOYS.filter(a=>a.real);
+
+/* =============== SPECIMEN ART =============== */
+let gid=0;
+function specimenSVG(a,marks){
+  const id="g"+(gid++),c=a.color,hi=shade(c,.6),lo=shade(c,-.5),mid=shade(c,-.15),face=shade(c,.25);
+  const matte=a.finish==="m"||a.finish==="r"||a.finish==="k";
+  if(a.form==="vial"){
+    return `<svg viewBox="0 0 300 240" role="img" aria-label="liquid sample in a glass vial">
+      <defs>
+        <linearGradient id="${id}l" x1="0" x2="1"><stop offset="0" stop-color="${lo}"/><stop offset=".25" stop-color="${hi}"/><stop offset=".4" stop-color="${c}"/><stop offset=".7" stop-color="${mid}"/><stop offset="1" stop-color="${lo}"/></linearGradient>
+        <linearGradient id="${id}g" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".25" stop-color="#fff" stop-opacity=".1"/><stop offset=".8" stop-color="#fff" stop-opacity=".06"/><stop offset="1" stop-color="#fff" stop-opacity=".45"/></linearGradient>
+        <linearGradient id="${id}k" x1="0" x2="1"><stop offset="0" stop-color="#6B4424"/><stop offset=".4" stop-color="#B98555"/><stop offset="1" stop-color="#5A3719"/></linearGradient>
+      </defs>
+      <ellipse cx="150" cy="228" rx="54" ry="7" fill="#000" opacity=".15"/>
+      <path d="M118 120 Q150 108 182 120 L182 196 Q182 222 150 222 Q118 222 118 196 Z" fill="url(#${id}l)"/>
+      <ellipse cx="150" cy="118" rx="32" ry="7" fill="${hi}"/>
+      <ellipse cx="142" cy="116" rx="12" ry="2.5" fill="#fff" opacity=".8"/>
+      <rect x="128" y="130" width="6" height="74" rx="3" fill="#fff" opacity=".65"/>
+      <path d="M114 44 L114 196 Q114 226 150 226 Q186 226 186 196 L186 44" fill="url(#${id}g)" stroke="#7F8CA8" stroke-width="3"/>
+      <rect x="108" y="38" width="84" height="10" rx="5" fill="#DDE4F0" stroke="#7F8CA8" stroke-width="2"/>
+      <path d="M118 14 L182 14 L178 44 L122 44 Z" fill="url(#${id}k)"/>
+      <rect x="170" y="70" width="6" height="110" rx="3" fill="#fff" opacity=".4"/>
+    </svg>`;
+  }
+  let over="";
+  if(a.finish==="m"||a.finish==="r"||a.finish==="k"){
+    over+=`<rect x="36" y="94" width="226" height="52" filter="url(#${id}n)" opacity="${a.finish==="r"?.55:.35}"/>`;
+  }
+  if(a.finish==="d"){for(let i=0;i<9;i++){const y=98+i*5.5;over+=`<path d="M36 ${y} q14 -5 28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0" stroke="${shade(c,.45)}" stroke-width="1.6" fill="none" opacity=".7"/>`}}
+  (marks||[]).forEach(m=>{over+=m.kind==="scratch"
+    ?`<path d="M${m.x1} ${m.y1} L${m.x2} ${m.y2}" stroke="${shade(c,-.65)}" stroke-width="2.2" stroke-linecap="round"/><path d="M${m.x1} ${m.y1+1.6} L${m.x2} ${m.y2+1.6}" stroke="${shade(c,.7)}" stroke-width="1" stroke-linecap="round" opacity=".9"/>`
+    :`<path class="streak" d="M${m.x1} ${m.y1} L${m.x2} ${m.y2}" stroke="${m.col}" stroke-width="5" stroke-linecap="round" opacity=".7"/>`});
+  const tint=a.finish==="r"?"#B0582A":a.finish==="k"?"#2A2230":c;
+  return `<svg viewBox="0 0 300 240" role="img" aria-label="metal rod sample">
+    <defs>
+      <linearGradient id="${id}r" x1="0" y1="0" x2="0" y2="1">
+        <stop offset="0" stop-color="${mid}"/><stop offset=".12" stop-color="${matte?shade(c,.25):hi}"/><stop offset=".2" stop-color="${matte?shade(c,.1):shade(c,.85)}"/>
+        <stop offset=".34" stop-color="${c}"/><stop offset=".55" stop-color="${shade(c,-.25)}"/><stop offset=".72" stop-color="${lo}"/>
+        <stop offset=".86" stop-color="${shade(c,-.3)}"/><stop offset="1" stop-color="${shade(c,-.6)}"/></linearGradient>
+      <radialGradient id="${id}f" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="${hi}"/><stop offset="1" stop-color="${face}"/></radialGradient>
+      <filter id="${id}n" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="${a.finish==="r"?.09:.7}" numOctaves="3" seed="${a.no}"/><feColorMatrix type="matrix" values="0 0 0 0 ${hex2rgb(tint)[0]/255} 0 0 0 0 ${hex2rgb(tint)[1]/255} 0 0 0 0 ${hex2rgb(tint)[2]/255} 0 0 0 1.6 -0.6"/></filter>
+      <clipPath id="${id}c"><rect x="36" y="94" width="226" height="52"/></clipPath>
+    </defs>
+    <ellipse cx="150" cy="200" rx="110" ry="10" fill="#000" opacity=".14"/>
+    <g transform="rotate(-20 150 120)">
+      <rect x="36" y="94" width="226" height="52" fill="url(#${id}r)"/>
+      <ellipse cx="36" cy="120" rx="10" ry="26" fill="${lo}"/>
+      <g clip-path="url(#${id}c)">${over}</g>
+      ${matte?"":`<rect x="44" y="102.5" width="206" height="4" rx="2" fill="#fff" opacity=".75"/>`}
+      <ellipse cx="262" cy="120" rx="10" ry="26" fill="url(#${id}f)" stroke="${lo}" stroke-width="2"/>
+      <path d="M258 104 q6 8 2 18" stroke="#fff" stroke-width="2" fill="none" opacity=".6"/>
+    </g>
+  </svg>`;
+}
+function miniHTML(a,locked){return a.form==="vial"
+  ?`<div class="vialmini"><i style="background:linear-gradient(90deg,${shade(a.color,-.4)},${shade(a.color,.5)},${a.color},${shade(a.color,-.4)})"></i></div>`
+  :`<div class="rodmini" style="background:linear-gradient(${shade(a.color,-.1)},${shade(a.color,.6)} 20%,${a.color} 40%,${shade(a.color,-.45)} 85%)"></div>`}
+
+/* =============== TOOL ICONS =============== */
+const MAGNET_SVG=`<svg viewBox="0 0 64 64"><path d="M14 8 L14 36 A18 18 0 0 0 50 36 L50 8 L38 8 L38 36 A6 6 0 0 1 26 36 L26 8 Z" fill="#E8412C" stroke="#7A1A10" stroke-width="2.5"/><rect x="14" y="4" width="12" height="9" fill="#D7DCE6" stroke="#556" stroke-width="2"/><rect x="38" y="4" width="12" height="9" fill="#D7DCE6" stroke="#556" stroke-width="2"/></svg>`;
+const SCRATCH=[
+  {id:"nail-f",name:"Fingernail",h:2.5,col:"#F4D6C4",svg:`<svg viewBox="0 0 64 64"><path d="M22 60 L22 26 Q22 10 32 10 Q42 10 42 26 L42 60Z" fill="#E9B79A" stroke="#8A5A45" stroke-width="2.5"/><path d="M25 26 Q25 13 32 13 Q39 13 39 26 Q32 23 25 26Z" fill="#FBE8E0" stroke="#8A5A45" stroke-width="1.5"/></svg>`},
+  {id:"coin",name:"Copper coin",h:3.5,col:"#C47A45",svg:`<svg viewBox="0 0 64 64"><circle cx="32" cy="32" r="22" fill="#C47A45" stroke="#6E3A18" stroke-width="3"/><circle cx="32" cy="32" r="15" fill="none" stroke="#E7A57A" stroke-width="2"/></svg>`},
+  {id:"steelnail",name:"Steel nail",h:5.5,col:"#9AA2AC",svg:`<svg viewBox="0 0 64 64"><rect x="14" y="10" width="36" height="7" rx="2" fill="#9AA2AC" stroke="#4A5260" stroke-width="2"/><path d="M28 17 L36 17 L36 48 L32 60 L28 48Z" fill="#B6BDC6" stroke="#4A5260" stroke-width="2"/></svg>`},
+  {id:"file",name:"Steel file",h:6.5,col:"#7E8793",svg:`<svg viewBox="0 0 64 64"><rect x="26" y="4" width="12" height="40" rx="2" fill="#7E8793" stroke="#39414D" stroke-width="2"/><path d="M26 10 h12 M26 16 h12 M26 22 h12 M26 28 h12 M26 34 h12" stroke="#39414D" stroke-width="1.5"/><rect x="27" y="44" width="10" height="16" rx="4" fill="#8A5A2E" stroke="#4A2E14" stroke-width="2"/></svg>`},
+  {id:"quartz",name:"Quartz",h:7,col:"#EDEFF7",svg:`<svg viewBox="0 0 64 64"><path d="M32 4 L44 18 L42 58 L22 58 L20 18Z" fill="#EEF3FF" stroke="#7A86A8" stroke-width="2.5"/><path d="M32 4 L32 58 M20 18 L44 18" stroke="#B9C3DD" stroke-width="1.5"/></svg>`},
+  {id:"topaz",name:"Topaz",h:8,col:"#F4C77A",svg:`<svg viewBox="0 0 64 64"><path d="M16 22 L32 6 L48 22 L32 58Z" fill="#F4C77A" stroke="#9A6A1A" stroke-width="2.5"/><path d="M16 22 H48 M32 6 L26 22 L32 58 L38 22Z" stroke="#C99A3A" stroke-width="1.5" fill="none"/></svg>`}
+];
+
+/* =============== STATE =============== */
+const S={mode:"mixed",run:null,r:null,held:null,caught:new Set(store.get("wta_caught2",[])),best:store.get("wta_best2",0),dexFilter:"all",dexPage:0};
+const ROUNDS=10,SCANS=4,CAP=5;
+function pickAlloy(kind,used){
+  let pool;
+  if(kind==="who")pool=REAL;
+  else pool=Math.random()<.4?REAL.filter(a=>!a.leak):ALLOYS.filter(a=>!a.real);
+  pool=pool.filter(a=>!used.has(a.name));
+  return pool[Math.random()*pool.length|0];
+}
+function newRun(){
+  S.run={idx:0,score:0,streak:0,log:[],used:new Set};
+  startExplore();
+}
+function startRound(){
+  const kind=S.mode==="mixed"?(Math.random()<.5?"recipe":"who"):S.mode;
+  const a=pickAlloy(kind,S.run.used);S.run.used.add(a.name);
+  const V=+(4+Math.random()*10).toFixed(1);
+  S.r={a,kind,stage:kind==="who"?"name":"elements",tries:SCANS,sel:new Set,hit:new Set,miss:new Set,wrongNames:0,letters:0,hints:0,pts:0,won:false,
+       V,m:+(a.d*V).toFixed(1),nameKnown:kind!=="who",notes:{},marks:[],scratchLog:{}};
+  S.held=null;resetLab();renderAll();
+  say(kind==="who"?"A wild alloy appeared! Run lab tests, read the clues, then type its name."
+                  :`A wild ${a.name.toUpperCase()} appeared! Test it in the lab and scan for its elements.`);
+}
+
+/* =============== DIALOG =============== */
+let typer=null,sayTimer=null;
+function objective(){const r=S.r;if(!r)return"";
+  if(r.stage==="name")return"Who's that alloy? Test it in the lab, then type its name.";
+  if(r.stage==="elements")return`What is ${r.nameKnown?r.a.name.toUpperCase():"it"} made of? Pick elements on the scanner and press ANALYZE.`;
+  return r.won?"Registered! Press KEEP EXPLORING when you're ready.":"The alloy got away. Press KEEP EXPLORING when you're ready."}
+function say(msg){clearTimeout(sayTimer);typeOut(msg);sayTimer=setTimeout(()=>typeOut(objective()),4500)}
+function typeOut(msg){const el=$("#say");clearInterval(typer);
+  if(matchMedia("(prefers-reduced-motion: reduce)").matches){el.textContent=msg;return}
+  let i=0;el.textContent="";typer=setInterval(()=>{i+=2;el.textContent=msg.slice(0,i);if(i>=msg.length)clearInterval(typer)},16)}
+
+/* =============== RENDER: PLAY =============== */
+function renderAll(){renderHud();renderStage();renderDex();renderActions();renderPicker()}
+function renderHud(){const R=S.run;
+  $("#hud-round").textContent=`${Math.min(R.idx+1,ROUNDS)}/${ROUNDS}`;$("#hud-score").textContent=R.score;$("#hud-streak").textContent=R.streak;$("#hud-best").textContent=S.best;
+  document.querySelectorAll(".mode").forEach(b=>b.setAttribute("aria-pressed",b.dataset.mode===S.mode))}
+function renderStage(){
+  const {a,stage}=S.r,hidden=!S.r.nameKnown;
+  $("#specimen").innerHTML=specimenSVG(a,S.r.marks);
+  $("#nameplate").textContent=hidden?"???":a.name.toUpperCase();
+  $("#stage-no").textContent=hidden?"No.???":"No."+pad(a.no);
+  $("#stage-q").textContent=stage==="done"&&!S.r.won?"IT FLED...":hidden?"WHO'S THAT ALLOY?":stage==="done"?(S.r.won?"REGISTERED!":"IT FLED..."):"WHAT'S IT MADE OF?";
+}
+function noteRows(){
+  const n=S.r.notes,rows=[];
+  if(n.mass)rows.push(`<li><b>Scale</b>${n.mass}</li>`);
+  if(n.vol)rows.push(`<li><b>Water level</b>${n.vol}</li>`);
+  if(n.magnet)rows.push(`<li><b>Magnet</b>${n.magnet}</li>`);
+  const sc=Object.entries(S.r.scratchLog);
+  if(sc.length)rows.push(`<li style="flex-wrap:wrap"><b>Scratch test</b>${sc.map(([t,r])=>`${t}: ${r}`).join(" · ")}</li>`);
+  if(n.melt)rows.push(`<li><b>Furnace</b>${n.melt}</li>`);
+  if(n.cond)rows.push(`<li><b>Conductivity</b>${n.cond}</li>`);
+  if(n.rad)rows.push(`<li><b>Geiger</b>${n.rad}</li>`);
+  if(n.flame)rows.push(`<li><b>Flame</b><span class="sw" style="background:${n.flame.col}"></span>${n.flame.sparks.map(c=>`<span class="dot" style="background:${c}"></span>`).join("")}${n.flame.sparks.length?" sparks":""}</li>`);
+  return rows.length?rows.join(""):`<li class="empty">No readings yet. Try the field kit and the lab bench.</li>`;
+}
+function renderDex(){
+  const {a,stage}=S.r,hidden=!S.r.nameKnown;let extra="";
+  if(stage==="done"&&S.r.won){
+    extra=`<div class="types">${a.types.map(t=>`<span class="type" style="background:${TYPES[t]}">${t.toUpperCase()}</span>`).join("")}</div>
+      <div class="comp" aria-label="Composition by weight">${a.comp.map(([s,p])=>`<span style="flex:${Math.max(p,4)} 1 0;background:${CATS[BY[s].cat].c}" title="${BY[s].name} ${p}%">${p>=7?`${s} ${p}%`:s}</span>`).join("")}</div>`;
+  }
+  $("#dexcard").innerHTML=`
+    <h2><span>${hidden?"??????":a.name}</span><small>ALLOYDEX No.${hidden?"???":pad(a.no)}</small></h2>
+    <span class="origin">${a.real?"Real-world alloy":"Synthetic alloy · lab-designed"}</span>
+    ${extra}
+    <p class="clue">${a.lore}</p>
+    <p class="uses">Used for: ${a.uses}</p>
+    <div class="notes"><h4>LAB NOTEBOOK</h4><ul>${noteRows()}</ul></div>`;
+}
+function pips(){return `<span class="pips">SCANNER CHARGE ${Array.from({length:SCANS},(_,i)=>`<span class="pip ${i<S.r.tries?"":"off"}"></span>`).join("")}</span>`}
+function pattern(){const n=S.r.a.name;let seen=0;return n.split("").map(ch=>/[a-z0-9]/i.test(ch)?(seen++<S.r.letters?ch.toUpperCase():"_"):ch===" "?"  ":ch).join(" ")}
+function renderActions(){
+  const r=S.r,box=$("#actions");
+  if(r.stage==="name"){
+    box.innerHTML=`<div class="pattern" id="pattern">${pattern()}</div>
+      <form class="guess" id="guessform" autocomplete="off"><input id="name-guess" placeholder="Type the alloy's name" aria-label="Alloy name" spellcheck="false">
+      <button class="btn go" type="submit">IDENTIFY!</button></form>
+      <button class="btn" id="btn-letter">LETTER HINT (−10)</button><button class="btn" id="btn-flee">GIVE UP</button>`;
+    $("#guessform").onsubmit=e=>{e.preventDefault();guessName($("#name-guess").value)};
+    $("#btn-letter").onclick=letterHint;$("#btn-flee").onclick=()=>lose(true);
+  }else if(r.stage==="elements"){
+    const tray=[...r.hit].map(s=>`<span class="t hit">${s}</span>`).concat([...r.sel].map(s=>`<span class="t">${s}</span>`)).join("");
+    box.innerHTML=`<div class="tray">${tray||"Pick elements on the scanner below, then press ANALYZE."}</div>
+      <button class="btn go" id="btn-analyze" ${r.sel.size?"":"disabled"}>ANALYZE!</button>
+      <button class="btn" id="btn-hint" ${r.hints>=2?"disabled":""}>HINT (−15)</button>
+      <button class="btn" id="btn-flee">RUN AWAY</button>${pips()}`;
+    $("#btn-analyze").onclick=analyze;$("#btn-hint").onclick=hint;$("#btn-flee").onclick=()=>lose(true);
+  }else{
+    const last=S.run.idx+1>=ROUNDS;
+    box.innerHTML=`<button class="btn next" id="btn-next">${last?"SEE RESULTS":"KEEP EXPLORING ▶"}</button><span style="font-weight:800;color:var(--soft)">${r.won?`+${r.pts} points`:"No points this round"}</span>`;
+    $("#btn-next").onclick=next;
+  }
+}
+
+/* =============== PERIODIC TABLES =============== */
+function buildTable(el,ref){let html="";
+  EL.forEach(e=>{const[r,c]=pos(e.z);html+=`<button class="el" id="${ref?"r":"p"}-${e.s}" data-s="${e.s}" style="grid-row:${r};grid-column:${c};--c:${CATS[e.cat].c}" aria-label="${e.name}, ${e.z}"><span class="z">${e.z}</span><span class="s">${e.s}</span>${ref?`<span class="m">${e.mass}</span>`:""}</button>`});
+  html+=`<div class="ph" style="grid-row:6;grid-column:3">57–71</div><div class="ph" style="grid-row:7;grid-column:3">89–103</div>`;el.innerHTML=html}
+function elSummary(e){const x=EX[e.s];
+  return `<b>${e.s} · ${e.name}</b> — ${fmtDensity(e.d)} · melts ${fmtMp(e)}${x?` · Mohs ${x.h} · ${x.c} MS/m · magnet: ${["none","weak","strong"][x.m]}${x.fl?` · flame <span class="sw" style="background:${x.fl};width:18px;height:10px"></span>`:""}${x.sp?` · ${SPARK[x.sp].t}`:""}${RAD[e.s]?` · radioactivity: ${radLabel(RAD[e.s])}`:""}`:""}`}
+function renderPicker(){const r=S.r,show=r.stage!=="name";$("#picker").hidden=!show;if(!show)return;
+  const ans=new Set(r.a.comp.map(x=>x[0]));
+  document.querySelectorAll("#pick-table .el").forEach(b=>{const s=b.dataset.s;
+    b.classList.toggle("sel",r.sel.has(s));b.classList.toggle("hit",r.hit.has(s));b.classList.toggle("miss",r.miss.has(s));
+    b.classList.remove("answer");b.setAttribute("aria-pressed",r.sel.has(s)||r.hit.has(s))})}
+function togglePick(s){const r=S.r;if(r.stage!=="elements"||r.hit.has(s)||r.miss.has(s))return;
+  if(r.sel.has(s))r.sel.delete(s);else{if(r.sel.size>=CAP){say(`The scanner only holds ${CAP} elements per scan!`);return}r.sel.add(s)}
+  renderActions();renderPicker()}
+
+/* =============== NAME GUESSING =============== */
+const norm=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]/g,"");
+function lev(a,b){const d=Array.from({length:a.length+1},(_,i)=>[i]);for(let j=1;j<=b.length;j++)d[0][j]=j;
+  for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[a.length][b.length]}
+function nameMatches(guess,a){const g=norm(guess);if(!g)return false;
+  const opts=[a.name,...a.aliases];const words=a.name.split(" ");if(/\d/.test(words[words.length-1])&&words.length>1)opts.push(words.slice(0,-1).join(" "));
+  return opts.some(o=>{const n=norm(o);if(n===g)return true;const tol=n.length>=10?2:n.length>=6?1:0;return lev(n,g)<=tol})}
+function reveal(){const st=$("#stage");st.classList.remove("reveal");void st.offsetWidth;st.classList.add("reveal")}
+function guessName(v){const r=S.r;if(!v.trim())return;
+  if(nameMatches(v,r.a)){r.pts+=Math.max(10,60-5*r.wrongNames-10*r.letters);r.stage="elements";r.nameKnown=true;reveal();renderAll();
+    say(`It's ${r.a.name.toUpperCase()}! Now scan for the elements inside it.`)}
+  else{r.wrongNames++;const inp=$("#name-guess");inp.classList.remove("shake");void inp.offsetWidth;inp.classList.add("shake");inp.select();
+    say(`It's not ${v.trim()}! Run more tests or check the clues.`)}}
+function letterHint(){const r=S.r,len=norm(r.a.name).length;if(r.letters>=len-1){say("That's every letter I can give away!");return}
+  r.letters++;S.run.score=Math.max(0,S.run.score-10);renderHud();$("#pattern").textContent=pattern();say("HINT: another letter revealed.")}
+
+/* =============== ELEMENT SCANNING =============== */
+function analyze(){const r=S.r,ans=r.a.comp.map(x=>x[0]);const picks=[...r.sel];
+  const hits=picks.filter(s=>ans.includes(s)),miss=picks.filter(s=>!ans.includes(s));
+  hits.forEach(s=>r.hit.add(s));miss.forEach(s=>r.miss.add(s));r.sel.clear();
+  if(ans.every(s=>r.hit.has(s)))return win();
+  r.tries--;if(r.tries<=0)return lose(false);
+  const msg=hits.length===0?"It missed! None of those are in this alloy."
+    :miss.length===0?`It's super effective! ${hits.join(", ")} confirmed, but something is still missing.`
+    :`It's not very effective... ${hits.join(", ")} hit, ${miss.join(", ")} missed.`;
+  renderActions();renderPicker();say(msg+(r.hints?` ${ans.length-r.hit.size} to go.`:""))}
+function hint(){const r=S.r;if(r.hints>=2)return;r.hints++;S.run.score=Math.max(0,S.run.score-15);
+  if(r.hints===1){renderAll();say(`HINT: this alloy has ${r.a.comp.length} major element${r.a.comp.length>1?"s":""}.`)}
+  else{const s=r.a.comp.map(x=>x[0]).find(s=>!r.hit.has(s));r.hit.add(s);r.sel.delete(s);
+    if(r.a.comp.every(([x])=>r.hit.has(x)))return win();renderAll();say(`HINT: the scanner locked on to ${BY[s].name.toUpperCase()} (${s}).`)}}
+function win(){const r=S.r,R=S.run;r.won=true;r.stage="done";
+  r.pts+=Math.max(10,100-20*(SCANS-r.tries));R.streak++;if(R.streak>=2)r.pts+=10*(R.streak-1);
+  R.score+=r.pts;R.log.push({a:r.a,won:true,pts:r.pts,known:true});
+  const fresh=!S.caught.has(r.a.name);S.caught.add(r.a.name);store.set("wta_caught2",[...S.caught]);
+  if(R.score>S.best){S.best=R.score;store.set("wta_best2",S.best)}
+  reveal();renderAll();say(`Gotcha! ${r.a.name.toUpperCase()} ${fresh?"was registered in the Alloydex!":"is already in your Alloydex."}${R.streak>=2?` Streak x${R.streak}!`:""}`)}
+function lose(ran){const r=S.r,R=S.run;r.won=false;r.stage="done";R.streak=0;r.pts=0;R.log.push({a:r.a,won:false,pts:0,known:r.nameKnown});renderAll();
+  say(ran?"Got away safely! The alloy is still a mystery.":"Oh no! The alloy fled before you could identify it!")}
+function next(){S.run.idx++;if(S.run.idx>=ROUNDS)return endRun();startExplore()}
+function endRun(){const R=S.run;S.phase="end";$("#game").hidden=true;$("#explore").hidden=true;const e=$("#endscreen");e.hidden=false;const caught=R.log.filter(x=>x.won).length;
+  e.innerHTML=`<div class="card end"><span style="font-family:var(--pix);font-size:11px;color:var(--soft)">RUN COMPLETE</span><div class="big">${R.score}</div>
+    <div style="font-weight:800">${caught} of ${ROUNDS} alloys caught · Best ${S.best}</div>
+    <ol>${R.log.map(x=>`<li>${x.known?x.a.name:"???"} <span class="${x.won?"ok":"bad"}">${x.won?"+"+x.pts:"fled"}</span></li>`).join("")}</ol>
+    <button class="btn next" id="btn-again">PLAY AGAIN</button></div>`;
+  $("#btn-again").onclick=newRun;renderHud();$("#hud-round").textContent=`${ROUNDS}/${ROUNDS}`}
+
+/* =============== LAB =============== */
+const LAB={sparks:[],flash:0};
+const SUBMERGE=12; // mL of water needed to fully cover a sample
+function resetLab(){
+  const a=S.r.a;
+  document.querySelectorAll("stop.s0").forEach(s=>s.setAttribute("stop-color",a.color));
+  document.querySelectorAll("stop.s1").forEach(s=>s.setAttribute("stop-color",shade(a.color,.55)));
+  document.querySelectorAll("stop.s2").forEach(s=>s.setAttribute("stop-color",shade(a.color,-.5)));
+  Object.assign(LAB,{T:25,heat:false,chill:false,fzOn:false,inFurnace:false,meltState:null,
+    sc:{on:false,booting:false,load:0,tare:0},
+    cy:{water:0,filling:false,sample:false,anim:false},
+    ci:{on:false,sample:false},
+    fl:{gas:false,air:false,lit:false,gasSince:0,warned:false,ignAt:0,inFlame:false,until:0,col:null,int:0,types:[]},
+    gm:{on:false,sound:true,sample:false,hits:[],shown:0,bgSeen:null,since:0},
+    sparks:[],flash:0});
+  $("#rd-gm").textContent="Counter is off";updateGeiger();
+  $("#cy-chunk").setAttribute("rx",a.form==="vial"?7:3);
+  $("#rd-scale").textContent="Scale is off";$("#rd-fz").textContent="Furnace is off";$("#rd-fl").textContent="Gas off · air vent closed";
+  $("#fz-sample").setAttribute("opacity",0);
+  updateScale();updateCyl();updateFurnaceUI();updateCircuit();updateFlameUI();
+  const m=$("#stagemag");m.className="stagemag";$("#specimen").classList.remove("pulled","held");
+  document.querySelectorAll(".tool.held,.station.armed").forEach(e=>e.classList.remove("held","armed"));
+}
+function yOf(ml){return 188-ml*1.6}
+function setWater(ml){const y=yOf(ml);$("#cy-water").setAttribute("y",y);$("#cy-water").setAttribute("height",188-y)}
+function tween(ms,fn,done){const t0=performance.now();(function f(t){const k=clamp((t-t0)/ms,0,1);fn(k);if(k<1)requestAnimationFrame(f);else done&&done()})(t0)}
+(function(){let g="";for(let ml=0;ml<=100;ml+=10){const y=yOf(ml);g+=`<line x1="70" x2="${ml%20?80:86}" y1="${y}" y2="${y}" stroke="#243A73" stroke-width="${ml%20?1:1.6}"/>`;if(ml%20===0)g+=`<text x="64" y="${y+3}" text-anchor="end" font-size="9" font-weight="800" fill="#243A73" font-family="Nunito,sans-serif">${ml}</text>`}
+  for(let ml=0;ml<=100;ml+=2){if(ml%10){const y=yOf(ml);g+=`<line x1="70" x2="75" y1="${y}" y2="${y}" stroke="#243A73" stroke-width=".8"/>`}}$("#cy-grad").innerHTML=g})();
+const onoff=(id,on,label)=>{const b=$(id);b.classList.toggle("on",on);b.textContent=label}
+
+/* ---- Scale ---- */
+function updateScale(){const s=LAB.sc;
+  $("#sc-lcd").textContent=!s.on?"":s.booting?"8888":(s.load-s.tare).toFixed(1)+" g";
+  $("#sc-led").setAttribute("fill",s.on?"#3CFF6A":"#4A4F5A");onoff("#sc-pow",s.on,s.on?"POWER: ON":"POWER: OFF");
+  $("#sc-tare").disabled=!s.on||s.booting;$("#sc-chunk").setAttribute("opacity",s.load?1:0)}
+function recordScale(){const s=LAB.sc;if(s.on&&!s.booting&&s.load>0){S.r.notes.mass=(s.load-s.tare).toFixed(1)+" g";renderDex()}}
+$("#sc-pow").onclick=()=>{const s=LAB.sc;if(!S.r)return;
+  if(s.on){s.on=false;$("#rd-scale").textContent="Scale is off";updateScale();return}
+  s.on=true;s.booting=true;$("#rd-scale").textContent="Starting up…";updateScale();
+  setTimeout(()=>{if(!s.on)return;s.booting=false;s.tare=s.load;$("#rd-scale").textContent="Zeroed at power-on";updateScale();recordScale()},900)};
+$("#sc-tare").onclick=()=>{const s=LAB.sc;s.tare=s.load;$("#rd-scale").textContent="Tared";updateScale();recordScale()};
+$("#sc-clear").onclick=()=>{const s=LAB.sc;s.load=0;$("#rd-scale").textContent=s.on?"Pan cleared":"Scale is off";updateScale()};
+
+/* ---- Cylinder ---- */
+const disp=()=>LAB.cy.sample?S.r.V*clamp(LAB.cy.water/SUBMERGE,0,1):0;
+function updateCyl(){const c=LAB.cy,lvl=c.water+disp();setWater(Math.min(100,lvl));
+  if(!c.anim){const ch=$("#cy-chunk");
+    if(!c.sample)ch.setAttribute("y",-30);
+    else ch.setAttribute("y",S.r.a.d<1&&c.water>0?yOf(lvl)-10:174)}
+  $("#cy-stream").setAttribute("height",c.filling?Math.max(0,yOf(lvl)-20):0);
+  $("#cy-fx").setAttribute("opacity",c.sample&&c.water>0&&S.r.a.reactive?1:0);
+  $("#rd-cyl").textContent=lvl<=0?(c.sample?"Sample in a dry cylinder":"Cylinder is empty"):`Level: ${Math.min(100,lvl).toFixed(1)} mL`;
+  $("#cy-empty").disabled=lvl<=0&&!c.sample}
+function bindHoldFn(btn,start,stop){const on=e=>{e.preventDefault();if(btn.disabled)return;start();btn.classList.add("on")},off=()=>{stop();btn.classList.remove("on")};
+  btn.addEventListener("pointerdown",on);["pointerup","pointerleave","pointercancel"].forEach(ev=>btn.addEventListener(ev,off));
+  btn.addEventListener("keydown",e=>{if(e.key===" "||e.key==="Enter")on(e)});btn.addEventListener("keyup",off)}
+bindHoldFn($("#cy-fill"),()=>{LAB.cy.filling=true},()=>{LAB.cy.filling=false;if(S.r)updateCyl()});
+$("#cy-empty").onclick=()=>{Object.assign(LAB.cy,{water:0,sample:false,filling:false});updateCyl();$("#rd-cyl").textContent="Emptied and rinsed"};
+
+/* ---- Furnace ---- */
+function updateFurnaceUI(){onoff("#fz-pow",LAB.fzOn,LAB.fzOn?"POWER: ON":"POWER: OFF");$("#fz-led").setAttribute("fill",LAB.fzOn?"#FF5A3C":"#4A4F5A");
+  $("#btn-heat").disabled=$("#btn-chill").disabled=!LAB.fzOn;$("#fz-out").disabled=!LAB.inFurnace;$("#fz-t").textContent=LAB.fzOn?`${Math.round(LAB.T)} °C`:""}
+$("#fz-pow").onclick=()=>{LAB.fzOn=!LAB.fzOn;LAB.heat=LAB.chill=false;$("#rd-fz").textContent=LAB.fzOn?"Ready. Hold HEAT or CHILL.":"Furnace is off";updateFurnaceUI()};
+$("#fz-out").onclick=()=>{LAB.inFurnace=false;$("#fz-sample").setAttribute("opacity",0);$("#rd-fz").textContent="Crucible is empty";updateFurnaceUI()};
+bindHoldFn($("#btn-heat"),()=>{LAB.heat=true},()=>{LAB.heat=false});
+bindHoldFn($("#btn-chill"),()=>{LAB.chill=true},()=>{LAB.chill=false});
+
+/* ---- Circuit ---- */
+function updateCircuit(){const c=LAB.ci,a=S.r.a;
+  $("#ci-lever").setAttribute("x2",c.on?150:166);$("#ci-lever").setAttribute("y2",c.on?92:96);onoff("#ci-sw",c.on,c.on?"SWITCH: ON":"SWITCH: OFF");
+  $("#ci-chunk").setAttribute("opacity",c.sample?1:0);$("#ci-un").disabled=!c.sample;
+  const b=c.on&&c.sample?clamp((Math.log10(a.cond)+0.5)/2.3,0.03,1):0;
+  $("#ci-glow").setAttribute("opacity",b);$("#ci-bulb").setAttribute("fill",mix("#F4F1E2","#FFF3A0",b));
+  $("#rd-ci").textContent=!c.on?"Switch is off":!c.sample?"Meter: OL (open circuit)":`Meter: ${a.cond} MS/m`;
+  if(c.on&&c.sample){S.r.notes.cond=`${a.cond} MS/m`;renderDex()}}
+$("#ci-sw").onclick=()=>{LAB.ci.on=!LAB.ci.on;updateCircuit();if(LAB.ci.on&&LAB.ci.sample){const b=+$("#ci-glow").getAttribute("opacity");say(b>.7?"Click. The bulb blazes!":b>.35?"Click. The bulb lights up.":"Click. The bulb barely glows.")}};
+$("#ci-un").onclick=()=>{LAB.ci.sample=false;updateCircuit()};
+
+/* ---- Burner ---- */
+function updateFlameUI(){const f=LAB.fl;onoff("#fl-gas",f.gas,f.gas?"GAS: OPEN":"GAS: CLOSED");onoff("#fl-air",f.air,f.air?"AIR: OPEN":"AIR: CLOSED");
+  if(!f.inFlame)$("#rd-fl").textContent=!f.gas?"Gas off":!f.lit?"Hissss… gas is flowing":f.air?"Burner lit · roaring flame":"Burner lit · lazy, smoky flame"}
+$("#fl-gas").onclick=()=>{const f=LAB.fl;f.gas=!f.gas;if(!f.gas){f.lit=false;f.inFlame=false}else{f.gasSince=performance.now();f.warned=false}updateFlameUI()};
+$("#fl-air").onclick=()=>{LAB.fl.air=!LAB.fl.air;updateFlameUI()};
+$("#fl-ign").onclick=()=>{const f=LAB.fl;f.ignAt=performance.now();
+  if(f.gas&&!f.lit){f.lit=true;say("Whoomph! The burner lights.")}else if(!f.gas)say("Click! Just a spark. There's no gas flowing.");updateFlameUI()};
+
+/* ---- Placing the sample on a station ---- */
+const STATION_NAMES={geiger:"Geiger counter",scale:"scale",cyl:"cylinder",furnace:"furnace",circuit:"conductivity tester",flame:"burner"};
+function useStation(key){const r=S.r,a=r.a;
+  if(key==="geiger"){const g=LAB.gm;if(g.sample){say("The sample is already under the probe.");return}g.sample=true;g.since=performance.now();g.hits=[];updateGeiger();
+    say(g.on?"You slide the sample under the probe. Listen and watch the needle.":"The sample is under the probe, but the counter is off.");return}
+  if(key==="scale"){const s=LAB.sc;if(s.load){say("The sample is already on the pan.");return}
+    s.load=r.m;updateScale();
+    if(!s.on){say("You set the sample on the pan. The display is blank.");return}
+    if(s.booting){say("The scale is still starting up.");return}
+    const target=s.load-s.tare;tween(900,k=>{$("#sc-lcd").textContent=(target*(k<1?k*(0.9+Math.random()*.2):1)).toFixed(1)+" g"},()=>{updateScale();recordScale();$("#rd-scale").textContent="Stable reading"});
+    say("The scale beeps and settles.")}
+  if(key==="cyl"){const c=LAB.cy;if(c.sample){say("The sample is already in the cylinder.");return}
+    const before=c.water;c.sample=true;c.anim=true;const ch=$("#cy-chunk");
+    const lvl=before+disp(),floats=a.d<1&&before>0;const target=floats?yOf(Math.min(100,lvl))-10:174;
+    tween(650,k=>ch.setAttribute("y",-30+(target+30)*k*k),()=>{c.anim=false;let after=before+disp(),spilled=false;
+      if(after>100){spilled=true;c.water=100-disp();after=100}
+      updateCyl();
+      if(before<=0){r.notes.vol="dropped into a dry cylinder";say("Clunk. It hit the bottom of an empty cylinder.")}
+      else{r.notes.vol=`${before.toFixed(1)} → ${after.toFixed(1)} mL${before<SUBMERGE?" (not fully covered)":""}${spilled?" (overflowed)":""}`;
+        if(a.reactive)say("FWOOSH! It fizzed and burst into flame on the water!");
+        else if(spilled)say("Splash! Water sloshed over the rim.");
+        else if(before<SUBMERGE)say("Plunk. The sample isn't fully under water.");
+        else say(floats?"It floats! Read the new level.":"Plunk! Read the new level.")}
+      renderDex()})}
+  if(key==="furnace"){if(LAB.inFurnace){say("The sample is already in the crucible.");return}
+    LAB.inFurnace=true;$("#fz-sample").setAttribute("opacity",1);LAB.meltState=LAB.T>=a.mp?"liquid":"solid";updateFurnaceUI();
+    say(!LAB.fzOn?"The sample sits in a cold crucible. The furnace is off.":LAB.meltState==="liquid"?"It slumps into a puddle in the crucible.":"The sample sits in the crucible.")}
+  if(key==="circuit"){if(LAB.ci.sample){say("The sample is already clamped in.");return}LAB.ci.sample=true;updateCircuit();
+    say(LAB.ci.on?"Clamped. Watch the bulb.":"Clamped between the clips. The switch is off.")}
+  if(key==="flame"){const f=LAB.fl;if(!f.lit){say(f.gas?"Gas is hissing, but nothing's lit. Press IGNITE.":"The burner isn't lit.");return}startFlame()}
+}
+function flameProfile(a){const w=frac(a);let tot=0,rgb=[0,0,0],inten=0;
+  a.comp.forEach(([s])=>{const x=EX[s];if(x&&x.fl){const wt=Math.sqrt(w[s])*(s==="Na"?3:1);tot+=wt;const c=hex2rgb(x.fl);rgb=rgb.map((v,i)=>v+c[i]*wt);inten+=Math.sqrt(w[s])}});
+  const col=tot?rgb2hex(rgb.map(v=>v/tot)):null;const sp=[];
+  a.comp.forEach(([s])=>{const x=EX[s];if(!x||!x.sp)return;const f=w[s];
+    if(x.sp==="burst"){if((w.Fe||0)>.5)sp.push("burst")}else if(x.sp==="flash"){if(f>=.2)sp.push("flash")}else if(f>=.1)sp.push(x.sp)});
+  return{col,inten:clamp(inten*1.3,.3,1),sparks:[...new Set(sp)]}}
+const BLUE="#6FA8FF",LAZY="#FFB43A";
+function startFlame(){const p=flameProfile(S.r.a),f=LAB.fl;Object.assign(f,{inFlame:true,col:p.col,int:p.inten,types:p.sparks,until:performance.now()+6000});
+  const base=f.air?BLUE:LAZY,shown=p.col?mix(base,p.col,f.air?p.inten:p.inten*.25):base;
+  S.r.notes.flame={col:shown,sparks:p.sparks.map(t=>SPARK[t].c)};renderDex();$("#rd-fl").textContent="Observing…";
+  say(f.air?"You hold a scraping in the flame. Watch the color and any sparks.":"You hold a scraping in the smoky flame. Hard to see much color...")}
+
+/* ---- Geiger counter ---- */
+(function(){let g="";[[10,"10"],[100,"100"],[1000,"1k"],[10000,"10k"]].forEach(([v,l])=>{const ang=(-90+180*(Math.log10(v)-1)/3)*Math.PI/180;
+  const x1=70+Math.sin(ang)*38,y1=78-Math.cos(ang)*38,x2=70+Math.sin(ang)*48,y2=78-Math.cos(ang)*48,tx=70+Math.sin(ang)*30,ty=78-Math.cos(ang)*30+3;
+  g+=`<line x1="${x1}" y1="${y1}" x2="${x2}" y2="${y2}" stroke="#243A73" stroke-width="2"/><text x="${tx}" y="${ty}" text-anchor="middle" font-size="7" font-weight="800" fill="#243A73" font-family="Nunito,sans-serif">${l}</text>`});$("#gm-ticks").innerHTML=g})();
+let actx=null;
+function click(){if(!actx||!LAB.gm.sound)return;try{const b=actx.createBuffer(1,120,actx.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*(1-i/d.length);
+  const s=actx.createBufferSource(),gn=actx.createGain();gn.gain.value=.35;s.buffer=b;s.connect(gn).connect(actx.destination);s.start()}catch(e){}}
+function trueCpm(){const g=LAB.gm;let r=24;if(g.sample)r+=S.r.a.comp.reduce((t,[e,p])=>t+(RAD[e]||0)*p/100*400,0);return r}
+function updateGeiger(){const g=LAB.gm;onoff("#gm-pow",g.on,g.on?"POWER: ON":"POWER: OFF");onoff("#gm-snd",g.sound,g.sound?"SOUND: ON":"SOUND: OFF");
+  $("#gm-chunk").setAttribute("opacity",g.sample?1:0);$("#gm-out").disabled=!g.sample;
+  if(!g.on){$("#gm-cpm").textContent="";$("#gm-needle").setAttribute("transform","rotate(-90 70 78)");$("#rd-gm").textContent="Counter is off"}}
+$("#gm-pow").onclick=()=>{const g=LAB.gm;g.on=!g.on;g.hits=[];g.since=performance.now();
+  if(g.on&&!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(actx&&actx.state==="suspended")actx.resume();
+  if(g.on)$("#rd-gm").textContent=g.sample?"Counting…":"Counting background…";updateGeiger()};
+$("#gm-snd").onclick=()=>{LAB.gm.sound=!LAB.gm.sound;updateGeiger()};
+$("#gm-out").onclick=()=>{const g=LAB.gm;g.sample=false;g.hits=[];g.since=performance.now();if(g.on)$("#rd-gm").textContent="Counting background…";updateGeiger()};
+function geigerTick(now,dt){const g=LAB.gm;if(!g.on)return;
+  const lam=trueCpm()/60*dt;let n=lam<1?(Math.random()<lam?1:0):Math.max(0,Math.round(lam+Math.sqrt(lam)*(Math.random()+Math.random()+Math.random()-1.5)*1.4));
+  for(let i=0;i<n;i++)g.hits.push(now);if(n){if(Math.min(n,3))for(let i=0;i<Math.min(n,3);i++)click();$("#gm-led").setAttribute("fill","#FF3C3C")}else $("#gm-led").setAttribute("fill","#6A2A2A");
+  const el=Math.max(1000,now-g.since);const cpm=g.hits.length*60000/el;g.shown+=(cpm-g.shown)*Math.min(1,dt*3);
+  $("#gm-cpm").textContent=Math.round(g.shown)+"";
+  const ang=-90+180*clamp((Math.log10(Math.max(10,g.shown))-1)/3,0,1);$("#gm-needle").setAttribute("transform",`rotate(${ang} 70 78)`);
+  if(now-g.since>4000&&Math.floor(now/1000)!==Math.floor((now-dt*1000)/1000)){const v=Math.round(cpm/5)*5;
+    if(g.sample){S.r.notes.rad=`about ${v} counts/min${g.bgSeen!=null?` (empty: ~${g.bgSeen})`:""}`;$("#rd-gm").textContent="Reading stable";renderDex()}
+    else{g.bgSeen=v;$("#rd-gm").textContent="Background reading stable"}}}
+
+/* ---- Animation loop ---- */
+const fctx=$("#flame").getContext("2d");let lastT=performance.now();
+function glowColor(T){if(T<450)return null;const stops=[[450,"#5A0A00"],[650,"#B01800"],[850,"#E83A00"],[1050,"#FF7A00"],[1250,"#FFB020"],[1500,"#FFE58A"],[1900,"#FFFFFF"]];
+  for(let i=1;i<stops.length;i++)if(T<=stops[i][0]){const[t0,c0]=stops[i-1],[t1,c1]=stops[i];return mix(c0,c1,(T-t0)/(t1-t0))}return"#FFFFFF"}
+function loop(now){const dt=Math.min(.05,(now-lastT)/1000);lastT=now;
+  if(S.r&&LAB.sc){
+    const c=LAB.cy;if(c.filling){c.water+=14*dt;if(c.water+disp()>100){c.water=100-disp();$("#rd-cyl").textContent="Overflowing!"}updateCyl()}
+    if(LAB.fzOn&&LAB.heat)LAB.T=Math.min(3500,LAB.T+(30+.9*Math.max(0,LAB.T-25))*dt);
+    else if(LAB.fzOn&&LAB.chill)LAB.T=Math.max(-120,LAB.T-(25+.8*Math.abs(LAB.T-25))*dt);
+    else LAB.T+=(25-LAB.T)*.12*dt;
+    if(LAB.fzOn)$("#fz-t").textContent=`${Math.round(LAB.T)} °C`;
+    const T=LAB.T,g=glowColor(T);
+    $("#fz-heat").setAttribute("opacity",g?clamp((T-450)/2500,0,.55):0);$("#fz-heat").setAttribute("fill",g||"#FF6A00");
+    if(LAB.inFurnace){const a=S.r.a;
+      const f=clamp((T-a.mp)/35+.5,0,1),h=32*(1-f);
+      ["#fz-solid","#fz-solidglow","#fz-frost"].forEach(s=>{$(s).setAttribute("y",116-h);$(s).setAttribute("height",Math.max(0,h))});$("#fz-solid").setAttribute("rx",3+10*f);
+      ["#fz-liq","#fz-liqglow"].forEach(s=>{$(s).setAttribute("rx",27*f);$(s).setAttribute("ry",5*f)});
+      const go=g?clamp((T-450)/500,0,.92):0;["#fz-solidglow","#fz-liqglow"].forEach(s=>{$(s).setAttribute("fill",g||"#000");$(s).setAttribute("opacity",go)});
+      $("#fz-frost").setAttribute("opacity",T<-10?clamp((-10-T)/80,0,.7)*(1-f):0);
+      const state=T>=a.mp?"liquid":"solid";
+      if(state!==LAB.meltState){const at=Math.round(T/5)*5;
+        if(LAB.fzOn){S.r.notes.melt=state==="liquid"?`melted near ${at} °C`:`froze near ${at} °C`;$("#rd-fz").textContent=state==="liquid"?"It melted!":"It froze solid!";renderDex()}
+        LAB.meltState=state}
+      if(T>=3490&&state==="solid"&&!S.r.notes.melt){S.r.notes.melt="still solid at 3500 °C";renderDex()}
+    }
+    const fl=LAB.fl;if(fl.gas&&!fl.lit&&!fl.warned&&now-fl.gasSince>6000){fl.warned=true;$("#rd-fl").textContent="You smell gas! Light it or close the valve.";say("Sniff... you smell gas! Ignite the burner or close the valve.")}
+    geigerTick(now,dt);drawFlame(now,dt)}
+  requestAnimationFrame(loop)}
+function drawFlame(now,dt){const c=fctx,W=180,H=170,f=LAB.fl;c.clearRect(0,0,W,H);c.fillStyle="#18263F";c.fillRect(0,0,W,H);
+  const active=f.inFlame&&f.lit&&now<f.until;if(f.inFlame&&!active){f.inFlame=false;if(f.lit)$("#rd-fl").textContent="Flame recorded in notebook"}
+  // burner body, gas hose, air collar
+  c.strokeStyle="#E8412C";c.lineWidth=4;c.beginPath();c.moveTo(0,160);c.quadraticCurveTo(40,164,70,158);c.stroke();
+  c.fillStyle="#8A94AA";c.fillRect(80,122,20,40);c.fillStyle="#5A647A";c.fillRect(66,158,48,8);
+  c.fillStyle=f.air?"#2C3548":"#B3BCCD";c.fillRect(78,140,24,8);c.fillStyle="#1A2233";if(f.air){c.fillRect(84,141,5,6);c.fillRect(92,141,5,6)}
+  c.fillStyle=f.gas?"#3CFF6A":"#4A4F5A";c.beginPath();c.arc(70,152,4,0,7);c.fill();
+  if(f.lit){const flick=Math.sin(now/90)*3+Math.sin(now/37)*2;
+    const base=f.air?BLUE:LAZY;const col=active&&f.col?mix(base,f.col,f.air?f.int:f.int*.25):base;const tall=f.air?(active?82:62):96+flick*2;
+    c.save();c.globalCompositeOperation="lighter";
+    const grd=c.createRadialGradient(90,110,4,90,90,tall);grd.addColorStop(0,col+"EE");grd.addColorStop(.6,col+"66");grd.addColorStop(1,col+"00");
+    c.fillStyle=grd;c.beginPath();c.moveTo(72,122);c.quadraticCurveTo(f.air?70:64,90,90+flick*(f.air?1:3),122-tall);c.quadraticCurveTo(f.air?110:116,90,108,122);c.closePath();c.fill();
+    if(f.air){c.fillStyle="#9FD0FF88";c.beginPath();c.moveTo(82,122);c.quadraticCurveTo(82,106,90,96+flick/2);c.quadraticCurveTo(98,106,98,122);c.closePath();c.fill()}
+    else{c.fillStyle="rgba(60,50,40,.35)";c.beginPath();c.arc(90+flick*3,122-tall-6,8,0,7);c.fill()}
+    c.restore()}
+  else if(f.gas){c.strokeStyle="rgba(200,220,255,.25)";c.lineWidth=1;for(let i=0;i<3;i++){c.beginPath();c.moveTo(86+i*4,120);c.quadraticCurveTo(80+i*6+Math.sin(now/200+i)*6,100,90+Math.sin(now/150+i)*8,80);c.stroke()}}
+  if(now-f.ignAt<180){c.strokeStyle="#FFFFFF";c.lineWidth=2;c.beginPath();c.moveTo(104,118);c.lineTo(110,112);c.lineTo(106,110);c.lineTo(114,102);c.stroke()}
+  if(active){c.strokeStyle="#C9CED8";c.lineWidth=2;c.beginPath();c.moveTo(170,40);c.lineTo(100,78);c.stroke();
+    c.fillStyle=S.r.a.color;c.fillRect(88,74,14,9);
+    f.types.forEach(t=>{const n=t==="flash"?0:Math.random()<.5?2:1;for(let i=0;i<n;i++)LAB.sparks.push({x:95,y:78,vx:(Math.random()-.5)*160,vy:-60-Math.random()*120,life:.6+Math.random()*.5,t,c:SPARK[t].c})});
+    if(f.types.includes("flash")&&Math.random()<.04)LAB.flash=1}
+  LAB.sparks=LAB.sparks.filter(p=>(p.life-=dt)>0);
+  LAB.sparks.forEach(p=>{p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=160*dt;c.strokeStyle=p.c;c.globalAlpha=clamp(p.life*1.6,0,1);c.lineWidth=1.6;c.beginPath();c.moveTo(p.x,p.y);c.lineTo(p.x-p.vx*.03,p.y-p.vy*.03);c.stroke();
+    if(p.t==="burst"&&p.life<.25&&!p.burst){p.burst=1;for(let i=0;i<4;i++)LAB.sparks.push({x:p.x,y:p.y,vx:(Math.random()-.5)*120,vy:(Math.random()-.5)*120,life:.25,t:"gold",c:p.c})}});
+  c.globalAlpha=1;
+  if(LAB.flash>0){c.fillStyle=`rgba(255,255,255,${LAB.flash})`;c.fillRect(0,0,W,H);LAB.flash=Math.max(0,LAB.flash-dt*3)}
+}
+requestAnimationFrame(loop);
+
+
+/* tools applied to the sample */
+function useMagnet(){const a=S.r.a,m=$("#stagemag");m.innerHTML=MAGNET_SVG;m.className="stagemag";void m.offsetWidth;$("#specimen").classList.remove("pulled");
+  if(a.form==="vial"){m.classList.add("fall");S.r.notes.magnet="no pull";say("The magnet slides off the glass. The liquid doesn't budge.")}
+  else if(a.mag===2){m.classList.add("stick");$("#specimen").classList.add("pulled");S.r.notes.magnet="snapped on and stuck";say("CLACK! The magnet snaps onto the sample and holds tight.")}
+  else if(a.mag===1){m.classList.add("slip");S.r.notes.magnet="faint tug, slid off";say("A faint tug... then the magnet slowly slides off.")}
+  else{m.classList.add("fall");S.r.notes.magnet="no pull";say("Nothing. The magnet just falls away.")}
+  renderDex()}
+function useScratch(t){const a=S.r.a;
+  if(a.form==="vial"){$("#specimen").classList.remove("slosh");void $("#specimen").offsetWidth;$("#specimen").classList.add("slosh");S.r.scratchLog[t.name]="liquid";renderDex();say(`The ${t.name.toLowerCase()} just swirls through the liquid.`);return}
+  const x1=70+Math.random()*120,y1=100+Math.random()*30,x2=x1+30+Math.random()*40,y2=y1+(Math.random()-.5)*14;
+  if(t.h>a.hard+.2){S.r.marks.push({kind:"scratch",x1,y1,x2,y2});S.r.scratchLog[t.name]="scratched";say(`Screeech! The ${t.name.toLowerCase()} leaves a groove.`)}
+  else{S.r.marks=S.r.marks.filter(m=>m.kind==="scratch");S.r.marks.push({kind:"streak",x1,y1,x2,y2,col:t.col});S.r.scratchLog[t.name]="no mark";say(`The ${t.name.toLowerCase()} skids across without leaving a groove.`)}
+  $("#specimen").innerHTML=specimenSVG(a,S.r.marks);renderDex()}
+
+/* =============== DRAG & DROP =============== */
+function targetAt(x,y){const el=document.elementFromPoint(x,y);return el&&el.closest("[data-drop]")}
+function doDrop(p,key){
+  if(!S.r)return;
+  if(p.kind==="sample"){if(key==="sample")return;if(STATION_NAMES[key])useStation(key)}
+  else if(key==="sample"){p.id==="magnet"?useMagnet():useScratch(SCRATCH.find(t=>t.id===p.id))}
+  else say("Tools are used on the sample. Drop it on the rod or vial.");
+  setHeld(null)}
+function setHeld(p){S.held=p;document.querySelectorAll(".tool.held,.specimen.held").forEach(e=>e.classList.remove("held"));
+  document.querySelectorAll(".station").forEach(s=>s.classList.toggle("armed",!!p&&p.kind==="sample"));
+  if(p){(p.kind==="sample"?$("#specimen"):document.querySelector(`.tool[data-id="${p.id}"]`)).classList.add("held");
+    say(p.kind==="sample"?"Sample picked up. Tap a lab station to test it.":"Tool ready. Tap the sample to use it.")}}
+function draggable(el,payload){
+  el.addEventListener("pointerdown",e=>{if(e.button>0)return;const p=payload();if(!p)return;e.preventDefault();
+    const sx=e.clientX,sy=e.clientY;let ghost=null,over=null;
+    const move=ev=>{if(!ghost&&Math.hypot(ev.clientX-sx,ev.clientY-sy)>6){ghost=document.createElement("div");ghost.className="ghost";ghost.innerHTML=p.ghost;document.body.appendChild(ghost)}
+      if(ghost){ghost.style.left=ev.clientX+"px";ghost.style.top=ev.clientY+"px";const t=targetAt(ev.clientX,ev.clientY);if(t!==over){over&&over.classList.remove("over");over=t;t&&t.classList.add("over")}}};
+    const up=ev=>{window.removeEventListener("pointermove",move);window.removeEventListener("pointerup",up);window.removeEventListener("pointercancel",up);over&&over.classList.remove("over");
+      if(ghost){ghost.remove();const t=targetAt(ev.clientX,ev.clientY);if(t)doDrop(p,t.dataset.drop)}
+      else{ // tap
+        if(S.held&&S.held.kind==="tool"&&p.kind==="sample")doDrop(S.held,"sample");
+        else setHeld(S.held&&S.held.id===p.id?null:p)}};
+    window.addEventListener("pointermove",move);window.addEventListener("pointerup",up);window.addEventListener("pointercancel",up)});
+  el.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();const p=payload();
+    if(S.held&&S.held.kind==="tool"&&p.kind==="sample")doDrop(S.held,"sample");else setHeld(p)}})}
+draggable($("#specimen"),()=>({kind:"sample",id:"sample",ghost:S.r.a.form==="vial"
+  ?`<svg viewBox="0 0 64 64"><rect x="22" y="6" width="20" height="52" rx="8" fill="rgba(255,255,255,.5)" stroke="#fff" stroke-width="2"/><rect x="24" y="26" width="16" height="30" rx="7" fill="${S.r.a.color}"/></svg>`
+  :`<svg viewBox="0 0 64 64"><rect x="8" y="24" width="48" height="18" rx="3" fill="${S.r.a.color}" stroke="${shade(S.r.a.color,-.5)}" stroke-width="2"/><rect x="10" y="27" width="44" height="3" fill="#fff" opacity=".6"/></svg>`}));
+$("#tools").innerHTML=`<button class="tool" data-id="magnet" aria-label="Magnet">${MAGNET_SVG}<span>Magnet</span></button>`+
+  SCRATCH.map(t=>`<button class="tool" data-id="${t.id}" aria-label="${t.name}, Mohs hardness ${t.h}">${t.svg}<span>${t.name}<small>Mohs ${t.h}</small></span></button>`).join("");
+document.querySelectorAll(".tool").forEach(b=>draggable(b,()=>({kind:"tool",id:b.dataset.id,ghost:b.querySelector("svg").outerHTML})));
+document.querySelectorAll(".station").forEach(st=>st.addEventListener("click",e=>{if(e.target.closest("button"))return;if(S.held&&S.held.kind==="sample")doDrop(S.held,st.dataset.drop)}));
+
+/* =============== REFERENCE VIEW =============== */
+let curEl="Cu";
+function renderElCard(){const e=BY[curEl],x=EX[e.s];
+  document.querySelectorAll("#ref-table .el").forEach(b=>b.classList.toggle("cur",b.dataset.s===curEl));
+  const inA=ALLOYS.filter(a=>a.comp.some(c=>c[0]===e.s)),known=inA.filter(a=>S.caught.has(a.name));
+  $("#elcard").innerHTML=`
+    <div class="bigtile"><div class="tile" style="--c:${CATS[e.cat].c}"><small>${e.z}</small><b>${e.s}</b><small>${e.mass}</small></div><div><h4>${e.name}</h4><p>${CATS[e.cat].name}</p></div></div>
+    <dl class="props">
+      <dt>ATOMIC MASS</dt><dd>${e.mass} u</dd>
+      <dt>DENSITY</dt><dd>${fmtDensity(e.d)}</dd>
+      <dt>MELTING PT</dt><dd>${fmtMp(e)}</dd>
+      <dt>ELECTRONEG.</dt><dd>${e.en??"—"}</dd>
+      ${x?`<dt>LOOKS LIKE</dt><dd><span class="sw" style="background:linear-gradient(${shade(x.col,.5)},${x.col} 45%,${shade(x.col,-.35)})"></span></dd>
+      <dt>MOHS HARDNESS</dt><dd>${x.h===0?"liquid":x.h}</dd>
+      <dt>CONDUCTIVITY</dt><dd>${x.c<0.01?"≈ 0 (poor)":x.c+" MS/m"}</dd>
+      <dt>MAGNET</dt><dd>${["no pull","weak pull","sticks strongly"][x.m]}</dd>
+      <dt>FLAME TEST</dt><dd>${x.fl?`<span class="sw" style="background:${x.fl}"></span>`:"no distinct color"}</dd>
+      <dt>GEIGER</dt><dd>${radLabel(RAD[e.s])}</dd>
+      <dt>SPARKS</dt><dd>${x.sp?`<span class="dot" style="background:${SPARK[x.sp].c}"></span> ${SPARK[x.sp].t}`:"none"}</dd>`:`<dt>LAB DATA</dt><dd>not used in alloys</dd>`}
+    </dl>
+    <div class="inalloys">${inA.length?`<b>In ${inA.length} Alloydex entries.</b> ${known.length?"Registered: "+known.slice(0,12).map(a=>`<span class="chip">${a.name}</span>`).join("")+(known.length>12?` +${known.length-12} more`:""):"None registered yet."}`:"Not used in any alloy in this game."}</div>`}
+
+/* =============== ALLOYDEX VIEW =============== */
+const PAGE=60;
+function renderDexGrid(){
+  $("#dex-count").textContent=`${S.caught.size}/${ALLOYS.length}`;
+  let list=ALLOYS;const f=S.dexFilter;if(f==="real")list=REAL;else if(f==="syn")list=ALLOYS.filter(a=>!a.real);else if(f==="caught")list=ALLOYS.filter(a=>S.caught.has(a.name));
+  const pages=Math.max(1,Math.ceil(list.length/PAGE));S.dexPage=clamp(S.dexPage,0,pages-1);
+  const slice=list.slice(S.dexPage*PAGE,(S.dexPage+1)*PAGE);
+  $("#dexgrid").innerHTML=slice.length?slice.map(a=>{const got=S.caught.has(a.name);
+    return `<div class="dexcard ${got?"":"locked"}"><div class="mini">${miniHTML(a)}</div><span class="no">No.${pad(a.no)} · ${a.real?"REAL":"SYNTH"}</span><span class="nm">${got?a.name:"???"}</span>
+      ${got?`<div class="types">${a.types.map(t=>`<span class="type" style="background:${TYPES[t]}">${t.toUpperCase()}</span>`).join("")}</div><span class="cp">${a.comp.map(([s,p])=>`${s} ${p}%`).join(" · ")}</span>`:`<span class="cp">Not yet identified</span>`}</div>`}).join("")
+    :`<p class="note">Nothing here yet. Solve an alloy's recipe in a run to register it.</p>`;
+  $("#pager").innerHTML=pages>1?`<button class="btn" id="pg-prev" ${S.dexPage?"":"disabled"}>◀</button><span>Page ${S.dexPage+1} of ${pages}</span><button class="btn" id="pg-next" ${S.dexPage<pages-1?"":"disabled"}>▶</button>`:"";
+  if(pages>1){$("#pg-prev").onclick=()=>{S.dexPage--;renderDexGrid()};$("#pg-next").onclick=()=>{S.dexPage++;renderDexGrid()}}}
+document.querySelectorAll("#dexfilters button").forEach(b=>b.onclick=()=>{S.dexFilter=b.dataset.f;S.dexPage=0;document.querySelectorAll("#dexfilters button").forEach(x=>x.setAttribute("aria-pressed",x===b));renderDexGrid()});
+
+
+/* =============== EXPLORATION (random encounters) =============== */
+const ZONES=[
+ {name:"RUSTVEIN MINE",sub:"Old tunnels. Something glints in the rubble.",cls:"z-mine",map:["#############","#P..,,,..#,,#","#....,,,.#,,#","#==========,#","#,,,....,,,.#","#,,,..L#.,,,#","#..,,..#..,.#","#############"]},
+ {name:"TINKER'S SCRAPYARD",sub:"Heaps of forgotten metal. Watch your step.",cls:"z-scrap",map:["#############","#P....,,,,..#","#.##..,,,,..#","#.##........#","#..,,,,.##..#","#..,,,,.##,,#","#.......,,,,#","#############"]},
+ {name:"STARFALL CRATER",sub:"A meteor landed here long ago.",cls:"z-crater",map:["#############","#,,,....,,,,#","#,#,,..,,#,,#","#,,,,.P.,,,,#","#..,,...,,..#","#,,#..,..#,,#","#,,,,,,,,,,,#","#############"]}
+];
+const MINER=`<svg viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="20" cy="37" rx="10" ry="2.5" fill="#000" opacity=".3"/>
+<rect x="12" y="22" width="16" height="12" rx="4" fill="#3B7BF0" stroke="#121B40" stroke-width="2"/><rect x="14" y="33" width="5" height="4" rx="1" fill="#4A3A2A"/><rect x="21" y="33" width="5" height="4" rx="1" fill="#4A3A2A"/>
+<circle cx="20" cy="16" r="8" fill="#F2C7A5" stroke="#121B40" stroke-width="2"/><circle cx="23" cy="16" r="1.4" fill="#121B40"/>
+<path d="M11 13 Q20 3 29 13 L31 13 L31 15 L9 15 L9 13Z" fill="#FFD23F" stroke="#121B40" stroke-width="2"/><circle cx="28" cy="10" r="2.6" fill="#FFF7C2" stroke="#121B40" stroke-width="1.5"/>
+<rect x="26" y="24" width="8" height="3" rx="1.5" fill="#8A5A2E"/><path d="M33 20 L36 27 L31 26Z" fill="#9AA2AC" stroke="#121B40" stroke-width="1"/></svg>`;
+const EXP={zone:null,x:0,y:0,face:1,busy:true,since:0,target:null,timer:null,hold:null};
+function startExplore(){S.phase="explore";S.r=null;
+  $("#game").hidden=true;$("#endscreen").hidden=true;$("#explore").hidden=false;
+  EXP.zone=ZONES[Math.random()*ZONES.length|0];EXP.since=0;EXP.target=null;EXP.busy=false;
+  $("#zone-name").textContent=EXP.zone.name;$("#zone-sub").textContent=EXP.zone.sub;$("#mapwrap").className="mapwrap "+EXP.zone.cls;
+  let h="",k=0;EXP.zone.map.forEach((row,y)=>row.split("").forEach((c,x)=>{if(c==="P"){EXP.x=x;EXP.y=y}
+    const cls=c==="#"?"w":c==="L"?"l":c===","?"r":c==="="?"rail":"f";h+=`<div class="tile ${cls}" data-x="${x}" data-y="${y}" style="--d:${(k++%7)*.35}s"></div>`}));
+  $("#map").innerHTML=h;$("#wipe").innerHTML=Array.from({length:8},(_,i)=>`<i style="--k:${i}"></i>`).join("");$("#wipe").className="wipe";
+  const pl=$("#player");pl.className="player";pl.innerHTML=`<span class="bang">!</span>`+MINER;placePlayer(true);
+  $("#expmsg").textContent=S.run.idx===0?"Walk through the glittering rubble to find a wild alloy.":"Keep exploring. More alloys hide in the rubble.";
+  renderHud()}
+function placePlayer(instant){const pl=$("#player");if(instant){pl.style.transition="none"}
+  pl.style.left=(EXP.x/13*100)+"%";pl.style.top=(EXP.y/8*100)+"%";pl.style.setProperty("--face",EXP.face);
+  if(instant){void pl.offsetWidth;pl.style.transition=""}}
+const tileAt=(x,y)=>(EXP.zone.map[y]||"")[x]||"#";
+const passable=c=>c!=="#"&&c!=="L";
+function step(dx,dy){if(EXP.busy||S.phase!=="explore")return false;
+  if(dx)EXP.face=dx;const nx=EXP.x+dx,ny=EXP.y+dy;
+  if(!passable(tileAt(nx,ny))){placePlayer();return false}
+  EXP.x=nx;EXP.y=ny;const pl=$("#player");pl.classList.remove("walk");void pl.offsetWidth;pl.classList.add("walk");placePlayer();
+  if(tileAt(nx,ny)===","){const t=document.querySelector(`.tile[data-x="${nx}"][data-y="${ny}"]`);t.classList.remove("rustle");void t.offsetWidth;t.classList.add("rustle");
+    EXP.since++;if(Math.random()<(EXP.since>=8?1:.16)){encounter();return false}}
+  return true}
+function encounter(){EXP.busy=true;EXP.target=null;clearInterval(EXP.timer);clearInterval(EXP.hold);
+  $("#player").classList.add("alert");$("#expmsg").textContent="Something moved in the rubble!";
+  setTimeout(()=>{$("#wipe").classList.add("go");
+    setTimeout(()=>{$("#explore").hidden=true;$("#game").hidden=false;S.phase="round";startRound();reveal();
+      document.querySelector(".arena").scrollIntoView({behavior:"smooth",block:"start"})},1000)},700)}
+function walkTo(tx,ty){EXP.target=[tx,ty];clearInterval(EXP.timer);
+  EXP.timer=setInterval(()=>{if(!EXP.target||EXP.busy){clearInterval(EXP.timer);return}
+    const[tx,ty]=EXP.target,dx=Math.sign(tx-EXP.x),dy=Math.sign(ty-EXP.y);
+    if(!dx&&!dy){clearInterval(EXP.timer);return}
+    const first=Math.abs(tx-EXP.x)>=Math.abs(ty-EXP.y)?[dx,0]:[0,dy],second=first[0]?[0,dy]:[dx,0];
+    if(!(first[0]||first[1])||!passable(tileAt(EXP.x+first[0],EXP.y+first[1]))){if((second[0]||second[1])&&passable(tileAt(EXP.x+second[0],EXP.y+second[1])))step(...second);else clearInterval(EXP.timer)}
+    else step(...first)},170)}
+$("#map").addEventListener("click",e=>{const t=e.target.closest(".tile");if(t&&!EXP.busy)walkTo(+t.dataset.x,+t.dataset.y)});
+document.querySelectorAll(".dpad button").forEach(b=>{const go=()=>{EXP.target=null;step(+b.dataset.dx,+b.dataset.dy)};
+  b.addEventListener("pointerdown",e=>{e.preventDefault();go();clearInterval(EXP.hold);EXP.hold=setInterval(go,180)});
+  ["pointerup","pointerleave","pointercancel"].forEach(ev=>b.addEventListener(ev,()=>clearInterval(EXP.hold)));
+  b.addEventListener("keydown",e=>{if(e.key==="Enter"||e.key===" "){e.preventDefault();go()}})});
+const KEYS={ArrowUp:[0,-1],ArrowDown:[0,1],ArrowLeft:[-1,0],ArrowRight:[1,0],w:[0,-1],s:[0,1],a:[-1,0],d:[1,0],W:[0,-1],S:[0,1],A:[-1,0],D:[1,0]};
+let lastKey=0;
+document.addEventListener("keydown",e=>{if(S.phase!=="explore"||$("#view-play").hidden)return;if(e.target.closest&&e.target.closest("input,textarea"))return;
+  const k=KEYS[e.key];if(!k)return;e.preventDefault();const now=performance.now();if(now-lastKey<150)return;lastKey=now;EXP.target=null;step(...k)});
+
+/* =============== WIRING =============== */
+function setView(v){document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.view===v));
+  $("#view-play").hidden=v!=="play";$("#view-table").hidden=v!=="table";$("#view-dex").hidden=v!=="dex";
+  if(v==="table")renderElCard();if(v==="dex")renderDexGrid()}
+document.querySelectorAll(".tab").forEach(t=>t.onclick=()=>setView(t.dataset.view));
+document.querySelectorAll(".mode").forEach(b=>b.onclick=()=>{S.mode=b.dataset.mode;newRun()});
+buildTable($("#pick-table"),false);buildTable($("#ref-table"),true);
+$("#legend").innerHTML=Object.values(CATS).map(c=>`<span><i style="--c:${c.c}"></i>${c.name}</span>`).join("");
+$("#pick-table").addEventListener("click",ev=>{const b=ev.target.closest(".el");if(b)togglePick(b.dataset.s)});
+const showInfo=ev=>{const b=ev.target.closest&&ev.target.closest(".el");if(b)$("#pickinfo").innerHTML=elSummary(BY[b.dataset.s])};
+$("#pick-table").addEventListener("mouseover",showInfo);$("#pick-table").addEventListener("focusin",showInfo);
+$("#ref-table").addEventListener("click",ev=>{const b=ev.target.closest(".el");if(b){curEl=b.dataset.s;renderElCard()}});
+newRun();
+</script>
+
+</body></html>
