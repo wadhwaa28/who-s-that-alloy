@@ -1,3 +1,4 @@
+
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <title>Who's That Alloy?</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -32,6 +33,9 @@ header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-betw
 .logo .l2{display:block;font-size:clamp(28px,6vw,44px);color:var(--sun);letter-spacing:1px;margin-top:6px;
   text-shadow:3px 0 0 #1F4FB8,-3px 0 0 #1F4FB8,0 3px 0 #1F4FB8,0 -3px 0 #1F4FB8,3px 3px 0 #1F4FB8,-3px -3px 0 #1F4FB8,3px -3px 0 #1F4FB8,-3px 3px 0 #1F4FB8,6px 7px 0 #07112E}
 .tabs{display:flex;gap:6px;flex-wrap:wrap}
+.audio{display:flex;gap:6px}
+.aubtn{font-family:var(--pix);font-size:8px;padding:8px 9px;border-radius:8px;border:2px solid var(--line);background:var(--night-2);color:var(--muted)}
+.aubtn[aria-pressed="true"]{color:var(--sun);border-color:var(--sun-deep)}
 .tab{font-family:var(--pix);font-size:10px;padding:11px 12px;border-radius:8px;border:3px solid var(--line);background:var(--night-2);color:var(--muted)}
 .tab[aria-selected="true"]{background:var(--sun);color:var(--ink);border-color:var(--sun-deep);box-shadow:0 4px 0 var(--sun-deep)}
 
@@ -256,6 +260,27 @@ dl.props dd{margin:0;font-weight:800;font-variant-numeric:tabular-nums;text-alig
 .dpad button:active{background:var(--sun)}
 .dpad .u{grid-column:2;grid-row:1}.dpad .l{grid-column:1;grid-row:2}.dpad .d{grid-column:2;grid-row:2}.dpad .r{grid-column:3;grid-row:2}
 @media (prefers-reduced-motion:reduce){.tile.r::after{animation:none}.wipe.go,.wipe.go i{animation-duration:.01s;animation-delay:0s}}
+.tile.r{background:radial-gradient(circle at 50% 55%,rgba(255,255,255,.08),transparent 70%),var(--floor)!important}
+.tile.r::after{display:none}
+.tile svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible}
+.tw{transform-box:fill-box;transform-origin:center;animation:tw 2.4s ease-in-out infinite;opacity:0}
+@keyframes tw{0%,100%{opacity:0;transform:scale(.2) rotate(0)}50%{opacity:1;transform:scale(1) rotate(45deg)}}
+.glow{animation:gl 3s ease-in-out infinite}
+@keyframes gl{50%{opacity:.25}}
+@media (prefers-reduced-motion:reduce){.tw{animation:none;opacity:.8}.glow{animation:none}}
+.fzwrap{position:relative;width:100%;max-width:170px}
+.fzwrap svg{max-width:none!important}
+.fzwrap canvas{position:absolute;inset:0;width:100%!important;height:100%!important;max-width:none!important;pointer-events:none}
+#cy-streams{opacity:0;transition:opacity .2s}
+#cy-streams path{stroke-dasharray:5 3;animation:flow .35s linear infinite}
+@keyframes flow{to{stroke-dashoffset:-8}}
+.spilling #cy-streams{opacity:.85}
+#gm-smoke{opacity:0}
+#gm-smoke.puff{animation:puff 2.4s ease-out}
+@keyframes puff{0%{opacity:.9;transform:translateY(0)}100%{opacity:0;transform:translateY(-26px)}}
+.startgate{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;background:rgba(8,16,44,.55);color:#fff;font-weight:800;font-size:13px}
+.startgate .btn{font-size:14px;padding:14px 20px;animation:pulse 1.2s ease-in-out infinite}
+@keyframes pulse{50%{transform:scale(1.06)}}
 .endwrap{display:flex;justify-content:center}
 .end{max-width:520px;width:100%;text-align:center;align-items:center}
 .end .big{font-family:var(--pix);font-size:28px;color:var(--red);margin:4px 0}
@@ -276,6 +301,7 @@ dl.props dd{margin:0;font-weight:800;font-variant-numeric:tabular-nums;text-alig
       <button class="tab" role="tab" id="tab-table" aria-selected="false" data-view="table">Periodic Table</button>
       <button class="tab" role="tab" id="tab-dex" aria-selected="false" data-view="dex">Alloydex</button>
     </nav>
+    <div class="audio"><button class="aubtn" id="au-mus" aria-pressed="true">♪ MUSIC: ON</button><button class="aubtn" id="au-sfx" aria-pressed="true">SFX: ON</button></div>
   </header>
 
   <section id="view-play" style="display:flex;flex-direction:column;gap:16px">
@@ -295,7 +321,7 @@ dl.props dd{margin:0;font-weight:800;font-variant-numeric:tabular-nums;text-alig
 
     <div class="explore" id="explore" hidden>
       <div class="zonebar"><h3 id="zone-name">RUSTVEIN MINE</h3><span id="zone-sub">Wild alloys hide in the glittering rubble.</span></div>
-      <div class="mapwrap" id="mapwrap"><div class="map" id="map"></div><div class="player" id="player"><span class="bang">!</span></div><div class="wipe" id="wipe"></div></div>
+      <div class="mapwrap" id="mapwrap"><div class="map" id="map"></div><div class="startgate" id="startgate"><button class="btn go" id="startbtn">▶ PRESS START</button><span>Turns on music and sound</span></div><div class="player" id="player"><span class="bang">!</span></div><div class="wipe" id="wipe"></div></div>
       <div class="expbar">
         <p class="expmsg" id="expmsg">Walk through the rubble to find a wild alloy.</p>
         <div class="dpad" aria-label="Move"><button class="u" data-dx="0" data-dy="-1" aria-label="Up">▲</button><button class="l" data-dx="-1" data-dy="0" aria-label="Left">◀</button><button class="d" data-dx="0" data-dy="1" aria-label="Down">▼</button><button class="r" data-dx="1" data-dy="0" aria-label="Right">▶</button></div>
@@ -351,19 +377,23 @@ dl.props dd{margin:0;font-weight:800;font-variant-numeric:tabular-nums;text-alig
               <g id="cy-grad"></g>
               <rect id="cy-water" x="72" y="188" width="36" height="0" fill="#6FB7FF" opacity=".55"/>
               <rect id="cy-chunk" x="80" y="-30" width="20" height="14" rx="3" fill="url(#gs-cyl)" stroke="rgba(0,0,0,.35)"/>
+              <rect id="cy-rust" x="80" y="-30" width="20" height="14" rx="3" fill="#B5561E" opacity="0"/>
+              <g id="cy-flakes" opacity="0"><circle cx="78" cy="185" r="1.6"/><circle cx="84" cy="186" r="1.2"/><circle cx="101" cy="185" r="1.8"/><circle cx="96" cy="186.5" r="1"/><circle cx="106" cy="186" r="1.3"/><circle cx="90" cy="160" r=".9"/><circle cx="99" cy="150" r=".8"/></g>
               <g id="cy-fx" opacity="0">
                 <path d="M84 100 Q90 70 96 100 Q92 88 90 96 Q88 88 84 100Z" fill="#FFB22E"/>
                 <circle cx="82" cy="120" r="3" fill="#fff" opacity=".8"/><circle cx="98" cy="130" r="2.5" fill="#fff" opacity=".8"/><circle cx="90" cy="112" r="2" fill="#fff" opacity=".8"/>
               </g>
+              <ellipse id="cy-puddle" cx="90" cy="194" rx="0" ry="4.5" fill="#6FB7FF" opacity=".7"/>
               <rect x="70" y="12" width="40" height="178" rx="4" fill="rgba(255,255,255,.12)" stroke="#243A73" stroke-width="3"/>
+              <g id="cy-streams" fill="none" stroke="#6FB7FF" stroke-width="3" stroke-linecap="round"><path d="M71 13 Q62 18 64 50 L64 190"/><path d="M109 13 Q118 18 116 50 L116 190"/></g>
               <rect x="60" y="188" width="60" height="8" rx="3" fill="#243A73"/>
             </svg>
-            <div class="ctrl"><button id="cy-fill" class="cool">HOLD TO FILL</button><button id="cy-empty">EMPTY</button></div>
+            <div class="ctrl"><button id="cy-fill" class="cool">HOLD TO FILL</button><button id="cy-empty">EMPTY</button><button id="cy-soak">SOAK 1 WEEK</button></div>
             <div class="readout" id="rd-cyl">Cylinder is empty</div>
           </div>
           <div class="station" data-drop="furnace" id="st-furnace">
             <h4>FURNACE · 3500 °C MAX</h4>
-            <svg viewBox="0 0 180 170" aria-hidden="true">
+            <div class="fzwrap"><svg viewBox="0 0 180 170" aria-hidden="true">
               <defs><linearGradient id="gs-fz" x1="0" y1="0" x2="0" y2="1"><stop class="s1" offset="0"/><stop class="s0" offset=".45"/><stop class="s2" offset="1"/></linearGradient></defs>
               <rect x="20" y="4" width="140" height="28" rx="5" fill="#18263F"/>
               <text id="fz-t" x="90" y="24" text-anchor="middle" font-family="Press Start 2P, monospace" font-size="11" fill="#FFB38A"></text>
@@ -379,7 +409,7 @@ dl.props dd{margin:0;font-weight:800;font-variant-numeric:tabular-nums;text-alig
                 <rect id="fz-frost" x="72" y="84" width="36" height="32" rx="3" fill="#EAF6FF" opacity="0"/>
               </g>
               <circle id="fz-led" cx="142" cy="18" r="4" fill="#4A4F5A"/>
-            </svg>
+            </svg><canvas id="fzfx" width="180" height="170" aria-hidden="true"></canvas></div>
             <div class="ctrl"><button id="fz-pow">POWER</button><button id="fz-out">TAKE OUT</button></div>
             <div class="hold"><button class="heat" id="btn-heat" disabled>HOLD HEAT</button><button class="chill" id="btn-chill" disabled>HOLD CHILL</button></div>
             <div class="readout" id="rd-fz">Furnace is off</div>
@@ -421,11 +451,12 @@ dl.props dd{margin:0;font-weight:800;font-variant-numeric:tabular-nums;text-alig
               <rect x="24" y="96" width="92" height="22" rx="4" fill="#18263F"/>
               <text id="gm-cpm" x="70" y="112" text-anchor="middle" font-family="Press Start 2P, monospace" font-size="9" fill="#8CFF9E"></text>
               <circle id="gm-led" cx="112" cy="130" r="4" fill="#4A4F5A"/>
+              <g id="gm-smoke" fill="#6B6F78"><circle cx="60" cy="20" r="9"/><circle cx="74" cy="12" r="11"/><circle cx="88" cy="20" r="8"/><circle cx="150" cy="22" r="7"/></g>
               <rect x="142" y="26" width="18" height="78" rx="8" fill="#3A3F48" stroke="#243A73" stroke-width="2"/>
               <rect x="145" y="30" width="12" height="20" rx="4" fill="#8A93A6"/>
               <rect id="gm-chunk" x="136" y="118" width="32" height="14" rx="3" fill="url(#gs-gm)" stroke="rgba(0,0,0,.35)" opacity="0"/>
             </svg>
-            <div class="ctrl"><button id="gm-pow">POWER</button><button id="gm-snd">SOUND</button><button id="gm-out">REMOVE</button></div>
+            <div class="ctrl"><button id="gm-pow">POWER</button><button id="gm-snd">SOUND</button><button id="gm-out">REMOVE</button><button id="gm-fix" hidden>REPLACE TUBE</button></div>
             <div class="readout" id="rd-gm">Counter is off</div>
           </div>
           <div class="station" data-drop="flame" id="st-flame">
@@ -494,8 +525,10 @@ const BY=Object.fromEntries(EL.map(e=>[e.s,e]));
 // Lab behaviour: symbol:mohs:conductivity MS/m:ferromagnetic(0-2):appearance:flame colour:sparks
 const EXRAW="Li:0.6:10.8:0:C2C2BD:D8203A:;Be:5.5:25:0:A8ACA8::;B:9.5:0:0:3A3530:5AE85A:;C:1.5:0.07:0:2E2E30::burst;Na:0.5:21:0:D8D8D0:FFB020:;Mg:2.5:22.6:0:C9CCCF::flash;Al:2.75:37.7:0:CDD2D6::white;Si:6.5:0:0:6F7580::;K:0.4:13.9:0:C8C8C0:B79CF0:;Ca:1.75:29.8:0:C6C3B8:FF6A2A:;Sc:3:1.8:0:C8C8C2::;Ti:6:2.4:0:9A9A96::white;V:7:4.9:0:A8ADB1::;Cr:8.5:7.9:0:C9D0D6::;Mn:6:0.69:0:A8A39B:C8E070:;Fe:4:10:2:8A8E93::gold;Co:5:17.2:2:9AA0A8::;Ni:4:14.3:2:B8B4A8::;Cu:3:59.6:0:B87333:2FD6A0:;Zn:2.5:16.9:0:A9B2B5:A0E6D0:;Ga:1.5:7.1:0:C6CBD1:9A8CFF:;Ge:6:0:0:A0A4A8::;As:3.5:3.45:0:707378:A8BCFF:;Rb:0.3:8.3:0:CCCCC4:C43A7A:;Sr:1.5:7.6:0:D0CEC0:E0202A:;Y:3:1.8:0:BDBDB8::;Zr:5:2.4:0:B7B9B4::white;Nb:6:6.9:0:9FA3AF::;Mo:5.5:18.7:0:A9ACAF:D8F07A:;Ru:6.5:14.1:0:BEC2C4::;Rh:6:21:0:D8D9DA::;Pd:4.75:9.5:0:CFCFCB::;Ag:2.5:63:0:E6E8EA::;Cd:2:13.8:0:B5BCC2::;In:1.2:11.6:0:C8CCD2:5A5AFF:;Sn:1.5:9.2:0:C2C6C8::;Sb:3:2.9:0:B3B7BC:C8D8FF:;Te:2.25:0:0:9EA3A8::;Cs:0.2:4.8:0:E0C872:6C6CF0:;Ba:1.25:3:0:C0BEB4:A8E060:;La:2.5:1.6:0:B8B6AE::yellow;Ce:2.5:1.35:0:B0ADA2::yellow;Pr:2.5:1.4:0:B2B0A6::yellow;Nd:2.5:1.6:0:B0AFA6::yellow;Sm:2.5:1.1:0:B4B2A8::;Gd:2.5:0.76:1:B4B4B0::;Tb:2.5:0.87:0:B6B6B0::;Dy:2.5:1.1:0:B8B8B2::;Hf:5.5:3.3:0:A5A7A9::white;Ta:6.5:7.6:0:8E97A6::;W:7.5:18.9:0:9B9C9E::;Re:7:5.6:0:B8BBBE::;Os:7:10.9:0:A6B2C0::;Ir:6.5:21:0:D0D2D4::;Pt:3.5:9.4:0:D5D5D2::;Au:2.5:45.2:0:E6BE5A::;Hg:0:1.04:0:D3D6D9::;Tl:1.2:6.7:0:9DA0A2:7AE040:;Pb:1.5:4.8:0:7F8590:B0C8FF:;Bi:2.25:0.77:0:C9B8C8::;Th:3:6.7:0:A8A8A4::;U:6:3.6:0:9A9C9A::";
 const EX={};EXRAW.split(";").forEach(r=>{const[s,h,c,m,col,fl,sp]=r.split(":");EX[s]={h:+h,c:+c,m:+m,col:"#"+col,fl:fl?"#"+fl:"",sp:sp||""}});
-const RAD={U:3,Th:2.5,Pu:5,Am:5,Ra:6,Po:6,Tc:4,Pm:5,Np:5,Cm:6,Ac:6,Pa:5,Fr:6,At:6,Rn:6,K:.25,Rb:.2,La:.08,Lu:.15,Sm:.03,In:.01,Re:.02};
-const radLabel=v=>!v?"none":v<.1?"trace":v<1?"weak":v<4?"strong":"intense";
+const RAD={U:3,Th:2.5,Pu:8,Am:30,Ra:20,Po:3000,Tc:4,Pm:20,Np:5,Cm:100,Ac:50,Pa:10,Fr:3000,At:3000,Rn:500,Bk:300,Cf:500,Es:2000,Fm:5000,Md:20000,No:20000,Lr:20000,K:.25,Rb:.2,La:.08,Lu:.15,Sm:.03,In:.01,Re:.02};
+const radLabel=v=>!v?"none":v<.1?"trace":v<1?"weak":v<4?"strong":v<100?"intense":v<1000?"extreme":"off the charts";
+EL.forEach(e=>{if(!EX[e.s])EX[e.s]={h:e.mp!=null&&e.mp<25?0:3,c:"ghnm".includes(e.cat)?0:1,m:0,col:"ghn".includes(e.cat)?"#C9D2DE":"#A4A8AE",fl:"",sp:"",est:true}});
+const radOf=s=>RAD[s]!=null?RAD[s]:BY[s].z>=104?50000:BY[s].z>=84?50:0;
 const SPARK={gold:{c:"#FFB84A",t:"gold streaks"},burst:{c:"#FFD27A",t:"forking star bursts"},white:{c:"#FFFFFF",t:"bright white sparks"},yellow:{c:"#FFE45A",t:"yellow sparks"},flash:{c:"#FFFFFF",t:"blinding white flash"}};
 
 /* =============== REAL ALLOYS =============== */
@@ -665,7 +698,7 @@ const frac=a=>Object.fromEntries(a.comp.map(([s,p])=>[s,p/100]));
 /* =============== BUILD ALLOY LIST =============== */
 const TYPES={"Radioactive":"#5FAF22","Liquid":"#2E9BE0","Low-melt":"#D95F9E","Magnetic":"#B8315F","Reactive":"#EF6A36","Precious":"#D9A92A","Lightweight":"#5E9ED8","Heavy":"#5B4E8C","Tough":"#7C5E45","Heat-proof":"#D83D27","Conductive":"#E0AF10","Structural":"#667A95"};
 function typesOf(a){const w=frac(a),t=[];
-  if(a.comp.reduce((s,[e,p])=>s+(RAD[e]||0)*p/100,0)>=.03)t.push("Radioactive");
+  if(a.comp.reduce((s,[e,p])=>s+radOf(e)*p/100,0)>=.03)t.push("Radioactive");
   if(a.mp<25)t.push("Liquid");else if(a.mp<350)t.push("Low-melt");
   if(a.mag===2)t.push("Magnetic");
   if(a.reactive||(w.Ce||0)>=.3)t.push("Reactive");
@@ -739,6 +772,44 @@ const FLAV=["The team nicknamed it '%N'.","Only %K ingots of the first batch sur
     seen.add(key);names.add(nm.toLowerCase());ALLOYS.push(a);
   }
 })(1000);
+
+/* Coverage pass: every element appears in at least three alloys */
+(function coverage(){
+  const rnd=mulberry(777001),pick=a=>a[rnd()*a.length|0];
+  const names=new Set(ALLOYS.map(a=>a.name.toLowerCase()));
+  const BASES="Fe Cu Al Ni Ti Co Zn Sn Pb Ag Au Pt W Mo Nb Zr Mg Ta".split(" ");
+  const EXTRA="Cr Mn Si Cu Ni Fe Al Zn Sn Mo V Co".split(" ");
+  const count=s=>ALLOYS.filter(a=>a.comp.some(c=>c[0]===s)).length;
+  const gas=e=>e.cat==="g"||(e.mp!=null&&e.mp<-50);
+  EL.forEach(e=>{let need=3-count(e.s),guard=0;
+    while(need>0&&guard++<50){
+      const base=pick(BASES.filter(b=>b!==e.s)),B=BY[base];
+      const superheavy=e.z>=100||e.d==null&&!gas(e);
+      const amt=gas(e)?Math.round((.5+rnd()*1.5)*2)/2:superheavy?Math.round((.5+rnd()*2)*2)/2:Math.round((1+rnd()*9)*2)/2;
+      const comp=[[e.s,amt]];
+      if(rnd()<.55){const x=pick(EXTRA.filter(s=>s!==base&&s!==e.s));comp.push([x,Math.round((1+rnd()*6)*2)/2])}
+      const bp=Math.round((100-comp.reduce((t,[,p])=>t+p,0))*2)/2;comp.unshift([base,bp]);comp.sort((a,b)=>b[1]-a[1]);
+      const w=Object.fromEntries(comp.map(([s,p])=>[s,p/100])),k=comp.length-1;
+      const dOf=s=>BY[s].d!=null&&!gas(BY[s])?BY[s].d:B.d, mpOf=s=>BY[s].mp!=null?BY[s].mp:B.mp;
+      const d=+(1/comp.reduce((t,[s,p])=>t+p/100/dOf(s),0)).toFixed(2);
+      const mp=Math.round(comp.reduce((t,[s,p])=>t+p/100*(Math.max(mpOf(s),gas(BY[s])?B.mp:-300)+273.15),0)*(k===1?.95:.9)-273.15);
+      const F=(w.Fe||0)+(w.Co||0)+.9*(w.Ni||0),sc=F-.6*(1-F),mag=sc>.5?2:sc>.15?1:0;
+      const hard=+clamp(comp.reduce((t,[s,p])=>t+p/100*EX[s].h,0)+.4*k+(gas(e)&&!"He Ne Ar Kr Xe Rn Og".includes(e.s)?1:0),.5,8.5).toFixed(1);
+      const cond=+Math.max(.3,EX[base].c/(1+.25*(100-bp))).toFixed(1);
+      let rgb=[0,0,0];comp.forEach(([s,p])=>{const c=hex2rgb(EX[s].col);rgb=rgb.map((v,i)=>v+c[i]*p/100)});
+      let nm=null;for(let g=0;g<60;g++){const t=pick(SYL1)+(rnd()<.55?pick(SYL2):"")+pick(SUF);if(!BAD.test(t)&&!names.has(t.toLowerCase())){nm=t;break}}
+      if(!nm)continue;
+      const noble="He Ne Ar Kr Xe Rn Og".split(" ").includes(e.s);
+      const why=superheavy?`A theoretical recipe. So few atoms of one ingredient have ever existed that this alloy lives only in the Quillmoor Metallurgy Institute's simulations.`
+        :noble?`Made at the Quillmoor Metallurgy Institute by firing an ion beam into the metal, which leaves tiny gas bubbles trapped inside.`
+        :gas(e)||"H N O F Cl".split(" ").includes(e.s)?`Made at the Quillmoor Metallurgy Institute by dissolving a gas between the metal atoms under high pressure.`
+        :radOf(e.s)>=4?`Handled only with remote arms behind lead glass at the Quillmoor Metallurgy Institute.`
+        :`An experimental blend from the Quillmoor Metallurgy Institute, made to study one unusual ingredient.`;
+      const uses=superheavy?"Computer simulations only":noble?"Radiation-damage research":radOf(e.s)>=2?"Nuclear research":pick(["Experimental coatings","Research samples","Sensor prototypes","Catalyst testing"]);
+      const a={name:nm,aliases:[],comp,d,mp,mag,hard:mp<25?0:hard,cond,color:rgb2hex(rgb),leak:false,finish:rnd()<.2?"m":"p",real:false,uses,lore:why};
+      a.reactive=isReactive(w);names.add(nm.toLowerCase());ALLOYS.push(a);need--}
+  });
+})();
 ALLOYS.forEach((a,i)=>{a.no=i+1;a.types=typesOf(a);a.form=a.mp<25?"vial":"rod"});
 const REAL=ALLOYS.filter(a=>a.real);
 
@@ -866,7 +937,9 @@ function noteRows(){
   const sc=Object.entries(S.r.scratchLog);
   if(sc.length)rows.push(`<li style="flex-wrap:wrap"><b>Scratch test</b>${sc.map(([t,r])=>`${t}: ${r}`).join(" · ")}</li>`);
   if(n.melt)rows.push(`<li><b>Furnace</b>${n.melt}</li>`);
+  if(n.react)rows.push(`<li style="flex-wrap:wrap"><b>Reaction</b>${n.react.join("; ")}</li>`);
   if(n.cond)rows.push(`<li><b>Conductivity</b>${n.cond}</li>`);
+  if(n.rust)rows.push(`<li><b>Soak test</b>${n.rust.none?"":`<span class="sw" style="background:${n.rust.col}"></span>`}${n.rust.t}</li>`);
   if(n.rad)rows.push(`<li><b>Geiger</b>${n.rad}</li>`);
   if(n.flame)rows.push(`<li><b>Flame</b><span class="sw" style="background:${n.flame.col}"></span>${n.flame.sparks.map(c=>`<span class="dot" style="background:${c}"></span>`).join("")}${n.flame.sparks.length?" sparks":""}</li>`);
   return rows.length?rows.join(""):`<li class="empty">No readings yet. Try the field kit and the lab bench.</li>`;
@@ -915,7 +988,7 @@ function buildTable(el,ref){let html="";
   EL.forEach(e=>{const[r,c]=pos(e.z);html+=`<button class="el" id="${ref?"r":"p"}-${e.s}" data-s="${e.s}" style="grid-row:${r};grid-column:${c};--c:${CATS[e.cat].c}" aria-label="${e.name}, ${e.z}"><span class="z">${e.z}</span><span class="s">${e.s}</span>${ref?`<span class="m">${e.mass}</span>`:""}</button>`});
   html+=`<div class="ph" style="grid-row:6;grid-column:3">57–71</div><div class="ph" style="grid-row:7;grid-column:3">89–103</div>`;el.innerHTML=html}
 function elSummary(e){const x=EX[e.s];
-  return `<b>${e.s} · ${e.name}</b> — ${fmtDensity(e.d)} · melts ${fmtMp(e)}${x?` · Mohs ${x.h} · ${x.c} MS/m · magnet: ${["none","weak","strong"][x.m]}${x.fl?` · flame <span class="sw" style="background:${x.fl};width:18px;height:10px"></span>`:""}${x.sp?` · ${SPARK[x.sp].t}`:""}${RAD[e.s]?` · radioactivity: ${radLabel(RAD[e.s])}`:""}`:""}`}
+  return `<b>${e.s} · ${e.name}</b> — ${fmtDensity(e.d)} · melts ${fmtMp(e)}${x&&!x.est?` · Mohs ${x.h} · ${x.c} MS/m · magnet: ${["none","weak","strong"][x.m]}${x.fl?` · flame <span class="sw" style="background:${x.fl};width:18px;height:10px"></span>`:""}${x.sp?` · ${SPARK[x.sp].t}`:""}${radOf(e.s)?` · radioactivity: ${radLabel(radOf(e.s))}`:""}`:""}`}
 function renderPicker(){const r=S.r,show=r.stage!=="name";$("#picker").hidden=!show;if(!show)return;
   const ans=new Set(r.a.comp.map(x=>x[0]));
   document.querySelectorAll("#pick-table .el").forEach(b=>{const s=b.dataset.s;
@@ -926,7 +999,7 @@ function togglePick(s){const r=S.r;if(r.stage!=="elements"||r.hit.has(s)||r.miss
   renderActions();renderPicker()}
 
 /* =============== NAME GUESSING =============== */
-const norm=s=>s.normalize("NFD").replace(/[̀-ͯ]/g,"").toLowerCase().replace(/[^a-z0-9]/g,"");
+const norm=s=>s.normalize("NFD").replace(/[\u0300-\u036f]/g,"").toLowerCase().replace(/[^a-z0-9]/g,"");
 function lev(a,b){const d=Array.from({length:a.length+1},(_,i)=>[i]);for(let j=1;j<=b.length;j++)d[0][j]=j;
   for(let i=1;i<=a.length;i++)for(let j=1;j<=b.length;j++)d[i][j]=Math.min(d[i-1][j]+1,d[i][j-1]+1,d[i-1][j-1]+(a[i-1]===b[j-1]?0:1));return d[a.length][b.length]}
 function nameMatches(guess,a){const g=norm(guess);if(!g)return false;
@@ -981,7 +1054,7 @@ function resetLab(){
   document.querySelectorAll("stop.s2").forEach(s=>s.setAttribute("stop-color",shade(a.color,-.5)));
   Object.assign(LAB,{T:25,heat:false,chill:false,fzOn:false,inFurnace:false,meltState:null,
     sc:{on:false,booting:false,load:0,tare:0},
-    cy:{water:0,filling:false,sample:false,anim:false},
+    cy:{water:0,filling:false,sample:false,anim:false,soak:0},
     ci:{on:false,sample:false},
     fl:{gas:false,air:false,lit:false,gasSince:0,warned:false,ignAt:0,inFlame:false,until:0,col:null,int:0,types:[]},
     gm:{on:false,sound:true,sample:false,hits:[],shown:0,bgSeen:null,since:0},
@@ -989,7 +1062,7 @@ function resetLab(){
   $("#rd-gm").textContent="Counter is off";updateGeiger();
   $("#cy-chunk").setAttribute("rx",a.form==="vial"?7:3);
   $("#rd-scale").textContent="Scale is off";$("#rd-fz").textContent="Furnace is off";$("#rd-fl").textContent="Gas off · air vent closed";
-  $("#fz-sample").setAttribute("opacity",0);
+  $("#fz-sample").setAttribute("opacity",0);if(typeof resetFurnaceFx==="function")resetFurnaceFx();
   updateScale();updateCyl();updateFurnaceUI();updateCircuit();updateFlameUI();
   const m=$("#stagemag");m.className="stagemag";$("#specimen").classList.remove("pulled","held");
   document.querySelectorAll(".tool.held,.station.armed").forEach(e=>e.classList.remove("held","armed"));
@@ -1016,25 +1089,50 @@ $("#sc-clear").onclick=()=>{const s=LAB.sc;s.load=0;$("#rd-scale").textContent=s
 
 /* ---- Cylinder ---- */
 const disp=()=>LAB.cy.sample?S.r.V*clamp(LAB.cy.water/SUBMERGE,0,1):0;
+function spill(ml){const c=LAB.cy,first=!c.spilled;c.spilled=(c.spilled||0)+ml;const st=$("#st-cyl");st.classList.add("spilling");clearTimeout(c.spT);c.spT=setTimeout(()=>st.classList.remove("spilling"),700);
+  const now=performance.now();if(!c.lastSplash||now-c.lastSplash>1000){c.lastSplash=now;if(typeof sfx==="function")sfx("splash")}
+  if(first&&c.filling)say("Splash! Water is pouring over the rim and onto the bench!")}
 function updateCyl(){const c=LAB.cy,lvl=c.water+disp();setWater(Math.min(100,lvl));
+  $("#cy-puddle").setAttribute("rx",c.spilled?Math.min(86,16+Math.sqrt(c.spilled)*9):0);
   if(!c.anim){const ch=$("#cy-chunk");
     if(!c.sample)ch.setAttribute("y",-30);
     else ch.setAttribute("y",S.r.a.d<1&&c.water>0?yOf(lvl)-10:174)}
   $("#cy-stream").setAttribute("height",c.filling?Math.max(0,yOf(lvl)-20):0);
   $("#cy-fx").setAttribute("opacity",c.sample&&c.water>0&&S.r.a.reactive?1:0);
-  $("#rd-cyl").textContent=lvl<=0?(c.sample?"Sample in a dry cylinder":"Cylinder is empty"):`Level: ${Math.min(100,lvl).toFixed(1)} mL`;
-  $("#cy-empty").disabled=lvl<=0&&!c.sample}
+  $("#rd-cyl").textContent=lvl<=0?(c.sample?"Sample in a dry cylinder":"Cylinder is empty"):lvl>=99.95&&c.spilled?"Overflowing! Water on the bench.":`Level: ${Math.min(100,lvl).toFixed(1)} mL`;
+  $("#cy-empty").disabled=lvl<=0&&!c.sample;
+  const cr=corrosion(S.r.a),k=c.sample?c.soak:0,col=cr?CORR[cr.k].col:"#000",sev=cr&&cr.k!=="none"?cr.sev:0;
+  $("#cy-rust").setAttribute("y",$("#cy-chunk").getAttribute("y"));$("#cy-rust").setAttribute("rx",$("#cy-chunk").getAttribute("rx"));
+  $("#cy-rust").setAttribute("fill",col);$("#cy-rust").setAttribute("opacity",k*sev*.85);
+  $("#cy-flakes").setAttribute("fill",col);$("#cy-flakes").setAttribute("opacity",cr&&(cr.k==="rust"||cr.k==="white")?k*sev:0);
+  $("#cy-water").setAttribute("fill",cr&&cr.k==="rust"?mix("#6FB7FF","#C9772E",k*sev*.6):cr&&cr.k==="patina"?mix("#6FB7FF","#5FC0A8",k*.3):"#6FB7FF");
+  $("#cy-soak").disabled=!c.sample||c.water<SUBMERGE||c.soak>=1||!!c.soaking}
+const CORR={rust:{col:"#B5561E",t:"flaky crust; water turned cloudy"},patina:{col:"#4FA58A",t:"thin film on the surface"},white:{col:"#E6EAEE",t:"chalky crust"},dull:{col:"#50555C",t:"surface dulled"},none:{col:"#000",t:"no visible change"}};
+function corrosion(a){const w=frac(a),fe=w.Fe||0,cr=w.Cr||0,ni=w.Ni||0,cu=w.Cu||0;
+  if(a.reactive)return null;
+  if(fe>=.3){if(cr>=.11)return{k:"none",sev:0};const sev=clamp((fe-.3)/.5,0,1)*(1-cr*6)*(1-ni*1.5);if(sev>.15)return{k:"rust",sev:clamp(sev,.35,1)}}
+  if(cu>=.5&&ni<.2&&(w.Al||0)<.05)return{k:"patina",sev:.55};
+  if((w.Zn||0)+(w.Mg||0)+(w.Al||0)>=.5)return{k:"white",sev:(w.Mg||0)>=.5?1:.55};
+  if((w.Pb||0)>=.5)return{k:"dull",sev:.6};
+  return{k:"none",sev:0}}
+$("#cy-soak").onclick=()=>{const c=LAB.cy,a=S.r.a;if(!c.sample||c.water<SUBMERGE){say("Cover the sample with water first.");return}
+  const cr=corrosion(a);if(!cr){say("It already reacted with the water. There's nothing left to soak.");return}
+  c.soaking=true;updateCyl();say("You set the cylinder aside and wait a week...");
+  tween(3200,k=>{c.soak=k;$("#rd-cyl").textContent=`Day ${1+Math.min(6,Math.floor(k*7))} of 7`;updateCyl();$("#rd-cyl").textContent=`Day ${1+Math.min(6,Math.floor(k*7))} of 7`},()=>{
+    c.soaking=false;c.soak=1;updateCyl();
+    S.r.notes.rust={col:CORR[cr.k].col,t:CORR[cr.k].t,none:cr.k==="none"};renderDex();
+    say(cr.k==="none"?"Seven days later... the sample looks exactly the same.":"Seven days later... the sample has changed. Take a close look.")})};
 function bindHoldFn(btn,start,stop){const on=e=>{e.preventDefault();if(btn.disabled)return;start();btn.classList.add("on")},off=()=>{stop();btn.classList.remove("on")};
   btn.addEventListener("pointerdown",on);["pointerup","pointerleave","pointercancel"].forEach(ev=>btn.addEventListener(ev,off));
   btn.addEventListener("keydown",e=>{if(e.key===" "||e.key==="Enter")on(e)});btn.addEventListener("keyup",off)}
 bindHoldFn($("#cy-fill"),()=>{LAB.cy.filling=true},()=>{LAB.cy.filling=false;if(S.r)updateCyl()});
-$("#cy-empty").onclick=()=>{Object.assign(LAB.cy,{water:0,sample:false,filling:false});updateCyl();$("#rd-cyl").textContent="Emptied and rinsed"};
+$("#cy-empty").onclick=()=>{Object.assign(LAB.cy,{water:0,sample:false,filling:false,soak:0,spilled:0});updateCyl();$("#rd-cyl").textContent="Emptied, rinsed and mopped up"};
 
 /* ---- Furnace ---- */
 function updateFurnaceUI(){onoff("#fz-pow",LAB.fzOn,LAB.fzOn?"POWER: ON":"POWER: OFF");$("#fz-led").setAttribute("fill",LAB.fzOn?"#FF5A3C":"#4A4F5A");
   $("#btn-heat").disabled=$("#btn-chill").disabled=!LAB.fzOn;$("#fz-out").disabled=!LAB.inFurnace;$("#fz-t").textContent=LAB.fzOn?`${Math.round(LAB.T)} °C`:""}
 $("#fz-pow").onclick=()=>{LAB.fzOn=!LAB.fzOn;LAB.heat=LAB.chill=false;$("#rd-fz").textContent=LAB.fzOn?"Ready. Hold HEAT or CHILL.":"Furnace is off";updateFurnaceUI()};
-$("#fz-out").onclick=()=>{LAB.inFurnace=false;$("#fz-sample").setAttribute("opacity",0);$("#rd-fz").textContent="Crucible is empty";updateFurnaceUI()};
+$("#fz-out").onclick=()=>{LAB.inFurnace=false;resetFurnaceFx();$("#fz-sample").setAttribute("opacity",0);$("#rd-fz").textContent="Crucible is empty";updateFurnaceUI()};
 bindHoldFn($("#btn-heat"),()=>{LAB.heat=true},()=>{LAB.heat=false});
 bindHoldFn($("#btn-chill"),()=>{LAB.chill=true},()=>{LAB.chill=false});
 
@@ -1072,7 +1170,7 @@ function useStation(key){const r=S.r,a=r.a;
     const before=c.water;c.sample=true;c.anim=true;const ch=$("#cy-chunk");
     const lvl=before+disp(),floats=a.d<1&&before>0;const target=floats?yOf(Math.min(100,lvl))-10:174;
     tween(650,k=>ch.setAttribute("y",-30+(target+30)*k*k),()=>{c.anim=false;let after=before+disp(),spilled=false;
-      if(after>100){spilled=true;c.water=100-disp();after=100}
+      if(after>100){spilled=true;spill(after-100);c.water=100-disp();after=100}
       updateCyl();
       if(before<=0){r.notes.vol="dropped into a dry cylinder";say("Clunk. It hit the bottom of an empty cylinder.")}
       else{r.notes.vol=`${before.toFixed(1)} → ${after.toFixed(1)} mL${before<SUBMERGE?" (not fully covered)":""}${spilled?" (overflowed)":""}`;
@@ -1107,16 +1205,28 @@ function startFlame(){const p=flameProfile(S.r.a),f=LAB.fl;Object.assign(f,{inFl
 let actx=null;
 function click(){if(!actx||!LAB.gm.sound)return;try{const b=actx.createBuffer(1,120,actx.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=(Math.random()*2-1)*(1-i/d.length);
   const s=actx.createBufferSource(),gn=actx.createGain();gn.gain.value=.35;s.buffer=b;s.connect(gn).connect(actx.destination);s.start()}catch(e){}}
-function trueCpm(){const g=LAB.gm;let r=24;if(g.sample)r+=S.r.a.comp.reduce((t,[e,p])=>t+(RAD[e]||0)*p/100*400,0);return r}
+function trueCpm(){const g=LAB.gm;let r=24;if(g.sample)r+=S.r.a.comp.reduce((t,[e,p])=>t+radOf(e)*p/100*400,0);return r}
 function updateGeiger(){const g=LAB.gm;onoff("#gm-pow",g.on,g.on?"POWER: ON":"POWER: OFF");onoff("#gm-snd",g.sound,g.sound?"SOUND: ON":"SOUND: OFF");
   $("#gm-chunk").setAttribute("opacity",g.sample?1:0);$("#gm-out").disabled=!g.sample;
+  $("#gm-fix").hidden=!g.broken;$("#gm-pow").disabled=!!g.broken;
+  if(g.broken){$("#gm-cpm").textContent="ERR";$("#gm-needle").setAttribute("transform","rotate(-90 70 78)");$("#gm-led").setAttribute("fill","#222");$("#rd-gm").textContent="Tube burned out";return}
   if(!g.on){$("#gm-cpm").textContent="";$("#gm-needle").setAttribute("transform","rotate(-90 70 78)");$("#rd-gm").textContent="Counter is off"}}
+$("#gm-fix").onclick=()=>{const g=LAB.gm;g.broken=false;g.on=false;g.over=0;g.hits=[];g.shown=0;updateGeiger();$("#rd-gm").textContent="New tube installed"};
 $("#gm-pow").onclick=()=>{const g=LAB.gm;g.on=!g.on;g.hits=[];g.since=performance.now();
-  if(g.on&&!actx){try{actx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){}}if(actx&&actx.state==="suspended")actx.resume();
   if(g.on)$("#rd-gm").textContent=g.sample?"Counting…":"Counting background…";updateGeiger()};
 $("#gm-snd").onclick=()=>{LAB.gm.sound=!LAB.gm.sound;updateGeiger()};
 $("#gm-out").onclick=()=>{const g=LAB.gm;g.sample=false;g.hits=[];g.since=performance.now();if(g.on)$("#rd-gm").textContent="Counting background…";updateGeiger()};
-function geigerTick(now,dt){const g=LAB.gm;if(!g.on)return;
+function geigerTick(now,dt){const g=LAB.gm;if(!g.on||g.broken)return;
+  if(trueCpm()>50000){
+    if(!g.over){g.over=now;say("The needle slams past 10k and the counter shrieks...")}
+    g.shown=Math.min(99999,g.shown*1.25+900);$("#gm-cpm").textContent=Math.round(g.shown)+"";
+    $("#gm-needle").setAttribute("transform",`rotate(${88+Math.random()*4} 70 78)`);$("#gm-led").setAttribute("fill",Math.random()<.5?"#FF3C3C":"#FFE0E0");
+    for(let i=0;i<3;i++)click();
+    if(now-g.over>1800){g.broken=true;g.on=false;g.over=0;const sm=$("#gm-smoke");sm.classList.remove("puff");void sm.getBBox();sm.classList.add("puff");
+      S.r.notes.rad="overloaded the counter until the tube burned out";renderDex();updateGeiger();
+      say("POP! The Geiger tube burned out. That sample is extremely radioactive!")}
+    return}
+  g.over=0;
   const lam=trueCpm()/60*dt;let n=lam<1?(Math.random()<lam?1:0):Math.max(0,Math.round(lam+Math.sqrt(lam)*(Math.random()+Math.random()+Math.random()-1.5)*1.4));
   for(let i=0;i<n;i++)g.hits.push(now);if(n){if(Math.min(n,3))for(let i=0;i<Math.min(n,3);i++)click();$("#gm-led").setAttribute("fill","#FF3C3C")}else $("#gm-led").setAttribute("fill","#6A2A2A");
   const el=Math.max(1000,now-g.since);const cpm=g.hits.length*60000/el;g.shown+=(cpm-g.shown)*Math.min(1,dt*3);
@@ -1126,20 +1236,68 @@ function geigerTick(now,dt){const g=LAB.gm;if(!g.on)return;
     if(g.sample){S.r.notes.rad=`about ${v} counts/min${g.bgSeen!=null?` (empty: ~${g.bgSeen})`:""}`;$("#rd-gm").textContent="Reading stable";renderDex()}
     else{g.bgSeen=v;$("#rd-gm").textContent="Background reading stable"}}}
 
+
+/* ---- Furnace reactions ---- */
+const HAL_COL={F:"#F2E8A0",Cl:"#C8E060",Br:"#A0402A",I:"#8A4AC0"};
+const REACT=[
+ {test:w=>["Li","Na","K","Rb","Cs"].reduce((s,k)=>s+(w[k]||0),0)>=.2,T:150,fx:{flame:"alk",smoke:"#F2F2F2",consume:true},msg:"FWOOM! It burst into flames inside the furnace!",note:"burst into flames"},
+ {test:w=>(w.P||0)>=.003,T:60,fx:{flash:true,smoke:"#FFFFFF",flame:"#FFF7D0"},msg:"FLASH! A puff of thick white smoke!",note:"flashed and gave off thick white smoke"},
+ {test:w=>(w.Mg||0)>=.2,T:620,fx:{flash:true,flame:"#FFFFFF",smoke:"#EDEDED",sparks:"#FFFFFF",consume:true},msg:"FLASH! It burned with a blinding light and crumbled to powder!",note:"burned with a blinding light, leaving powder"},
+ {test:w=>["Ce","La","Nd","Pr"].reduce((s,k)=>s+(w[k]||0),0)>=.3,T:180,fx:{sparks:"#FFE45A"},msg:"Crackle! It threw a shower of sparks!",note:"threw a shower of sparks"},
+ {test:w=>(w.S||0)+(w.Se||0)>=.003,T:250,fx:{flame:"#6A8CFF",smoke:"#E8E2A8"},msg:"Hisss... a small flame and a choking smell.",note:"small flame and a choking smell"},
+ {test:w=>(w.Hg||0)>=.1,T:357,fx:{smoke:"#B8BEC6"},msg:"Hisss... a heavy vapor is boiling out. Vent the furnace!",note:"a heavy vapor boiled out"},
+ {test:w=>(w.H||0)>=.003,T:400,fx:{flame:"#8FB8FF",pops:true},msg:"Pop! Pop! Little flames are bursting from the sample.",note:"popped with little flames"},
+ {test:w=>(w.F||0)+(w.Cl||0)+(w.Br||0)+(w.I||0)>=.003,T:300,fx:{smoke:"hal"},msg:"Hisss... colored fumes are pouring out!",note:"released colored fumes"},
+ {test:w=>(w.As||0)>=.02,T:615,fx:{smoke:"#FFFFFF"},msg:"Hisss... white smoke, and it smells like garlic.",note:"white smoke with a garlic smell"},
+ {test:w=>(w.Cd||0)>=.03,T:767,fx:{smoke:"#8A5A2E"},msg:"Hisss... brown smoke is rising from the crucible.",note:"brown smoke"},
+ {test:w=>(w.Zn||0)>=.3,T:907,fx:{flame:"#8FF0D0",smoke:"#FFFFFF"},msg:"FWOOM! A flame flickers and fluffy white smoke billows out!",note:"flame and fluffy white smoke"},
+ {test:w=>(w.N||0)+(w.O||0)>=.003,T:900,fx:{pops:true,smoke:"#DDE3EA"},msg:"Hisss... gas is fizzing out of the sample.",note:"gas fizzed out"},
+ {test:w=>["He","Ne","Ar","Kr","Xe","Rn","Og"].reduce((s,k)=>s+(w[k]||0),0)>=.003,T:"mp",fx:{pops:true},msg:"Pop! Gas bubbles are bursting through the melt.",note:"bubbles burst out as it melted"},
+ {test:w=>(w.Ti||0)>=.5,T:1700,fx:{sparks:"#FFFFFF",flame:"#FFFFFF",flash:true},msg:"FLASH! The molten metal is burning with white sparks!",note:"burned with white sparks once molten"}
+];
+function reactionsFor(a){const w=frac(a);return REACT.filter(r=>r.test(w)).map(r=>{const fx={...r.fx};
+  if(fx.flame==="alk"){const k=["Na","K","Li","Rb","Cs"].sort((x,y)=>(w[y]||0)-(w[x]||0))[0];fx.flame=EX[k].fl}
+  if(fx.smoke==="hal"){const k=["Cl","Br","I","F"].sort((x,y)=>(w[y]||0)-(w[x]||0))[0];fx.smoke=HAL_COL[k]}
+  return{...r,fx,T:r.T==="mp"?a.mp:r.T}})}
+const FZ={fx:[],p:[],ash:false,done:new Set};
+function resetFurnaceFx(){FZ.fx=[];FZ.p=[];FZ.ash=false;FZ.done=new Set;$("#fz-sample").style.visibility=""}
+function checkReactions(now){if(!LAB.inFurnace||FZ.ash||!LAB.fzOn)return;
+  reactionsFor(S.r.a).forEach((r,i)=>{if(FZ.done.has(i)||LAB.T<r.T)return;FZ.done.add(i);FZ.fx.push({...r.fx,start:now,until:now+4500});
+    const at=Math.round(LAB.T/5)*5;(S.r.notes.react=S.r.notes.react||[]).push(`near ${at} °C it ${r.note}`);renderDex();say(r.msg);$("#rd-fz").textContent="Reaction!";
+    if(r.fx.consume)setTimeout(()=>{FZ.ash=true;$("#fz-sample").style.visibility="hidden";$("#rd-fz").textContent="Only powder is left"},1500)})}
+const fzctx=$("#fzfx").getContext("2d");
+function drawFurnaceFx(now,dt){const c=fzctx;c.clearRect(0,0,180,170);
+  if(FZ.ash&&LAB.inFurnace){c.fillStyle="#E4E1DA";c.beginPath();c.ellipse(90,115,22,6,0,Math.PI,0);c.fill();c.fillStyle="#C9C5BC";c.beginPath();c.ellipse(84,112,8,3,0,0,7);c.fill()}
+  FZ.fx=FZ.fx.filter(f=>now<f.until);
+  FZ.fx.forEach(f=>{const age=(now-f.start)/1000,life=clamp((f.until-now)/1500,0,1);
+    if(f.flash&&age<.7){c.fillStyle=`rgba(255,255,255,${.95*(1-age/.7)})`;c.fillRect(38,50,104,102)}
+    if(f.flame){c.save();c.globalCompositeOperation="lighter";for(let i=0;i<3;i++){const h=34+Math.sin(now/70+i)*8,x=80+i*10+Math.sin(now/90+i*2)*3;
+      const g=c.createRadialGradient(x,112,2,x,104,h);g.addColorStop(0,f.flame+"EE");g.addColorStop(1,f.flame+"00");c.globalAlpha=life;c.fillStyle=g;
+      c.beginPath();c.moveTo(x-9,116);c.quadraticCurveTo(x-10,100,x+Math.sin(now/60+i)*4,116-h);c.quadraticCurveTo(x+10,100,x+9,116);c.fill()}c.restore();c.globalAlpha=1}
+    if(f.smoke&&Math.random()<.5*life)FZ.p.push({k:"s",x:84+Math.random()*12,y:108,vx:(Math.random()-.5)*14,vy:-18-Math.random()*16,r:3,life:2.2,c:f.smoke});
+    if(f.sparks)for(let i=0;i<2;i++)if(Math.random()<life)FZ.p.push({k:"k",x:90,y:112,vx:(Math.random()-.5)*150,vy:-40-Math.random()*110,life:.5+Math.random()*.4,c:f.sparks});
+    if(f.pops&&Math.random()<.18*life)FZ.p.push({k:"b",x:72+Math.random()*36,y:116,r:0,life:.35,c:f.flame||"#DDEBFF"})});
+  FZ.p=FZ.p.filter(p=>(p.life-=dt)>0);
+  FZ.p.forEach(p=>{if(p.k==="s"){p.x+=p.vx*dt;p.y+=p.vy*dt;p.r+=10*dt;c.globalAlpha=clamp(p.life/2.2,0,1)*.55;c.fillStyle=p.c;c.beginPath();c.arc(p.x,p.y,p.r,0,7);c.fill()}
+    else if(p.k==="k"){p.x+=p.vx*dt;p.y+=p.vy*dt;p.vy+=180*dt;c.globalAlpha=clamp(p.life*2,0,1);c.strokeStyle=p.c;c.lineWidth=1.5;c.beginPath();c.moveTo(p.x,p.y);c.lineTo(p.x-p.vx*.03,p.y-p.vy*.03);c.stroke()}
+    else{p.r+=16*dt;c.globalAlpha=clamp(p.life/.35,0,1);c.strokeStyle=p.c;c.lineWidth=1.2;c.beginPath();c.arc(p.x,p.y,p.r,0,7);c.stroke()}});
+  c.globalAlpha=1}
+
 /* ---- Animation loop ---- */
 const fctx=$("#flame").getContext("2d");let lastT=performance.now();
 function glowColor(T){if(T<450)return null;const stops=[[450,"#5A0A00"],[650,"#B01800"],[850,"#E83A00"],[1050,"#FF7A00"],[1250,"#FFB020"],[1500,"#FFE58A"],[1900,"#FFFFFF"]];
   for(let i=1;i<stops.length;i++)if(T<=stops[i][0]){const[t0,c0]=stops[i-1],[t1,c1]=stops[i];return mix(c0,c1,(T-t0)/(t1-t0))}return"#FFFFFF"}
 function loop(now){const dt=Math.min(.05,(now-lastT)/1000);lastT=now;
   if(S.r&&LAB.sc){
-    const c=LAB.cy;if(c.filling){c.water+=14*dt;if(c.water+disp()>100){c.water=100-disp();$("#rd-cyl").textContent="Overflowing!"}updateCyl()}
+    const c=LAB.cy;if(c.filling){c.water+=14*dt;const over=c.water+disp()-100;if(over>0){c.water-=over;spill(over)}updateCyl()}
     if(LAB.fzOn&&LAB.heat)LAB.T=Math.min(3500,LAB.T+(30+.9*Math.max(0,LAB.T-25))*dt);
     else if(LAB.fzOn&&LAB.chill)LAB.T=Math.max(-120,LAB.T-(25+.8*Math.abs(LAB.T-25))*dt);
     else LAB.T+=(25-LAB.T)*.12*dt;
     if(LAB.fzOn)$("#fz-t").textContent=`${Math.round(LAB.T)} °C`;
     const T=LAB.T,g=glowColor(T);
     $("#fz-heat").setAttribute("opacity",g?clamp((T-450)/2500,0,.55):0);$("#fz-heat").setAttribute("fill",g||"#FF6A00");
-    if(LAB.inFurnace){const a=S.r.a;
+    checkReactions(now);drawFurnaceFx(now,dt);
+    if(LAB.inFurnace&&!FZ.ash){const a=S.r.a;
       const f=clamp((T-a.mp)/35+.5,0,1),h=32*(1-f);
       ["#fz-solid","#fz-solidglow","#fz-frost"].forEach(s=>{$(s).setAttribute("y",116-h);$(s).setAttribute("height",Math.max(0,h))});$("#fz-solid").setAttribute("rx",3+10*f);
       ["#fz-liq","#fz-liqglow"].forEach(s=>{$(s).setAttribute("rx",27*f);$(s).setAttribute("ry",5*f)});
@@ -1244,11 +1402,11 @@ function renderElCard(){const e=BY[curEl],x=EX[e.s];
       <dt>MELTING PT</dt><dd>${fmtMp(e)}</dd>
       <dt>ELECTRONEG.</dt><dd>${e.en??"—"}</dd>
       ${x?`<dt>LOOKS LIKE</dt><dd><span class="sw" style="background:linear-gradient(${shade(x.col,.5)},${x.col} 45%,${shade(x.col,-.35)})"></span></dd>
-      <dt>MOHS HARDNESS</dt><dd>${x.h===0?"liquid":x.h}</dd>
-      <dt>CONDUCTIVITY</dt><dd>${x.c<0.01?"≈ 0 (poor)":x.c+" MS/m"}</dd>
+      <dt>MOHS HARDNESS</dt><dd>${x.est?"unknown":x.h===0?"not a solid":x.h}</dd>
+      <dt>CONDUCTIVITY</dt><dd>${x.est?(x.c?"unknown (metal)":"≈ 0 (poor)"):x.c<0.01?"≈ 0 (poor)":x.c+" MS/m"}</dd>
       <dt>MAGNET</dt><dd>${["no pull","weak pull","sticks strongly"][x.m]}</dd>
       <dt>FLAME TEST</dt><dd>${x.fl?`<span class="sw" style="background:${x.fl}"></span>`:"no distinct color"}</dd>
-      <dt>GEIGER</dt><dd>${radLabel(RAD[e.s])}</dd>
+      <dt>GEIGER</dt><dd>${radLabel(radOf(e.s))}</dd>
       <dt>SPARKS</dt><dd>${x.sp?`<span class="dot" style="background:${SPARK[x.sp].c}"></span> ${SPARK[x.sp].t}`:"none"}</dd>`:`<dt>LAB DATA</dt><dd>not used in alloys</dd>`}
     </dl>
     <div class="inalloys">${inA.length?`<b>In ${inA.length} Alloydex entries.</b> ${known.length?"Registered: "+known.slice(0,12).map(a=>`<span class="chip">${a.name}</span>`).join("")+(known.length>12?` +${known.length-12} more`:""):"None registered yet."}`:"Not used in any alloy in this game."}</div>`}
@@ -1281,12 +1439,44 @@ const MINER=`<svg viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="20" cy="37
 <path d="M11 13 Q20 3 29 13 L31 13 L31 15 L9 15 L9 13Z" fill="#FFD23F" stroke="#121B40" stroke-width="2"/><circle cx="28" cy="10" r="2.6" fill="#FFF7C2" stroke="#121B40" stroke-width="1.5"/>
 <rect x="26" y="24" width="8" height="3" rx="1.5" fill="#8A5A2E"/><path d="M33 20 L36 27 L31 26Z" fill="#9AA2AC" stroke="#121B40" stroke-width="1"/></svg>`;
 const EXP={zone:null,x:0,y:0,face:1,busy:true,since:0,target:null,timer:null,hold:null};
+
+function rubbleSVG(z,seed){const R=mulberry(seed*7919+13),rn=(a,b)=>a+R()*(b-a),f=v=>v.toFixed(1);
+  const rocks={"z-mine":["#8C7A66","#A08C74","#766553"],"z-scrap":["#8E949C","#A7ADB5","#7A6F66"],"z-crater":["#6D6488","#877DA6","#5A5272"]}[z];
+  let g="";
+  for(let i=0;i<9;i++)g+=`<ellipse cx="${f(rn(2,38))}" cy="${f(rn(2,38))}" rx="${f(rn(.5,1.3))}" ry="${f(rn(.4,.9))}" fill="rgba(0,0,0,.28)"/>`;
+  for(let i=0;i<6;i++)g+=`<circle cx="${f(rn(2,38))}" cy="${f(rn(2,38))}" r="${f(rn(.3,.7))}" fill="rgba(255,255,255,.18)"/>`;
+  const n=3+(R()*2|0),rk=[];
+  for(let i=0;i<n;i++){const cx=rn(9,31),cy=rn(10,30),r=rn(5,8.5),k=6+(R()*3|0),col=rocks[i%3],pts=[];
+    for(let j=0;j<k;j++){const a=j/k*Math.PI*2+rn(-.25,.25),rr=r*rn(.72,1.1);pts.push([cx+Math.cos(a)*rr,cy+Math.sin(a)*rr*.72])}
+    const P=q=>q.map(p=>f(p[0])+","+f(p[1])).join(" "),top=Math.floor(k*.75),bot=Math.floor(k*.25);
+    g+=`<ellipse cx="${f(cx)}" cy="${f(cy+r*.55)}" rx="${f(r*1.05)}" ry="${f(r*.3)}" fill="rgba(0,0,0,.32)"/>`+
+      `<polygon points="${P(pts)}" fill="${col}" stroke="rgba(0,0,0,.5)" stroke-width=".6"/>`+
+      `<polygon points="${P([[cx,cy],pts[top-1],pts[top],pts[(top+1)%k]])}" fill="${shade(col,.35)}"/>`+
+      `<polygon points="${P([[cx,cy],pts[bot],pts[bot+1]])}" fill="${shade(col,-.3)}"/>`;
+    rk.push([cx,cy,r])}
+  const items=2+(R()*2|0);
+  for(let i=0;i<items;i++){const[cx,cy,r]=rk[i%rk.length],x=cx+rn(-r*.6,r*.6),y=cy+rn(-r*.4,r*.3);const g0=g.length;
+    if(z==="z-mine"){const col=["#E9B949","#D07A3A","#D9DEE4"][R()*3|0];
+      if(R()<.5)g+=`<path d="M${f(x-r*.7)} ${f(y)} q${f(r*.4)} ${f(-r*.5)} ${f(r*.8)} ${f(-r*.1)} t${f(r*.6)} ${f(r*.2)}" stroke="${col}" stroke-width=".9" fill="none" stroke-linecap="round"/>`;
+      g+=`<polygon points="${f(x-1.6)},${f(y)} ${f(x-.4)},${f(y-1.7)} ${f(x+1.5)},${f(y-.9)} ${f(x+1.2)},${f(y+1)} ${f(x-.6)},${f(y+1.3)}" fill="${col}" stroke="${shade(col,-.45)}" stroke-width=".5"/><polygon points="${f(x-.4)},${f(y-1.7)} ${f(x+1.5)},${f(y-.9)} ${f(x+.2)},${f(y-.2)}" fill="${shade(col,.5)}"/><circle cx="${f(x-.2)}" cy="${f(y-.9)}" r=".45" fill="#fff"/>`}
+    else if(z==="z-scrap"){const t=R()*4|0;
+      if(t===0)g+=`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rn(0,90))})"><circle r="3" fill="#8E969F" stroke="#5E656D" stroke-width="1.6" stroke-dasharray="1.1 .8"/><circle r="1.9" fill="#A9B0B8"/><circle r=".8" fill="#4A5058"/></g>`;
+      else if(t===1)g+=`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rn(-40,40))})"><rect x="-4.5" y="-1.2" width="9" height="2.4" rx="1" fill="#B06A3E" stroke="#6E3A1C" stroke-width=".5"/><rect x="-4.5" y="-1.2" width="9" height=".7" fill="#D89A6A"/><ellipse cx="4.5" cy="0" rx=".6" ry="1.2" fill="#4A2A18"/></g>`;
+      else if(t===2)g+=`<g transform="translate(${f(x)} ${f(y)})"><polygon points="-1.6,0 -.8,-1.4 .8,-1.4 1.6,0 .8,1.4 -.8,1.4" fill="#C3C9D0" stroke="#5E656D" stroke-width=".5"/><circle r=".6" fill="#6E757D"/></g>`;
+      else g+=`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rn(-25,25))})"><rect x="-3.5" y="-2.2" width="7" height="4.4" rx=".6" fill="#8A8F96" stroke="#555A61" stroke-width=".5"/><circle cx="-2.5" cy="-1.3" r=".4" fill="#D0D5DB"/><circle cx="2.5" cy="-1.3" r=".4" fill="#D0D5DB"/><circle cx="-2.5" cy="1.3" r=".4" fill="#D0D5DB"/><circle cx="2.5" cy="1.3" r=".4" fill="#D0D5DB"/><path d="M-3.5 1 L-1 2.2" stroke="#B06A3E" stroke-width=".7"/></g>`}
+    else{const hgt=rn(5,9),w=rn(1.8,2.8),col=["#8FD8FF","#B9A6FF","#8FF0D0"][R()*3|0];
+      g+=`<ellipse class="glow" cx="${f(x)}" cy="${f(y)}" rx="${f(w*2.2)}" ry="${f(hgt*.5)}" fill="${col}" opacity=".35"/>`+
+        `<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rn(-20,20))})"><polygon points="${f(-w)},0 ${f(-w)},${f(-hgt*.7)} 0,${f(-hgt)} ${f(w)},${f(-hgt*.7)} ${f(w)},0 0,${f(w*.6)}" fill="${col}" stroke="${shade(col,-.4)}" stroke-width=".5" opacity=".95"/><polygon points="0,${f(-hgt)} ${f(w)},${f(-hgt*.7)} ${f(w)},0 0,${f(w*.6)}" fill="${shade(col,-.2)}"/><path d="M${f(-w*.5)} ${f(-hgt*.6)} L${f(-w*.5)} ${f(-hgt*.15)}" stroke="#fff" stroke-width=".5" opacity=".8"/></g>`}
+    g=g.slice(0,g0)+`<g transform="translate(${f(x)} ${f(y)}) scale(1.45) translate(${f(-x)} ${f(-y)})">`+g.slice(g0)+"</g>"}
+  const glintCol={"z-mine":"#FFE9A8","z-scrap":"#FFFFFF","z-crater":"#DDF2FF"}[z];
+  for(let i=0;i<3;i++)g+=`<g transform="translate(${f(rn(6,34))} ${f(rn(6,32))})"><path class="tw" d="M0 -2.8 L.55 -.55 L2.8 0 L.55 .55 L0 2.8 L-.55 .55 L-2.8 0 L-.55 -.55Z" fill="${glintCol}" style="animation-delay:${f(rn(0,3))}s;animation-duration:${f(rn(1.6,3.2))}s"/></g>`;
+  return `<svg viewBox="0 0 40 40" preserveAspectRatio="none" aria-hidden="true">${g}</svg>`}
 function startExplore(){S.phase="explore";S.r=null;
   $("#game").hidden=true;$("#endscreen").hidden=true;$("#explore").hidden=false;
   EXP.zone=ZONES[Math.random()*ZONES.length|0];EXP.since=0;EXP.target=null;EXP.busy=false;
   $("#zone-name").textContent=EXP.zone.name;$("#zone-sub").textContent=EXP.zone.sub;$("#mapwrap").className="mapwrap "+EXP.zone.cls;
   let h="",k=0;EXP.zone.map.forEach((row,y)=>row.split("").forEach((c,x)=>{if(c==="P"){EXP.x=x;EXP.y=y}
-    const cls=c==="#"?"w":c==="L"?"l":c===","?"r":c==="="?"rail":"f";h+=`<div class="tile ${cls}" data-x="${x}" data-y="${y}" style="--d:${(k++%7)*.35}s"></div>`}));
+    const cls=c==="#"?"w":c==="L"?"l":c===","?"r":c==="="?"rail":"f";h+=`<div class="tile ${cls}" data-x="${x}" data-y="${y}" style="--d:${(k++%7)*.35}s">${c===","?rubbleSVG(EXP.zone.cls,x*31+y*17+EXP.zone.name.length):""}</div>`}));
   $("#map").innerHTML=h;$("#wipe").innerHTML=Array.from({length:8},(_,i)=>`<i style="--k:${i}"></i>`).join("");$("#wipe").className="wipe";
   const pl=$("#player");pl.className="player";pl.innerHTML=`<span class="bang">!</span>`+MINER;placePlayer(true);
   $("#expmsg").textContent=S.run.idx===0?"Walk through the glittering rubble to find a wild alloy.":"Keep exploring. More alloys hide in the rubble.";
@@ -1337,6 +1527,132 @@ $("#pick-table").addEventListener("click",ev=>{const b=ev.target.closest(".el");
 const showInfo=ev=>{const b=ev.target.closest&&ev.target.closest(".el");if(b)$("#pickinfo").innerHTML=elSummary(BY[b.dataset.s])};
 $("#pick-table").addEventListener("mouseover",showInfo);$("#pick-table").addEventListener("focusin",showInfo);
 $("#ref-table").addEventListener("click",ev=>{const b=ev.target.closest(".el");if(b){curEl=b.dataset.s;renderElCard()}});
+
+/* =============== AUDIO: chiptune music + sound effects (all synthesized) =============== */
+const AU={ctx:null,music:null,sfx:null,noiseBuf:null,sfxOn:store.get("wta_sfx",true),musOn:store.get("wta_mus",true),want:null,cur:null,timer:null,step:0,next:0};
+function unlock(){try{const c=AU.ctx,b=c.createBuffer(1,1,22050),src=c.createBufferSource();src.buffer=b;src.connect(c.destination);src.start(0)}catch(e){}
+  if(AU.ctx.state!=="running")AU.ctx.resume().then(updateSoundGate,()=>{});updateSoundGate()}
+function auInit(){
+  if(AU.ctx){unlock();return}
+  try{AU.ctx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){return}
+  const c=AU.ctx,m=c.createGain();m.gain.value=.9;m.connect(c.destination);AU.master=m;
+  c.onstatechange=updateSoundGate;setTimeout(unlock,0);
+  AU.music=c.createGain();AU.music.gain.value=AU.musOn?.75:0;AU.music.connect(m);
+  AU.sfx=c.createGain();AU.sfx.gain.value=AU.sfxOn?1:0;AU.sfx.connect(m);
+  const b=c.createBuffer(1,c.sampleRate,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;AU.noiseBuf=b;
+  if(AU.want)startTrack(AU.want)}
+const SEMI={C:0,D:2,E:4,F:5,G:7,A:9,B:11};
+function nf(n){const m=n.match(/^([A-G])(#|b)?(\d)$/);const midi=(+m[3]+1)*12+SEMI[m[1]]+(m[2]==="#"?1:m[2]==="b"?-1:0);return 440*Math.pow(2,(midi-69)/12)}
+function tone(f,t,d,o={}){const c=AU.ctx,{type="square",vol=.2,to=null,dest=AU.sfx,a=.005,sus=false}=o;
+  const osc=c.createOscillator(),g=c.createGain();osc.type=type;osc.frequency.setValueAtTime(f,t);if(to)osc.frequency.exponentialRampToValueAtTime(to,t+d);
+  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+a);
+  if(sus){g.gain.setValueAtTime(vol*.8,t+Math.max(a,d-.03));g.gain.linearRampToValueAtTime(0,t+d)}else g.gain.exponentialRampToValueAtTime(.0006,t+d);
+  osc.connect(g).connect(dest);osc.start(t);osc.stop(t+d+.03)}
+function nz(t,d,o={}){const c=AU.ctx,{vol=.2,type="highpass",f=2000,to=null,q=1,dest=AU.sfx}=o;
+  const s=c.createBufferSource(),fl=c.createBiquadFilter(),g=c.createGain();s.buffer=AU.noiseBuf;s.loop=true;
+  fl.type=type;fl.frequency.setValueAtTime(f,t);if(to)fl.frequency.exponentialRampToValueAtTime(to,t+d);fl.Q.value=q;
+  g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.0006,t+d);s.connect(fl).connect(g).connect(dest);s.start(t);s.stop(t+d+.03)}
+function loopNoise(o){if(!AU.ctx)return()=>{};const c=AU.ctx,s=c.createBufferSource(),fl=c.createBiquadFilter(),g=c.createGain();
+  s.buffer=AU.noiseBuf;s.loop=true;fl.type=o.type||"lowpass";fl.frequency.value=o.f||800;fl.Q.value=o.q||1;g.gain.setValueAtTime(0,c.currentTime);g.gain.linearRampToValueAtTime(o.vol||.15,c.currentTime+.08);
+  s.connect(fl).connect(g).connect(AU.sfx);s.start();return()=>{const t=c.currentTime;g.gain.cancelScheduledValues(t);g.gain.setValueAtTime(g.gain.value,t);g.gain.linearRampToValueAtTime(0,t+.12);s.stop(t+.15)}}
+function melody(lead,step,o={},bass){const t0=AU.ctx.currentTime+.02;
+  [[lead,{type:"square",vol:.13,sus:true,...o}],[bass||"",{type:"triangle",vol:.22,sus:true}]].forEach(([str,opt])=>{const arr=str.split(/\s+/).filter(Boolean);
+    arr.forEach((n,i)=>{if(n==="."||n==="-")return;let len=1;while(arr[i+len]==="-")len++;tone(nf(n),t0+i*step,step*len*.95,opt)})})}
+const SFX={
+  sel:t=>tone(1320,t,.045,{vol:.06}),
+  step:t=>nz(t,.05,{vol:.05,type:"bandpass",f:700}),
+  rustle:t=>{nz(t,.11,{vol:.16,f:3200});nz(t+.07,.09,{vol:.1,f:5200})},
+  bump:t=>tone(105,t,.08,{vol:.16}),
+  alert:t=>{tone(nf("E6"),t,.07,{vol:.13});tone(nf("B6"),t+.08,.14,{vol:.13})},
+  encounter:t=>{tone(160,t,.95,{type:"sawtooth",vol:.1,to:1500});nz(t+.35,.65,{vol:.14,f:700,to:6000})},
+  clack:t=>{nz(t,.06,{vol:.35,type:"bandpass",f:1800,q:2});tone(95,t,.14,{type:"triangle",vol:.35})},
+  tick:t=>{tone(700,t,.04,{vol:.08});tone(320,t+.3,.6,{type:"triangle",vol:.12,to:110})},
+  thud:t=>tone(170,t+.25,.22,{type:"triangle",vol:.3,to:60}),
+  scratch:t=>{nz(t,.38,{vol:.22,type:"bandpass",f:2400,to:5200,q:7});tone(3100,t,.3,{type:"sawtooth",vol:.02,to:2600})},
+  skid:t=>nz(t,.2,{vol:.1,type:"bandpass",f:1300,to:900,q:3}),
+  swirl:t=>nz(t,.5,{vol:.12,type:"lowpass",f:900,to:400}),
+  beep:t=>{tone(2000,t,.07,{vol:.08});tone(2000,t+.12,.07,{vol:.08})},
+  plunk:t=>{tone(720,t,.16,{type:"sine",vol:.35,to:210});nz(t,.22,{vol:.08,type:"lowpass",f:1600})},
+  clunk:t=>tone(150,t,.14,{vol:.2,to:75}),
+  splash:t=>nz(t,.5,{vol:.25,type:"lowpass",f:3200,to:500}),
+  fizz:t=>{nz(t,1.3,{vol:.22,f:4200});nz(t,.6,{vol:.3,type:"lowpass",f:700,to:180})},
+  whoomph:t=>nz(t,.7,{vol:.35,type:"lowpass",f:180,to:1600}),
+  spark:t=>nz(t,.03,{vol:.3,f:5000}),
+  click:t=>nz(t,.02,{vol:.3,f:3000}),
+  hiss:t=>nz(t,1.1,{vol:.07,f:6000}),
+  sizzle:t=>nz(t,.8,{vol:.09,type:"bandpass",f:5000,q:2}),
+  pickup:t=>{tone(nf("C6"),t,.05,{vol:.07});tone(nf("G6"),t+.05,.06,{vol:.07})},
+  super:()=>melody("C6 E6 G6 C7",.06,{vol:.1}),
+  partial:()=>melody("E5 G5 E5",.08,{vol:.1}),
+  miss:()=>melody("E4 C4",.12,{vol:.12}),
+  wrong:t=>tone(110,t,.3,{vol:.12,type:"sawtooth"}),
+  right:()=>melody("G5 C6 E6 G6 -",.07),
+  hint:()=>melody("A6 E7",.08,{vol:.07,type:"triangle"}),
+  caught:()=>melody("C5 E5 G5 C6 - - G5 C6 E6 - - -",.1,{},"C3 . . G2 . . C3 . . C3 - -"),
+  flee:()=>melody("G5 F#5 F5 E5 - D#5 D5 - -",.08,{vol:.11},"G2 . . . . . G1 - -"),
+  fanfare:()=>melody("G4 C5 E5 G5 - E5 G5 - C6 - - - - -",.11,{},"C3 . . . . G2 . . C3 - - - - -")
+};
+function sfx(name){if(!AU.ctx||!AU.sfxOn||!SFX[name])return;try{SFX[name](AU.ctx.currentTime+.005)}catch(e){}}
+
+/* Original chiptune loops: one bar = 8 eighth-notes */
+const TRACKS={
+  explore:{bpm:112,lv:.085,bv:.17,
+    lead:"E5 - G5 - C6 - B5 A5 G5 - E5 - C5 - D5 E5 F5 - A5 - C6 - A5 F5 G5 - - - D5 E5 F5 D5 E5 - G5 - C6 - D6 C6 B5 - A5 - E5 - A5 B5 C6 - A5 - F5 - G5 A5 G5 - - - . . . .",
+    bass:"C3 . G3 . C3 . G3 . A2 . E3 . A2 . E3 . F2 . C3 . F2 . C3 . G2 . D3 . G2 . B2 .",
+    drum:"k . h . s . h h"},
+  battle:{bpm:140,lv:.075,bv:.2,
+    lead:"A4 C5 E5 A5 G5 E5 C5 E5 F4 A4 C5 F5 E5 C5 A4 C5 G4 B4 D5 G5 F5 D5 B4 D5 E5 - G#5 - B5 - E6 - A5 - . A5 C6 - B5 A5 F5 - . F5 A5 - G5 F5 G5 - . G5 B5 - D6 B5 E6 - - - G#5 - B5 -",
+    bass:"A2 A3 A2 A3 A2 A3 A2 A3 F2 F3 F2 F3 F2 F3 F2 F3 G2 G3 G2 G3 G2 G3 G2 G3 E2 E3 E2 E3 E2 E3 E2 E3",
+    drum:"k h s h k k s h"}
+};
+const parseSeq=s=>s.split(/\s+/).filter(Boolean);
+function startTrack(name){AU.want=name;if(!AU.ctx)return;clearInterval(AU.timer);
+  const T=TRACKS[name];AU.cur={T,lead:parseSeq(T.lead),bass:parseSeq(T.bass),drum:parseSeq(T.drum)};AU.step=0;AU.next=AU.ctx.currentTime+.1;AU.timer=setInterval(sched,25)}
+function stopTrack(){clearInterval(AU.timer);AU.timer=null;AU.cur=null;AU.want=null}
+function voice(arr,i,t,dur,o){const n=arr[i%arr.length];if(n==="."||n==="-")return;let len=1;while(arr[(i+len)%arr.length]==="-"&&len<arr.length)len++;tone(nf(n),t,dur*len*.92,o)}
+function sched(){const c=AU.ctx,cur=AU.cur;if(!cur)return;const dur=60/cur.T.bpm/2;
+  if(AU.next<c.currentTime-.2)AU.next=c.currentTime+.05;
+  while(AU.next<c.currentTime+.15){const i=AU.step,t=AU.next;
+    voice(cur.lead,i,t,dur,{type:"square",vol:cur.T.lv,dest:AU.music,sus:true});
+    voice(cur.bass,i,t,dur,{type:"triangle",vol:cur.T.bv,dest:AU.music,sus:true});
+    const d=cur.drum[i%cur.drum.length];
+    if(d==="k")tone(150,t,.12,{type:"sine",vol:.4,to:45,dest:AU.music});
+    else if(d==="s")nz(t,.12,{vol:.16,f:1500,dest:AU.music});
+    else if(d==="h")nz(t,.03,{vol:.07,f:7000,dest:AU.music});
+    AU.next+=dur;AU.step++}}
+function setAudioButtons(){const m=$("#au-mus"),s=$("#au-sfx");m.textContent=AU.musOn?"♪ MUSIC: ON":"♪ MUSIC: OFF";s.textContent=AU.sfxOn?"SFX: ON":"SFX: OFF";
+  m.setAttribute("aria-pressed",AU.musOn);s.setAttribute("aria-pressed",AU.sfxOn)}
+$("#au-mus").onclick=()=>{auInit();AU.musOn=!AU.musOn;store.set("wta_mus",AU.musOn);if(AU.music)AU.music.gain.value=AU.musOn?.75:0;setAudioButtons()};
+$("#au-sfx").onclick=()=>{auInit();AU.sfxOn=!AU.sfxOn;store.set("wta_sfx",AU.sfxOn);if(AU.sfx)AU.sfx.gain.value=AU.sfxOn?1:0;setAudioButtons()};
+setAudioButtons();
+["pointerdown","pointerup","click","touchend","keydown"].forEach(ev=>document.addEventListener(ev,()=>{if(!AU.ctx||AU.ctx.state!=="running")auInit()},{capture:true}));
+function updateSoundGate(){const on=AU.ctx&&AU.ctx.state==="running";const g=$("#startgate");if(g&&on)g.hidden=true}
+$("#startbtn").onclick=()=>{auInit();$("#startgate").hidden=true;if(S.phase==="explore")startTrack("explore")};
+document.addEventListener("click",e=>{const b=e.target.closest(".btn,.tab,.mode,.ctrl button,.filters button,.el");if(b&&!b.disabled)sfx("sel")});
+
+/* Sound cues keyed to what the dialog box says */
+const SAY_FX=[[/^It's super effective/,"super"],[/^It's not very effective/,"partial"],[/^It missed/,"miss"],[/^It's not /,"wrong"],[/^It's [A-Z0-9'’ -]+!/,"right"],
+  [/^Gotcha/,""],[/^Got away|^Oh no!/,""],[/^HINT/,"hint"],[/^CLACK/,"clack"],[/^A faint tug/,"tick"],[/^Nothing\. The magnet|^The magnet slides/,"thud"],
+  [/^Screeech/,"scratch"],[/skids across/,"skid"],[/swirls through/,"swirl"],[/^The scale beeps/,"beep"],[/^Plunk|^It floats/,"plunk"],[/^Clunk/,"clunk"],
+  [/^Splash/,"splash"],[/^FWOOSH/,"fizz"],[/^Whoomph/,"whoomph"],[/^Click! Just a spark/,"spark"],[/^Click\./,"click"],[/^Sniff/,"hiss"],
+  [/^Sample picked up|^Tool ready/,"pickup"],[/^Seven days later/,"hint"],[/^FWOOM|^FLASH/,"whoomph"],[/^Crackle/,"sizzle"],[/^Hisss/,"hiss"],[/^Pop!/,"spark"],[/^POP!/,"clack"],[/^The needle slams/,"wrong"],[/^You set the cylinder aside/,"swirl"],[/^You hold a scraping|^It slumps|^It pours/,"sizzle"]];
+const _say=say;say=function(msg){const hit=SAY_FX.find(([re])=>re.test(msg));if(hit&&hit[1])sfx(hit[1]);_say(msg)};
+const _step=step;step=function(dx,dy){const ox=EXP.x,oy=EXP.y,wasBusy=EXP.busy||S.phase!=="explore";const r=_step(dx,dy);if(wasBusy)return r;
+  if(EXP.x===ox&&EXP.y===oy)sfx("bump");else sfx(tileAt(EXP.x,EXP.y)===","?"rustle":"step");return r};
+const _encounter=encounter;encounter=function(){stopTrack();sfx("alert");setTimeout(()=>sfx("encounter"),600);_encounter()};
+const _startExplore=startExplore;startExplore=function(){_startExplore();startTrack("explore")};
+const _startRound=startRound;startRound=function(){_startRound();startTrack("battle")};
+const _win=win;win=function(){stopTrack();sfx("caught");_win()};
+const _lose=lose;lose=function(ran){stopTrack();sfx("flee");_lose(ran)};
+const _endRun=endRun;endRun=function(){stopTrack();sfx("fanfare");_endRun()};
+click=function(){if(!AU.ctx||!LAB.gm.sound)return;nz(AU.ctx.currentTime,.004,{vol:.6,f:1000})};
+(function(){let stopPour=null,stopHeat=null,stopChill=null;
+  const hold=(id,start,get,set)=>{const b=$(id);b.addEventListener("pointerdown",()=>{if(b.disabled||!AU.sfxOn)return;set(start())});
+    ["pointerup","pointerleave","pointercancel"].forEach(ev=>b.addEventListener(ev,()=>{const s=get();if(s){s();set(null)}}))};
+  hold("#cy-fill",()=>loopNoise({type:"bandpass",f:1400,q:.8,vol:.12}),()=>stopPour,v=>stopPour=v);
+  hold("#btn-heat",()=>loopNoise({type:"lowpass",f:260,vol:.3}),()=>stopHeat,v=>stopHeat=v);
+  hold("#btn-chill",()=>loopNoise({type:"highpass",f:5000,vol:.08}),()=>stopChill,v=>stopChill=v)})();
+
 newRun();
 </script>
 
