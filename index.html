@@ -372,8 +372,9 @@ dl.props dd{margin:0;font-weight:800;font-variant-numeric:tabular-nums;text-alig
             <h4>GRADUATED CYLINDER</h4>
             <svg viewBox="0 0 180 200" aria-hidden="true">
               <defs><linearGradient id="gs-cyl" x1="0" y1="0" x2="0" y2="1"><stop class="s1" offset="0"/><stop class="s0" offset=".45"/><stop class="s2" offset="1"/></linearGradient></defs>
-              <path d="M128 4 L150 4 L150 12 L138 12 L138 20" fill="none" stroke="#7F8CA8" stroke-width="5"/>
-              <rect id="cy-stream" x="136" y="20" width="3" height="0" fill="#6FB7FF"/>
+              <path d="M160 2 L160 7 L92 7 L92 14" fill="none" stroke="#7F8CA8" stroke-width="5" stroke-linejoin="round"/>
+              <rect x="146" y="0" width="12" height="5" rx="2" fill="#E8412C" id="cy-knob"/>
+              <rect id="cy-stream" x="90.5" y="14" width="3" height="0" fill="#6FB7FF"/>
               <g id="cy-grad"></g>
               <rect id="cy-water" x="72" y="188" width="36" height="0" fill="#6FB7FF" opacity=".55"/>
               <rect id="cy-chunk" x="80" y="-30" width="20" height="14" rx="3" fill="url(#gs-cyl)" stroke="rgba(0,0,0,.35)"/>
@@ -388,7 +389,7 @@ dl.props dd{margin:0;font-weight:800;font-variant-numeric:tabular-nums;text-alig
               <g id="cy-streams" fill="none" stroke="#6FB7FF" stroke-width="3" stroke-linecap="round"><path d="M71 13 Q62 18 64 50 L64 190"/><path d="M109 13 Q118 18 116 50 L116 190"/></g>
               <rect x="60" y="188" width="60" height="8" rx="3" fill="#243A73"/>
             </svg>
-            <div class="ctrl"><button id="cy-fill" class="cool">HOLD TO FILL</button><button id="cy-empty">EMPTY</button><button id="cy-soak">SOAK 1 WEEK</button></div>
+            <div class="ctrl"><button id="cy-fill">FAUCET: OFF</button><button id="cy-empty">EMPTY</button><button id="cy-soak">SOAK 1 WEEK</button></div>
             <div class="readout" id="rd-cyl">Cylinder is empty</div>
           </div>
           <div class="station" data-drop="furnace" id="st-furnace">
@@ -406,6 +407,8 @@ dl.props dd{margin:0;font-weight:800;font-variant-numeric:tabular-nums;text-alig
                 <rect id="fz-solidglow" x="72" y="84" width="36" height="32" rx="3" fill="#FF3000" opacity="0"/>
                 <ellipse id="fz-liq" cx="90" cy="117" rx="0" ry="0" fill="url(#gs-fz)"/>
                 <ellipse id="fz-liqglow" cx="90" cy="117" rx="0" ry="0" fill="#FF3000" opacity="0"/>
+                <rect id="fz-solidcrust" x="72" y="84" width="36" height="32" rx="3" fill="#2E2826" opacity="0"/>
+                <ellipse id="fz-liqcrust" cx="90" cy="117" rx="0" ry="0" fill="#2E2826" opacity="0"/>
                 <rect id="fz-frost" x="72" y="84" width="36" height="32" rx="3" fill="#EAF6FF" opacity="0"/>
               </g>
               <circle id="fz-led" cx="142" cy="18" r="4" fill="#4A4F5A"/>
@@ -936,7 +939,7 @@ function noteRows(){
   if(n.magnet)rows.push(`<li><b>Magnet</b>${n.magnet}</li>`);
   const sc=Object.entries(S.r.scratchLog);
   if(sc.length)rows.push(`<li style="flex-wrap:wrap"><b>Scratch test</b>${sc.map(([t,r])=>`${t}: ${r}`).join(" · ")}</li>`);
-  if(n.melt)rows.push(`<li><b>Furnace</b>${n.melt}</li>`);
+  if(n.melt||n.freeze)rows.push(`<li><b>Furnace</b>${[n.melt,n.freeze].filter(Boolean).join("; ")}</li>`);
   if(n.react)rows.push(`<li style="flex-wrap:wrap"><b>Reaction</b>${n.react.join("; ")}</li>`);
   if(n.cond)rows.push(`<li><b>Conductivity</b>${n.cond}</li>`);
   if(n.rust)rows.push(`<li><b>Soak test</b>${n.rust.none?"":`<span class="sw" style="background:${n.rust.col}"></span>`}${n.rust.t}</li>`);
@@ -1060,7 +1063,7 @@ function resetLab(){
     gm:{on:false,sound:true,sample:false,hits:[],shown:0,bgSeen:null,since:0},
     sparks:[],flash:0});
   $("#rd-gm").textContent="Counter is off";updateGeiger();
-  $("#cy-chunk").setAttribute("rx",a.form==="vial"?7:3);
+  $("#cy-chunk").setAttribute("rx",a.form==="vial"?7:3);if(typeof setFaucet==="function")setFaucet(false);
   $("#rd-scale").textContent="Scale is off";$("#rd-fz").textContent="Furnace is off";$("#rd-fl").textContent="Gas off · air vent closed";
   $("#fz-sample").setAttribute("opacity",0);if(typeof resetFurnaceFx==="function")resetFurnaceFx();
   updateScale();updateCyl();updateFurnaceUI();updateCircuit();updateFlameUI();
@@ -1092,14 +1095,15 @@ const disp=()=>LAB.cy.sample?S.r.V*clamp(LAB.cy.water/SUBMERGE,0,1):0;
 function spill(ml){const c=LAB.cy,first=!c.spilled;c.spilled=(c.spilled||0)+ml;const st=$("#st-cyl");st.classList.add("spilling");clearTimeout(c.spT);c.spT=setTimeout(()=>st.classList.remove("spilling"),700);
   const now=performance.now();if(!c.lastSplash||now-c.lastSplash>1000){c.lastSplash=now;if(typeof sfx==="function")sfx("splash")}
   if(first&&c.filling)say("Splash! Water is pouring over the rim and onto the bench!")}
-function updateCyl(){const c=LAB.cy,lvl=c.water+disp();setWater(Math.min(100,lvl));
+const RIM=110;
+function updateCyl(){const c=LAB.cy,lvl=c.water+disp();setWater(Math.min(RIM,lvl));
   $("#cy-puddle").setAttribute("rx",c.spilled?Math.min(86,16+Math.sqrt(c.spilled)*9):0);
   if(!c.anim){const ch=$("#cy-chunk");
     if(!c.sample)ch.setAttribute("y",-30);
     else ch.setAttribute("y",S.r.a.d<1&&c.water>0?yOf(lvl)-10:174)}
-  $("#cy-stream").setAttribute("height",c.filling?Math.max(0,yOf(lvl)-20):0);
+  $("#cy-stream").setAttribute("height",c.filling?Math.max(0,yOf(Math.min(RIM,lvl))-14):0);
   $("#cy-fx").setAttribute("opacity",c.sample&&c.water>0&&S.r.a.reactive?1:0);
-  $("#rd-cyl").textContent=lvl<=0?(c.sample?"Sample in a dry cylinder":"Cylinder is empty"):lvl>=99.95&&c.spilled?"Overflowing! Water on the bench.":`Level: ${Math.min(100,lvl).toFixed(1)} mL`;
+  $("#rd-cyl").textContent=lvl<=0?(c.sample?"Sample in a dry cylinder":"Cylinder is empty"):lvl>=RIM-.05&&c.spilled?"Overflowing! Water on the bench.":lvl>100?"Above the 100 mL mark":`Level: ${lvl.toFixed(1)} mL`;
   $("#cy-empty").disabled=lvl<=0&&!c.sample;
   const cr=corrosion(S.r.a),k=c.sample?c.soak:0,col=cr?CORR[cr.k].col:"#000",sev=cr&&cr.k!=="none"?cr.sev:0;
   $("#cy-rust").setAttribute("y",$("#cy-chunk").getAttribute("y"));$("#cy-rust").setAttribute("rx",$("#cy-chunk").getAttribute("rx"));
@@ -1125,7 +1129,10 @@ $("#cy-soak").onclick=()=>{const c=LAB.cy,a=S.r.a;if(!c.sample||c.water<SUBMERGE
 function bindHoldFn(btn,start,stop){const on=e=>{e.preventDefault();if(btn.disabled)return;start();btn.classList.add("on")},off=()=>{stop();btn.classList.remove("on")};
   btn.addEventListener("pointerdown",on);["pointerup","pointerleave","pointercancel"].forEach(ev=>btn.addEventListener(ev,off));
   btn.addEventListener("keydown",e=>{if(e.key===" "||e.key==="Enter")on(e)});btn.addEventListener("keyup",off)}
-bindHoldFn($("#cy-fill"),()=>{LAB.cy.filling=true},()=>{LAB.cy.filling=false;if(S.r)updateCyl()});
+let stopPour=null;
+function setFaucet(on){if(!LAB.cy)return;LAB.cy.filling=on;onoff("#cy-fill",on,on?"FAUCET: ON":"FAUCET: OFF");$("#cy-knob").setAttribute("fill",on?"#2FB463":"#E8412C");
+  if(stopPour){stopPour();stopPour=null}if(on&&typeof loopNoise==="function")stopPour=loopNoise("pour");if(S.r)updateCyl()}
+$("#cy-fill").onclick=()=>setFaucet(!LAB.cy.filling);
 $("#cy-empty").onclick=()=>{Object.assign(LAB.cy,{water:0,sample:false,filling:false,soak:0,spilled:0});updateCyl();$("#rd-cyl").textContent="Emptied, rinsed and mopped up"};
 
 /* ---- Furnace ---- */
@@ -1168,12 +1175,12 @@ function useStation(key){const r=S.r,a=r.a;
     say("The scale beeps and settles.")}
   if(key==="cyl"){const c=LAB.cy;if(c.sample){say("The sample is already in the cylinder.");return}
     const before=c.water;c.sample=true;c.anim=true;const ch=$("#cy-chunk");
-    const lvl=before+disp(),floats=a.d<1&&before>0;const target=floats?yOf(Math.min(100,lvl))-10:174;
+    const lvl=before+disp(),floats=a.d<1&&before>0;const target=floats?yOf(Math.min(RIM,lvl))-10:174;
     tween(650,k=>ch.setAttribute("y",-30+(target+30)*k*k),()=>{c.anim=false;let after=before+disp(),spilled=false;
-      if(after>100){spilled=true;spill(after-100);c.water=100-disp();after=100}
+      if(after>RIM){spilled=true;spill(after-RIM);c.water=RIM-disp();after=RIM}
       updateCyl();
       if(before<=0){r.notes.vol="dropped into a dry cylinder";say("Clunk. It hit the bottom of an empty cylinder.")}
-      else{r.notes.vol=`${before.toFixed(1)} → ${after.toFixed(1)} mL${before<SUBMERGE?" (not fully covered)":""}${spilled?" (overflowed)":""}`;
+      else{r.notes.vol=before>100?"water was already above the scale":after>100?`${before.toFixed(1)} mL → above the 100 mL mark${spilled?" (overflowed)":""}`:`${before.toFixed(1)} → ${after.toFixed(1)} mL${before<SUBMERGE?" (not fully covered)":""}`;
         if(a.reactive)say("FWOOSH! It fizzed and burst into flame on the water!");
         else if(spilled)say("Splash! Water sloshed over the rim.");
         else if(before<SUBMERGE)say("Plunk. The sample isn't fully under water.");
@@ -1241,34 +1248,34 @@ function geigerTick(now,dt){const g=LAB.gm;if(!g.on||g.broken)return;
 const HAL_COL={F:"#F2E8A0",Cl:"#C8E060",Br:"#A0402A",I:"#8A4AC0"};
 const REACT=[
  {test:w=>["Li","Na","K","Rb","Cs"].reduce((s,k)=>s+(w[k]||0),0)>=.2,T:150,fx:{flame:"alk",smoke:"#F2F2F2",consume:true},msg:"FWOOM! It burst into flames inside the furnace!",note:"burst into flames"},
- {test:w=>(w.P||0)>=.003,T:60,fx:{flash:true,smoke:"#FFFFFF",flame:"#FFF7D0"},msg:"FLASH! A puff of thick white smoke!",note:"flashed and gave off thick white smoke"},
+ {test:w=>(w.P||0)>=.003,T:60,fx:{flash:true,smoke:"#FFFFFF",flame:"#FFF7D0"},msg:"FLASH! A puff of thick white smoke!",note:"flashed and gave off thick white smoke",crust:"#F4F2EA"},
  {test:w=>(w.Mg||0)>=.2,T:620,fx:{flash:true,flame:"#FFFFFF",smoke:"#EDEDED",sparks:"#FFFFFF",consume:true},msg:"FLASH! It burned with a blinding light and crumbled to powder!",note:"burned with a blinding light, leaving powder"},
- {test:w=>["Ce","La","Nd","Pr"].reduce((s,k)=>s+(w[k]||0),0)>=.3,T:180,fx:{sparks:"#FFE45A"},msg:"Crackle! It threw a shower of sparks!",note:"threw a shower of sparks"},
- {test:w=>(w.S||0)+(w.Se||0)>=.003,T:250,fx:{flame:"#6A8CFF",smoke:"#E8E2A8"},msg:"Hisss... a small flame and a choking smell.",note:"small flame and a choking smell"},
- {test:w=>(w.Hg||0)>=.1,T:357,fx:{smoke:"#B8BEC6"},msg:"Hisss... a heavy vapor is boiling out. Vent the furnace!",note:"a heavy vapor boiled out"},
- {test:w=>(w.H||0)>=.003,T:400,fx:{flame:"#8FB8FF",pops:true},msg:"Pop! Pop! Little flames are bursting from the sample.",note:"popped with little flames"},
- {test:w=>(w.F||0)+(w.Cl||0)+(w.Br||0)+(w.I||0)>=.003,T:300,fx:{smoke:"hal"},msg:"Hisss... colored fumes are pouring out!",note:"released colored fumes"},
- {test:w=>(w.As||0)>=.02,T:615,fx:{smoke:"#FFFFFF"},msg:"Hisss... white smoke, and it smells like garlic.",note:"white smoke with a garlic smell"},
- {test:w=>(w.Cd||0)>=.03,T:767,fx:{smoke:"#8A5A2E"},msg:"Hisss... brown smoke is rising from the crucible.",note:"brown smoke"},
- {test:w=>(w.Zn||0)>=.3,T:907,fx:{flame:"#8FF0D0",smoke:"#FFFFFF"},msg:"FWOOM! A flame flickers and fluffy white smoke billows out!",note:"flame and fluffy white smoke"},
- {test:w=>(w.N||0)+(w.O||0)>=.003,T:900,fx:{pops:true,smoke:"#DDE3EA"},msg:"Hisss... gas is fizzing out of the sample.",note:"gas fizzed out"},
- {test:w=>["He","Ne","Ar","Kr","Xe","Rn","Og"].reduce((s,k)=>s+(w[k]||0),0)>=.003,T:"mp",fx:{pops:true},msg:"Pop! Gas bubbles are bursting through the melt.",note:"bubbles burst out as it melted"},
- {test:w=>(w.Ti||0)>=.5,T:1700,fx:{sparks:"#FFFFFF",flame:"#FFFFFF",flash:true},msg:"FLASH! The molten metal is burning with white sparks!",note:"burned with white sparks once molten"}
+ {test:w=>["Ce","La","Nd","Pr"].reduce((s,k)=>s+(w[k]||0),0)>=.3,T:180,fx:{sparks:"#FFE45A"},msg:"Crackle! It threw a shower of sparks!",note:"threw a shower of sparks",crust:"#6A6258"},
+ {test:w=>(w.S||0)+(w.Se||0)>=.003,T:250,fx:{flame:"#6A8CFF",smoke:"#E8E2A8"},msg:"Hisss... a small flame and a choking smell.",note:"small flame and a choking smell",crust:"#3A3A2A"},
+ {test:w=>(w.Hg||0)>=.1,T:357,fx:{smoke:"#B8BEC6"},msg:"Hisss... a heavy vapor is boiling out. Vent the furnace!",note:"a heavy vapor boiled out",crust:"#8A8E92"},
+ {test:w=>(w.H||0)>=.003,T:400,fx:{flame:"#8FB8FF",pops:true},msg:"Pop! Pop! Little flames are bursting from the sample.",note:"popped with little flames",crust:"#2E2826"},
+ {test:w=>(w.F||0)+(w.Cl||0)+(w.Br||0)+(w.I||0)>=.003,T:300,fx:{smoke:"hal"},msg:"Hisss... colored fumes are pouring out!",note:"released colored fumes",crust:"#6A7A3A"},
+ {test:w=>(w.As||0)>=.02,T:615,fx:{smoke:"#FFFFFF"},msg:"Hisss... white smoke, and it smells like garlic.",note:"white smoke with a garlic smell",crust:"#9A9A9A"},
+ {test:w=>(w.Cd||0)>=.03,T:767,fx:{smoke:"#8A5A2E"},msg:"Hisss... brown smoke is rising from the crucible.",note:"brown smoke",crust:"#7A4A2A"},
+ {test:w=>(w.Zn||0)>=.3,T:907,fx:{flame:"#8FF0D0",smoke:"#FFFFFF"},msg:"FWOOM! A flame flickers and fluffy white smoke billows out!",note:"flame and fluffy white smoke",crust:"#EDEDE8"},
+ {test:w=>(w.N||0)+(w.O||0)>=.003,T:900,fx:{pops:true,smoke:"#DDE3EA"},msg:"Hisss... gas is fizzing out of the sample.",note:"gas fizzed out",crust:"#5A5048"},
+ {test:w=>["He","Ne","Ar","Kr","Xe","Rn","Og"].reduce((s,k)=>s+(w[k]||0),0)>=.003,T:"mp",fx:{pops:true},msg:"Pop! Gas bubbles are bursting through the melt.",note:"bubbles burst out as it melted",crust:"#4A4A50"},
+ {test:w=>(w.Ti||0)>=.5,T:1700,fx:{sparks:"#FFFFFF",flame:"#FFFFFF",flash:true},msg:"FLASH! The molten metal is burning with white sparks!",note:"burned with white sparks once molten",crust:"#E6E6E0"}
 ];
 function reactionsFor(a){const w=frac(a);return REACT.filter(r=>r.test(w)).map(r=>{const fx={...r.fx};
   if(fx.flame==="alk"){const k=["Na","K","Li","Rb","Cs"].sort((x,y)=>(w[y]||0)-(w[x]||0))[0];fx.flame=EX[k].fl}
   if(fx.smoke==="hal"){const k=["Cl","Br","I","F"].sort((x,y)=>(w[y]||0)-(w[x]||0))[0];fx.smoke=HAL_COL[k]}
   return{...r,fx,T:r.T==="mp"?a.mp:r.T}})}
 const FZ={fx:[],p:[],ash:false,done:new Set};
-function resetFurnaceFx(){FZ.fx=[];FZ.p=[];FZ.ash=false;FZ.done=new Set;$("#fz-sample").style.visibility=""}
+function resetFurnaceFx(){FZ.fx=[];FZ.p=[];FZ.ash=false;FZ.done=new Set;FZ.melted=false;FZ.crust=null;$("#fz-sample").style.visibility=""}
 function checkReactions(now){if(!LAB.inFurnace||FZ.ash||!LAB.fzOn)return;
-  reactionsFor(S.r.a).forEach((r,i)=>{if(FZ.done.has(i)||LAB.T<r.T)return;FZ.done.add(i);FZ.fx.push({...r.fx,start:now,until:now+4500});
-    const at=Math.round(LAB.T/5)*5;(S.r.notes.react=S.r.notes.react||[]).push(`near ${at} °C it ${r.note}`);renderDex();say(r.msg);$("#rd-fz").textContent="Reaction!";
+  reactionsFor(S.r.a).forEach((r,i)=>{if(FZ.done.has(i)||LAB.T<r.T)return;FZ.done.add(i);FZ.fx.push({...r.fx,T:r.T,start:now,until:now+4500});if(!r.fx.consume)FZ.crust=r.crust||"#2E2826";
+    const at=Math.round(LAB.T/5)*5;(S.r.notes.react=S.r.notes.react||[]).push(`near ${at} °C: ${r.note}`);renderDex();say(r.msg);$("#rd-fz").textContent="Reaction!";
     if(r.fx.consume)setTimeout(()=>{FZ.ash=true;$("#fz-sample").style.visibility="hidden";$("#rd-fz").textContent="Only powder is left"},1500)})}
 const fzctx=$("#fzfx").getContext("2d");
 function drawFurnaceFx(now,dt){const c=fzctx;c.clearRect(0,0,180,170);
   if(FZ.ash&&LAB.inFurnace){c.fillStyle="#E4E1DA";c.beginPath();c.ellipse(90,115,22,6,0,Math.PI,0);c.fill();c.fillStyle="#C9C5BC";c.beginPath();c.ellipse(84,112,8,3,0,0,7);c.fill()}
-  FZ.fx=FZ.fx.filter(f=>now<f.until);
+  FZ.fx=FZ.fx.filter(f=>now<f.until&&LAB.T>f.T-150);
   FZ.fx.forEach(f=>{const age=(now-f.start)/1000,life=clamp((f.until-now)/1500,0,1);
     if(f.flash&&age<.7){c.fillStyle=`rgba(255,255,255,${.95*(1-age/.7)})`;c.fillRect(38,50,104,102)}
     if(f.flame){c.save();c.globalCompositeOperation="lighter";for(let i=0;i<3;i++){const h=34+Math.sin(now/70+i)*8,x=80+i*10+Math.sin(now/90+i*2)*3;
@@ -1289,7 +1296,7 @@ function glowColor(T){if(T<450)return null;const stops=[[450,"#5A0A00"],[650,"#B
   for(let i=1;i<stops.length;i++)if(T<=stops[i][0]){const[t0,c0]=stops[i-1],[t1,c1]=stops[i];return mix(c0,c1,(T-t0)/(t1-t0))}return"#FFFFFF"}
 function loop(now){const dt=Math.min(.05,(now-lastT)/1000);lastT=now;
   if(S.r&&LAB.sc){
-    const c=LAB.cy;if(c.filling){c.water+=14*dt;const over=c.water+disp()-100;if(over>0){c.water-=over;spill(over)}updateCyl()}
+    const c=LAB.cy;if(c.filling){c.water+=14*dt;const over=c.water+disp()-RIM;if(over>0){c.water-=over;spill(over)}updateCyl()}
     if(LAB.fzOn&&LAB.heat)LAB.T=Math.min(3500,LAB.T+(30+.9*Math.max(0,LAB.T-25))*dt);
     else if(LAB.fzOn&&LAB.chill)LAB.T=Math.max(-120,LAB.T-(25+.8*Math.abs(LAB.T-25))*dt);
     else LAB.T+=(25-LAB.T)*.12*dt;
@@ -1298,14 +1305,17 @@ function loop(now){const dt=Math.min(.05,(now-lastT)/1000);lastT=now;
     $("#fz-heat").setAttribute("opacity",g?clamp((T-450)/2500,0,.55):0);$("#fz-heat").setAttribute("fill",g||"#FF6A00");
     checkReactions(now);drawFurnaceFx(now,dt);
     if(LAB.inFurnace&&!FZ.ash){const a=S.r.a;
-      const f=clamp((T-a.mp)/35+.5,0,1),h=32*(1-f);
+      if(T>=a.mp)FZ.melted=true;
+      const f=FZ.melted?1:clamp((T-a.mp)/35+.5,0,1),h=32*(1-f),molten=T>=a.mp;
       ["#fz-solid","#fz-solidglow","#fz-frost"].forEach(s=>{$(s).setAttribute("y",116-h);$(s).setAttribute("height",Math.max(0,h))});$("#fz-solid").setAttribute("rx",3+10*f);
-      ["#fz-liq","#fz-liqglow"].forEach(s=>{$(s).setAttribute("rx",27*f);$(s).setAttribute("ry",5*f)});
+      ["#fz-liq","#fz-liqglow","#fz-liqcrust"].forEach(s=>{$(s).setAttribute("rx",(molten?27:24)*f);$(s).setAttribute("ry",(molten?5:6.5)*f)});
+      $("#fz-solidcrust").setAttribute("y",116-h);$("#fz-solidcrust").setAttribute("height",Math.max(0,h));
+      ["#fz-solidcrust","#fz-liqcrust"].forEach(s=>{$(s).setAttribute("fill",FZ.crust||"#000");$(s).setAttribute("opacity",FZ.crust?.65:0)});
       const go=g?clamp((T-450)/500,0,.92):0;["#fz-solidglow","#fz-liqglow"].forEach(s=>{$(s).setAttribute("fill",g||"#000");$(s).setAttribute("opacity",go)});
       $("#fz-frost").setAttribute("opacity",T<-10?clamp((-10-T)/80,0,.7)*(1-f):0);
       const state=T>=a.mp?"liquid":"solid";
       if(state!==LAB.meltState){const at=Math.round(T/5)*5;
-        if(LAB.fzOn){S.r.notes.melt=state==="liquid"?`melted near ${at} °C`:`froze near ${at} °C`;$("#rd-fz").textContent=state==="liquid"?"It melted!":"It froze solid!";renderDex()}
+        if(LAB.fzOn){if(state==="liquid")S.r.notes.melt=`melted near ${at} °C`;else S.r.notes.freeze=`froze near ${at} °C`;$("#rd-fz").textContent=state==="liquid"?"It melted!":"It froze into a lump";renderDex()}
         LAB.meltState=state}
       if(T>=3490&&state==="solid"&&!S.r.notes.melt){S.r.notes.melt="still solid at 3500 °C";renderDex()}
     }
@@ -1528,106 +1538,127 @@ const showInfo=ev=>{const b=ev.target.closest&&ev.target.closest(".el");if(b)$("
 $("#pick-table").addEventListener("mouseover",showInfo);$("#pick-table").addEventListener("focusin",showInfo);
 $("#ref-table").addEventListener("click",ev=>{const b=ev.target.closest(".el");if(b){curEl=b.dataset.s;renderElCard()}});
 
-/* =============== AUDIO: chiptune music + sound effects (all synthesized) =============== */
-const AU={ctx:null,music:null,sfx:null,noiseBuf:null,sfxOn:store.get("wta_sfx",true),musOn:store.get("wta_mus",true),want:null,cur:null,timer:null,step:0,next:0};
-function unlock(){try{const c=AU.ctx,b=c.createBuffer(1,1,22050),src=c.createBufferSource();src.buffer=b;src.connect(c.destination);src.start(0)}catch(e){}
-  if(AU.ctx.state!=="running")AU.ctx.resume().then(updateSoundGate,()=>{});updateSoundGate()}
-function auInit(){
-  if(AU.ctx){unlock();return}
-  try{AU.ctx=new (window.AudioContext||window.webkitAudioContext)()}catch(e){return}
-  const c=AU.ctx,m=c.createGain();m.gain.value=.9;m.connect(c.destination);AU.master=m;
-  c.onstatechange=updateSoundGate;setTimeout(unlock,0);
-  AU.music=c.createGain();AU.music.gain.value=AU.musOn?.75:0;AU.music.connect(m);
-  AU.sfx=c.createGain();AU.sfx.gain.value=AU.sfxOn?1:0;AU.sfx.connect(m);
-  const b=c.createBuffer(1,c.sampleRate,c.sampleRate),d=b.getChannelData(0);for(let i=0;i<d.length;i++)d[i]=Math.random()*2-1;AU.noiseBuf=b;
-  if(AU.want)startTrack(AU.want)}
-const SEMI={C:0,D:2,E:4,F:5,G:7,A:9,B:11};
-function nf(n){const m=n.match(/^([A-G])(#|b)?(\d)$/);const midi=(+m[3]+1)*12+SEMI[m[1]]+(m[2]==="#"?1:m[2]==="b"?-1:0);return 440*Math.pow(2,(midi-69)/12)}
-function tone(f,t,d,o={}){const c=AU.ctx,{type="square",vol=.2,to=null,dest=AU.sfx,a=.005,sus=false}=o;
-  const osc=c.createOscillator(),g=c.createGain();osc.type=type;osc.frequency.setValueAtTime(f,t);if(to)osc.frequency.exponentialRampToValueAtTime(to,t+d);
-  g.gain.setValueAtTime(0,t);g.gain.linearRampToValueAtTime(vol,t+a);
-  if(sus){g.gain.setValueAtTime(vol*.8,t+Math.max(a,d-.03));g.gain.linearRampToValueAtTime(0,t+d)}else g.gain.exponentialRampToValueAtTime(.0006,t+d);
-  osc.connect(g).connect(dest);osc.start(t);osc.stop(t+d+.03)}
-function nz(t,d,o={}){const c=AU.ctx,{vol=.2,type="highpass",f=2000,to=null,q=1,dest=AU.sfx}=o;
-  const s=c.createBufferSource(),fl=c.createBiquadFilter(),g=c.createGain();s.buffer=AU.noiseBuf;s.loop=true;
-  fl.type=type;fl.frequency.setValueAtTime(f,t);if(to)fl.frequency.exponentialRampToValueAtTime(to,t+d);fl.Q.value=q;
-  g.gain.setValueAtTime(vol,t);g.gain.exponentialRampToValueAtTime(.0006,t+d);s.connect(fl).connect(g).connect(dest);s.start(t);s.stop(t+d+.03)}
-function loopNoise(o){if(!AU.ctx)return()=>{};const c=AU.ctx,s=c.createBufferSource(),fl=c.createBiquadFilter(),g=c.createGain();
-  s.buffer=AU.noiseBuf;s.loop=true;fl.type=o.type||"lowpass";fl.frequency.value=o.f||800;fl.Q.value=o.q||1;g.gain.setValueAtTime(0,c.currentTime);g.gain.linearRampToValueAtTime(o.vol||.15,c.currentTime+.08);
-  s.connect(fl).connect(g).connect(AU.sfx);s.start();return()=>{const t=c.currentTime;g.gain.cancelScheduledValues(t);g.gain.setValueAtTime(g.gain.value,t);g.gain.linearRampToValueAtTime(0,t+.12);s.stop(t+.15)}}
-function melody(lead,step,o={},bass){const t0=AU.ctx.currentTime+.02;
-  [[lead,{type:"square",vol:.13,sus:true,...o}],[bass||"",{type:"triangle",vol:.22,sus:true}]].forEach(([str,opt])=>{const arr=str.split(/\s+/).filter(Boolean);
-    arr.forEach((n,i)=>{if(n==="."||n==="-")return;let len=1;while(arr[i+len]==="-")len++;tone(nf(n),t0+i*step,step*len*.95,opt)})})}
+/* =============== AUDIO: chiptune music + sound effects ===============
+   Everything is synthesized in plain JavaScript into WAV clips and played with <audio>
+   elements, which works in browsers and embedded viewers where Web Audio stays silent. */
+const SR=22050;
+const AU={on:false,sfxOn:store.get("wta_sfx",true),musOn:store.get("wta_mus",true),want:null,cur:null,music:new Audio(),cache:{},pools:{},err:false};
+AU.music.loop=true;AU.music.volume=.55;AU.music.preload="auto";
+let CUR=null;
+function nf(n){const m=n.match(/^([A-G])(#|b)?(\d)$/);const midi=(+m[3]+1)*12+{C:0,D:2,E:4,F:5,G:7,A:9,B:11}[m[1]]+(m[2]==="#"?1:m[2]==="b"?-1:0);return 440*Math.pow(2,(midi-69)/12)}
+function tone(f,t,d,o={}){const{type="square",vol=.2,to=null,a=.005,sus=false}=o,b=CUR;if(!b)return;
+  const i0=Math.floor(t*SR),n=Math.floor((d+.02)*SR);let ph=0;
+  for(let i=0;i<n;i++){const idx=i0+i;if(idx>=b.length)break;const tt=i/SR;
+    const fr=to?f*Math.pow(to/f,Math.min(tt/d,1)):f;ph+=fr/SR;ph-=Math.floor(ph);
+    const w=type==="square"?(ph<.5?.8:-.8):type==="triangle"?4*Math.abs(ph-.5)-1:type==="sawtooth"?(2*ph-1)*.8:Math.sin(6.2832*ph);
+    let env;if(tt<a)env=vol*tt/a;else if(sus)env=tt<d-.02?vol*.85:tt<d?vol*.85*(d-tt)/.02:0;else env=tt>d?0:vol*Math.pow(.002,(tt-a)/Math.max(.001,d-a));
+    b[idx]+=w*env}}
+function nz(t,d,o={}){const{vol=.2,type="highpass",f=2000,to=null}=o,b=CUR;if(!b)return;
+  const i0=Math.floor(t*SR),n=Math.floor(d*SR);let lp=0,lp2=0;
+  for(let i=0;i<n;i++){const idx=i0+i;if(idx>=b.length)break;const tt=i/SR,cut=to?f*Math.pow(to/f,tt/d):f;
+    const al=1-Math.exp(-6.2832*Math.min(cut,SR*.45)/SR),x=Math.random()*2-1;lp+=al*(x-lp);
+    let y=type==="lowpass"?lp*1.6:type==="highpass"?x-lp:0;
+    if(type==="bandpass"){const hp=x-lp;const al2=1-Math.exp(-6.2832*Math.min(cut*1.8,SR*.45)/SR);lp2+=al2*(hp-lp2);y=lp2*2}
+    b[idx]+=y*vol*Math.pow(.002,tt/d)}}
+function melody(lead,step,o={},bass){[[lead,{type:"square",vol:.13,sus:true,...o}],[bass||"",{type:"triangle",vol:.25,sus:true}]].forEach(([str,opt])=>{const arr=str.split(/\s+/).filter(Boolean);
+  arr.forEach((n,i)=>{if(n==="."||n==="-")return;let len=1;while(arr[i+len]==="-")len++;tone(nf(n),.02+i*step,step*len*.95,opt)})})}
 const SFX={
-  sel:t=>tone(1320,t,.045,{vol:.06}),
-  step:t=>nz(t,.05,{vol:.05,type:"bandpass",f:700}),
-  rustle:t=>{nz(t,.11,{vol:.16,f:3200});nz(t+.07,.09,{vol:.1,f:5200})},
-  bump:t=>tone(105,t,.08,{vol:.16}),
-  alert:t=>{tone(nf("E6"),t,.07,{vol:.13});tone(nf("B6"),t+.08,.14,{vol:.13})},
-  encounter:t=>{tone(160,t,.95,{type:"sawtooth",vol:.1,to:1500});nz(t+.35,.65,{vol:.14,f:700,to:6000})},
-  clack:t=>{nz(t,.06,{vol:.35,type:"bandpass",f:1800,q:2});tone(95,t,.14,{type:"triangle",vol:.35})},
-  tick:t=>{tone(700,t,.04,{vol:.08});tone(320,t+.3,.6,{type:"triangle",vol:.12,to:110})},
-  thud:t=>tone(170,t+.25,.22,{type:"triangle",vol:.3,to:60}),
-  scratch:t=>{nz(t,.38,{vol:.22,type:"bandpass",f:2400,to:5200,q:7});tone(3100,t,.3,{type:"sawtooth",vol:.02,to:2600})},
-  skid:t=>nz(t,.2,{vol:.1,type:"bandpass",f:1300,to:900,q:3}),
-  swirl:t=>nz(t,.5,{vol:.12,type:"lowpass",f:900,to:400}),
-  beep:t=>{tone(2000,t,.07,{vol:.08});tone(2000,t+.12,.07,{vol:.08})},
-  plunk:t=>{tone(720,t,.16,{type:"sine",vol:.35,to:210});nz(t,.22,{vol:.08,type:"lowpass",f:1600})},
-  clunk:t=>tone(150,t,.14,{vol:.2,to:75}),
-  splash:t=>nz(t,.5,{vol:.25,type:"lowpass",f:3200,to:500}),
-  fizz:t=>{nz(t,1.3,{vol:.22,f:4200});nz(t,.6,{vol:.3,type:"lowpass",f:700,to:180})},
-  whoomph:t=>nz(t,.7,{vol:.35,type:"lowpass",f:180,to:1600}),
-  spark:t=>nz(t,.03,{vol:.3,f:5000}),
-  click:t=>nz(t,.02,{vol:.3,f:3000}),
-  hiss:t=>nz(t,1.1,{vol:.07,f:6000}),
-  sizzle:t=>nz(t,.8,{vol:.09,type:"bandpass",f:5000,q:2}),
-  pickup:t=>{tone(nf("C6"),t,.05,{vol:.07});tone(nf("G6"),t+.05,.06,{vol:.07})},
-  super:()=>melody("C6 E6 G6 C7",.06,{vol:.1}),
-  partial:()=>melody("E5 G5 E5",.08,{vol:.1}),
-  miss:()=>melody("E4 C4",.12,{vol:.12}),
-  wrong:t=>tone(110,t,.3,{vol:.12,type:"sawtooth"}),
+  sel:t=>tone(1320,t,.045,{vol:.1}),
+  step:t=>nz(t,.05,{vol:.12,type:"bandpass",f:700}),
+  rustle:t=>{nz(t,.11,{vol:.3,f:3200});nz(t+.07,.09,{vol:.2,f:5200})},
+  bump:t=>tone(105,t,.08,{vol:.25}),
+  alert:t=>{tone(nf("E6"),t,.07,{vol:.2});tone(nf("B6"),t+.08,.14,{vol:.2})},
+  encounter:t=>{tone(160,t,.95,{type:"sawtooth",vol:.18,to:1500});nz(t+.35,.65,{vol:.25,f:700,to:6000})},
+  clack:t=>{nz(t,.06,{vol:.5,type:"bandpass",f:1800});tone(95,t,.14,{type:"triangle",vol:.5})},
+  tick:t=>{tone(700,t,.04,{vol:.12});tone(320,t+.3,.6,{type:"triangle",vol:.2,to:110})},
+  thud:t=>tone(170,t+.25,.22,{type:"triangle",vol:.45,to:60}),
+  scratch:t=>{nz(t,.38,{vol:.35,type:"bandpass",f:2400,to:5200});tone(3100,t,.3,{type:"sawtooth",vol:.04,to:2600})},
+  skid:t=>nz(t,.2,{vol:.2,type:"bandpass",f:1300,to:900}),
+  swirl:t=>nz(t,.5,{vol:.25,type:"lowpass",f:900,to:400}),
+  beep:t=>{tone(2000,t,.07,{vol:.12});tone(2000,t+.12,.07,{vol:.12})},
+  plunk:t=>{tone(720,t,.16,{type:"sine",vol:.5,to:210});nz(t,.22,{vol:.15,type:"lowpass",f:1600})},
+  clunk:t=>tone(150,t,.14,{vol:.3,to:75}),
+  splash:t=>nz(t,.5,{vol:.4,type:"lowpass",f:3200,to:500}),
+  fizz:t=>{nz(t,1.3,{vol:.3,f:4200});nz(t,.6,{vol:.4,type:"lowpass",f:700,to:180})},
+  whoomph:t=>nz(t,.7,{vol:.6,type:"lowpass",f:180,to:1600}),
+  spark:t=>nz(t,.03,{vol:.5,f:5000}),
+  click:t=>nz(t,.02,{vol:.5,f:3000}),
+  gclick:t=>nz(t,.006,{vol:.8,f:1000}),
+  hiss:t=>nz(t,1.1,{vol:.15,f:6000}),
+  sizzle:t=>nz(t,.8,{vol:.18,type:"bandpass",f:5000}),
+  pickup:t=>{tone(nf("C6"),t,.05,{vol:.1});tone(nf("G6"),t+.05,.06,{vol:.1})},
+  super:()=>melody("C6 E6 G6 C7",.06,{vol:.14}),
+  partial:()=>melody("E5 G5 E5",.08,{vol:.14}),
+  miss:()=>melody("E4 C4",.12,{vol:.16}),
+  wrong:t=>tone(110,t,.3,{vol:.2,type:"sawtooth"}),
   right:()=>melody("G5 C6 E6 G6 -",.07),
-  hint:()=>melody("A6 E7",.08,{vol:.07,type:"triangle"}),
+  hint:()=>melody("A6 E7",.08,{vol:.12,type:"triangle"}),
   caught:()=>melody("C5 E5 G5 C6 - - G5 C6 E6 - - -",.1,{},"C3 . . G2 . . C3 . . C3 - -"),
-  flee:()=>melody("G5 F#5 F5 E5 - D#5 D5 - -",.08,{vol:.11},"G2 . . . . . G1 - -"),
-  fanfare:()=>melody("G4 C5 E5 G5 - E5 G5 - C6 - - - - -",.11,{},"C3 . . . . G2 . . C3 - - - - -")
+  flee:()=>melody("G5 F#5 F5 E5 - D#5 D5 - -",.08,{vol:.14},"G2 . . . . . G1 - -"),
+  fanfare:()=>melody("G4 C5 E5 G5 - E5 G5 - C6 - - - - -",.11,{},"C3 . . . . G2 . . C3 - - - - -"),
+  pour:t=>nz(t,2,{vol:.22,type:"bandpass",f:1400}),
+  roar:t=>nz(t,2,{vol:.5,type:"lowpass",f:260}),
+  chillhiss:t=>nz(t,2,{vol:.12,f:5000})
 };
-function sfx(name){if(!AU.ctx||!AU.sfxOn||!SFX[name])return;try{SFX[name](AU.ctx.currentTime+.005)}catch(e){}}
+const LOOPS={pour:1,roar:1,chillhiss:1};
+function wavURL(buf){let peak=0;for(const v of buf)peak=Math.max(peak,Math.abs(v));const g=peak>.95?.95/peak:1;
+  const n=buf.length,ab=new ArrayBuffer(44+n*2),dv=new DataView(ab),ws=(o,s)=>{for(let i=0;i<s.length;i++)dv.setUint8(o+i,s.charCodeAt(i))};
+  ws(0,"RIFF");dv.setUint32(4,36+n*2,true);ws(8,"WAVE");ws(12,"fmt ");dv.setUint32(16,16,true);dv.setUint16(20,1,true);dv.setUint16(22,1,true);
+  dv.setUint32(24,SR,true);dv.setUint32(28,SR*2,true);dv.setUint16(32,2,true);dv.setUint16(34,16,true);ws(36,"data");dv.setUint32(40,n*2,true);
+  for(let i=0;i<n;i++)dv.setInt16(44+i*2,Math.max(-1,Math.min(1,buf[i]*g))*32767,true);
+  let bin="";const u=new Uint8Array(ab);for(let i=0;i<u.length;i+=8192)bin+=String.fromCharCode.apply(null,u.subarray(i,i+8192));
+  return"data:audio/wav;base64,"+btoa(bin)}
+const BLOBS={};
+function asURL(u){if(!AU.blob)return u;if(BLOBS[u])return BLOBS[u];const bin=atob(u.split(",")[1]),a=new Uint8Array(bin.length);for(let i=0;i<bin.length;i++)a[i]=bin.charCodeAt(i);
+  return BLOBS[u]=URL.createObjectURL(new Blob([a],{type:"audio/wav"}))}
+AU.music.addEventListener("error",()=>{if(AU.blob){AU.err=true;setAudioButtons();return}AU.blob=true;AU.pools={};const w=AU.cur;AU.cur=null;if(w&&AU.want)startTrack(AU.want)});
+function renderSfx(name){if(AU.cache[name])return asURL(AU.cache[name]);
+  CUR=new Float32Array(Math.ceil(SR*(LOOPS[name]?2:2.2)));try{SFX[name](0)}catch(e){}
+  let end=CUR.length;if(!LOOPS[name]){while(end>1&&Math.abs(CUR[end-1])<.001)end--;end=Math.min(CUR.length,end+200)}
+  const url=wavURL(CUR.subarray(0,end));CUR=null;AU.cache[name]=url;return asURL(url)}
+function sfx(name){if(!AU.on||!AU.sfxOn||!SFX[name])return;
+  const pool=AU.pools[name]||(AU.pools[name]={els:[],i:0});
+  let el=pool.els[pool.i];if(!el){el=new Audio(renderSfx(name));pool.els[pool.i]=el}
+  pool.i=(pool.i+1)%(name==="gclick"||name==="step"||name==="sel"?6:3);
+  try{el.currentTime=0;const p=el.play();if(p)p.catch(()=>{})}catch(e){}}
+function loopNoise(name){if(!AU.on||!AU.sfxOn)return()=>{};const el=new Audio(renderSfx(name));el.loop=true;el.play().catch(()=>{});return()=>{el.pause()}}
 
 /* Original chiptune loops: one bar = 8 eighth-notes */
 const TRACKS={
-  explore:{bpm:112,lv:.085,bv:.17,
+  explore:{bpm:112,lv:.13,bv:.26,
     lead:"E5 - G5 - C6 - B5 A5 G5 - E5 - C5 - D5 E5 F5 - A5 - C6 - A5 F5 G5 - - - D5 E5 F5 D5 E5 - G5 - C6 - D6 C6 B5 - A5 - E5 - A5 B5 C6 - A5 - F5 - G5 A5 G5 - - - . . . .",
     bass:"C3 . G3 . C3 . G3 . A2 . E3 . A2 . E3 . F2 . C3 . F2 . C3 . G2 . D3 . G2 . B2 .",
     drum:"k . h . s . h h"},
-  battle:{bpm:140,lv:.075,bv:.2,
+  battle:{bpm:140,lv:.12,bv:.3,
     lead:"A4 C5 E5 A5 G5 E5 C5 E5 F4 A4 C5 F5 E5 C5 A4 C5 G4 B4 D5 G5 F5 D5 B4 D5 E5 - G#5 - B5 - E6 - A5 - . A5 C6 - B5 A5 F5 - . F5 A5 - G5 F5 G5 - . G5 B5 - D6 B5 E6 - - - G#5 - B5 -",
     bass:"A2 A3 A2 A3 A2 A3 A2 A3 F2 F3 F2 F3 F2 F3 F2 F3 G2 G3 G2 G3 G2 G3 G2 G3 E2 E3 E2 E3 E2 E3 E2 E3",
     drum:"k h s h k k s h"}
 };
-const parseSeq=s=>s.split(/\s+/).filter(Boolean);
-function startTrack(name){AU.want=name;if(!AU.ctx)return;clearInterval(AU.timer);
-  const T=TRACKS[name];AU.cur={T,lead:parseSeq(T.lead),bass:parseSeq(T.bass),drum:parseSeq(T.drum)};AU.step=0;AU.next=AU.ctx.currentTime+.1;AU.timer=setInterval(sched,25)}
-function stopTrack(){clearInterval(AU.timer);AU.timer=null;AU.cur=null;AU.want=null}
-function voice(arr,i,t,dur,o){const n=arr[i%arr.length];if(n==="."||n==="-")return;let len=1;while(arr[(i+len)%arr.length]==="-"&&len<arr.length)len++;tone(nf(n),t,dur*len*.92,o)}
-function sched(){const c=AU.ctx,cur=AU.cur;if(!cur)return;const dur=60/cur.T.bpm/2;
-  if(AU.next<c.currentTime-.2)AU.next=c.currentTime+.05;
-  while(AU.next<c.currentTime+.15){const i=AU.step,t=AU.next;
-    voice(cur.lead,i,t,dur,{type:"square",vol:cur.T.lv,dest:AU.music,sus:true});
-    voice(cur.bass,i,t,dur,{type:"triangle",vol:cur.T.bv,dest:AU.music,sus:true});
-    const d=cur.drum[i%cur.drum.length];
-    if(d==="k")tone(150,t,.12,{type:"sine",vol:.4,to:45,dest:AU.music});
-    else if(d==="s")nz(t,.12,{vol:.16,f:1500,dest:AU.music});
-    else if(d==="h")nz(t,.03,{vol:.07,f:7000,dest:AU.music});
-    AU.next+=dur;AU.step++}}
-function setAudioButtons(){const m=$("#au-mus"),s=$("#au-sfx");m.textContent=AU.musOn?"♪ MUSIC: ON":"♪ MUSIC: OFF";s.textContent=AU.sfxOn?"SFX: ON":"SFX: OFF";
+function renderTrack(name){const key="trk_"+name;if(AU.cache[key])return asURL(AU.cache[key]);
+  const T=TRACKS[name],P=s=>s.split(/\s+/).filter(Boolean),lead=P(T.lead),bass=P(T.bass),drum=P(T.drum),dur=60/T.bpm/2,steps=64;
+  CUR=new Float32Array(Math.ceil(steps*dur*SR));
+  const voice=(arr,i,t,o)=>{const n=arr[i%arr.length];if(n==="."||n==="-")return;let len=1;while(arr[(i+len)%arr.length]==="-"&&len<arr.length)len++;tone(nf(n),t,Math.min(dur*len*.92,steps*dur-t-.03),o)};
+  for(let i=0;i<steps;i++){const t=i*dur;voice(lead,i,t,{type:"square",vol:T.lv,sus:true});voice(bass,i,t,{type:"triangle",vol:T.bv,sus:true});
+    const d=drum[i%drum.length];if(d==="k")tone(150,t,.12,{type:"sine",vol:.5,to:45});else if(d==="s")nz(t,.12,{vol:.2,f:1500});else if(d==="h")nz(t,.03,{vol:.1,f:7000})}
+  const url=wavURL(CUR);CUR=null;AU.cache[key]=url;return asURL(url)}
+function startTrack(name){AU.want=name;if(!AU.on||!AU.musOn)return;
+  if(AU.cur!==name){AU.music.src=renderTrack(name);AU.cur=name}
+  AU.music.currentTime=0;const p=AU.music.play();if(p)p.catch(e=>{AU.err=true;setAudioButtons()})}
+function stopTrack(){AU.want=null;AU.music.pause()}
+function auInit(){if(AU.on)return;AU.on=true;
+  // unlock a handful of elements inside the user's gesture (needed on Safari/iOS)
+  AU.music.src=renderTrack(AU.want||"explore");AU.cur=AU.want||"explore";
+  if(AU.want&&AU.musOn)startTrack(AU.want);
+  ["sel","step","gclick"].forEach(n=>{const pool=AU.pools[n]={els:[],i:0};for(let i=0;i<3;i++){const el=new Audio(renderSfx(n));el.volume=0;el.play().then(()=>{el.pause();el.volume=1},()=>{el.volume=1});pool.els.push(el)}});
+  setAudioButtons();$("#startgate").hidden=true}
+function setAudioButtons(){const m=$("#au-mus"),s=$("#au-sfx");
+  m.textContent=AU.err?"♪ SOUND BLOCKED":AU.musOn?"♪ MUSIC: ON":"♪ MUSIC: OFF";s.textContent=AU.sfxOn?"SFX: ON":"SFX: OFF";
   m.setAttribute("aria-pressed",AU.musOn);s.setAttribute("aria-pressed",AU.sfxOn)}
-$("#au-mus").onclick=()=>{auInit();AU.musOn=!AU.musOn;store.set("wta_mus",AU.musOn);if(AU.music)AU.music.gain.value=AU.musOn?.75:0;setAudioButtons()};
-$("#au-sfx").onclick=()=>{auInit();AU.sfxOn=!AU.sfxOn;store.set("wta_sfx",AU.sfxOn);if(AU.sfx)AU.sfx.gain.value=AU.sfxOn?1:0;setAudioButtons()};
+$("#au-mus").onclick=()=>{if(!AU.on){auInit();return}AU.musOn=!AU.musOn;store.set("wta_mus",AU.musOn);if(AU.musOn&&AU.want)startTrack(AU.want);else AU.music.pause();setAudioButtons()};
+$("#au-sfx").onclick=()=>{if(!AU.on)auInit();AU.sfxOn=!AU.sfxOn;store.set("wta_sfx",AU.sfxOn);setAudioButtons()};
 setAudioButtons();
-["pointerdown","pointerup","click","touchend","keydown"].forEach(ev=>document.addEventListener(ev,()=>{if(!AU.ctx||AU.ctx.state!=="running")auInit()},{capture:true}));
-function updateSoundGate(){const on=AU.ctx&&AU.ctx.state==="running";const g=$("#startgate");if(g&&on)g.hidden=true}
-$("#startbtn").onclick=()=>{auInit();$("#startgate").hidden=true;if(S.phase==="explore")startTrack("explore")};
+["pointerup","click","touchend","keydown"].forEach(ev=>document.addEventListener(ev,()=>{if(!AU.on)auInit()},{capture:true}));
+$("#startbtn").onclick=()=>{auInit();$("#startgate").hidden=true;if(S.phase==="explore")startTrack("explore");setTimeout(()=>sfx("right"),60)};
 document.addEventListener("click",e=>{const b=e.target.closest(".btn,.tab,.mode,.ctrl button,.filters button,.el");if(b&&!b.disabled)sfx("sel")});
 
 /* Sound cues keyed to what the dialog box says */
@@ -1635,7 +1666,8 @@ const SAY_FX=[[/^It's super effective/,"super"],[/^It's not very effective/,"par
   [/^Gotcha/,""],[/^Got away|^Oh no!/,""],[/^HINT/,"hint"],[/^CLACK/,"clack"],[/^A faint tug/,"tick"],[/^Nothing\. The magnet|^The magnet slides/,"thud"],
   [/^Screeech/,"scratch"],[/skids across/,"skid"],[/swirls through/,"swirl"],[/^The scale beeps/,"beep"],[/^Plunk|^It floats/,"plunk"],[/^Clunk/,"clunk"],
   [/^Splash/,"splash"],[/^FWOOSH/,"fizz"],[/^Whoomph/,"whoomph"],[/^Click! Just a spark/,"spark"],[/^Click\./,"click"],[/^Sniff/,"hiss"],
-  [/^Sample picked up|^Tool ready/,"pickup"],[/^Seven days later/,"hint"],[/^FWOOM|^FLASH/,"whoomph"],[/^Crackle/,"sizzle"],[/^Hisss/,"hiss"],[/^Pop!/,"spark"],[/^POP!/,"clack"],[/^The needle slams/,"wrong"],[/^You set the cylinder aside/,"swirl"],[/^You hold a scraping|^It slumps|^It pours/,"sizzle"]];
+  [/^Sample picked up|^Tool ready/,"pickup"],[/^Seven days later/,"hint"],[/^FWOOM|^FLASH/,"whoomph"],[/^Crackle/,"sizzle"],[/^Hisss/,"hiss"],[/^Pop!/,"spark"],[/^POP!/,"clack"],[/^The needle slams/,"wrong"],[/^You set the cylinder aside/,"swirl"],
+  [/^You hold a scraping|^It slumps|^It pours/,"sizzle"]];
 const _say=say;say=function(msg){const hit=SAY_FX.find(([re])=>re.test(msg));if(hit&&hit[1])sfx(hit[1]);_say(msg)};
 const _step=step;step=function(dx,dy){const ox=EXP.x,oy=EXP.y,wasBusy=EXP.busy||S.phase!=="explore";const r=_step(dx,dy);if(wasBusy)return r;
   if(EXP.x===ox&&EXP.y===oy)sfx("bump");else sfx(tileAt(EXP.x,EXP.y)===","?"rustle":"step");return r};
@@ -1645,13 +1677,12 @@ const _startRound=startRound;startRound=function(){_startRound();startTrack("bat
 const _win=win;win=function(){stopTrack();sfx("caught");_win()};
 const _lose=lose;lose=function(ran){stopTrack();sfx("flee");_lose(ran)};
 const _endRun=endRun;endRun=function(){stopTrack();sfx("fanfare");_endRun()};
-click=function(){if(!AU.ctx||!LAB.gm.sound)return;nz(AU.ctx.currentTime,.004,{vol:.6,f:1000})};
-(function(){let stopPour=null,stopHeat=null,stopChill=null;
-  const hold=(id,start,get,set)=>{const b=$(id);b.addEventListener("pointerdown",()=>{if(b.disabled||!AU.sfxOn)return;set(start())});
+let lastClick=0;click=function(){if(!LAB.gm.sound)return;const now=performance.now();if(now-lastClick<25)return;lastClick=now;sfx("gclick")};
+(function(){let stopHeat=null,stopChill=null;
+  const hold=(id,name,get,set)=>{const b=$(id);b.addEventListener("pointerdown",()=>{if(b.disabled)return;set(loopNoise(name))});
     ["pointerup","pointerleave","pointercancel"].forEach(ev=>b.addEventListener(ev,()=>{const s=get();if(s){s();set(null)}}))};
-  hold("#cy-fill",()=>loopNoise({type:"bandpass",f:1400,q:.8,vol:.12}),()=>stopPour,v=>stopPour=v);
-  hold("#btn-heat",()=>loopNoise({type:"lowpass",f:260,vol:.3}),()=>stopHeat,v=>stopHeat=v);
-  hold("#btn-chill",()=>loopNoise({type:"highpass",f:5000,vol:.08}),()=>stopChill,v=>stopChill=v)})();
+  hold("#btn-heat","roar",()=>stopHeat,v=>stopHeat=v);
+  hold("#btn-chill","chillhiss",()=>stopChill,v=>stopChill=v)})();
 
 newRun();
 </script>
