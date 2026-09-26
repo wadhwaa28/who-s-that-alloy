@@ -238,6 +238,15 @@ dl.props dd{margin:0;font-weight:800;font-variant-numeric:tabular-nums;text-alig
 @keyframes rustle{25%{transform:translateX(-3px)}75%{transform:translateX(3px)}}
 .z-mine{--floor:#6E5B47;--wall:#3B2F27;--wall-top:#54443A;--wall-bump:#2A211B;--rock:#8C7A66;--rock2:#A08C74;--glint:#FFD27A}
 .z-scrap{--floor:#8A8579;--wall:#565B63;--wall-top:#7A5A44;--wall-bump:#8B4A2A;--rock:#9CA3AD;--rock2:#B07048;--glint:#FFFFFF}
+.z-wreck{--floor:#D9C38F;--wall:#2E6F9E;--wall-top:#5FA8D0;--wall-bump:#1E5780;--rock:#9C8B6E;--rock2:#B7A583;--glint:#FFFFFF}
+.z-wreck .tile.w{background:repeating-linear-gradient(170deg,#3A82B5 0 6px,#2E6F9E 6px 14px)}.z-wreck .tile.w::after{background:#FFFFFF;opacity:.18;inset:30% 10% 55%}
+.z-volcano{--floor:#4A3530;--wall:#2A1C18;--wall-top:#3E2A24;--wall-bump:#FF5A1F;--rock:#3A2E2E;--rock2:#5A4640;--glint:#FFB347}
+.z-volcano .tile.w::after{opacity:.35;filter:blur(3px)}.z-volcano .tile.l::after{background:#FF6A1F;box-shadow:0 0 22px 12px rgba(255,90,20,.6)}
+.z-vault{--floor:#D8CFB8;--wall:#6B4E2E;--wall-top:#C99A2E;--wall-bump:#4A3420;--rock:#B89A5A;--rock2:#D2B36A;--glint:#FFF3B0}
+.z-vault .tile.f{background:conic-gradient(#D8CFB8 25%,#CBBF9E 0 50%,#D8CFB8 0 75%,#CBBF9E 0) 0 0/50% 50%}
+.z-reactor{--floor:#5E6A66;--wall:#3A4440;--wall-top:#E0B820;--wall-bump:#2A3230;--rock:#6E7A76;--rock2:#87938E;--glint:#B6FF6A}
+.z-reactor .tile.w{background:repeating-linear-gradient(45deg,#E0B820 0 5px,#1E2420 5px 10px) top/100% 22% no-repeat,var(--wall)}.z-reactor .tile.l::after{background:#9CFF4A;box-shadow:0 0 22px 10px rgba(140,255,80,.5)}
+.z-glacier{--floor:#BFDDF0;--wall:#7FA8C8;--wall-top:#FFFFFF;--wall-bump:#A8CCE4;--rock:#DCEFFA;--rock2:#A9D2EC;--glint:#FFFFFF}
 .z-crater{--floor:#4B4562;--wall:#2A2638;--wall-top:#3C3552;--wall-bump:#1C1928;--rock:#6D6488;--rock2:#877DA6;--glint:#BFE3FF}
 .player{position:absolute;width:calc(100%/13);height:calc(100%/8);transition:left .16s linear,top .16s linear;z-index:2;pointer-events:none}
 .player svg{width:100%;height:100%;display:block;transform:scaleX(var(--face,1))}
@@ -281,6 +290,65 @@ dl.props dd{margin:0;font-weight:800;font-variant-numeric:tabular-nums;text-alig
 .startgate{position:absolute;inset:0;z-index:6;display:flex;flex-direction:column;gap:10px;align-items:center;justify-content:center;background:rgba(8,16,44,.55);color:#fff;font-weight:800;font-size:13px}
 .startgate .btn{font-size:14px;padding:14px 20px;animation:pulse 1.2s ease-in-out infinite}
 @keyframes pulse{50%{transform:scale(1.06)}}
+.dexcard{font:inherit;text-align:left;cursor:pointer}
+.dexcard:hover{transform:translateY(-2px);box-shadow:0 4px 0 var(--line)}
+.dbadge{font-family:var(--pix);font-size:7px;padding:2px 5px;border-radius:5px;margin-left:4px;vertical-align:middle}
+.dbadge.reg{background:#FFD23F;color:var(--ink)}.dbadge.seen{background:#CFD8F0;color:var(--soft)}
+.habbars{display:grid;grid-template-columns:repeat(auto-fit,minmax(220px,1fr));gap:8px 16px}
+.hb{display:grid;grid-template-columns:auto 1fr auto;gap:8px;align-items:center;font-size:12px;font-weight:800;color:var(--muted)}
+.hb b{color:#fff;font-variant-numeric:tabular-nums}.hbt{height:10px;border-radius:6px;background:#0C1A44;border:2px solid var(--line);overflow:hidden}.hbt i{display:block;height:100%}
+.dexctl{display:flex;flex-wrap:wrap;gap:8px}
+.dexctl input,.dexctl select{font:inherit;font-weight:800;font-size:13px;border:2px solid var(--line);border-radius:8px;background:var(--paper);color:var(--ink);padding:7px 9px}
+.dexctl input{flex:1 1 200px;min-width:0}
+.ddnav{display:flex;flex-wrap:wrap;gap:8px;align-items:center}
+.ddpos{font-family:var(--pix);font-size:9px;color:var(--muted);margin-right:auto}
+.ddgrid{display:grid;grid-template-columns:minmax(0,1fr) minmax(0,1.2fr);gap:14px}
+@media (max-width:800px){.ddgrid{grid-template-columns:1fr}}
+.ddscreen{position:relative;border:4px solid var(--line);border-radius:14px;overflow:hidden;min-height:260px;background:repeating-conic-gradient(from 0deg at 50% 45%,#2F7BEA 0 9deg,#1E5BCB 9deg 18deg);display:flex;flex-direction:column;align-items:center;justify-content:center}
+.ddscreen::before{content:"";position:absolute;inset:0;background:radial-gradient(circle at 50% 45%,rgba(236,241,250,.95) 0,rgba(226,233,246,.85) 26%,transparent 50%)}
+.ddspec{position:relative;width:min(340px,90%);aspect-ratio:300/240}.ddspec svg{width:100%;height:100%}
+.ddscreen.dark .ddspec svg{filter:brightness(0)}
+.ddplate{position:relative;display:flex;gap:10px;align-items:baseline;background:#fff;border:3px solid var(--line);border-radius:8px;padding:5px 12px;margin-bottom:12px;color:var(--ink)}
+.ddplate span{font-family:var(--pix);font-size:8px;color:var(--soft)}.ddplate b{font-family:var(--pix);font-size:11px}
+.ddinfo{background:var(--paper);color:var(--ink);border:4px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.ddtitle{display:flex;justify-content:space-between;gap:10px;align-items:flex-start}
+.ddtitle h2{margin:0;font-family:var(--pix);font-size:15px;line-height:1.5}
+.cat{font-weight:900;color:var(--soft);font-size:14px}
+dl.props.dd dd{text-align:right}
+.rar{display:inline-block;color:#fff;font-size:12px;font-weight:900;padding:1px 9px;border-radius:999px}
+.ddlow{display:grid;grid-template-columns:minmax(0,1.4fr) minmax(0,1fr);gap:14px}
+@media (max-width:800px){.ddlow{grid-template-columns:1fr}}
+.ddbox{background:var(--paper);color:var(--ink);border:4px solid var(--line);border-radius:14px;padding:12px 14px;display:flex;flex-direction:column;gap:10px}
+.ddbox h4{margin:0;font-family:var(--pix);font-size:9px;color:var(--soft)}
+.ddbox .bars{display:grid;grid-template-columns:auto 1fr auto;gap:8px 10px;align-items:center}
+.ddbox .lab{font-family:var(--pix);font-size:8px;color:var(--soft)}.ddbox .val{font-weight:800;font-size:13px;text-align:right;white-space:nowrap}
+.ddbox .track{height:10px;background:#D5DCF3;border-radius:6px;overflow:hidden;border:2px solid #C3CCEA}.ddbox .fill{height:100%;border-radius:4px}
+.note.dim{color:var(--soft)!important}
+.rlog{list-style:none;margin:0;padding:0;display:flex;flex-direction:column;gap:5px}
+.rlog li{display:flex;justify-content:space-between;gap:10px;font-weight:800;font-size:13px;background:var(--paper-2);border-radius:8px;padding:5px 9px}
+.relgrid{display:grid;grid-template-columns:repeat(auto-fill,minmax(130px,1fr));gap:8px}
+.relc{font:inherit;text-align:left;cursor:pointer;border:3px solid var(--line);border-radius:10px;background:#fff;padding:6px 8px;display:flex;flex-direction:column;gap:2px;color:var(--ink)}
+.relc .mini{height:48px;border-radius:6px;background:radial-gradient(circle,#F0F3FA 30%,#C9D8F6 100%);display:flex;align-items:center;justify-content:center}
+.relc span{font-family:var(--pix);font-size:7px;color:var(--soft)}.relc b{font-size:13px}
+.relc.locked .rodmini,.relc.locked .vialmini,.relc.locked .vialmini i{background:#0B1330!important;border-color:#0B1330}
+.minisvg{height:100%;display:flex;align-items:center;justify-content:center}.minisvg svg{height:100%;width:auto;max-width:100%}
+.dexcard.locked .minisvg svg,.relc.locked .minisvg svg{filter:brightness(0)}
+.dbadge.rad{background:linear-gradient(90deg,#FF9AD5,#FFE27A,#8FF0D0,#9AB8FF);color:var(--ink)}
+.aura{position:absolute;inset:0;pointer-events:none;opacity:0;transition:opacity .6s;z-index:0}
+.aura::before{content:"";position:absolute;left:50%;top:50%;width:min(88%,380px);aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;
+  background:conic-gradient(from 0deg,rgba(255,140,210,.55),rgba(255,226,122,.55),rgba(143,240,208,.55),rgba(154,184,255,.55),rgba(255,140,210,.55));
+  -webkit-mask:radial-gradient(circle,transparent 52%,#000 55%,#000 64%,transparent 70%);mask:radial-gradient(circle,transparent 52%,#000 55%,#000 64%,transparent 70%);animation:spin 6s linear infinite}
+.aura i{position:absolute;left:var(--x);top:var(--y);width:16px;height:16px;background:#fff;clip-path:polygon(50% 0,60% 40%,100% 50%,60% 60%,50% 100%,40% 60%,0 50%,40% 40%);animation:tw2 1.8s ease-in-out infinite;animation-delay:var(--dl);filter:drop-shadow(0 0 4px #FFE27A)}
+@keyframes tw2{0%,100%{transform:scale(.2);opacity:0}50%{transform:scale(1);opacity:1}}
+.radiant .aura{opacity:1}
+.stage.radiant .nameplate{color:#FFF3B0}
+.ddbtns{display:flex;gap:6px;flex-wrap:wrap}
+#dd-rad.on{background:#FFE27A}
+@media (prefers-reduced-motion:reduce){.aura::before,.aura i{animation:none}.aura i{opacity:.8}}
+.vc{transition:transform .35s cubic-bezier(.3,1.6,.5,1)}
+.specimen.cling .vc{transform:translateY(-16px)}
+.specimen.nudge .vc{animation:nudge 1.2s ease}
+@keyframes nudge{20%{transform:translateY(-4px)}45%{transform:translateY(-2px)}100%{transform:none}}
 .endwrap{display:flex;justify-content:center}
 .end{max-width:520px;width:100%;text-align:center;align-items:center}
 .end .big{font-family:var(--pix);font-size:28px;color:var(--red);margin:4px 0}
@@ -335,6 +403,7 @@ dl.props dd{margin:0;font-weight:800;font-variant-numeric:tabular-nums;text-alig
           <div class="stage" id="stage" data-drop="sample">
             <span class="q" id="stage-q">WHO'S THAT ALLOY?</span>
             <span class="dexno" id="stage-no">No.001</span>
+            <div class="aura" id="aura"></div>
             <div class="specimen" id="specimen" role="button" tabindex="0" aria-label="Alloy sample. Drag it onto a lab station."></div>
             <div class="stagemag" id="stagemag"></div>
             <span class="stagehint" id="stagehint">Drag the sample to a station ↓</span>
@@ -500,21 +569,30 @@ dl.props dd{margin:0;font-weight:800;font-variant-numeric:tabular-nums;text-alig
   </section>
 
   <section id="view-dex" hidden>
-    <div class="panel">
+    <div class="panel" id="dexlist">
       <div class="dexhead">
         <h3>ALLOYDEX</h3>
-        <span class="stat">REGISTERED <b id="dex-count">0</b></span>
+        <div class="stats"><span class="stat">SEEN <b id="dex-seen">0</b></span><span class="stat">REGISTERED <b id="dex-count">0</b></span><span class="stat">✦ RADIANT <b id="dex-rad">0</b></span></div>
       </div>
-      <p class="note">Solve an alloy's full recipe to register it. Real-world alloys come first, followed by synthetic alloys designed at the Quillmoor Metallurgy Institute from real element data.</p>
+      <div class="habbars" id="habbars"></div>
+      <p class="note">Alloys you meet in the wild are marked SEEN. Solve an alloy's full recipe to register it and unlock its entry, stats, cry and relatives. About 1 in 40 wild alloys is ✦ Radiant: same metal, same test results, with a sparkling aura. Register one to record its radiant form.</p>
       <div class="filters" id="dexfilters">
         <button data-f="all" aria-pressed="true">All</button>
-        <button data-f="real" aria-pressed="false">Real-world</button>
-        <button data-f="syn" aria-pressed="false">Synthetic</button>
         <button data-f="caught" aria-pressed="false">Registered</button>
+        <button data-f="missing" aria-pressed="false">Missing</button>
+        <button data-f="radiant" aria-pressed="false">✦ Radiant</button>
+      </div>
+      <div class="dexctl">
+        <input id="dexsearch" type="search" placeholder="Search a name or No." aria-label="Search the Alloydex" autocomplete="off">
+        <select id="dexorigin" aria-label="Origin"><option value="">All origins</option><option value="real">Real-world</option><option value="syn">Synthetic</option></select>
+        <select id="dextype" aria-label="Type"></select>
+        <select id="dexhab" aria-label="Habitat"></select>
+        <select id="dexsort" aria-label="Sort"><option value="no">Sort: No.</option><option value="name">Sort: Name</option><option value="d">Sort: Heaviest</option><option value="mp">Sort: Highest melting</option></select>
       </div>
       <div class="dexgrid" id="dexgrid"></div>
       <div class="pager" id="pager"></div>
     </div>
+    <div class="panel dexdetail" id="dexdetail" hidden></div>
   </section>
 </div>
 
@@ -737,7 +815,7 @@ const FLAV=["The team nicknamed it '%N'.","Only %K ingots of the first batch sur
   const names=new Set(ALLOYS.map(a=>a.name.toLowerCase()));
   let tries=0;
   while(ALLOYS.length<target&&tries<200000){tries++;
-    const base=pick(bases),[,solStr,min]=FAM[base],sols=shuffle.call(null,solStr.split(" "));
+    const base=pick(bases),[,solStr,min]=FAM[base],sols=solStr.split(" ");
     const r=rnd(),k=r<.35?1:r<.75?2:3; const chosen=[];
     for(let i=0;i<sols.length&&chosen.length<k;i++){const s=sols[Math.floor(rnd()*sols.length)];if(!chosen.includes(s))chosen.push(s)}
     if(chosen.length!==k)continue;
@@ -776,6 +854,23 @@ const FLAV=["The team nicknamed it '%N'.","Only %K ingots of the first batch sur
   }
 })(1000);
 
+function habitatOf(a){const b=a.comp[0][0],w=frac(a),u=(a.uses||"")+" "+(a.lore||"");
+  if(a.comp.some(([s])=>BY[s].z>=100)||(a.cov&&!a.comp.some(([s])=>radOf(s)>=1))||["Kamacite","Taenite","Tetrataenite","Awaruite"].includes(a.name)||["Nd","Sm","Ce","La","Pr","Dy","Tb","Gd"].some(s=>(w[s]||0)>=.1))return"z-crater";
+  if(a.comp.some(([s])=>radOf(s)>=1)||["Zr","Hf","U","Th"].includes(b)||/nuclear|reactor/i.test(u))return"z-reactor";
+  if(a.mp<150||a.reactive)return"z-glacier";
+  if(["Au","Ag","Pt","Pd","Rh","Ir","Os","Ru"].includes(b))return"z-vault";
+  if(a.mp>=1750||["W","Mo","Ta","Nb","Re"].includes(b)||(["Ni","Co"].includes(b)&&a.hard>=5.5))return"z-volcano";
+  if(/ship|marine|seawater|boat|propeller|naval|hull|condenser/i.test(u)||(b==="Cu"&&((w.Ni||0)>=.1||(w.Al||0)>=.04)))return"z-wreck";
+  if(["Cu","Sn","Pb","Bi","In","Cd","Sb","Ga","Hg"].includes(b))return"z-mine";
+  return"z-scrap"}
+function rarityOf(a){if(a.comp.some(([s])=>BY[s].z>=100))return"legendary";
+  if(a.cov||a.comp.some(([s])=>radOf(s)>=1)||["Kamacite","Taenite","Tetrataenite","Awaruite","Osmiridium","Electrum"].includes(a.name))return"rare";
+  if(!a.real||["Au","Pt","Pd","Ag"].includes(a.comp[0][0]))return"uncommon";return"common"}
+const STOPW=new Set(["old","early","modern","the","a","an","for","of","and","only","first","world's","legendary","novelty","found","in"]);
+function categoryOf(a){let w=a.uses.split(/[,;]/)[0].replace(/\(.*?\)/g,"").trim().split(/\s+/).filter(x=>!STOPW.has(x.toLowerCase()));
+  w=w.slice(0,2);if(!w.length)return"Mystery";let last=w[w.length-1];
+  if(/(sh|ch|x)es$/i.test(last))last=last.slice(0,-2);else if(/ies$/i.test(last))last=last.slice(0,-3)+"y";else if(/[^s]s$/i.test(last))last=last.slice(0,-1);w[w.length-1]=last;
+  return w.map(x=>x.length<=3&&x===x.toUpperCase()?x:x.charAt(0).toUpperCase()+x.slice(1).toLowerCase()).join(" ")}
 /* Coverage pass: every element appears in at least three alloys */
 (function coverage(){
   const rnd=mulberry(777001),pick=a=>a[rnd()*a.length|0];
@@ -810,10 +905,124 @@ const FLAV=["The team nicknamed it '%N'.","Only %K ingots of the first batch sur
         :`An experimental blend from the Quillmoor Metallurgy Institute, made to study one unusual ingredient.`;
       const uses=superheavy?"Computer simulations only":noble?"Radiation-damage research":radOf(e.s)>=2?"Nuclear research":pick(["Experimental coatings","Research samples","Sensor prototypes","Catalyst testing"]);
       const a={name:nm,aliases:[],comp,d,mp,mag,hard:mp<25?0:hard,cond,color:rgb2hex(rgb),leak:false,finish:rnd()<.2?"m":"p",real:false,uses,lore:why};
-      a.reactive=isReactive(w);names.add(nm.toLowerCase());ALLOYS.push(a);need--}
+      a.reactive=isReactive(w);a.cov=true;names.add(nm.toLowerCase());ALLOYS.push(a);need--}
   });
 })();
-ALLOYS.forEach((a,i)=>{a.no=i+1;a.types=typesOf(a);a.form=a.mp<25?"vial":"rod"});
+(function recover(){const caught=store.get("wta_caught2",[]),dex=store.get("wta_dex2",{}),have=new Set(ALLOYS.map(a=>a.name));
+  caught.forEach(n=>{if(have.has(n))return;const d=dex[n]&&dex[n].def;if(!d||!d.comp)return;
+    const a={...d,name:n,aliases:[],leak:false,real:false,recovered:true};a.reactive=isReactive(frac(a));ALLOYS.push(a);have.add(n)})})();
+ALLOYS.forEach((a,i)=>{a.no=i+1;a.types=typesOf(a);a.form=a.mp<25?"vial":"rod";a.hab=habitatOf(a);a.rar=rarityOf(a);a.cat=categoryOf(a)});
+/* ---- Sample forms, manufacturing and (for synthetic alloys) unique lore ---- */
+const FORM_RULES=[[/wire|resistor|thermocouple|heating|toaster|strain gauge|coil|string|spring|filament|winding|antenna|glow plug|hair-dryer/i,"wire"],
+  [/coin|medal|badge|token|\btabs?\b/i,"coin"],[/bearing|flywheel/i,"ball"],[/bullet|shot|pellet|fuel|\bweights?\b|reagent|flint|fire starter|flare|dart|heater/i,"pellets"],
+  [/tape|tag|ribbon|transformer core|recording/i,"ribbon"],
+  [/sheet|sheathing|roof|bodies|body|skin|tank|plate|foil|shield|panel|facade|hull|casing|housing|shell|liner|blade/i,"sheet"],
+  [/ingot|bullion|jewel|ring|watch|flatware|tableware|troph|statue|bell|ballast|keel|counterweight|casting|die-cast|mold|figurine|tankard|teapot|key|cup/i,"ingot"]];
+function formOf(a,rnd){a.fill=null;if(a.mp<25){a.fill="liquid";return"vial"}
+  const r=rnd();
+  if(a.reactive||(!a.real&&r<.14)){const q=rnd();a.fill=a.reactive?"granules":q<.35?"granules":q<.6?"beads":q<.8?"powder":"shavings";return"vial"}
+  return"rod"}
+function madeOf(a,rnd){const pick=x=>x[rnd()*x.length|0];
+  if(a.cov){const w=frac(a);if(a.comp.some(([s])=>BY[s].z>=100))return"Simulated atom by atom on the Institute's supercomputer";
+    if(["He","Ne","Ar","Kr","Xe","Rn","Og"].some(s=>w[s]))return"Ion-implanted on a particle beamline";
+    if(a.comp.some(([s])=>radOf(s)>=4))return"Melted remotely inside a shielded hot cell";
+    if(["H","N","O","F","Cl"].some(s=>w[s]))return"Charged with gas in a high-pressure autoclave"}
+  if(a.form==="vial"){const fm={liquid:["Stirred together at room temperature in an argon glovebox","Mixed in a sealed flask and shaken until uniform"],
+      granules:["Crushed in a jaw crusher and sieved into granules","Cast, then broken up and sorted by size"],beads:["Dripped molten into cold water to form beads","Atomized into droplets that froze into tiny beads"],
+      powder:["Atomized into powder by a jet of argon gas","Ground to powder in a ball mill"],shavings:["Turned on a lathe; the curly shavings were kept","Planed from a cast block into fine shavings"]}[a.fill||"liquid"];
+    return pick(fm)+(a.reactive&&a.fill!=="liquid"?", then sealed under oil":"")}
+  const byForm={wire:["Drawn through diamond dies into fine wire","Extruded, then drawn and coiled"],coin:["Rolled into strip, then stamped into blanks","Punched from rolled sheet and struck in a press"],
+    sheet:["Hot-rolled from a thick slab, then cold-rolled thin","Rolled thin and annealed between passes"],ball:["Cold-headed into slugs, then ground and lapped round","Forged into spheres and polished in a lapping machine"],
+    pellets:["Tumbled into pellets in a rotating drum","Chopped from extruded rod into short pellets"],ribbon:["Melt-spun into ribbon on a spinning copper wheel","Rapidly quenched into thin ribbon"]};
+  if(byForm[a.form]&&rnd()<.7)return pick(byForm[a.form]);
+  if(a.mp<350)return pick(["Melted in a steel pot and poured into graphite molds","Poured into a chilled copper mold","Cast in a cardboard-lined mold"]);
+  if(a.mp>1800)return pick(["Vacuum arc-melted, flipped and remelted six times","Pressed from powder and sintered in hydrogen","Electron-beam melted in a vacuum chamber"]);
+  if(a.form==="ingot")return pick(["Poured into an iron ingot mold","Cast into sand molds and cooled overnight"]);
+  return pick(["Induction-melted and cast into sand molds","Forged from a billet under a steam hammer","Built layer by layer with a laser 3D printer","Squeeze-cast under high pressure","Grown as a single crystal from the melt","Mechanically alloyed in a ball mill, then hot-pressed","Spray-formed from a mist of molten droplets","Hot-extruded through a steel die","Vacuum-cast and slowly cooled","Investment-cast in ceramic shells"])}
+const QM_FIRST="Ilsa Oren Maud Tobias Wren Casimir Nadia Rufus Imogen Teodor Linnea Ambrose Priya Emeric Hollis Saoirse Bram Yusuf Odile Pim Greta Anselm Mireille Dov Rosalind Kofi Elsbeth Lazlo Junia Ferris Tamsin Viggo Solveig Idris Petra Horatio Ingrid Mateo Clementine Oskar Beatrix Cyrus Delphine Ezra Fleur Gideon Hana Ivo Juno Kasimir Leopold Marisol Nils Ottilie".split(" ");
+const QM_LAST="Morrow Vasquez Ketterley Brandt Okonkwo Lindqvist Farrow Delacroix Ashdown Pemberton Kuroda Halloran Voss Eberhardt Quist Marchetti Szabo Thorne Ravel Achebe Nakamura Fennimore Drummond Castellan Oyelaran Bexley Winslow Kowalczyk Strand Abernathy Laine Rook Sorby Tanaka Hargreave Ivanova Mbeki Oduya Petrakis Quenby Rasmussen Silvestri Tolliver Underhill Varga Whitlock Yilmaz Zorn".split(" ");
+const QM_PLACES=["Furnace Bay 3","the east annex","Sublevel C","the old pump house","Crucible Row","the rooftop test yard","Vault 9","the quench pit","Hall 12","the cryo wing","the slag garden","the Kiln Street workshop","the basement foundry","Bay 7","the glassblowing shed","the north tower","the pattern shop","Annex B","the rolling mill","the night shift lab"];
+const QM_ART=["rusted ship's bell","meteorite fragment","museum sword","broken clock spring","bronze temple mirror","toy train axle","cracked church organ pipe","Roman nail","lighthouse lens frame","antique compass","racing car piston","gramophone needle","samurai sword guard","old railway spike"];
+const ORIGINS=[
+ "First poured by {P} in {L} in {Y}.","{P} made the first batch in {Y}, working late in {L}.","Created in {Y} while {P} was trying to make something else entirely.",
+ "A mislabeled crucible in {L} gave {P} this recipe by accident in {Y}.","{P} chased this recipe for {N} years before it finally worked in {Y}.","Commissioned in {Y} by a client who never came back to collect it.",
+ "It began as a student project in {L}, supervised by {P}.","{P} sketched the recipe on a napkin at a {Y} conference dinner.","A power cut in {Y} left this cooling in {L}'s furnace overnight, and {P} kept it.",
+ "{P} created it in {Y} to win a bet with a rival lab.","The recipe arrived in an unsigned letter to {L} in {Y}; {P} tried it anyway.","Its first ingot came out of {L} on {P}'s last day before retiring in {Y}.",
+ "{P} designed it in {Y} after studying a {A}.","Institute records list {N} failed attempts before {P} got it right in {Y}.","Refined over {N} winters in {L} by {P} and two stubborn interns.",
+ "{P} and {P2} argued about its recipe for a month in {Y}, then both turned out to be right.","It was the first alloy ever made in {L}, back in {Y}.","{P} found it while cleaning up after a {Y} experiment that went sideways.",
+ "Requested by a museum in {Y} to replace a missing piece of a {A}; {P} delivered.","{P} tuned its recipe in {Y} using only a hand scale and a lot of patience.",
+ "Designed in {Y} by {P}, who wanted a metal nobody had ever tested.","A {Y} competition between lab teams produced it; {P}'s team won."];
+const PURPOSES=["It was meant for {U}, and it still does that job well.","Engineers trust it for {U}.","Today it mostly ends up in {U}.","Its main job is {U}.",
+ "Most of each year's batch goes into {U}.","{PR} That makes it handy for {U}.","{PR} Workshops buy it for {U}.","Orders come in steadily for {U}.","It earned its place in {U}."];
+const PROPS=[[a=>a.mag===2,"It grabs magnets hard."],[a=>a.d>11,"A small piece feels surprisingly heavy."],[a=>a.d<3.2,"It is startlingly light in the hand."],
+ [a=>a.mp>=25&&a.mp<250,"It softens at temperatures a kitchen oven can reach."],[a=>a.mp>1650,"It shrugs off heat that would melt steel."],[a=>a.hard>=6.5,"Few files can mark it."],
+ [a=>a.hard>0&&a.hard<=2.2,"It is soft enough to dent with a thumbnail."],[a=>a.cond>=30,"Current flows through it with barely any fuss."],[a=>a.cond<1,"It resists electric current and warms up doing it."],
+ [a=>a.comp.some(([s])=>radOf(s)>=1),"It makes Geiger counters nervous."],[a=>{const c=corrosion(a);return c&&c.k==="rust"},"It rusts if you so much as breathe on it."],
+ [a=>{const c=corrosion(a);return c&&c.k==="none"},"Water barely touches it."],[a=>a.mp<25,"It stays liquid on a cold morning."]];
+const ANEC=[
+ [0,"{P} keeps a polished offcut of it as a paperweight."],[0,"A sample was once mailed to the wrong address and spent {N} months on a bakery shelf."],[0,"The lab cat sleeps next to the shelf where it's stored."],
+ [0,"Its label was misspelled for {N} years before anyone noticed."],[0,"Visitors may hold the display piece, but only with gloves on."],[0,"{P} insists it smells faintly of rain when freshly cut."],
+ [0,"Its batch logbook is signed by {N} different researchers."],[0,"Every spring, interns race to cast the neatest bar of it."],[0,"One bar raised {N} hundred coins at a charity auction."],
+ [0,"It rings a clear note when tapped with a spoon, according to {P}."],[0,"The very first sample sits in a glass case in {L}."],[0,"{P} named it after a character in a bedtime story."],
+ [0,"It once jammed the rolling mill for an entire afternoon."],[0,"The recipe card lives in a fireproof box in {L}."],[0,"Its name was drawn from a hat at the {Y} winter party."],
+ [0,"A school group voted it the 'least boring metal' on a lab tour."],[0,"The machinists in {L} ask for it by name."],[0,"It survived a {N}-meter drop test without a dent."],
+ [0,"{P} wrote a short poem about it that still hangs in the break room."],[0,"Its offcuts are always remelted; none of it is ever wasted."],[0,"It took {N} tries to find a mold coating it wouldn't stick to."],
+ [0,"A photo of its first pour is the Institute's best-selling postcard."],[0,"Its name was decided after a three-hour meeting."],[0,"Under the microscope its crystals look like frost ferns."],
+ [0,"A forklift driver once bent a bar of it and was never allowed to forget it."],[0,"Test bars carry a tiny fox stamp, {P}'s personal mark."],[0,"It is one of {N} alloys in the Institute's teaching collection."],
+ [0,"Etched, its grain looks like tree rings."],[0,"A retired sample now props open the door of {L}."],[0,"It was nearly used for a public sculpture, until the budget ran out."],
+ [0,"{P} calls it lucky; the safety officer disagrees."],[0,"An early batch cracked, and the crack is framed on the wall of {L}."],[0,"The Institute choir has a song about it."],
+ [0,"Only {N} people hold keys to its storage cabinet."],[0,"One order was delivered by rail, sled and finally donkey."],[0,"A sample once served as a tent peg on a field trip."],
+ [0,"The first ingot was cast in a borrowed bread tin."],[0,"It makes the grinding wheel sing a high note."],[0,"{P} once used a bar of it to fix a wobbly table and forgot about it for {N} weeks."],
+ [0,"Its recipe was translated into {N} languages for a {Y} conference."],[0,"The night guard reports it's the only sample that never goes missing."],[0,"Students must identify it blindfolded, by weight alone, to pass {P}'s course."],
+ [0,"A spilled coffee in {Y} is still visible on its original lab notebook."],[0,"It was photographed for a stamp that was never issued."],[0,"{P} proposed marriage with a ring turned from its offcuts."],
+ [0,"The first test bar was accidentally thrown out and rescued from a skip."],[0,"It's the default answer to the Institute's pub quiz question 'what's in Bay 7?'"],[0,"A visiting scientist once tried to take a sample home in a sock."],
+ [0,"Its storage bin is painted with a small lightning bolt nobody can explain."],[0,"{P} keeps its safety sheet taped inside a lab coat pocket."],[0,"It won the Institute's {Y} 'Metal of the Year' vote by {N} votes."],
+ [0,"The first bar was measured with a ruler borrowed from a primary school."],[0,"A crow once stole a pellet of it from the rooftop test yard."],[0,"It was the star of a {Y} open day, until the lights went out."],
+ [1,"It once yanked a wrench off {P}'s belt from across the bench."],[1,"Paperclips follow it around the lab like ducklings."],[1,"Its drawer is lined with wood so it stops grabbing the cabinet."],
+ [2,"A fist-sized lump of it weighs about as much as a bowling ball."],[2,"Interns are only allowed to carry it one bar at a time."],
+ [3,"A full crate of it can be carried by one person."],[3,"Someone once mistook a bar of it for a painted wooden prop."],
+ [4,"It can be melted over a camping stove."],[4,"Its molds can be made of plain plaster."],[5,"It was first mistaken for a spilled thermometer."],[5,"It has to be poured through a funnel, never a straw."],
+ [6,"It outlasted three furnace linings."],[6,"The furnace crew calls it 'the stubborn one'."],[7,"It dulled every drill bit in {L}."],[7,"It chipped a diamond saw during its first cut."],
+ [8,"It can be carved with a pocketknife."],[8,"Interns press thumbprints into warm bars of it."],[9,"Its storage drawer is lined with lead."],[9,"It is handled with tongs and a very long face."],
+ [10,"It is kept under oil after an incident involving a mop bucket."],[10,"Nobody is allowed to rinse it. Ever."],[11,"Its first sample rusted overnight in a damp cupboard."],
+ [12,"A sample left in the harbor for a year came back spotless."],[13,"It once carried enough current to light the whole east wing."],[14,"It glowed when an intern shorted a battery across it."]];
+const GATE={1:a=>a.mag===2,2:a=>a.d>11,3:a=>a.d<3.2,4:a=>a.mp>=25&&a.mp<250,5:a=>a.mp<25,6:a=>a.mp>1800,7:a=>a.hard>=6.5,8:a=>a.hard>0&&a.hard<=2,
+  9:a=>a.comp.some(([s])=>radOf(s)>=1),10:a=>a.reactive,11:a=>{const c=corrosion(a);return c&&c.k==="rust"},12:a=>{const c=corrosion(a);return c&&c.k==="none"},13:a=>a.cond>=30,14:a=>a.cond<1};
+const MORE_USES={lowmp:["fusible safety plugs","thermal fuses","quick-cast molds","organ pipe repairs","fishing weights","model soldiers","lens-grinding blocks","stained-glass solder"],
+ liquid:["liquid-metal cooling loops","self-healing circuits","stretchable antennas","tilt switches","liquid telescope mirrors","heat pipes"],
+ magnetic:["motor cores","magnetic latches","sensor shielding","loudspeaker magnets","maglev test tracks","compass needles","relay armatures","induction cooktop plates"],
+ cond:["power busbars","high-current contacts","welding tips","lightning rods","induction coils","battery tabs"],
+ resist:["heating elements","precision resistors","hair-dryer coils","kiln windings","strain gauges","glow plugs"],
+ light:["drone frames","racing bike parts","satellite brackets","camera housings","prosthetic limbs","kayak fittings","laptop shells","glider struts"],
+ heavy:["counterweights","radiation shielding","yacht keels","flywheels","crane ballast","darts"],
+ hard:["drill bits","armor plating","cutting dies","snowplow blades","rock-crusher teeth","file blanks","ice-axe picks"],
+ hot:["turbine blades","rocket nozzles","furnace racks","afterburner liners","glass-furnace stirrers","exhaust manifolds"],
+ precious:["jewelry","luxury watch cases","fountain pen nibs","commemorative medals","ceremonial keys","trophy cups"],
+ reactive:["fire starters","chemical reagents","signal flares","emergency heaters"],
+ plain:["structural brackets","machine housings","pipe fittings","bicycle chains","door hinges","garden tools","ladder rungs","valve bodies","gearbox casings","bridge bolts","railway spikes","locker frames","boat cleats","playground fittings"]};
+(function flavorPass(){const rnd=mulberry(424242),pick=x=>x[rnd()*x.length|0];
+  const used=new Map(),seen=new Set();
+  const fill=(t,a)=>{const P=()=>`Dr. ${pick(QM_FIRST)} ${pick(QM_LAST)}`;const p1=P();let p2=P();
+    return t.replace("{P2}",p2).replace(/\{P\}/g,p1).replace(/\{L\}/g,pick(QM_PLACES)).replace(/\{Y\}/g,1958+(rnd()*67|0)).replace(/\{N\}/g,2+(rnd()*18|0)).replace("{A}",pick(QM_ART))};
+  ALLOYS.forEach(a=>{
+    if(!a.real&&!a.cov&&!a.recovered){const w=frac(a);
+      const cat=a.mp<25?"liquid":a.reactive?"reactive":a.mp<350?"lowmp":["Au","Pt","Ag","Pd"].reduce((t,k)=>t+(w[k]||0),0)>=.5?"precious":a.mag===2?"magnetic":a.d<4.6?"light":a.d>12?"heavy":a.hard>=6.5?"hard":a.mp>1300&&a.hard>=5?"hot":a.cond>=25?"cond":a.cond<1.2?"resist":"plain";
+      const u=pick(MORE_USES[cat]);a.uses=u.charAt(0).toUpperCase()+u.slice(1)}
+    a.form=formOf(a,rnd);a.made=madeOf(a,rnd);
+    if(a.real||a.recovered)return;
+    let text="";
+    for(let tries=0;tries<12;tries++){
+      const props=PROPS.filter(([f])=>f(a)).map(x=>x[1]);
+      const pur=pick(PURPOSES.filter(t=>props.length||!t.includes("{PR}"))).replace("{U}",a.uses.toLowerCase()).replace("{PR}",props.length?pick(props):"");
+      const elig=ANEC.filter(([g])=>!g||GATE[g](a));const gated=elig.filter(x=>x[0]);
+      let pool=gated.length&&rnd()<.55?gated:elig;const minU=Math.min(...pool.map(x=>used.get(x[1])||0));pool=pool.filter(x=>(used.get(x[1])||0)===minU);
+      const an=pick(pool);
+      const first=a.cov?a.lore:fill(pick(ORIGINS),a);
+      text=`${first} ${pur} ${fill(an[1],a)}`;
+      if(!seen.has(text)){used.set(an[1],(used.get(an[1])||0)+1);break}}
+    seen.add(text);a.lore=text});
+  ALLOYS.forEach(a=>{a.hab=habitatOf(a);a.cat=categoryOf(a)});
+})();
 const REAL=ALLOYS.filter(a=>a.real);
 
 /* =============== SPECIMEN ART =============== */
@@ -822,56 +1031,100 @@ function specimenSVG(a,marks){
   const id="g"+(gid++),c=a.color,hi=shade(c,.6),lo=shade(c,-.5),mid=shade(c,-.15),face=shade(c,.25);
   const matte=a.finish==="m"||a.finish==="r"||a.finish==="k";
   if(a.form==="vial"){
-    return `<svg viewBox="0 0 300 240" role="img" aria-label="liquid sample in a glass vial">
+    const fill=a.fill||"liquid",R=mulberry(a.no*31+3),rn=(x,y)=>x+R()*(y-x),F=v=>v.toFixed(1);
+    let content="",flake="";
+    if(fill==="liquid")content=`<path d="M118 120 Q150 108 182 120 L182 196 Q182 222 150 222 Q118 222 118 196 Z" fill="url(#${id}l)"/><ellipse cx="150" cy="118" rx="32" ry="7" fill="${hi}"/><ellipse cx="142" cy="116" rx="12" ry="2.5" fill="#fff" opacity=".8"/><rect x="128" y="130" width="6" height="74" rx="3" fill="#fff" opacity=".65"/>`;
+    else{const top=fill==="powder"?160:140,cols=[c,hi,mid,lo,shade(c,.3)];
+      if(a.reactive)content+=`<rect x="118" y="100" width="64" height="126" fill="#E8D48A" opacity=".35"/>`;
+      if(fill==="granules")for(let k=0;k<90;k++){const x=rn(116,184),y=rn(top,224),r=rn(3.5,6),n=5+(R()*3|0);let pts="";for(let m=0;m<n;m++){const an=m/n*6.283+rn(-.3,.3),rr=r*rn(.7,1.1);pts+=`${F(x+Math.cos(an)*rr)},${F(y+Math.sin(an)*rr*.8)} `}
+        content+=`<polygon points="${pts}" fill="${cols[R()*5|0]}" stroke="${shade(c,-.5)}" stroke-width=".5"/>`}
+      else if(fill==="beads")for(let k=0;k<60;k++){const x=rn(120,180),y=rn(top+4,222);content+=`<circle cx="${F(x)}" cy="${F(y)}" r="5" fill="url(#${id}b)" stroke="${shade(c,-.5)}" stroke-width=".4"/>`}
+      else if(fill==="shavings")for(let k=0;k<55;k++){const x=rn(118,178),y=rn(top,220),r=rn(4,8);content+=`<path d="M${F(x)} ${F(y)} a${F(r)} ${F(r*.6)} 0 1 1 ${F(r*1.2)} ${F(r*.3)} a${F(r*.6)} ${F(r*.4)} 0 1 1 ${F(-r*.5)} ${F(-r*.4)}" stroke="${cols[R()*5|0]}" stroke-width="2" fill="none"/>`}
+      else{const pc=mix(c,"#8C8C8C",.25);content+=`<path d="M116 ${top+8} Q150 ${top-10} 184 ${top+8} L184 226 L116 226 Z" fill="${pc}"/><path d="M116 ${top+8} Q150 ${top-10} 184 ${top+8} L184 226 L116 226 Z" filter="url(#${id}n)" opacity=".6"/>`;
+        for(let k=0;k<12;k++)content+=`<circle cx="${F(rn(122,178))}" cy="${F(rn(top+2,220))}" r=".8" fill="#fff" opacity=".7"/>`}
+      const fq=[[214,186],[266,181],[268,204],[216,209]],P=(u,v)=>{const x0=fq[0][0]+(fq[1][0]-fq[0][0])*u,y0=fq[0][1]+(fq[1][1]-fq[0][1])*u,x1=fq[3][0]+(fq[2][0]-fq[3][0])*u,y1=fq[3][1]+(fq[2][1]-fq[3][1])*u;return[F(x0+(x1-x0)*v),F(y0+(y1-y0)*v)]};
+      let mk2="";(marks||[]).forEach(m=>{const[a1,b1]=P(m.u1,m.v1),[a2,b2]=P(m.u2,m.v2);mk2+=m.kind==="scratch"?`<path d="M${a1} ${b1} L${a2} ${b2}" stroke="${shade(c,-.65)}" stroke-width="1.6" stroke-linecap="round"/>`:`<path class="streak" d="M${a1} ${b1} L${a2} ${b2}" stroke="${m.col}" stroke-width="3.5" stroke-linecap="round" opacity=".7"/>`});
+      flake=`<ellipse cx="241" cy="212" rx="30" ry="5" fill="#000" opacity=".15"/><polygon points="214,186 240,178 266,181 268,204 244,212 216,209" fill="url(#${id}h)" stroke="${shade(c,-.5)}" stroke-width=".8"/>${mk2}<path d="M216 187 L240 179 L265 182" stroke="#fff" stroke-width="1" opacity=".6" fill="none"/>`}
+    const label=fill==="liquid"?"liquid sample in a glass vial":`${fill} in a glass vial`;
+    return `<svg viewBox="0 0 300 240" role="img" aria-label="${label}">
       <defs>
         <linearGradient id="${id}l" x1="0" x2="1"><stop offset="0" stop-color="${lo}"/><stop offset=".25" stop-color="${hi}"/><stop offset=".4" stop-color="${c}"/><stop offset=".7" stop-color="${mid}"/><stop offset="1" stop-color="${lo}"/></linearGradient>
+        <linearGradient id="${id}h" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${mid}"/><stop offset=".3" stop-color="${hi}"/><stop offset=".6" stop-color="${c}"/><stop offset="1" stop-color="${lo}"/></linearGradient>
+        <radialGradient id="${id}b" cx=".36" cy=".3" r=".78"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".2" stop-color="${hi}"/><stop offset=".55" stop-color="${c}"/><stop offset="1" stop-color="${lo}"/></radialGradient>
         <linearGradient id="${id}g" x1="0" x2="1"><stop offset="0" stop-color="#fff" stop-opacity=".55"/><stop offset=".25" stop-color="#fff" stop-opacity=".1"/><stop offset=".8" stop-color="#fff" stop-opacity=".06"/><stop offset="1" stop-color="#fff" stop-opacity=".45"/></linearGradient>
         <linearGradient id="${id}k" x1="0" x2="1"><stop offset="0" stop-color="#6B4424"/><stop offset=".4" stop-color="#B98555"/><stop offset="1" stop-color="#5A3719"/></linearGradient>
+        <filter id="${id}n" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.4" numOctaves="2" seed="${a.no}"/><feColorMatrix type="matrix" values="0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 0 1.4 -0.5"/></filter>
+        <clipPath id="${id}v"><path d="M117 46 L183 46 L183 196 Q183 223 150 223 Q117 223 117 196 Z"/></clipPath>
       </defs>
       <ellipse cx="150" cy="228" rx="54" ry="7" fill="#000" opacity=".15"/>
-      <path d="M118 120 Q150 108 182 120 L182 196 Q182 222 150 222 Q118 222 118 196 Z" fill="url(#${id}l)"/>
-      <ellipse cx="150" cy="118" rx="32" ry="7" fill="${hi}"/>
-      <ellipse cx="142" cy="116" rx="12" ry="2.5" fill="#fff" opacity=".8"/>
-      <rect x="128" y="130" width="6" height="74" rx="3" fill="#fff" opacity=".65"/>
+      <g clip-path="url(#${id}v)"><g class="vc">${content}</g></g>
       <path d="M114 44 L114 196 Q114 226 150 226 Q186 226 186 196 L186 44" fill="url(#${id}g)" stroke="#7F8CA8" stroke-width="3"/>
       <rect x="108" y="38" width="84" height="10" rx="5" fill="#DDE4F0" stroke="#7F8CA8" stroke-width="2"/>
       <path d="M118 14 L182 14 L178 44 L122 44 Z" fill="url(#${id}k)"/>
       <rect x="170" y="70" width="6" height="110" rx="3" fill="#fff" opacity=".4"/>
+      ${flake}
     </svg>`;
   }
-  let over="";
-  if(a.finish==="m"||a.finish==="r"||a.finish==="k"){
-    over+=`<rect x="36" y="94" width="226" height="52" filter="url(#${id}n)" opacity="${a.finish==="r"?.55:.35}"/>`;
-  }
-  if(a.finish==="d"){for(let i=0;i<9;i++){const y=98+i*5.5;over+=`<path d="M36 ${y} q14 -5 28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0" stroke="${shade(c,.45)}" stroke-width="1.6" fill="none" opacity=".7"/>`}}
-  (marks||[]).forEach(m=>{over+=m.kind==="scratch"
-    ?`<path d="M${m.x1} ${m.y1} L${m.x2} ${m.y2}" stroke="${shade(c,-.65)}" stroke-width="2.2" stroke-linecap="round"/><path d="M${m.x1} ${m.y1+1.6} L${m.x2} ${m.y2+1.6}" stroke="${shade(c,.7)}" stroke-width="1" stroke-linecap="round" opacity=".9"/>`
-    :`<path class="streak" d="M${m.x1} ${m.y1} L${m.x2} ${m.y2}" stroke="${m.col}" stroke-width="5" stroke-linecap="round" opacity=".7"/>`});
   const tint=a.finish==="r"?"#B0582A":a.finish==="k"?"#2A2230":c;
-  return `<svg viewBox="0 0 300 240" role="img" aria-label="metal rod sample">
-    <defs>
+  const Q={rod:[[70,100],[190,100],[190,132],[70,132]],ingot:[[92,128],[208,128],[224,160],[76,160]],sheet:[[82,146],[188,113],[230,132],[124,165]],
+    wire:[[96,108],[204,108],[204,142],[96,142]],coin:[[104,113],[172,113],[176,128],[100,128]],ball:[[122,100],[178,100],[182,134],[118,134]],
+    pellets:[[128,140],[172,140],[172,150],[128,150]],ribbon:[[96,128],[196,100],[200,112],[100,142]]};
+  const q=Q[a.form]||Q.rod,P=(u,v)=>{const x0=q[0][0]+(q[1][0]-q[0][0])*u,y0=q[0][1]+(q[1][1]-q[0][1])*u,x1=q[3][0]+(q[2][0]-q[3][0])*u,y1=q[3][1]+(q[2][1]-q[3][1])*u;return[+(x0+(x1-x0)*v).toFixed(1),+(y0+(y1-y0)*v).toFixed(1)]};
+  let mk="";(marks||[]).forEach(m=>{const[a1,b1]=P(m.u1,m.v1),[a2,b2]=P(m.u2,m.v2);mk+=m.kind==="scratch"
+    ?`<path d="M${a1} ${b1} L${a2} ${b2}" stroke="${shade(c,-.65)}" stroke-width="2.2" stroke-linecap="round"/><path d="M${a1} ${b1+1.6} L${a2} ${b2+1.6}" stroke="${shade(c,.7)}" stroke-width="1" stroke-linecap="round" opacity=".9"/>`
+    :`<path class="streak" d="M${a1} ${b1} L${a2} ${b2}" stroke="${m.col}" stroke-width="5" stroke-linecap="round" opacity=".7"/>`});
+  let tex="";
+  if(matte)tex+=`<rect x="0" y="0" width="300" height="240" filter="url(#${id}n)" opacity="${a.finish==="r"?.55:.35}"/>`;
+  if(a.finish==="d")for(let i=0;i<30;i++){const y=60+i*5.5;tex+=`<path d="M0 ${y} q14 -5 28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0 t28 0" stroke="${shade(c,.45)}" stroke-width="1.6" fill="none" opacity=".7"/>`}
+  const defs=`<defs>
       <linearGradient id="${id}r" x1="0" y1="0" x2="0" y2="1">
         <stop offset="0" stop-color="${mid}"/><stop offset=".12" stop-color="${matte?shade(c,.25):hi}"/><stop offset=".2" stop-color="${matte?shade(c,.1):shade(c,.85)}"/>
         <stop offset=".34" stop-color="${c}"/><stop offset=".55" stop-color="${shade(c,-.25)}"/><stop offset=".72" stop-color="${lo}"/>
         <stop offset=".86" stop-color="${shade(c,-.3)}"/><stop offset="1" stop-color="${shade(c,-.6)}"/></linearGradient>
+      <linearGradient id="${id}h" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${mid}"/><stop offset=".3" stop-color="${matte?shade(c,.2):hi}"/><stop offset=".5" stop-color="${c}"/><stop offset=".78" stop-color="${shade(c,-.2)}"/><stop offset="1" stop-color="${lo}"/></linearGradient>
       <radialGradient id="${id}f" cx=".4" cy=".35" r=".8"><stop offset="0" stop-color="${hi}"/><stop offset="1" stop-color="${face}"/></radialGradient>
-      <filter id="${id}n" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="${a.finish==="r"?.09:.7}" numOctaves="3" seed="${a.no}"/><feColorMatrix type="matrix" values="0 0 0 0 ${hex2rgb(tint)[0]/255} 0 0 0 0 ${hex2rgb(tint)[1]/255} 0 0 0 0 ${hex2rgb(tint)[2]/255} 0 0 0 1.6 -0.6"/></filter>
-      <clipPath id="${id}c"><rect x="36" y="94" width="226" height="52"/></clipPath>
-    </defs>
+      <radialGradient id="${id}b" cx=".36" cy=".3" r=".78"><stop offset="0" stop-color="${matte?shade(c,.3):"#FFFFFF"}"/><stop offset=".18" stop-color="${hi}"/><stop offset=".5" stop-color="${c}"/><stop offset=".88" stop-color="${lo}"/><stop offset="1" stop-color="${shade(c,-.6)}"/></radialGradient>
+      <filter id="${id}n" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="${a.finish==="r"?.09:.7}" numOctaves="3" seed="${a.no}"/><feColorMatrix type="matrix" values="0 0 0 0 ${hex2rgb(tint)[0]/255} 0 0 0 0 ${hex2rgb(tint)[1]/255} 0 0 0 0 ${hex2rgb(tint)[2]/255} 0 0 0 1.6 -0.6"/></filter>`;
+  const wrap=(label,body,clip,gloss)=>`<svg viewBox="0 0 300 240" role="img" aria-label="${label}">${defs}<clipPath id="${id}c">${clip}</clipPath></defs>${body}<g clip-path="url(#${id}c)">${tex}${mk}</g>${gloss||""}</svg>`;
+  const f=a.form;
+  if(f==="ingot"){const front="86,122 214,122 232,166 68,166",top="100,98 200,98 214,122 86,122";
+    return wrap("metal ingot sample",`<ellipse cx="150" cy="176" rx="104" ry="11" fill="#000" opacity=".16"/><polygon points="${front}" fill="url(#${id}r)"/><polygon points="${top}" fill="url(#${id}h)"/>
+      <polygon points="200,98 214,122 232,166 226,150 208,110" fill="${lo}" opacity=".5"/><rect x="132" y="104" width="36" height="12" rx="3" fill="none" stroke="${shade(c,-.35)}" stroke-width="1.5" opacity=".7"/>`,
+      `<polygon points="${front}"/><polygon points="${top}"/>`,matte?"":`<path d="M88 123 L212 123" stroke="#fff" stroke-width="1.5" opacity=".6"/><path d="M102 99 L198 99" stroke="#fff" stroke-width="1.2" opacity=".7"/>`)}
+  if(f==="sheet"){const top="60,150 196,108 250,134 114,176";let br="";for(let k=1;k<10;k++){const t=k/10;br+=`<path d="M${60+54*t} ${150+26*t} L${196+54*t} ${108+26*t}" stroke="#fff" stroke-width=".7" opacity="${matte?.04:.1}"/>`}
+    return wrap("metal sheet sample",`<ellipse cx="155" cy="178" rx="108" ry="11" fill="#000" opacity=".14"/><polygon points="114,176 250,134 250,141 114,183" fill="${lo}"/><polygon points="${top}" fill="url(#${id}h)"/>${br}`,
+      `<polygon points="${top}"/>`,matte?"":`<path d="M60 150 L196 108" stroke="#fff" stroke-width="1.4" opacity=".6"/>`)}
+  if(f==="wire"){let back="",front="";for(let i=0;i<10;i++){const x=100+i*11;back+=`<path d="M${x} 92 A10 32 0 0 0 ${x} 156" stroke="${lo}" stroke-width="4.5" fill="none"/>`;
+      front+=`<path d="M${x} 92 A10 32 0 0 1 ${x} 156" stroke="${c}" stroke-width="4.5" fill="none"/>`+(matte?"":`<path d="M${x+1.5} 96 A9 29 0 0 1 ${x+2} 140" stroke="${hi}" stroke-width="1.3" fill="none" opacity=".85"/>`)}
+    return wrap("coil of metal wire",`<ellipse cx="150" cy="172" rx="92" ry="9" fill="#000" opacity=".14"/>${back}${front}<path d="M100 156 C84 176 62 170 48 190" stroke="${c}" stroke-width="4.5" fill="none" stroke-linecap="round"/><path d="M199 92 C214 76 232 84 246 70" stroke="${c}" stroke-width="4.5" fill="none" stroke-linecap="round"/>`,
+      `<rect x="88" y="88" width="130" height="72"/>`)}
+  if(f==="coin"){let b="";[2,1,0].forEach(k=>{const y=120+k*9;b+=`<ellipse cx="140" cy="${y+7}" rx="58" ry="22" fill="${lo}"/><rect x="82" y="${y}" width="116" height="7" fill="${shade(c,-.3)}"/><ellipse cx="140" cy="${y}" rx="58" ry="22" fill="url(#${id}f)" stroke="${shade(c,-.35)}" stroke-width="${k?1:1.5}"/>`});
+    let reed="";for(let i=0;i<24;i++){const x=84+i*4.8;reed+=`<path d="M${x} ${121+Math.sin((i/23)*Math.PI)*21} v6" stroke="${shade(c,-.5)}" stroke-width=".7" opacity=".6"/>`}
+    return wrap("metal coin samples",`<ellipse cx="150" cy="172" rx="90" ry="12" fill="#000" opacity=".15"/><ellipse cx="206" cy="104" rx="36" ry="14" fill="${lo}"/><ellipse cx="206" cy="99" rx="36" ry="14" fill="url(#${id}f)" stroke="${shade(c,-.35)}"/>${b}
+      <ellipse cx="140" cy="120" rx="40" ry="15" fill="none" stroke="${shade(c,-.3)}" stroke-width="1.4" opacity=".7"/><path d="M140 111 l3 6 6 1 -4.5 4 1 6 -5.5 -3 -5.5 3 1 -6 -4.5 -4 6 -1z" fill="none" stroke="${shade(c,-.35)}" stroke-width="1.2" opacity=".7"/>`,
+      `<ellipse cx="140" cy="120" rx="58" ry="22"/>`,matte?"":`<path d="M96 110 Q140 96 184 110" stroke="#fff" stroke-width="1.6" fill="none" opacity=".6"/>`)}
+  if(f==="ball")return wrap("polished metal sphere",`<ellipse cx="150" cy="172" rx="48" ry="9" fill="#000" opacity=".18"/><ellipse cx="150" cy="166" rx="30" ry="7" fill="none" stroke="#7F8CA8" stroke-width="4"/><circle cx="150" cy="118" r="48" fill="url(#${id}b)"/>`,
+      `<circle cx="150" cy="118" r="48"/>`,matte?"":`<ellipse cx="131" cy="98" rx="12" ry="7" fill="#fff" opacity=".8" transform="rotate(-30 131 98)"/><path d="M108 132 Q150 152 192 132" stroke="${hi}" stroke-width="3" fill="none" opacity=".35"/>`);
+  if(f==="pellets"){const R=mulberry(a.no*13+7),pts=[];for(let i=0;i<15;i++){const ang=R()*6.283,rr=Math.sqrt(R());pts.push([150+Math.cos(ang)*rr*68,150+Math.sin(ang)*rr*14])}
+    pts.sort((x,y)=>x[1]-y[1]);let pl="";pts.forEach(([x,y])=>{pl+=`<ellipse cx="${x.toFixed(1)}" cy="${(y+3).toFixed(1)}" rx="9" ry="4" fill="${lo}"/><rect x="${(x-9).toFixed(1)}" y="${(y-5).toFixed(1)}" width="18" height="8" fill="url(#${id}r)"/><ellipse cx="${x.toFixed(1)}" cy="${(y-5).toFixed(1)}" rx="9" ry="4" fill="url(#${id}f)"/>`});
+    return wrap("metal pellets in a dish",`<ellipse cx="150" cy="176" rx="104" ry="12" fill="#000" opacity=".14"/><ellipse cx="150" cy="156" rx="100" ry="30" fill="rgba(255,255,255,.35)" stroke="#7F8CA8" stroke-width="3"/><ellipse cx="150" cy="152" rx="86" ry="22" fill="rgba(200,215,240,.35)"/>${pl}`,
+      `<ellipse cx="150" cy="148" rx="86" ry="24"/>`,`<path d="M62 146 Q150 118 238 146" stroke="#fff" stroke-width="2" fill="none" opacity=".5"/>`)}
+  if(f==="ribbon"){const strip="M66 142 Q150 80 232 110 L234 124 Q152 94 70 158 Z";
+    return wrap("curled metal ribbon",`<ellipse cx="150" cy="176" rx="98" ry="10" fill="#000" opacity=".14"/><path d="M70 158 Q152 94 234 124 L234 129 Q152 99 70 163 Z" fill="${lo}"/><path d="${strip}" fill="url(#${id}h)"/><ellipse cx="240" cy="118" rx="8" ry="13" fill="none" stroke="${c}" stroke-width="5"/>`,
+      `<path d="${strip}"/>`,matte?"":`<path d="M68 142 Q150 81 232 111" stroke="#fff" stroke-width="1.3" fill="none" opacity=".7"/>`)}
+  return `<svg viewBox="0 0 300 240" role="img" aria-label="metal rod sample">${defs}<clipPath id="${id}c"><rect x="36" y="94" width="226" height="52"/></clipPath></defs>
     <ellipse cx="150" cy="200" rx="110" ry="10" fill="#000" opacity=".14"/>
     <g transform="rotate(-20 150 120)">
       <rect x="36" y="94" width="226" height="52" fill="url(#${id}r)"/>
       <ellipse cx="36" cy="120" rx="10" ry="26" fill="${lo}"/>
-      <g clip-path="url(#${id}c)">${over}</g>
+      <g clip-path="url(#${id}c)">${tex.replace('x="0" y="0" width="300" height="240"','x="36" y="94" width="226" height="52"')}${mk}</g>
       ${matte?"":`<rect x="44" y="102.5" width="206" height="4" rx="2" fill="#fff" opacity=".75"/>`}
       <ellipse cx="262" cy="120" rx="10" ry="26" fill="url(#${id}f)" stroke="${lo}" stroke-width="2"/>
       <path d="M258 104 q6 8 2 18" stroke="#fff" stroke-width="2" fill="none" opacity=".6"/>
     </g>
   </svg>`;
 }
-function miniHTML(a,locked){return a.form==="vial"
-  ?`<div class="vialmini"><i style="background:linear-gradient(90deg,${shade(a.color,-.4)},${shade(a.color,.5)},${a.color},${shade(a.color,-.4)})"></i></div>`
-  :`<div class="rodmini" style="background:linear-gradient(${shade(a.color,-.1)},${shade(a.color,.6)} 20%,${a.color} 40%,${shade(a.color,-.45)} 85%)"></div>`}
+function miniHTML(a){return `<div class="minisvg">${specimenSVG(a)}</div>`}
 
 /* =============== TOOL ICONS =============== */
 const MAGNET_SVG=`<svg viewBox="0 0 64 64"><path d="M14 8 L14 36 A18 18 0 0 0 50 36 L50 8 L38 8 L38 36 A6 6 0 0 1 26 36 L26 8 Z" fill="#E8412C" stroke="#7A1A10" stroke-width="2.5"/><rect x="14" y="4" width="12" height="9" fill="#D7DCE6" stroke="#556" stroke-width="2"/><rect x="38" y="4" width="12" height="9" fill="#D7DCE6" stroke="#556" stroke-width="2"/></svg>`;
@@ -885,14 +1138,18 @@ const SCRATCH=[
 ];
 
 /* =============== STATE =============== */
-const S={mode:"mixed",run:null,r:null,held:null,caught:new Set(store.get("wta_caught2",[])),best:store.get("wta_best2",0),dexFilter:"all",dexPage:0};
+function registeredCount(){return ALLOYS.filter(a=>S.caught.has(a.name)).length}
+const S={mode:"mixed",run:null,r:null,held:null,caught:new Set(store.get("wta_caught2",[])),best:store.get("wta_best2",0),dexFilter:"all",dexPage:0,dex:store.get("wta_dex2",{}),df:{status:"all",origin:"",type:"",hab:"",q:"",sort:"no"},dexOpen:null};
 const ROUNDS=10,SCANS=4,CAP=5;
 function pickAlloy(kind,used){
   let pool;
   if(kind==="who")pool=REAL;
   else pool=Math.random()<.4?REAL.filter(a=>!a.leak):ALLOYS.filter(a=>!a.real);
   pool=pool.filter(a=>!used.has(a.name));
-  return pool[Math.random()*pool.length|0];
+  const z=EXP.zone&&EXP.zone.cls,local=pool.filter(a=>a.hab===z);if(local.length)pool=local;
+  let tot=pool.reduce((t,a)=>t+RARITY[a.rar].w,0),r=Math.random()*tot;
+  for(const a of pool){r-=RARITY[a.rar].w;if(r<=0)return a}
+  return pool[pool.length-1];
 }
 function newRun(){
   S.run={idx:0,score:0,streak:0,log:[],used:new Set};
@@ -903,10 +1160,11 @@ function startRound(){
   const a=pickAlloy(kind,S.run.used);S.run.used.add(a.name);
   const V=+(4+Math.random()*10).toFixed(1);
   S.r={a,kind,stage:kind==="who"?"name":"elements",tries:SCANS,sel:new Set,hit:new Set,miss:new Set,wrongNames:0,letters:0,hints:0,pts:0,won:false,
-       V,m:+(a.d*V).toFixed(1),nameKnown:kind!=="who",notes:{},marks:[],scratchLog:{}};
-  S.held=null;resetLab();renderAll();
-  say(kind==="who"?"A wild alloy appeared! Run lab tests, read the clues, then type its name."
-                  :`A wild ${a.name.toUpperCase()} appeared! Test it in the lab and scan for its elements.`);
+       V,m:+(a.d*V).toFixed(1),nameKnown:kind!=="who",notes:{},marks:[],scratchLog:{},radiant:Math.random()<1/40};
+  S.held=null;seenMark(a,kind!=="who");resetLab();renderAll();
+  const rad=S.r.radiant?"✦ Whoa, a RADIANT alloy! ":"";
+  say(rad+(kind==="who"?"A wild alloy appeared! Run lab tests, read the clues, then type its name."
+                  :`A wild ${a.name.toUpperCase()} appeared! Test it in the lab and scan for its elements.`));
 }
 
 /* =============== DIALOG =============== */
@@ -928,7 +1186,8 @@ function renderHud(){const R=S.run;
 function renderStage(){
   const {a,stage}=S.r,hidden=!S.r.nameKnown;
   $("#specimen").innerHTML=specimenSVG(a,S.r.marks);
-  $("#nameplate").textContent=hidden?"???":a.name.toUpperCase();
+  $("#nameplate").textContent=(hidden?"???":a.name.toUpperCase())+(S.r.radiant?" ✦":"");$("#stage").classList.toggle("radiant",!!S.r.radiant);
+  if(!$("#aura").innerHTML)$("#aura").innerHTML=SPARKS;
   $("#stage-no").textContent=hidden?"No.???":"No."+pad(a.no);
   $("#stage-q").textContent=stage==="done"&&!S.r.won?"IT FLED...":hidden?"WHO'S THAT ALLOY?":stage==="done"?(S.r.won?"REGISTERED!":"IT FLED..."):"WHAT'S IT MADE OF?";
 }
@@ -955,10 +1214,10 @@ function renderDex(){
   }
   $("#dexcard").innerHTML=`
     <h2><span>${hidden?"??????":a.name}</span><small>ALLOYDEX No.${hidden?"???":pad(a.no)}</small></h2>
-    <span class="origin">${a.real?"Real-world alloy":"Synthetic alloy · lab-designed"}</span>
+    <span class="origin">${a.real?"Real-world alloy":"Synthetic alloy · Quillmoor Institute"}${S.r.radiant?' · <span style="color:#C98E00">✦ Radiant</span>':""}</span>
     ${extra}
     <p class="clue">${a.lore}</p>
-    <p class="uses">Used for: ${a.uses}</p>
+    <p class="uses">Used for: ${a.uses}<br>Made by: ${a.made}</p>
     <div class="notes"><h4>LAB NOTEBOOK</h4><ul>${noteRows()}</ul></div>`;
 }
 function pips(){return `<span class="pips">SCANNER CHARGE ${Array.from({length:SCANS},(_,i)=>`<span class="pip ${i<S.r.tries?"":"off"}"></span>`).join("")}</span>`}
@@ -1010,7 +1269,7 @@ function nameMatches(guess,a){const g=norm(guess);if(!g)return false;
   return opts.some(o=>{const n=norm(o);if(n===g)return true;const tol=n.length>=10?2:n.length>=6?1:0;return lev(n,g)<=tol})}
 function reveal(){const st=$("#stage");st.classList.remove("reveal");void st.offsetWidth;st.classList.add("reveal")}
 function guessName(v){const r=S.r;if(!v.trim())return;
-  if(nameMatches(v,r.a)){r.pts+=Math.max(10,60-5*r.wrongNames-10*r.letters);r.stage="elements";r.nameKnown=true;reveal();renderAll();
+  if(nameMatches(v,r.a)){r.pts+=Math.max(10,60-5*r.wrongNames-10*r.letters);r.stage="elements";r.nameKnown=true;seenMark(r.a,true);S.dex[r.a.name].s--;saveDex();reveal();renderAll();
     say(`It's ${r.a.name.toUpperCase()}! Now scan for the elements inside it.`)}
   else{r.wrongNames++;const inp=$("#name-guess");inp.classList.remove("shake");void inp.offsetWidth;inp.classList.add("shake");inp.select();
     say(`It's not ${v.trim()}! Run more tests or check the clues.`)}}
@@ -1032,11 +1291,13 @@ function hint(){const r=S.r;if(r.hints>=2)return;r.hints++;S.run.score=Math.max(
   else{const s=r.a.comp.map(x=>x[0]).find(s=>!r.hit.has(s));r.hit.add(s);r.sel.delete(s);
     if(r.a.comp.every(([x])=>r.hit.has(x)))return win();renderAll();say(`HINT: the scanner locked on to ${BY[s].name.toUpperCase()} (${s}).`)}}
 function win(){const r=S.r,R=S.run;r.won=true;r.stage="done";
-  r.pts+=Math.max(10,100-20*(SCANS-r.tries));R.streak++;if(R.streak>=2)r.pts+=10*(R.streak-1);
+  r.pts+=Math.max(10,100-20*(SCANS-r.tries));R.streak++;if(R.streak>=2)r.pts+=10*(R.streak-1);if(r.radiant)r.pts+=50;
   R.score+=r.pts;R.log.push({a:r.a,won:true,pts:r.pts,known:true});
   const fresh=!S.caught.has(r.a.name);S.caught.add(r.a.name);store.set("wta_caught2",[...S.caught]);
+  {const d=S.dex[r.a.name]||(S.dex[r.a.name]={s:1,c:0});d.c++;d.k=1;if(!d.f)d.f=new Date().toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});d.b=Math.max(d.b||0,r.pts);if(r.radiant)d.rad=1;
+    const a=r.a;d.def={comp:a.comp,d:a.d,mp:a.mp,mag:a.mag,hard:a.hard,cond:a.cond,color:a.color,finish:a.finish,uses:a.uses,lore:a.lore,cov:a.cov};saveDex()}
   if(R.score>S.best){S.best=R.score;store.set("wta_best2",S.best)}
-  reveal();renderAll();say(`Gotcha! ${r.a.name.toUpperCase()} ${fresh?"was registered in the Alloydex!":"is already in your Alloydex."}${R.streak>=2?` Streak x${R.streak}!`:""}`)}
+  reveal();renderAll();say(`Gotcha! ${r.a.name.toUpperCase()} ${fresh?"was registered in the Alloydex!":"is already in your Alloydex."}${r.radiant?" Its radiant form was recorded! (+50)":""}${R.streak>=2?` Streak x${R.streak}!`:""}`)}
 function lose(ran){const r=S.r,R=S.run;r.won=false;r.stage="done";R.streak=0;r.pts=0;R.log.push({a:r.a,won:false,pts:0,known:r.nameKnown});renderAll();
   say(ran?"Got away safely! The alloy is still a mystery.":"Oh no! The alloy fled before you could identify it!")}
 function next(){S.run.idx++;if(S.run.idx>=ROUNDS)return endRun();startExplore()}
@@ -1063,11 +1324,11 @@ function resetLab(){
     gm:{on:false,sound:true,sample:false,hits:[],shown:0,bgSeen:null,since:0},
     sparks:[],flash:0});
   $("#rd-gm").textContent="Counter is off";updateGeiger();
-  $("#cy-chunk").setAttribute("rx",a.form==="vial"?7:3);if(typeof setFaucet==="function")setFaucet(false);
+  $("#cy-chunk").setAttribute("rx",a.fill==="liquid"?7:3);if(typeof setFaucet==="function")setFaucet(false);
   $("#rd-scale").textContent="Scale is off";$("#rd-fz").textContent="Furnace is off";$("#rd-fl").textContent="Gas off · air vent closed";
   $("#fz-sample").setAttribute("opacity",0);if(typeof resetFurnaceFx==="function")resetFurnaceFx();
   updateScale();updateCyl();updateFurnaceUI();updateCircuit();updateFlameUI();
-  const m=$("#stagemag");m.className="stagemag";$("#specimen").classList.remove("pulled","held");
+  const m=$("#stagemag");m.className="stagemag";$("#specimen").classList.remove("pulled","held","cling","nudge");
   document.querySelectorAll(".tool.held,.station.armed").forEach(e=>e.classList.remove("held","armed"));
 }
 function yOf(ml){return 188-ml*1.6}
@@ -1354,16 +1615,21 @@ requestAnimationFrame(loop);
 
 /* tools applied to the sample */
 function useMagnet(){const a=S.r.a,m=$("#stagemag");m.innerHTML=MAGNET_SVG;m.className="stagemag";void m.offsetWidth;$("#specimen").classList.remove("pulled");
-  if(a.form==="vial"){m.classList.add("fall");S.r.notes.magnet="no pull";say("The magnet slides off the glass. The liquid doesn't budge.")}
+  const sp=$("#specimen");sp.classList.remove("cling","nudge");
+  if(a.fill==="liquid"){m.classList.add("fall");S.r.notes.magnet="no pull";say("The magnet slides off the glass. The liquid doesn't budge.")}
+  else if(a.form==="vial"){void sp.offsetWidth;
+    if(a.mag===2){m.classList.add("stick");sp.classList.add("cling");S.r.notes.magnet="contents leapt to the magnet";say("CLACK! The pieces leap toward the magnet and cling to the glass.")}
+    else if(a.mag===1){m.classList.add("slip");sp.classList.add("nudge");S.r.notes.magnet="contents shifted slightly";say("A faint tug... a few pieces shift, then settle back.")}
+    else{m.classList.add("fall");S.r.notes.magnet="no pull";say("Nothing. The pieces don't move and the magnet falls away.")}}
   else if(a.mag===2){m.classList.add("stick");$("#specimen").classList.add("pulled");S.r.notes.magnet="snapped on and stuck";say("CLACK! The magnet snaps onto the sample and holds tight.")}
   else if(a.mag===1){m.classList.add("slip");S.r.notes.magnet="faint tug, slid off";say("A faint tug... then the magnet slowly slides off.")}
   else{m.classList.add("fall");S.r.notes.magnet="no pull";say("Nothing. The magnet just falls away.")}
   renderDex()}
 function useScratch(t){const a=S.r.a;
-  if(a.form==="vial"){$("#specimen").classList.remove("slosh");void $("#specimen").offsetWidth;$("#specimen").classList.add("slosh");S.r.scratchLog[t.name]="liquid";renderDex();say(`The ${t.name.toLowerCase()} just swirls through the liquid.`);return}
-  const x1=70+Math.random()*120,y1=100+Math.random()*30,x2=x1+30+Math.random()*40,y2=y1+(Math.random()-.5)*14;
-  if(t.h>a.hard+.2){S.r.marks.push({kind:"scratch",x1,y1,x2,y2});S.r.scratchLog[t.name]="scratched";say(`Screeech! The ${t.name.toLowerCase()} leaves a groove.`)}
-  else{S.r.marks=S.r.marks.filter(m=>m.kind==="scratch");S.r.marks.push({kind:"streak",x1,y1,x2,y2,col:t.col});S.r.scratchLog[t.name]="no mark";say(`The ${t.name.toLowerCase()} skids across without leaving a groove.`)}
+  if(a.fill==="liquid"){$("#specimen").classList.remove("slosh");void $("#specimen").offsetWidth;$("#specimen").classList.add("slosh");S.r.scratchLog[t.name]="liquid";renderDex();say(`The ${t.name.toLowerCase()} just swirls through the liquid.`);return}
+  const u1=.05+Math.random()*.5,v1=.2+Math.random()*.6,u2=Math.min(.95,u1+.25+Math.random()*.25),v2=clamp(v1+(Math.random()-.5)*.4,.05,.95);
+  if(t.h>a.hard+.2){S.r.marks.push({kind:"scratch",u1,v1,u2,v2});S.r.scratchLog[t.name]="scratched";say(`Screeech! The ${t.name.toLowerCase()} leaves a groove.`)}
+  else{S.r.marks=S.r.marks.filter(m=>m.kind==="scratch");S.r.marks.push({kind:"streak",u1,v1,u2,v2,col:t.col});S.r.scratchLog[t.name]="no mark";say(`The ${t.name.toLowerCase()} skids across without leaving a groove.`)}
   $("#specimen").innerHTML=specimenSVG(a,S.r.marks);renderDex()}
 
 /* =============== DRAG & DROP =============== */
@@ -1422,36 +1688,141 @@ function renderElCard(){const e=BY[curEl],x=EX[e.s];
     <div class="inalloys">${inA.length?`<b>In ${inA.length} Alloydex entries.</b> ${known.length?"Registered: "+known.slice(0,12).map(a=>`<span class="chip">${a.name}</span>`).join("")+(known.length>12?` +${known.length-12} more`:""):"None registered yet."}`:"Not used in any alloy in this game."}</div>`}
 
 /* =============== ALLOYDEX VIEW =============== */
-const PAGE=60;
+/* =============== ALLOYDEX =============== */
+const formName=a=>a.form==="vial"?({liquid:"Liquid in a vial",granules:"Granules in a vial",beads:"Beads in a vial",powder:"Powder in a vial",shavings:"Shavings in a vial"}[a.fill]||"Vial"):FORM_NAME[a.form];
+const FORM_NAME={rod:"Solid rod",ingot:"Solid ingot",sheet:"Rolled sheet",wire:"Wire coil",coin:"Stamped coins",ball:"Polished sphere",pellets:"Pellets in a dish",ribbon:"Thin ribbon",vial:"Liquid in a vial"};
+const SPARKS=Array.from({length:10},(_,i)=>`<i style="--x:${[12,84,22,74,50,8,90,36,64,48][i]}%;--y:${[18,22,70,76,8,48,52,88,86,40][i]}%;--dl:${(i*.37).toFixed(2)}s"></i>`).join("");
+const HAB={"z-mine":{name:"Rustvein Mine",col:"#B0834E"},"z-scrap":{name:"Tinker's Scrapyard",col:"#8A8579"},"z-wreck":{name:"Sunken Galleon Cove",col:"#3E9BC9"},"z-volcano":{name:"Emberforge Caldera",col:"#E0582A"},"z-vault":{name:"Gilded Vault",col:"#D9A92A"},"z-reactor":{name:"Old Reactor Hall",col:"#7FCB3A"},"z-glacier":{name:"Frostbite Cavern",col:"#8FD0F0"},"z-crater":{name:"Starfall Crater",col:"#7D6FB0"}};
+const RARITY={common:{n:"Common",w:10,c:"#8A93A6"},uncommon:{n:"Uncommon",w:6,c:"#3FA66A"},rare:{n:"Rare",w:2,c:"#3B7BF0"},legendary:{n:"Legendary",w:.6,c:"#D9A92A"}};
+const PAGE=48;
+function recOf(a){return S.dex[a.name]||{s:0,c:0}}
+function saveDex(){store.set("wta_dex2",S.dex)}
+function seenMark(a,known){const r=S.dex[a.name]||(S.dex[a.name]={s:0,c:0});r.s++;if(known)r.k=1;saveDex()}
+function statusOf(a){return S.caught.has(a.name)?"caught":recOf(a).s?"seen":"unseen"}
+function knownName(a){return S.caught.has(a.name)||recOf(a).k}
+function dexFiltered(){const f=S.df;let list=ALLOYS.filter(a=>{const st=statusOf(a);
+    if(f.status==="caught"&&st!=="caught")return false;if(f.status==="seen"&&st==="unseen")return false;if(f.status==="missing"&&st==="caught")return false;if(f.status==="radiant"&&!recOf(a).rad)return false;
+    if(f.origin==="real"&&!a.real)return false;if(f.origin==="syn"&&a.real)return false;
+    if(f.type&&!(st==="caught"&&a.types.includes(f.type)))return false;
+    if(f.hab&&!(st!=="unseen"&&a.hab===f.hab))return false;
+    if(f.q){const q=f.q.trim().toLowerCase();const no=q.replace(/^no\.?\s*/,"");
+      if(/^\d+$/.test(no)){if(a.no!==+no&&!pad(a.no).startsWith(no))return false}
+      else if(!(knownName(a)&&a.name.toLowerCase().includes(q)))return false}
+    return true});
+  const key={no:a=>a.no,name:a=>knownName(a)?a.name.toLowerCase():"~"+pad(a.no),d:a=>S.caught.has(a.name)?-a.d:1e9+a.no,mp:a=>S.caught.has(a.name)?-a.mp:1e9+a.no}[f.sort];
+  return list.sort((x,y)=>{const a=key(x),b=key(y);return a<b?-1:a>b?1:0})}
+function badge(st){return st==="caught"?`<span class="dbadge reg">★ REG</span>`:st==="seen"?`<span class="dbadge seen">SEEN</span>`:""}
 function renderDexGrid(){
-  $("#dex-count").textContent=`${S.caught.size}/${ALLOYS.length}`;
-  let list=ALLOYS;const f=S.dexFilter;if(f==="real")list=REAL;else if(f==="syn")list=ALLOYS.filter(a=>!a.real);else if(f==="caught")list=ALLOYS.filter(a=>S.caught.has(a.name));
-  const pages=Math.max(1,Math.ceil(list.length/PAGE));S.dexPage=clamp(S.dexPage,0,pages-1);
+  $("#dexdetail").hidden=true;$("#dexlist").hidden=false;
+  const seen=ALLOYS.filter(a=>recOf(a).s||S.caught.has(a.name)).length;
+  $("#dex-seen").textContent=`${seen}/${ALLOYS.length}`;$("#dex-count").textContent=`${registeredCount()}/${ALLOYS.length}`;$("#dex-rad").textContent=ALLOYS.filter(a=>recOf(a).rad).length;
+  $("#habbars").innerHTML=Object.entries(HAB).map(([k,h])=>{const all=ALLOYS.filter(a=>a.hab===k),got=all.filter(a=>S.caught.has(a.name)).length;
+    return `<div class="hb"><span>${h.name}</span><div class="hbt"><i style="width:${all.length?got/all.length*100:0}%;background:${h.col}"></i></div><b>${got}/${all.length}</b></div>`}).join("");
+  const list=dexFiltered(),pages=Math.max(1,Math.ceil(list.length/PAGE));S.dexPage=clamp(S.dexPage,0,pages-1);
   const slice=list.slice(S.dexPage*PAGE,(S.dexPage+1)*PAGE);
-  $("#dexgrid").innerHTML=slice.length?slice.map(a=>{const got=S.caught.has(a.name);
-    return `<div class="dexcard ${got?"":"locked"}"><div class="mini">${miniHTML(a)}</div><span class="no">No.${pad(a.no)} · ${a.real?"REAL":"SYNTH"}</span><span class="nm">${got?a.name:"???"}</span>
-      ${got?`<div class="types">${a.types.map(t=>`<span class="type" style="background:${TYPES[t]}">${t.toUpperCase()}</span>`).join("")}</div><span class="cp">${a.comp.map(([s,p])=>`${s} ${p}%`).join(" · ")}</span>`:`<span class="cp">Not yet identified</span>`}</div>`}).join("")
-    :`<p class="note">Nothing here yet. Solve an alloy's recipe in a run to register it.</p>`;
-  $("#pager").innerHTML=pages>1?`<button class="btn" id="pg-prev" ${S.dexPage?"":"disabled"}>◀</button><span>Page ${S.dexPage+1} of ${pages}</span><button class="btn" id="pg-next" ${S.dexPage<pages-1?"":"disabled"}>▶</button>`:"";
-  if(pages>1){$("#pg-prev").onclick=()=>{S.dexPage--;renderDexGrid()};$("#pg-next").onclick=()=>{S.dexPage++;renderDexGrid()}}}
-document.querySelectorAll("#dexfilters button").forEach(b=>b.onclick=()=>{S.dexFilter=b.dataset.f;S.dexPage=0;document.querySelectorAll("#dexfilters button").forEach(x=>x.setAttribute("aria-pressed",x===b));renderDexGrid()});
+  $("#dexgrid").innerHTML=slice.length?slice.map(a=>{const st=statusOf(a);
+    return `<button class="dexcard ${st==="unseen"?"locked":""}" data-no="${a.no}"><div class="mini">${miniHTML(a)}</div>
+      <span class="no">No.${pad(a.no)} ${badge(st)}${recOf(a).rad?`<span class="dbadge rad">✦</span>`:""}</span><span class="nm">${knownName(a)?a.name:"???"}</span>
+      ${st==="caught"?`<div class="types">${a.types.map(t=>`<span class="type" style="background:${TYPES[t]}">${t.toUpperCase()}</span>`).join("")}</div>`:`<span class="cp">${st==="seen"?"Seen in "+HAB[a.hab].name:"Not yet encountered"}</span>`}</button>`}).join("")
+    :`<p class="note">No entries match these filters.</p>`;
+  $("#pager").innerHTML=pages>1?`<button class="btn" id="pg-prev" ${S.dexPage?"":"disabled"}>◀</button><span>Page ${S.dexPage+1} of ${pages} · ${list.length} entries</span><button class="btn" id="pg-next" ${S.dexPage<pages-1?"":"disabled"}>▶</button>`:`<span>${list.length} entries</span>`;
+  if(pages>1){$("#pg-prev").onclick=()=>{S.dexPage--;renderDexGrid()};$("#pg-next").onclick=()=>{S.dexPage++;renderDexGrid()}}
+}
+function similar(a){const w=frac(a);return ALLOYS.filter(b=>b!==a).map(b=>{let s=0;b.comp.forEach(([e,p])=>{s+=Math.min(p/100,w[e]||0)});return[b,s]}).filter(x=>x[1]>.3).sort((x,y)=>y[1]-x[1]).slice(0,6).map(x=>x[0])}
+function statBars(a){const radv=a.comp.reduce((t,[e,p])=>t+radOf(e)*p/100,0);
+  const rows=[["DENSITY",a.d/22,`${a.d} g/cm³`],["MELT PT",(a.mp+50)/3550,a.mp<25?`${a.mp} °C (liquid)`:`${a.mp} °C`],["HARDNESS",a.hard/10,a.hard?`Mohs ${a.hard}`:"liquid"],
+    ["CONDUCT",clamp((Math.log10(a.cond)+.6)/2.5,0,1),`${a.cond} MS/m`],["MAGNETIC",a.mag/2,["none","weak","strong"][a.mag]],["RADIATION",radv?clamp((Math.log10(radv*400+1))/5,0,1):0,radLabel(radv)]];
+  return rows.map(([l,v,t])=>{const pc=clamp(v,0,1)*100,col=pc>66?"#2FB463":pc>33?"#E0AF10":"#E8412C";
+    return `<span class="lab">${l}</span><div class="track"><div class="fill" style="width:${Math.max(2,pc)}%;background:${col}"></div></div><span class="val">${t}</span>`}).join("")}
+function corrText(a){const c=corrosion(a);return !c?"Reacts with water":c.k==="rust"?"Rusts in water":c.k==="patina"?"Forms a thin film":c.k==="white"?"Forms a chalky crust":c.k==="dull"?"Dulls slowly":"Resists water"}
+function openDex(no){const a=ALLOYS[no-1];if(!a)return;S.dexOpen=no;const st=statusOf(a),rec=recOf(a),got=st==="caught";
+  $("#dexlist").hidden=true;const d=$("#dexdetail");d.hidden=false;
+  const rel=got?similar(a):[];
+  d.innerHTML=`
+  <div class="ddnav"><button class="btn" id="dd-back">◀ BACK</button><span class="ddpos">No.${pad(a.no)} of ${ALLOYS.length}</span>
+    <button class="btn" id="dd-prev" ${no>1?"":"disabled"}>▲ PREV</button><button class="btn" id="dd-next" ${no<ALLOYS.length?"":"disabled"}>NEXT ▼</button></div>
+  <div class="ddgrid">
+    <div class="ddscreen ${st==="unseen"?"dark":""}" id="ddscreen"><div class="aura">${SPARKS}</div><div class="ddspec">${specimenSVG(a)}</div>
+      <div class="ddplate"><span>No.${pad(a.no)}</span><b>${knownName(a)?a.name.toUpperCase():"???"}</b></div></div>
+    <div class="ddinfo">
+      <div class="ddtitle"><div><h2>${knownName(a)?a.name:"???"}</h2><div class="cat">${got?`The ${a.cat} Alloy`:"Unknown alloy"}</div></div>
+        <div class="ddbtns">${st!=="unseen"?`<button class="btn" id="dd-cry">▶ CRY</button>`:""}${rec.rad?`<button class="btn" id="dd-rad">✦ RADIANT</button>`:""}</div></div>
+      ${got?`<div class="types">${a.types.map(t=>`<span class="type" style="background:${TYPES[t]}">${t.toUpperCase()}</span>`).join("")}</div>`:""}
+      <p class="clue">${got?a.lore:st==="seen"?"Register this alloy to unlock its full entry.":"You haven't encountered this alloy yet."}</p>
+      <dl class="props dd">
+        <dt>HABITAT</dt><dd>${st==="unseen"?"???":HAB[a.hab].name}</dd>
+        <dt>RARITY</dt><dd>${got?`<span class="rar" style="background:${RARITY[a.rar].c}">${RARITY[a.rar].n}</span>`:"???"}</dd>
+        <dt>ORIGIN</dt><dd>${got?(a.real?"Real-world":"Synthetic · Quillmoor"):"???"}</dd>
+        <dt>SAMPLE</dt><dd>${st==="unseen"?"???":formName(a)}</dd>
+        <dt>MADE BY</dt><dd>${got?a.made:"???"}</dd>
+        <dt>RADIANT FORM</dt><dd>${rec.rad?"✦ Registered":got?"Not yet found":"???"}</dd>
+        <dt>USED FOR</dt><dd>${got?a.uses:"???"}</dd>
+        <dt>IN WATER</dt><dd>${got?corrText(a):"???"}</dd>
+      </dl>
+      ${got?`<div class="comp" aria-label="Composition by weight">${a.comp.map(([s,p])=>`<span style="flex:${Math.max(p,4)} 1 0;background:${CATS[BY[s].cat].c}" title="${BY[s].name} ${p}%">${p>=7?`${s} ${p}%`:s}</span>`).join("")}</div>`:""}
+    </div>
+  </div>
+  <div class="ddlow">
+    <div class="ddbox"><h4>BASE STATS</h4>${got?`<div class="bars">${statBars(a)}</div>`:`<p class="note dim">Stats unlock when registered.</p>`}</div>
+    <div class="ddbox"><h4>RESEARCH LOG</h4><ul class="rlog">
+      <li><b>Encountered</b>${rec.s||0} time${rec.s===1?"":"s"}</li><li><b>Registered</b>${rec.c||0} time${rec.c===1?"":"s"}</li>
+      <li><b>First registered</b>${rec.f||"—"}</li><li><b>Best score</b>${rec.b!=null?rec.b+" pts":"—"}</li></ul></div>
+  </div>
+  ${got?`<div class="ddbox"><h4>RELATED ALLOYS</h4><div class="relgrid">${rel.length?rel.map(b=>{const s2=statusOf(b);return `<button class="relc ${s2==="unseen"?"locked":""}" data-no="${b.no}"><div class="mini">${miniHTML(b)}</div><span>No.${pad(b.no)}</span><b>${knownName(b)?b.name:"???"}</b></button>`}).join(""):`<p class="note dim">No close relatives.</p>`}</div></div>`:""}`;
+  $("#dd-back").onclick=()=>{S.dexOpen=null;renderDexGrid()};
+  $("#dd-prev").onclick=()=>openDex(no-1);$("#dd-next").onclick=()=>openDex(no+1);
+  const rb=$("#dd-rad");if(rb)rb.onclick=()=>{const sc=$("#ddscreen");sc.classList.toggle("radiant");rb.classList.toggle("on");if(sc.classList.contains("radiant"))sfx("radiant")};
+  const c=$("#dd-cry");if(c)c.onclick=()=>typeof cry==="function"&&cry(a);
+  d.querySelectorAll(".relc").forEach(b=>b.onclick=()=>openDex(+b.dataset.no));
+  if(st!=="unseen"&&typeof cry==="function")cry(a);
+  d.scrollIntoView({block:"start"})}
+$("#dexgrid").addEventListener("click",e=>{const c=e.target.closest(".dexcard");if(c)openDex(+c.dataset.no)});
+document.querySelectorAll("#dexfilters button").forEach(b=>b.onclick=()=>{S.df.status=b.dataset.f;S.dexPage=0;document.querySelectorAll("#dexfilters button").forEach(x=>x.setAttribute("aria-pressed",x===b));renderDexGrid()});
+$("#dextype").innerHTML=`<option value="">All types</option>`+Object.keys(TYPES).map(t=>`<option value="${t}">${t}</option>`).join("");
+$("#dexhab").innerHTML=`<option value="">All habitats</option>`+Object.entries(HAB).map(([k,h])=>`<option value="${k}">${h.name}</option>`).join("");
+[["#dexsearch","q","input"],["#dexorigin","origin","change"],["#dextype","type","change"],["#dexhab","hab","change"],["#dexsort","sort","change"]].forEach(([id,k,ev])=>$(id).addEventListener(ev,e=>{S.df[k]=e.target.value;S.dexPage=0;renderDexGrid()}));
+document.addEventListener("keydown",e=>{if($("#view-dex").hidden||$("#dexdetail").hidden||e.target.closest("input,select"))return;
+  if(e.key==="ArrowRight"||e.key==="ArrowDown"){e.preventDefault();openDex(Math.min(ALLOYS.length,S.dexOpen+1))}
+  if(e.key==="ArrowLeft"||e.key==="ArrowUp"){e.preventDefault();openDex(Math.max(1,S.dexOpen-1))}
+  if(e.key==="Escape"){S.dexOpen=null;renderDexGrid()}});
+
 
 
 /* =============== EXPLORATION (random encounters) =============== */
 const ZONES=[
  {name:"RUSTVEIN MINE",sub:"Old tunnels. Something glints in the rubble.",cls:"z-mine",map:["#############","#P..,,,..#,,#","#....,,,.#,,#","#==========,#","#,,,....,,,.#","#,,,..L#.,,,#","#..,,..#..,.#","#############"]},
  {name:"TINKER'S SCRAPYARD",sub:"Heaps of forgotten metal. Watch your step.",cls:"z-scrap",map:["#############","#P....,,,,..#","#.##..,,,,..#","#.##........#","#..,,,,.##..#","#..,,,,.##,,#","#.......,,,,#","#############"]},
+ {name:"SUNKEN GALLEON COVE",sub:"A shipwreck at low tide. The sea left treasures in the sand.",cls:"z-wreck",map:["#############","#P..,,..,,,.#","#...,,..,,,.#","#..####.....#","#..#,,#..,,,#","#,,#,,...,,,#","#,,....,,...#","#############"]},
+ {name:"EMBERFORGE CALDERA",sub:"The ground is hot. Only the toughest metals survive here.",cls:"z-volcano",map:["#############","#P.,,,.#,,,.#","#..,,,.#,,,.#","#.....L.....#","#,,,.....,,,#","#,,,.##..,,,#","#....##.....#","#############"]},
+ {name:"GILDED VAULT",sub:"A forgotten treasury. Mind the coin piles.",cls:"z-vault",map:["#############","#P....#,,,,.#","#.,,,.#,,,,.#","#.,,,.......#","#.......,,,.#","#.,,,.#.,,,.#","#.,,,.#.....#","#############"]},
+ {name:"OLD REACTOR HALL",sub:"Decommissioned decades ago. Something still glows.",cls:"z-reactor",map:["#############","#P..........#","#.,,,#.#,,,.#","#.,,,#.#,,,.#","#.....L.....#","#.,,,#.#,,,.#","#.,,,.......#","#############"]},
+ {name:"FROSTBITE CAVERN",sub:"So cold that strange liquids freeze in the ice.",cls:"z-glacier",map:["#############","#,,,,..P..,,#","#,,##...##,,#","#,,,,...,,,,#","#..,,,#,,,..#","#.##,,,,,##.#","#,,,,...,,,,#","#############"]},
  {name:"STARFALL CRATER",sub:"A meteor landed here long ago.",cls:"z-crater",map:["#############","#,,,....,,,,#","#,#,,..,,#,,#","#,,,,.P.,,,,#","#..,,...,,..#","#,,#..,..#,,#","#,,,,,,,,,,,#","#############"]}
 ];
-const MINER=`<svg viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="20" cy="37" rx="10" ry="2.5" fill="#000" opacity=".3"/>
-<rect x="12" y="22" width="16" height="12" rx="4" fill="#3B7BF0" stroke="#121B40" stroke-width="2"/><rect x="14" y="33" width="5" height="4" rx="1" fill="#4A3A2A"/><rect x="21" y="33" width="5" height="4" rx="1" fill="#4A3A2A"/>
-<circle cx="20" cy="16" r="8" fill="#F2C7A5" stroke="#121B40" stroke-width="2"/><circle cx="23" cy="16" r="1.4" fill="#121B40"/>
-<path d="M11 13 Q20 3 29 13 L31 13 L31 15 L9 15 L9 13Z" fill="#FFD23F" stroke="#121B40" stroke-width="2"/><circle cx="28" cy="10" r="2.6" fill="#FFF7C2" stroke="#121B40" stroke-width="1.5"/>
-<rect x="26" y="24" width="8" height="3" rx="1.5" fill="#8A5A2E"/><path d="M33 20 L36 27 L31 26Z" fill="#9AA2AC" stroke="#121B40" stroke-width="1"/></svg>`;
+const MINER=`<svg viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="20" cy="37.5" rx="10" ry="2.2" fill="#000" opacity=".3"/>
+<rect x="14.5" y="31" width="4.5" height="5.5" rx="1" fill="#2E3548"/><rect x="21" y="31" width="4.5" height="5.5" rx="1" fill="#2E3548"/>
+<rect x="13.5" y="35.5" width="6" height="2.5" rx="1.2" fill="#121B40"/><rect x="20.5" y="35.5" width="6" height="2.5" rx="1.2" fill="#121B40"/>
+<path d="M12 22 Q20 19 28 22 L29.5 34 L10.5 34 Z" fill="#FFFFFF" stroke="#121B40" stroke-width="1.6" stroke-linejoin="round"/>
+<path d="M17 21 L20 27 L23 21" fill="#7FB6E8" stroke="#121B40" stroke-width="1.1" stroke-linejoin="round"/>
+<path d="M20 27 L20 34" stroke="#C9D2E6" stroke-width="1"/>
+<rect x="13.2" y="26.5" width="4" height="3.6" rx=".6" fill="#EEF2FA" stroke="#9AA6C2" stroke-width=".7"/><path d="M14.2 26.8 V25 M15.4 26.8 V24.6 M16.4 26.8 V25.2" stroke-linecap="round" stroke-width="1" stroke="#E8412C"/><path d="M15.4 26.8 V24.6" stroke="#3B7BF0" stroke-width="1" stroke-linecap="round"/>
+<rect x="22.6" y="27" width="3.4" height="2.4" rx=".5" fill="#FFD23F" stroke="#121B40" stroke-width=".6"/>
+<path d="M11.5 23 Q9 28 10 32" stroke="#121B40" stroke-width="3.6" stroke-linecap="round" fill="none"/><path d="M11.5 23 Q9 28 10 32" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" fill="none"/>
+<circle cx="10.2" cy="32.4" r="1.6" fill="#F2C7A5" stroke="#121B40" stroke-width=".8"/>
+<path d="M28.5 23 Q31.5 25 32 28" stroke="#121B40" stroke-width="3.6" stroke-linecap="round" fill="none"/><path d="M28.5 23 Q31.5 25 32 28" stroke="#FFFFFF" stroke-width="2" stroke-linecap="round" fill="none"/>
+<path d="M31 24.5 L31 27 L28.6 31.5 Q28.2 32.6 29.4 32.6 L35.6 32.6 Q36.8 32.6 36.4 31.5 L34 27 L34 24.5 Z" fill="#E6F3FF" stroke="#121B40" stroke-width=".9" stroke-linejoin="round"/>
+<path d="M29.4 30.2 L35.6 30.2 L36.4 31.5 Q36.8 32.6 35.6 32.6 L29.4 32.6 Q28.2 32.6 28.6 31.5 Z" fill="#6BE08A"/><rect x="30.6" y="23.6" width="3.8" height="1.4" rx=".5" fill="#9AA6C2"/>
+<circle cx="32" cy="28" r="1.8" fill="#F2C7A5" stroke="#121B40" stroke-width=".8"/>
+<circle cx="20" cy="13.5" r="7.2" fill="#F2C7A5" stroke="#121B40" stroke-width="1.6"/>
+<path d="M12.6 12.5 Q12 5.5 19 5.6 Q21 3.4 24 5 Q28.6 5.4 27.6 11 Q25.6 8.6 22.4 9.2 Q18.4 7.8 16 10 Q14 10.4 12.6 12.5Z" fill="#6B4424" stroke="#121B40" stroke-width="1.3" stroke-linejoin="round"/>
+<path d="M12.8 13 L27.4 13" stroke="#2E3548" stroke-width="1.6"/>
+<circle cx="19.6" cy="13.4" r="2.6" fill="#BFE6FF" stroke="#2E3548" stroke-width="1.2"/><circle cx="25.2" cy="13.4" r="2.6" fill="#BFE6FF" stroke="#2E3548" stroke-width="1.2"/>
+<circle cx="18.9" cy="12.6" r=".7" fill="#fff"/><circle cx="24.5" cy="12.6" r=".7" fill="#fff"/>
+<path d="M21.5 17.6 Q23 18.6 24.4 17.6" stroke="#121B40" stroke-width=".9" fill="none" stroke-linecap="round"/></svg>`;
 const EXP={zone:null,x:0,y:0,face:1,busy:true,since:0,target:null,timer:null,hold:null};
 
 function rubbleSVG(z,seed){const R=mulberry(seed*7919+13),rn=(a,b)=>a+R()*(b-a),f=v=>v.toFixed(1);
-  const rocks={"z-mine":["#8C7A66","#A08C74","#766553"],"z-scrap":["#8E949C","#A7ADB5","#7A6F66"],"z-crater":["#6D6488","#877DA6","#5A5272"]}[z];
+  const rocks={"z-wreck":["#9C8B6E","#B7A583","#7E8C86"],"z-volcano":["#3A2E2E","#5A4640","#2A2226"],"z-vault":["#8C7A5E","#A48E6A","#6E6048"],"z-reactor":["#6E7A76","#87938E","#56605C"],"z-glacier":["#DCEFFA","#A9D2EC","#C4E2F4"],"z-mine":["#8C7A66","#A08C74","#766553"],"z-scrap":["#8E949C","#A7ADB5","#7A6F66"],"z-crater":["#6D6488","#877DA6","#5A5272"]}[z];
   let g="";
   for(let i=0;i<9;i++)g+=`<ellipse cx="${f(rn(2,38))}" cy="${f(rn(2,38))}" rx="${f(rn(.5,1.3))}" ry="${f(rn(.4,.9))}" fill="rgba(0,0,0,.28)"/>`;
   for(let i=0;i<6;i++)g+=`<circle cx="${f(rn(2,38))}" cy="${f(rn(2,38))}" r="${f(rn(.3,.7))}" fill="rgba(255,255,255,.18)"/>`;
@@ -1474,11 +1845,27 @@ function rubbleSVG(z,seed){const R=mulberry(seed*7919+13),rn=(a,b)=>a+R()*(b-a),
       else if(t===1)g+=`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rn(-40,40))})"><rect x="-4.5" y="-1.2" width="9" height="2.4" rx="1" fill="#B06A3E" stroke="#6E3A1C" stroke-width=".5"/><rect x="-4.5" y="-1.2" width="9" height=".7" fill="#D89A6A"/><ellipse cx="4.5" cy="0" rx=".6" ry="1.2" fill="#4A2A18"/></g>`;
       else if(t===2)g+=`<g transform="translate(${f(x)} ${f(y)})"><polygon points="-1.6,0 -.8,-1.4 .8,-1.4 1.6,0 .8,1.4 -.8,1.4" fill="#C3C9D0" stroke="#5E656D" stroke-width=".5"/><circle r=".6" fill="#6E757D"/></g>`;
       else g+=`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rn(-25,25))})"><rect x="-3.5" y="-2.2" width="7" height="4.4" rx=".6" fill="#8A8F96" stroke="#555A61" stroke-width=".5"/><circle cx="-2.5" cy="-1.3" r=".4" fill="#D0D5DB"/><circle cx="2.5" cy="-1.3" r=".4" fill="#D0D5DB"/><circle cx="-2.5" cy="1.3" r=".4" fill="#D0D5DB"/><circle cx="2.5" cy="1.3" r=".4" fill="#D0D5DB"/><path d="M-3.5 1 L-1 2.2" stroke="#B06A3E" stroke-width=".7"/></g>`}
+    else if(z==="z-wreck"){const t=R()*3|0;
+      if(t===0)g+=`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rn(-40,40))})"><rect x="-5" y="-1.3" width="10" height="2.6" rx=".5" fill="#8A5A34" stroke="#4A2E18" stroke-width=".5"/><path d="M-5 -.3 H5 M-2 -1.3 V1.3" stroke="#6E4424" stroke-width=".4"/></g>`;
+      else if(t===1)g+=`<g transform="translate(${f(x)} ${f(y)})"><circle r="2.8" fill="none" stroke="#C99A48" stroke-width="1.3"/><circle r="1.8" fill="#9FD3F0" opacity=".7"/></g>`;
+      else g+=`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rn(-30,30))})"><path d="M0 -2.6 Q2.8 -1.4 2.4 1.6 L-2.4 1.6 Q-2.8 -1.4 0 -2.6Z" fill="#F2D8C8" stroke="#B88A72" stroke-width=".5"/><path d="M0 -2.4 V1.6 M-1.3 -1.8 L-1.2 1.6 M1.3 -1.8 L1.2 1.6" stroke="#C99A82" stroke-width=".4"/></g>`}
+    else if(z==="z-volcano"){const hot=R()<.5;
+      g+=hot?`<g transform="translate(${f(x)} ${f(y)})"><circle class="glow" r="3.4" fill="#FF6A1F" opacity=".45"/><polygon points="-2,1.2 -1,-1.8 1.4,-1.6 2.2,.8 .4,1.8" fill="#3A2420"/><path d="M-1 -1 L.4 0 L1.2 -.8" stroke="#FF8A2A" stroke-width=".6" fill="none"/></g>`
+        :`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rn(-30,30))})"><polygon points="0,-3.4 1.8,0 0,2 -1.6,-.4" fill="#141018" stroke="#3E3848" stroke-width=".4"/><path d="M0 -3 L.8 -.4" stroke="#9AA0C0" stroke-width=".4"/></g>`}
+    else if(z==="z-vault"){const t=R()*2|0;
+      if(t===0)for(let c=0;c<4;c++)g+=`<ellipse cx="${f(x+rn(-2,2))}" cy="${f(y-c*.8)}" rx="1.9" ry=".8" fill="#E9B949" stroke="#9A6A12" stroke-width=".4"/>`;
+      else{const col=["#E23A5A","#3AA0E2","#3AD08A","#B04AE2"][R()*4|0];g+=`<g transform="translate(${f(x)} ${f(y)})"><polygon points="0,-2.4 2,-.6 1.2,1.8 -1.2,1.8 -2,-.6" fill="${col}" stroke="${shade(col,-.45)}" stroke-width=".4"/><polygon points="0,-2.4 2,-.6 0,-.2" fill="${shade(col,.5)}"/></g>`}}
+    else if(z==="z-reactor"){const t=R()*2|0;
+      if(t===0)g+=`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rn(-20,20))})"><rect x="-1.8" y="-3" width="3.6" height="5.6" rx=".6" fill="#C9D0C4" stroke="#556" stroke-width=".4"/><rect x="-1.8" y="-1" width="3.6" height="1.4" fill="#E0B820"/><circle class="glow" r="4" fill="#9CFF4A" opacity=".25"/></g>`;
+      else for(let c=0;c<3;c++)g+=`<circle class="glow" cx="${f(x+rn(-2.5,2.5))}" cy="${f(y+rn(-1.5,1.5))}" r=".9" fill="#B6FF6A"/>`}
+    else if(z==="z-glacier"){const t=R()*2|0;
+      if(t===0)g+=`<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rn(-25,25))})"><polygon points="0,-4 1.6,-1 1,2 -1,2 -1.6,-1" fill="#EAF7FF" stroke="#7FB6D8" stroke-width=".5" opacity=".95"/><path d="M0 -4 L0 2" stroke="#FFFFFF" stroke-width=".4"/></g>`;
+      else for(let c=0;c<3;c++){const cx2=x+rn(-2.5,2.5),cy2=y+rn(-1.5,1.5);g+=`<circle cx="${f(cx2)}" cy="${f(cy2)}" r="${f(rn(.6,1.1))}" fill="#C9CED4" stroke="#8A9098" stroke-width=".3"/><circle cx="${f(cx2-.3)}" cy="${f(cy2-.3)}" r=".25" fill="#fff"/>`}}
     else{const hgt=rn(5,9),w=rn(1.8,2.8),col=["#8FD8FF","#B9A6FF","#8FF0D0"][R()*3|0];
       g+=`<ellipse class="glow" cx="${f(x)}" cy="${f(y)}" rx="${f(w*2.2)}" ry="${f(hgt*.5)}" fill="${col}" opacity=".35"/>`+
         `<g transform="translate(${f(x)} ${f(y)}) rotate(${f(rn(-20,20))})"><polygon points="${f(-w)},0 ${f(-w)},${f(-hgt*.7)} 0,${f(-hgt)} ${f(w)},${f(-hgt*.7)} ${f(w)},0 0,${f(w*.6)}" fill="${col}" stroke="${shade(col,-.4)}" stroke-width=".5" opacity=".95"/><polygon points="0,${f(-hgt)} ${f(w)},${f(-hgt*.7)} ${f(w)},0 0,${f(w*.6)}" fill="${shade(col,-.2)}"/><path d="M${f(-w*.5)} ${f(-hgt*.6)} L${f(-w*.5)} ${f(-hgt*.15)}" stroke="#fff" stroke-width=".5" opacity=".8"/></g>`}
     g=g.slice(0,g0)+`<g transform="translate(${f(x)} ${f(y)}) scale(1.45) translate(${f(-x)} ${f(-y)})">`+g.slice(g0)+"</g>"}
-  const glintCol={"z-mine":"#FFE9A8","z-scrap":"#FFFFFF","z-crater":"#DDF2FF"}[z];
+  const glintCol={"z-wreck":"#FFFFFF","z-volcano":"#FFB347","z-vault":"#FFF3B0","z-reactor":"#D8FFB0","z-glacier":"#FFFFFF","z-mine":"#FFE9A8","z-scrap":"#FFFFFF","z-crater":"#DDF2FF"}[z];
   for(let i=0;i<3;i++)g+=`<g transform="translate(${f(rn(6,34))} ${f(rn(6,32))})"><path class="tw" d="M0 -2.8 L.55 -.55 L2.8 0 L.55 .55 L0 2.8 L-.55 .55 L-2.8 0 L-.55 -.55Z" fill="${glintCol}" style="animation-delay:${f(rn(0,3))}s;animation-duration:${f(rn(1.6,3.2))}s"/></g>`;
   return `<svg viewBox="0 0 40 40" preserveAspectRatio="none" aria-hidden="true">${g}</svg>`}
 function startExplore(){S.phase="explore";S.r=null;
@@ -1596,6 +1983,7 @@ const SFX={
   caught:()=>melody("C5 E5 G5 C6 - - G5 C6 E6 - - -",.1,{},"C3 . . G2 . . C3 . . C3 - -"),
   flee:()=>melody("G5 F#5 F5 E5 - D#5 D5 - -",.08,{vol:.14},"G2 . . . . . G1 - -"),
   fanfare:()=>melody("G4 C5 E5 G5 - E5 G5 - C6 - - - - -",.11,{},"C3 . . . . G2 . . C3 - - - - -"),
+  radiant:()=>melody("E6 B6 E7 G#7 B7 - E7 B7 -",.055,{vol:.1,type:"triangle"}),
   pour:t=>nz(t,2,{vol:.22,type:"bandpass",f:1400}),
   roar:t=>nz(t,2,{vol:.5,type:"lowpass",f:260}),
   chillhiss:t=>nz(t,2,{vol:.12,f:5000})
@@ -1626,20 +2014,20 @@ function loopNoise(name){if(!AU.on||!AU.sfxOn)return()=>{};const el=new Audio(re
 /* Original chiptune loops: one bar = 8 eighth-notes */
 const TRACKS={
   explore:{bpm:112,lv:.13,bv:.26,
-    lead:"E5 - G5 - C6 - B5 A5 G5 - E5 - C5 - D5 E5 F5 - A5 - C6 - A5 F5 G5 - - - D5 E5 F5 D5 E5 - G5 - C6 - D6 C6 B5 - A5 - E5 - A5 B5 C6 - A5 - F5 - G5 A5 G5 - - - . . . .",
-    bass:"C3 . G3 . C3 . G3 . A2 . E3 . A2 . E3 . F2 . C3 . F2 . C3 . G2 . D3 . G2 . B2 .",
-    drum:"k . h . s . h h"},
+    lead:"E5 - G5 - C6 - B5 A5 G5 - E5 - C5 - D5 E5 F5 - A5 - C6 - A5 F5 G5 - - - D5 E5 F5 D5 E5 - G5 - C6 - D6 C6 B5 - A5 - E5 - A5 B5 C6 - A5 - F5 - G5 A5 G5 - - - . . . . A5 - C6 - A5 - F5 G5 B5 - D6 - B5 - G5 A5 G5 - E5 - B4 - E5 G5 A5 - - - C6 - B5 A5 F5 A5 C6 A5 F5 A5 C6 D6 D6 - B5 - G5 - A5 B5 C6 - G5 - E5 - G5 E5 D5 - E5 - F5 - G5 - E5 - G5 - C6 - B5 A5 G5 - E5 - C5 - D5 E5 F5 - A5 - C6 - A5 F5 G5 - - - D5 E5 F5 D5 E5 - G5 - C6 - D6 C6 B5 - A5 - E5 - A5 B5 C6 - A5 - F5 - G5 A5 C6 - - - - - . .",
+    bass:"C3 . G3 . C3 . G3 . A2 . E3 . A2 . E3 . F2 . C3 . F2 . C3 . G2 . D3 . G2 . B2 . C3 . G3 . C3 . G3 . A2 . E3 . A2 . E3 . F2 . C3 . F2 . C3 . G2 . D3 . G2 . B2 . F2 . C3 . F2 . C3 . G2 . D3 . G2 . D3 . E2 . B2 . E2 . B2 . A2 . E3 . A2 . E3 . F2 . C3 . F2 . A2 . G2 . D3 . G2 . B2 . C3 . G3 . C3 . G3 . G2 . D3 . G2 . F2 . C3 . G3 . C3 . G3 . A2 . E3 . A2 . E3 . F2 . C3 . F2 . C3 . G2 . D3 . G2 . B2 . C3 . G3 . C3 . G3 . A2 . E3 . A2 . E3 . F2 . C3 . F2 . C3 . C3 . G2 . C3 - - -",
+    drum:"k . h . s . h h",fill:"k . s s k s s s"},
   battle:{bpm:140,lv:.12,bv:.3,
-    lead:"A4 C5 E5 A5 G5 E5 C5 E5 F4 A4 C5 F5 E5 C5 A4 C5 G4 B4 D5 G5 F5 D5 B4 D5 E5 - G#5 - B5 - E6 - A5 - . A5 C6 - B5 A5 F5 - . F5 A5 - G5 F5 G5 - . G5 B5 - D6 B5 E6 - - - G#5 - B5 -",
-    bass:"A2 A3 A2 A3 A2 A3 A2 A3 F2 F3 F2 F3 F2 F3 F2 F3 G2 G3 G2 G3 G2 G3 G2 G3 E2 E3 E2 E3 E2 E3 E2 E3",
-    drum:"k h s h k k s h"}
+    lead:"A4 C5 E5 A5 G5 E5 C5 E5 F4 A4 C5 F5 E5 C5 A4 C5 G4 B4 D5 G5 F5 D5 B4 D5 E5 - G#5 - B5 - E6 - A5 - . A5 C6 - B5 A5 F5 - . F5 A5 - G5 F5 G5 - . G5 B5 - D6 B5 E6 - - - G#5 - B5 - D5 F5 A5 D6 C6 A5 F5 A5 B4 D5 G5 B5 A5 G5 D5 G5 C5 E5 G5 C6 B5 G5 E5 G5 E5 G#5 B5 E6 D6 B5 G#5 B5 D6 - A5 - F5 - A5 D6 B5 - G5 - D5 - G5 B5 C6 - B5 A5 E5 - A5 C6 B5 - - - E5 G#5 B5 E6 A4 C5 E5 A5 G5 E5 C5 E5 F4 A4 C5 F5 E5 C5 A4 C5 G4 B4 D5 G5 F5 D5 B4 D5 E5 - G#5 - B5 - E6 - A5 - . A5 C6 - B5 A5 F5 - . F5 A5 - G5 F5 G5 - . G5 B5 - D6 B5 E6 - - - G#5 - B5 -",
+    bass:"A2 A3 A2 A3 A2 A3 A2 A3 F2 F3 F2 F3 F2 F3 F2 F3 G2 G3 G2 G3 G2 G3 G2 G3 E2 E3 E2 E3 E2 E3 E2 E3 A2 A3 A2 A3 A2 A3 A2 A3 F2 F3 F2 F3 F2 F3 F2 F3 G2 G3 G2 G3 G2 G3 G2 G3 E2 E3 E2 E3 E2 E3 E2 E3 D2 D3 D2 D3 D2 D3 D2 D3 G2 G3 G2 G3 G2 G3 G2 G3 C2 C3 C2 C3 C2 C3 C2 C3 E2 E3 E2 E3 E2 E3 E2 E3 D2 D3 D2 D3 D2 D3 D2 D3 G2 G3 G2 G3 G2 G3 G2 G3 C2 C3 C2 C3 C2 C3 C2 C3 E2 E3 E2 E3 E2 E3 E2 E3 A2 A3 A2 A3 A2 A3 A2 A3 F2 F3 F2 F3 F2 F3 F2 F3 G2 G3 G2 G3 G2 G3 G2 G3 E2 E3 E2 E3 E2 E3 E2 E3 A2 A3 A2 A3 A2 A3 A2 A3 F2 F3 F2 F3 F2 F3 F2 F3 G2 G3 G2 G3 G2 G3 G2 G3 E2 E3 E2 E3 E2 E3 E2 E3",
+    drum:"k h s h k k s h",fill:"k s k s s s s s"}
 };
 function renderTrack(name){const key="trk_"+name;if(AU.cache[key])return asURL(AU.cache[key]);
-  const T=TRACKS[name],P=s=>s.split(/\s+/).filter(Boolean),lead=P(T.lead),bass=P(T.bass),drum=P(T.drum),dur=60/T.bpm/2,steps=64;
+  const T=TRACKS[name],P=s=>s.split(/\s+/).filter(Boolean),lead=P(T.lead),bass=P(T.bass),drum=P(T.drum),fill=P(T.fill||T.drum),dur=60/T.bpm/2,steps=lead.length;
   CUR=new Float32Array(Math.ceil(steps*dur*SR));
   const voice=(arr,i,t,o)=>{const n=arr[i%arr.length];if(n==="."||n==="-")return;let len=1;while(arr[(i+len)%arr.length]==="-"&&len<arr.length)len++;tone(nf(n),t,Math.min(dur*len*.92,steps*dur-t-.03),o)};
   for(let i=0;i<steps;i++){const t=i*dur;voice(lead,i,t,{type:"square",vol:T.lv,sus:true});voice(bass,i,t,{type:"triangle",vol:T.bv,sus:true});
-    const d=drum[i%drum.length];if(d==="k")tone(150,t,.12,{type:"sine",vol:.5,to:45});else if(d==="s")nz(t,.12,{vol:.2,f:1500});else if(d==="h")nz(t,.03,{vol:.1,f:7000})}
+    const bar=Math.floor(i/8),d=(bar%8===7?fill:drum)[i%8];if(d==="k")tone(150,t,.12,{type:"sine",vol:.5,to:45});else if(d==="s")nz(t,.12,{vol:.2,f:1500});else if(d==="h")nz(t,.03,{vol:.1,f:7000})}
   const url=wavURL(CUR);CUR=null;AU.cache[key]=url;return asURL(url)}
 function startTrack(name){AU.want=name;if(!AU.on||!AU.musOn)return;
   if(AU.cur!==name){AU.music.src=renderTrack(name);AU.cur=name}
@@ -1661,9 +2049,16 @@ setAudioButtons();
 $("#startbtn").onclick=()=>{auInit();$("#startgate").hidden=true;if(S.phase==="explore")startTrack("explore");setTimeout(()=>sfx("right"),60)};
 document.addEventListener("click",e=>{const b=e.target.closest(".btn,.tab,.mode,.ctrl button,.filters button,.el");if(b&&!b.disabled)sfx("sel")});
 
+function cry(a){if(!AU.on||!AU.sfxOn)return;const key="cry"+a.no;
+  if(!AU.cache[key]){const R=mulberry(a.no*97+5),sc=[0,3,5,7,10,12,15,17];CUR=new Float32Array(Math.ceil(SR*1.3));
+    const f0=110*Math.pow(2,clamp((22-a.d)/22,0,1)*2+R()),n=3+(R()*4|0),types=["square","sawtooth","triangle"];let t=0;
+    for(let i=0;i<n;i++){const k=sc[R()*sc.length|0],f=f0*Math.pow(2,k/12),d=.06+R()*.1;tone(f,t,d,{type:types[(a.no+i)%3],vol:.16,to:f*Math.pow(2,(R()-.5)*.8)});t+=d*.8}
+    const fl=f0*Math.pow(2,sc[R()*sc.length|0]/12);tone(fl,t,.35,{type:types[a.no%3],vol:.18,to:fl*(a.mag?1.5:.55)});if(a.mag||a.reactive)nz(t,.3,{vol:.08,f:3000});
+    const url=wavURL(CUR.subarray(0,Math.ceil((t+.4)*SR)));CUR=null;AU.cache[key]=url}
+  const el=new Audio(asURL(AU.cache[key]));el.play().catch(()=>{})}
 /* Sound cues keyed to what the dialog box says */
 const SAY_FX=[[/^It's super effective/,"super"],[/^It's not very effective/,"partial"],[/^It missed/,"miss"],[/^It's not /,"wrong"],[/^It's [A-Z0-9'’ -]+!/,"right"],
-  [/^Gotcha/,""],[/^Got away|^Oh no!/,""],[/^HINT/,"hint"],[/^CLACK/,"clack"],[/^A faint tug/,"tick"],[/^Nothing\. The magnet|^The magnet slides/,"thud"],
+  [/^Gotcha/,""],[/^Got away|^Oh no!/,""],[/^HINT/,"hint"],[/^✦/,"radiant"],[/^CLACK/,"clack"],[/^A faint tug/,"tick"],[/^Nothing\. The magnet|^The magnet slides/,"thud"],
   [/^Screeech/,"scratch"],[/skids across/,"skid"],[/swirls through/,"swirl"],[/^The scale beeps/,"beep"],[/^Plunk|^It floats/,"plunk"],[/^Clunk/,"clunk"],
   [/^Splash/,"splash"],[/^FWOOSH/,"fizz"],[/^Whoomph/,"whoomph"],[/^Click! Just a spark/,"spark"],[/^Click\./,"click"],[/^Sniff/,"hiss"],
   [/^Sample picked up|^Tool ready/,"pickup"],[/^Seven days later/,"hint"],[/^FWOOM|^FLASH/,"whoomph"],[/^Crackle/,"sizzle"],[/^Hisss/,"hiss"],[/^Pop!/,"spark"],[/^POP!/,"clack"],[/^The needle slams/,"wrong"],[/^You set the cylinder aside/,"swirl"],
@@ -1673,7 +2068,7 @@ const _step=step;step=function(dx,dy){const ox=EXP.x,oy=EXP.y,wasBusy=EXP.busy||
   if(EXP.x===ox&&EXP.y===oy)sfx("bump");else sfx(tileAt(EXP.x,EXP.y)===","?"rustle":"step");return r};
 const _encounter=encounter;encounter=function(){stopTrack();sfx("alert");setTimeout(()=>sfx("encounter"),600);_encounter()};
 const _startExplore=startExplore;startExplore=function(){_startExplore();startTrack("explore")};
-const _startRound=startRound;startRound=function(){_startRound();startTrack("battle")};
+const _startRound=startRound;startRound=function(){_startRound();startTrack("battle");const a=S.r&&S.r.a;setTimeout(()=>{if(a)cry(a)},250)};
 const _win=win;win=function(){stopTrack();sfx("caught");_win()};
 const _lose=lose;lose=function(ran){stopTrack();sfx("flee");_lose(ran)};
 const _endRun=endRun;endRun=function(){stopTrack();sfx("fanfare");_endRun()};
