@@ -349,6 +349,14 @@ dl.props.dd dd{text-align:right}
 .specimen.cling .vc{transform:translateY(-16px)}
 .specimen.nudge .vc{animation:nudge 1.2s ease}
 @keyframes nudge{20%{transform:translateY(-4px)}45%{transform:translateY(-2px)}100%{transform:none}}
+.cryrings{position:absolute;left:50%;top:45%;width:0;height:0;pointer-events:none}
+.cryrings i{position:absolute;left:0;top:0;width:120px;height:120px;margin:-60px;border-radius:50%;border:4px solid #FFD23F;box-shadow:0 0 0 2px rgba(18,27,64,.35),inset 0 0 0 2px rgba(18,27,64,.35);opacity:0;transform:scale(.3)}
+.crying .cryrings i{animation:cryring 1s ease-out forwards}
+.crying .cryrings i:nth-child(2){animation-delay:.18s}.crying .cryrings i:nth-child(3){animation-delay:.36s}
+@keyframes cryring{0%{opacity:.9;transform:scale(.3)}100%{opacity:0;transform:scale(2.6)}}
+.crying .ddspec{animation:cryhop 1s cubic-bezier(.3,1.4,.5,1)}
+@keyframes cryhop{0%{transform:none}12%{transform:translateY(4px) scale(1.08,.9)}28%{transform:translateY(-16px) scale(.95,1.06) rotate(-4deg)}42%{transform:translateY(0) scale(1.04,.96) rotate(3deg)}56%{transform:translateY(-7px) rotate(-2deg)}70%{transform:translateX(3px) rotate(1deg)}84%{transform:translateX(-2px)}100%{transform:none}}
+@media (prefers-reduced-motion:reduce){.crying .ddspec,.crying .cryrings i{animation:none}}
 .endwrap{display:flex;justify-content:center}
 .end{max-width:520px;width:100%;text-align:center;align-items:center}
 .end .big{font-family:var(--pix);font-size:28px;color:var(--red);margin:4px 0}
@@ -575,7 +583,7 @@ dl.props.dd dd{text-align:right}
         <div class="stats"><span class="stat">SEEN <b id="dex-seen">0</b></span><span class="stat">REGISTERED <b id="dex-count">0</b></span><span class="stat">✦ RADIANT <b id="dex-rad">0</b></span></div>
       </div>
       <div class="habbars" id="habbars"></div>
-      <p class="note">Alloys you meet in the wild are marked SEEN. Solve an alloy's full recipe to register it and unlock its entry, stats, cry and relatives. About 1 in 40 wild alloys is ✦ Radiant: same metal, same test results, with a sparkling aura. Register one to record its radiant form.</p>
+      <p class="note">Alloys you meet in the wild are marked SEEN. Solve an alloy's full recipe to register it and unlock its entry, stats, cry and relatives.</p>
       <div class="filters" id="dexfilters">
         <button data-f="all" aria-pressed="true">All</button>
         <button data-f="caught" aria-pressed="false">Registered</button>
@@ -762,6 +770,7 @@ Densimet|tungsten heavy alloy|W90 Ni7 Fe3|17|1450|1|6|8|#8F9296|0|m|Aircraft cou
 
 /* =============== HELPERS =============== */
 const $=s=>document.querySelector(s);
+const GATES={};function gate(k,ms){const n=performance.now();if(GATES[k]&&n<GATES[k])return false;GATES[k]=n+ms;return true}
 const clamp=(v,a,b)=>Math.max(a,Math.min(b,v));
 const shuffle=a=>{a=a.slice();for(let i=a.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[a[i],a[j]]=[a[j],a[i]]}return a};
 const pad=n=>String(n).padStart(3,"0");
@@ -1636,8 +1645,8 @@ function useScratch(t){const a=S.r.a;
 function targetAt(x,y){const el=document.elementFromPoint(x,y);return el&&el.closest("[data-drop]")}
 function doDrop(p,key){
   if(!S.r)return;
-  if(p.kind==="sample"){if(key==="sample")return;if(STATION_NAMES[key])useStation(key)}
-  else if(key==="sample"){p.id==="magnet"?useMagnet():useScratch(SCRATCH.find(t=>t.id===p.id))}
+  if(p.kind==="sample"){if(key==="sample")return;if(STATION_NAMES[key]&&gate("st-"+key,900))useStation(key)}
+  else if(key==="sample"){if(p.id==="magnet"){if(gate("magnet",1500))useMagnet()}else if(gate("scratch",700))useScratch(SCRATCH.find(t=>t.id===p.id))}
   else say("Tools are used on the sample. Drop it on the rod or vial.");
   setHeld(null)}
 function setHeld(p){S.held=p;document.querySelectorAll(".tool.held,.specimen.held").forEach(e=>e.classList.remove("held"));
@@ -1735,6 +1744,8 @@ function statBars(a){const radv=a.comp.reduce((t,[e,p])=>t+radOf(e)*p/100,0);
   return rows.map(([l,v,t])=>{const pc=clamp(v,0,1)*100,col=pc>66?"#2FB463":pc>33?"#E0AF10":"#E8412C";
     return `<span class="lab">${l}</span><div class="track"><div class="fill" style="width:${Math.max(2,pc)}%;background:${col}"></div></div><span class="val">${t}</span>`}).join("")}
 function corrText(a){const c=corrosion(a);return !c?"Reacts with water":c.k==="rust"?"Rusts in water":c.k==="patina"?"Forms a thin film":c.k==="white"?"Forms a chalky crust":c.k==="dull"?"Dulls slowly":"Resists water"}
+function cryAnim(a){if(!gate("cryAnim",1100))return;if(typeof cry==="function")cry(a);const sc=$("#ddscreen");if(!sc)return;
+  sc.classList.remove("crying");void sc.offsetWidth;sc.classList.add("crying");clearTimeout(sc._t);sc._t=setTimeout(()=>sc.classList.remove("crying"),1200)}
 function openDex(no){const a=ALLOYS[no-1];if(!a)return;S.dexOpen=no;const st=statusOf(a),rec=recOf(a),got=st==="caught";
   $("#dexlist").hidden=true;const d=$("#dexdetail");d.hidden=false;
   const rel=got?similar(a):[];
@@ -1742,7 +1753,7 @@ function openDex(no){const a=ALLOYS[no-1];if(!a)return;S.dexOpen=no;const st=sta
   <div class="ddnav"><button class="btn" id="dd-back">◀ BACK</button><span class="ddpos">No.${pad(a.no)} of ${ALLOYS.length}</span>
     <button class="btn" id="dd-prev" ${no>1?"":"disabled"}>▲ PREV</button><button class="btn" id="dd-next" ${no<ALLOYS.length?"":"disabled"}>NEXT ▼</button></div>
   <div class="ddgrid">
-    <div class="ddscreen ${st==="unseen"?"dark":""}" id="ddscreen"><div class="aura">${SPARKS}</div><div class="ddspec">${specimenSVG(a)}</div>
+    <div class="ddscreen ${st==="unseen"?"dark":""}" id="ddscreen"><div class="aura">${SPARKS}</div><div class="cryrings"><i></i><i></i><i></i></div><div class="ddspec">${specimenSVG(a)}</div>
       <div class="ddplate"><span>No.${pad(a.no)}</span><b>${knownName(a)?a.name.toUpperCase():"???"}</b></div></div>
     <div class="ddinfo">
       <div class="ddtitle"><div><h2>${knownName(a)?a.name:"???"}</h2><div class="cat">${got?`The ${a.cat} Alloy`:"Unknown alloy"}</div></div>
@@ -1772,9 +1783,9 @@ function openDex(no){const a=ALLOYS[no-1];if(!a)return;S.dexOpen=no;const st=sta
   $("#dd-back").onclick=()=>{S.dexOpen=null;renderDexGrid()};
   $("#dd-prev").onclick=()=>openDex(no-1);$("#dd-next").onclick=()=>openDex(no+1);
   const rb=$("#dd-rad");if(rb)rb.onclick=()=>{const sc=$("#ddscreen");sc.classList.toggle("radiant");rb.classList.toggle("on");if(sc.classList.contains("radiant"))sfx("radiant")};
-  const c=$("#dd-cry");if(c)c.onclick=()=>typeof cry==="function"&&cry(a);
+  const c=$("#dd-cry");if(c)c.onclick=()=>cryAnim(a);
   d.querySelectorAll(".relc").forEach(b=>b.onclick=()=>openDex(+b.dataset.no));
-  if(st!=="unseen"&&typeof cry==="function")cry(a);
+  if(st!=="unseen")cryAnim(a);
   d.scrollIntoView({block:"start"})}
 $("#dexgrid").addEventListener("click",e=>{const c=e.target.closest(".dexcard");if(c)openDex(+c.dataset.no)});
 document.querySelectorAll("#dexfilters button").forEach(b=>b.onclick=()=>{S.df.status=b.dataset.f;S.dexPage=0;document.querySelectorAll("#dexfilters button").forEach(x=>x.setAttribute("aria-pressed",x===b));renderDexGrid()});
@@ -1912,6 +1923,14 @@ let lastKey=0;
 document.addEventListener("keydown",e=>{if(S.phase!=="explore"||$("#view-play").hidden)return;if(e.target.closest&&e.target.closest("input,textarea"))return;
   const k=KEYS[e.key];if(!k)return;e.preventDefault();const now=performance.now();if(now-lastKey<150)return;lastKey=now;EXP.target=null;step(...k)});
 
+/* =============== ANTI-SPAM: a button can't be re-triggered while its sound/action is still playing =============== */
+const BTN_CD={"dd-rad":900,"btn-letter":600,"btn-hint":600,"btn-analyze":700,"fl-ign":600,"startbtn":1500,"btn-next":800,"btn-again":1200};
+document.addEventListener("click",e=>{const b=e.target.closest("button");if(!b)return;
+  const k=b.id||(b.dataset.no?"no"+b.dataset.no:b.dataset.s?"el"+b.dataset.s:b.dataset.mode?"mode":b.dataset.view?"tab"+b.dataset.view:b.dataset.f?"f"+b.dataset.f:b.textContent.trim());
+  const ms=BTN_CD[b.id]||(b.dataset.mode?1000:b.closest(".ctrl")?400:300);
+  if(!gate("btn:"+k,ms)){e.stopImmediatePropagation();e.preventDefault()}},true);
+document.addEventListener("submit",e=>{if(!gate("submit",700)){e.stopImmediatePropagation();e.preventDefault()}},true);
+
 /* =============== WIRING =============== */
 function setView(v){document.querySelectorAll(".tab").forEach(t=>t.setAttribute("aria-selected",t.dataset.view===v));
   $("#view-play").hidden=v!=="play";$("#view-table").hidden=v!=="table";$("#view-dex").hidden=v!=="dex";
@@ -2003,8 +2022,10 @@ AU.music.addEventListener("error",()=>{if(AU.blob){AU.err=true;setAudioButtons()
 function renderSfx(name){if(AU.cache[name])return asURL(AU.cache[name]);
   CUR=new Float32Array(Math.ceil(SR*(LOOPS[name]?2:2.2)));try{SFX[name](0)}catch(e){}
   let end=CUR.length;if(!LOOPS[name]){while(end>1&&Math.abs(CUR[end-1])<.001)end--;end=Math.min(CUR.length,end+200)}
-  const url=wavURL(CUR.subarray(0,end));CUR=null;AU.cache[name]=url;return asURL(url)}
+  AU.dur=AU.dur||{};AU.dur[name]=end/SR;const url=wavURL(CUR.subarray(0,end));CUR=null;AU.cache[name]=url;return asURL(url)}
+const FAST_CD={sel:80,step:110,rustle:110,bump:200,gclick:20,click:120,spark:120,pickup:200};
 function sfx(name){if(!AU.on||!AU.sfxOn||!SFX[name])return;
+  renderSfx(name);const cd=FAST_CD[name]!=null?FAST_CD[name]:Math.max(150,(AU.dur&&AU.dur[name]||.3)*900);if(!gate("sfx:"+name,cd))return;
   const pool=AU.pools[name]||(AU.pools[name]={els:[],i:0});
   let el=pool.els[pool.i];if(!el){el=new Audio(renderSfx(name));pool.els[pool.i]=el}
   pool.i=(pool.i+1)%(name==="gclick"||name==="step"||name==="sel"?6:3);
@@ -2049,7 +2070,7 @@ setAudioButtons();
 $("#startbtn").onclick=()=>{auInit();$("#startgate").hidden=true;if(S.phase==="explore")startTrack("explore");setTimeout(()=>sfx("right"),60)};
 document.addEventListener("click",e=>{const b=e.target.closest(".btn,.tab,.mode,.ctrl button,.filters button,.el");if(b&&!b.disabled)sfx("sel")});
 
-function cry(a){if(!AU.on||!AU.sfxOn)return;const key="cry"+a.no;
+function cry(a){if(!AU.on||!AU.sfxOn||!gate("cry",1000))return;const key="cry"+a.no;
   if(!AU.cache[key]){const R=mulberry(a.no*97+5),sc=[0,3,5,7,10,12,15,17];CUR=new Float32Array(Math.ceil(SR*1.3));
     const f0=110*Math.pow(2,clamp((22-a.d)/22,0,1)*2+R()),n=3+(R()*4|0),types=["square","sawtooth","triangle"];let t=0;
     for(let i=0;i<n;i++){const k=sc[R()*sc.length|0],f=f0*Math.pow(2,k/12),d=.06+R()*.1;tone(f,t,d,{type:types[(a.no+i)%3],vol:.16,to:f*Math.pow(2,(R()-.5)*.8)});t+=d*.8}
@@ -2074,7 +2095,7 @@ const _lose=lose;lose=function(ran){stopTrack();sfx("flee");_lose(ran)};
 const _endRun=endRun;endRun=function(){stopTrack();sfx("fanfare");_endRun()};
 let lastClick=0;click=function(){if(!LAB.gm.sound)return;const now=performance.now();if(now-lastClick<25)return;lastClick=now;sfx("gclick")};
 (function(){let stopHeat=null,stopChill=null;
-  const hold=(id,name,get,set)=>{const b=$(id);b.addEventListener("pointerdown",()=>{if(b.disabled)return;set(loopNoise(name))});
+  const hold=(id,name,get,set)=>{const b=$(id);b.addEventListener("pointerdown",()=>{if(b.disabled||get()||!gate("hold"+id,250))return;set(loopNoise(name))});
     ["pointerup","pointerleave","pointercancel"].forEach(ev=>b.addEventListener(ev,()=>{const s=get();if(s){s();set(null)}}))};
   hold("#btn-heat","roar",()=>stopHeat,v=>stopHeat=v);
   hold("#btn-chill","chillhiss",()=>stopChill,v=>stopChill=v)})();
