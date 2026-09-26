@@ -1012,7 +1012,27 @@ function categoryOf(a){if(a.threat)return"Containment";if(/^(no |nothing|kept on
   const map=new Map();
   ALLOYS.forEach(a=>{if(a.real||a.threat)return;let nm=null;
     for(let t=0;t<200;t++){const c=gen();if(!BAD.test(c.replace(/'s /," "))&&!taken.has(c.toLowerCase())){nm=c;break}}
-    if(!nm)nm=a.name;a.legacy=a.name;a.name=nm;taken.add(nm.toLowerCase());map.set(a.legacy,nm)});
+    if(!nm)nm=a.name;a.legacy=a.name;a.v2=nm;taken.add(nm.toLowerCase())});
+  /* Second pass: most names get an alloy-like form (trade names, grades, "Someone's Metal"), some stay purely evocative. */
+  const r2=mulberry(7070707),p2=x=>x[r2()*x.length|0];
+  const STEM=[...NOUN,...PRE].filter(w=>w.length>=4&&w.length<=8),SFX=["ite","ium","ine","ex","on","ar","loy","var","dur","lite","nel","met","ide","ol"];
+  const stemify=(w,sf)=>/^[aeiouy]/.test(sf)?w.replace(/[aeiouy]+$/,""):w;
+  const trade=()=>{const w=p2(STEM),sf=p2(SFX);let t=(stemify(w,sf)+sf).replace(/(.)\1\1/,"$1$1");return t.charAt(0).toUpperCase()+t.slice(1).toLowerCase()};
+  const NUMS=["7","12","30","40","52","88","101","205","300","305","330","410","505","600","625","718","750","800","901","1100","2210","4040","6061"];
+  const LAST=["Thistlewood","Harrow","Quill","Fairweather","Underhill","Ashby","Kettleby","Wainwright","Pemberton","Trevelyan","Hollowell","Featherstone","Marlow","Okafor","Lindqvist","Moreau","Tanaka","Petrov","Mbeki","Novak","Pryce","Haldane","Brennan","Sato","Varga","Osei","Iwasaki","Castellanos","Rasmussen","Delacroix"];
+  const alloyName=()=>{const r=r2();
+    if(r<.26)return trade();
+    if(r<.42)return`${trade()} ${p2(NUMS)}`;
+    if(r<.54)return`${p2(LAST)}'s Metal`;
+    if(r<.64)return`${p2(ADJ)} ${p2(NOUN)} ${p2(["Metal","Metal","Casting","Blend"])}`;
+    if(r<.72)return`${p2(PLACE)} ${p2(["Metal","Metal","Casting","Blend"])}`;
+    if(r<.78)return`${p2(["Grade","Type","Formula","Series"])} ${p2(["A","B","C","K","M","R","X","7","12","40"])} ${p2(NOUN)}`;
+    if(r<.84)return trade();
+    return a2v2.shift()};
+  const keepEvocative=ALLOYS.filter(a=>a.v2).map(a=>a.v2);let a2v2=[];
+  ALLOYS.forEach(a=>{if(!a.v2)return;a2v2=[a.v2];let nm=null;taken.delete(a.v2.toLowerCase());
+    for(let t=0;t<200;t++){const c=alloyName();a2v2=[a.v2];if(c&&!/alloy/i.test(c)&&!BAD.test(c.replace(/'s /," "))&&!taken.has(c.toLowerCase())){nm=c;break}}
+    a.name=nm||a.v2;taken.add(a.name.toLowerCase());map.set(a.legacy,a.name);if(a.v2!==a.name)map.set(a.v2,a.name)});
   // migrate saved progress from the old names
   try{const caught=store.get("wta_caught2",[]),dex=store.get("wta_dex2",{});let ch=false;
     const c2=caught.map(n=>{if(map.has(n)&&!caught.includes(map.get(n))){ch=true;return map.get(n)}return n});
