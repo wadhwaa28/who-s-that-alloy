@@ -872,9 +872,18 @@ function habitatOf(a){const b=a.comp[0][0],w=frac(a),u=(a.uses||"")+" "+(a.lore|
   if(/ship|marine|seawater|boat|propeller|naval|hull|condenser/i.test(u)||(b==="Cu"&&((w.Ni||0)>=.1||(w.Al||0)>=.04)))return"z-wreck";
   if(["Cu","Sn","Pb","Bi","In","Cd","Sb","Ga","Hg"].includes(b))return"z-mine";
   return"z-scrap"}
-function rarityOf(a){if(a.comp.some(([s])=>BY[s].z>=100))return"legendary";
-  if(a.cov||a.comp.some(([s])=>radOf(s)>=1)||["Kamacite","Taenite","Tetrataenite","Awaruite","Osmiridium","Electrum"].includes(a.name))return"rare";
-  if(!a.real||["Au","Pt","Pd","Ag"].includes(a.comp[0][0]))return"uncommon";return"common"}
+const REAL_LEGENDARY=new Set(["Orichalcum","Damascus Steel","Corinthian Bronze","Platiniridium","Tetrataenite","Osmiridium"]);
+const REAL_RARE=new Set(["Electrum","Tumbaga","Shakudo","Shibuichi","Potin","Speculum Metal","Paktong","Aich's Metal","Prince's Metal","Pinchbeck","Arsenical Bronze","Queen's Metal",
+  "Kamacite","Taenite","Awaruite","Liquidmetal","Gum Metal","Triniobium Tin","Galfenol","Terfenol-D","Vicalloy","Blue Gold","Purple Gold","Galinstan","EGaIn","NaK",
+  "Isabellin","Devarda's Alloy","Cerrolow 117","Newton's Metal","Weldalite","Metglas","Rene 41","Elgiloy","Samarium Cobalt Magnet"]);
+function rarityOf(a){const w=frac(a),b=a.comp[0][0];
+  if(a.real){if(REAL_LEGENDARY.has(a.name))return"legendary";
+    if(REAL_RARE.has(a.name)||a.comp.some(([s])=>radOf(s)>=1))return"rare";
+    if(["Ni","Co","W","Mo","Nb","Ti","Zr","Au","Ag","Pt","Pd"].includes(b)||a.mp<150||(b==="Fe"&&((w.Ni||0)+(w.Co||0))>=.2)||["Nd","Sm","Ce","La"].some(s=>(w[s]||0)>=.1))return"uncommon";
+    return"common"}
+  if(a.comp.some(([s])=>BY[s].z>=100))return"legendary";
+  if(a.cov||a.comp.some(([s])=>radOf(s)>=1))return"rare";
+  return"uncommon"}
 const STOPW=new Set(["old","early","modern","the","a","an","for","of","and","only","first","world's","legendary","novelty","found","in"]);
 function categoryOf(a){let w=a.uses.split(/[,;]/)[0].replace(/\(.*?\)/g,"").trim().split(/\s+/).filter(x=>!STOPW.has(x.toLowerCase()));
   w=w.slice(0,2);if(!w.length)return"Mystery";let last=w[w.length-1];
