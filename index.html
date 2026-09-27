@@ -259,6 +259,9 @@ dl.props dd{margin:0;font-weight:800;font-variant-numeric:tabular-nums;text-alig
 @keyframes pop{0%{transform:translate(-50%,40%) scale(.3)}100%{transform:translate(-50%,0) scale(1)}}
 .wipe{position:absolute;inset:0;z-index:5;pointer-events:none;display:grid;grid-template-rows:repeat(8,1fr)}
 .wipe i{background:#0B1330;transform:scaleX(0)}
+.wipe.gold i{background:linear-gradient(90deg,#C98E00,#FFE27A,#FFF6CC,#FFE27A,#C98E00)}
+.wipe.gold.go{animation:blinkgold .45s steps(1)}
+@keyframes blinkgold{0%,34%,68%{background:rgba(255,226,122,.9)}17%,51%,85%{background:transparent}}
 .wipe i:nth-child(odd){transform-origin:left}.wipe i:nth-child(even){transform-origin:right}
 .wipe.go{animation:blink3 .45s steps(1)}
 .wipe.go i{animation:bar .45s ease-in forwards;animation-delay:calc(.4s + var(--k)*.04s)}
@@ -396,6 +399,13 @@ dl.props.dd dd{text-align:right}
 .hzfx.fumes{background:radial-gradient(ellipse at 50% 80%,rgba(150,170,130,.85),rgba(120,140,110,.45) 45%,transparent 72%)}
 @keyframes hzfade{0%{opacity:0}10%{opacity:1}100%{opacity:0}}
 @media (prefers-reduced-motion:reduce){.stage.threat,.vaporfx{animation:none}}
+.stage.radiant{--ray-a:#F2C94C;--ray-b:#D99A1E}
+.stage.radiant .specimen::after{content:"";position:absolute;inset:0;pointer-events:none;background:linear-gradient(105deg,transparent 42%,rgba(255,255,255,.5) 50%,transparent 58%);background-size:250% 100%;animation:sweep 3s ease-in-out infinite;-webkit-mask:var(--none,none)}
+@keyframes sweep{0%{background-position:120% 0}60%,100%{background-position:-120% 0}}
+.ddscreen.radiant{background:repeating-conic-gradient(from 0deg at 50% 45%,#F2C94C 0 9deg,#D99A1E 9deg 18deg)}
+.dexcard.radcard{border-color:#D9A92A;box-shadow:0 0 0 2px #FFE27A,0 0 14px rgba(255,210,80,.55)}
+.hb small{color:#FFE27A;font-weight:900}
+@media (prefers-reduced-motion:reduce){.stage.radiant .specimen::after{animation:none;opacity:0}}
 .endwrap{display:flex;justify-content:center}
 .end{max-width:520px;width:100%;text-align:center;align-items:center}
 .end .big{font-family:var(--pix);font-size:28px;color:var(--red);margin:4px 0}
@@ -1363,10 +1373,10 @@ function startRound(){
   const kind=S.mode==="mixed"?(Math.random()<.5?"recipe":"who"):S.mode;
   const a=pickAlloy(kind,S.run.used);S.run.used.add(a.name);
   const V=+(4+Math.random()*10).toFixed(1);
-  S.r={a,kind,stage:kind==="who"?"name":"elements",tries:SCANS,sel:new Set,hit:new Set,miss:new Set,wrongNames:0,letters:0,hints:0,pts:0,won:false,
-       V,m:+(a.d*V).toFixed(1),nameKnown:kind!=="who",notes:{},marks:[],scratchLog:{},radiant:Math.random()<1/40};
+  S.r={a,kind,stage:kind==="who"?"name":"elements",tries:SCANS+(EXP.nextRadiant?1:0),maxTries:SCANS+(EXP.nextRadiant?1:0),sel:new Set,hit:new Set,miss:new Set,wrongNames:0,letters:0,hints:0,pts:0,won:false,
+       V,m:+(a.d*V).toFixed(1),nameKnown:kind!=="who",notes:{},marks:[],scratchLog:{},radiant:!!EXP.nextRadiant};EXP.nextRadiant=false;
   S.held=null;seenMark(a,kind!=="who");resetLab();renderAll();
-  const rad=(a.threat?"⚠ DANGER! A THREAT-class alloy appeared! Handle with extreme care. ":"")+(S.r.radiant?"✦ Whoa, a RADIANT alloy! ":"");
+  const rad=(S.r.radiant?"":"")+(a.threat?"⚠ DANGER! A THREAT-class alloy appeared! Handle with extreme care. ":"")+(S.r.radiant?"✦ Whoa, a RADIANT alloy! It resonates with your scanner: +1 charge, double points. ":"");
   say(rad+(kind==="who"?"A wild alloy appeared! Run lab tests, read the clues, then type its name."
                   :`A wild ${a.name.toUpperCase()} appeared! Test it in the lab and scan for its elements.`));
 }
@@ -1424,7 +1434,7 @@ function renderDex(){
     <p class="uses">Used for: ${a.uses}<br>Made by: ${a.made}</p>
     <div class="notes"><h4>LAB NOTEBOOK</h4><ul>${noteRows()}</ul></div>`;
 }
-function pips(){return `<span class="pips">SCANNER CHARGE ${Array.from({length:SCANS},(_,i)=>`<span class="pip ${i<S.r.tries?"":"off"}"></span>`).join("")}</span>`}
+function pips(){return `<span class="pips">SCANNER CHARGE ${Array.from({length:S.r.maxTries||SCANS},(_,i)=>`<span class="pip ${i<S.r.tries?"":"off"}"></span>`).join("")}</span>`}
 function pattern(){const n=S.r.a.name;let seen=0;return n.split("").map(ch=>/[a-z0-9]/i.test(ch)?(seen++<S.r.letters?ch.toUpperCase():"_"):ch===" "?"  ":ch).join(" ")}
 function renderActions(){
   const r=S.r,box=$("#actions");
@@ -1495,13 +1505,13 @@ function hint(){const r=S.r;if(r.hints>=2)return;r.hints++;S.run.score=Math.max(
   else{const s=r.a.comp.map(x=>x[0]).find(s=>!r.hit.has(s));r.hit.add(s);r.sel.delete(s);
     if(r.a.comp.every(([x])=>r.hit.has(x)))return win();renderAll();say(`HINT: the scanner locked on to ${BY[s].name.toUpperCase()} (${s}).`)}}
 function win(){const r=S.r,R=S.run;r.won=true;r.stage="done";
-  r.pts+=Math.max(10,100-20*(SCANS-r.tries));R.streak++;if(R.streak>=2)r.pts+=10*(R.streak-1);if(r.radiant)r.pts+=50;
+  r.pts+=Math.max(10,100-20*((r.maxTries||SCANS)-r.tries));R.streak++;if(R.streak>=2)r.pts+=10*(R.streak-1);if(r.radiant)r.pts*=2;
   R.score+=r.pts;R.log.push({a:r.a,won:true,pts:r.pts,known:true});
   const fresh=!S.caught.has(r.a.name);S.caught.add(r.a.name);store.set("wta_caught2",[...S.caught]);
   {const d=S.dex[r.a.name]||(S.dex[r.a.name]={s:1,c:0});d.c++;d.k=1;if(!d.f)d.f=new Date().toLocaleDateString(undefined,{year:"numeric",month:"short",day:"numeric"});d.b=Math.max(d.b||0,r.pts);if(r.radiant)d.rad=1;
     const a=r.a;d.def={comp:a.comp,d:a.d,mp:a.mp,mag:a.mag,hard:a.hard,cond:a.cond,color:a.color,finish:a.finish,uses:a.uses,lore:a.lore,cov:a.cov};saveDex()}
   if(R.score>S.best){S.best=R.score;store.set("wta_best2",S.best)}
-  reveal();renderAll();say(`Gotcha! ${r.a.name.toUpperCase()} ${fresh?"was registered in the Alloydex!":"is already in your Alloydex."}${r.radiant?" Its radiant form was recorded! (+50)":""}${R.streak>=2?` Streak x${R.streak}!`:""}`)}
+  reveal();renderAll();say(`Gotcha! ${r.a.name.toUpperCase()} ${fresh?"was registered in the Alloydex!":"is already in your Alloydex."}${r.radiant?" Its radiant form was recorded! (Points doubled!)":""}${R.streak>=2?` Streak x${R.streak}!`:""}`)}
 function lose(ran){const r=S.r,R=S.run;r.won=false;r.stage="done";R.streak=0;r.pts=0;R.log.push({a:r.a,won:false,pts:0,known:r.nameKnown});renderAll();
   say(ran?"Got away safely! The alloy is still a mystery.":"Oh no! The alloy fled before you could identify it!")}
 function next(){S.run.idx++;if(S.run.idx>=ROUNDS)return endRun();startExplore()}
@@ -1940,11 +1950,11 @@ function renderDexGrid(){
   const seen=ALLOYS.filter(a=>recOf(a).s||S.caught.has(a.name)).length;
   $("#dex-seen").textContent=`${seen}/${ALLOYS.length}`;$("#dex-count").textContent=`${registeredCount()}/${ALLOYS.length}`;$("#dex-rad").textContent=ALLOYS.filter(a=>recOf(a).rad).length;
   $("#habbars").innerHTML=Object.entries(HAB).map(([k,h])=>{const all=ALLOYS.filter(a=>a.hab===k),got=all.filter(a=>S.caught.has(a.name)).length;
-    return `<div class="hb"><span>${h.name}</span><div class="hbt"><i style="width:${all.length?got/all.length*100:0}%;background:${h.col}"></i></div><b>${got}/${all.length}</b></div>`}).join("");
+    return `<div class="hb"><span>${h.name}</span><div class="hbt"><i style="width:${all.length?got/all.length*100:0}%;background:${h.col}"></i></div><b>${got}/${all.length}${(()=>{const r=all.filter(a=>recOf(a).rad).length;return r?` <small>✦${r}</small>`:""})()}</b></div>`}).join("");
   const list=dexFiltered(),pages=Math.max(1,Math.ceil(list.length/PAGE));S.dexPage=clamp(S.dexPage,0,pages-1);
   const slice=list.slice(S.dexPage*PAGE,(S.dexPage+1)*PAGE);
   $("#dexgrid").innerHTML=slice.length?slice.map(a=>{const st=statusOf(a);
-    return `<button class="dexcard ${st==="unseen"?"locked":""}" data-no="${a.no}"><div class="mini">${miniHTML(a)}</div>
+    return `<button class="dexcard ${st==="unseen"?"locked":""} ${recOf(a).rad?"radcard":""}" data-no="${a.no}"><div class="mini">${miniHTML(a)}</div>
       <span class="no">No.${pad(a.no)} ${badge(st)}${recOf(a).rad?`<span class="dbadge rad">✦</span>`:""}</span><span class="nm">${knownName(a)?a.name:"???"}</span>
       ${st==="caught"?`<div class="types">${a.types.map(t=>`<span class="type" style="background:${TYPES[t]}">${t.toUpperCase()}</span>`).join("")}</div>`:`<span class="cp">${st==="seen"?"Seen in "+HAB[a.hab].name:"Not yet encountered"}</span>`}</button>`}).join("")
     :`<p class="note">No entries match these filters.</p>`;
@@ -2003,7 +2013,7 @@ function openDex(no){const a=ALLOYS[no-1];if(!a)return;S.dexOpen=no;const st=sta
   ${got?`<div class="ddbox"><h4>RELATED ALLOYS</h4><div class="relgrid">${rel.length?rel.map(b=>{const s2=statusOf(b);return `<button class="relc ${s2==="unseen"?"locked":""}" data-no="${b.no}"><div class="mini">${miniHTML(b)}</div><span>No.${pad(b.no)}</span><b>${knownName(b)?b.name:"???"}</b></button>`}).join(""):`<p class="note dim">No close relatives.</p>`}</div></div>`:""}`;
   $("#dd-back").onclick=()=>{S.dexOpen=null;renderDexGrid()};
   const nv=dexNav(a);$("#dd-prev").onclick=()=>nv.prev&&openDex(nv.prev.no);$("#dd-next").onclick=()=>nv.next&&openDex(nv.next.no);
-  const rb=$("#dd-rad");if(rb)rb.onclick=()=>{const sc=$("#ddscreen");sc.classList.toggle("radiant");rb.classList.toggle("on");if(sc.classList.contains("radiant"))sfx("radiant")};
+  const rb=$("#dd-rad");if(rb)rb.onclick=()=>{const sc=$("#ddscreen");sc.classList.toggle("radiant");rb.classList.toggle("on");if(sc.classList.contains("radiant")){gate("cry",-1);GATES.cry=0;cry(a,true)}};
   const c=$("#dd-cry");if(c)c.onclick=()=>cryAnim(a);
   d.querySelectorAll(".relc").forEach(b=>b.onclick=()=>openDex(+b.dataset.no));
   if(st!=="unseen")cryAnim(a);
@@ -2308,7 +2318,7 @@ Object.assign(TRACKS,{
   "explore_z-reactor":{base:"explore",bpm:124,lead:{type:"pulse",vol:.12,stac:true},parts:[{k:"arp",type:"square",vol:.028,oct:4}],bass:{s:"root8",type:"pulse",vol:.13},drum:"k h s h k h s h",fill:"k k s s k k c c",hat16:true},
   "explore_z-glacier":{base:"explore",bpm:88,lead:{type:"sine",vol:.22,oct:1,stac:true},parts:[{k:"broken",type:"triangle",vol:.08,oct:4}],bass:{s:"half",vol:.17},drum:". . . . . . . .",fill:". . . . c . . .",chime:true},
   "explore_z-crater":{base:"explore",bpm:96,lead:{type:"triangle",vol:.19},parts:[{k:"pad",type:"triangle",vol:.045,oct:4},{k:"third",type:"sine",vol:.07}],bass:{s:"half",vol:.22},drum:"k . . . s . . .",fill:"k . . . s . c .",chime:true},
-  "battle_radiant":{base:"battle",bpm:152,lead:{type:"square",vol:.1},parts:[{k:"stab",type:"square",vol:.03,oct:4},{k:"arp",type:"triangle",vol:.035,oct:5}],bass:{s:"walk",vol:.28},drum:"k h s h k h s h",fill:"k s k s s s c c",hat16:true,chime:true}
+  "battle_radiant":{base:"battle",bpm:126,intro:2,lead:{type:"triangle",vol:.22,half:true},parts:[{k:"counter",type:"square",vol:.05,oct:5},{k:"arp",type:"pulse",vol:.028,oct:5},{k:"pad",type:"sine",vol:.045,oct:4}],bass:{s:"octave",vol:.24},drum:"k . h k s . h h",fill:"k . s k s s c c",chime:true}
 });
 function zoneTrack(){const z=EXP.zone&&EXP.zone.cls;return TRACKS["explore_"+z]?"explore_"+z:"explore"}
 function renderTrack(name){const key="trk_"+name;if(AU.cache[key])return asURL(AU.cache[key]);
@@ -2317,13 +2327,16 @@ function renderTrack(name){const key="trk_"+name;if(AU.cache[key])return asURL(A
   const lead0=P(B.lead),bass0=P(B.bass);const lead=sec(lead0,64),bassO=sec(bass0,64),chords=sec(CHORDS[baseName],8);
   const drum=P(T.drum||B.drum),fill=P(T.fill||T.drum||B.fill||B.drum),bpm=T.bpm||B.bpm,dur=60/bpm/2,steps=lead.length,total=steps*dur;
   const L=T.base?T.lead:{type:"square",vol:B.lv},BS=T.base?T.bass:{s:"orig",vol:B.bv};
-  CUR=new Float32Array(Math.ceil(total*SR));
-  const at=i=>i*dur+(T.swing&&i%2===1?dur*T.swing:0),left=t=>total-t-.03;
+  const intro=(T.intro||0)*8*dur,full=total+intro;
+  CUR=new Float32Array(Math.ceil(full*SR));
+  const at=i=>intro+i*dur+(T.swing&&i%2===1?dur*T.swing:0),left=t=>full-t-.03;
+  for(let j=0;j<(T.intro||0)*8;j++){const t=j*dur,tr=triad(chords[0],5);tone(mf([tr[0],tr[1],tr[2],tr[0]+12][j%4]),t,dur*.45,{type:"pulse",vol:.05});tone(mf([tr[2],tr[0]+12,tr[1]+12,tr[2]+12][j%4]),t+dur/2,dur*.4,{type:"triangle",vol:.05});if(j%8===0)triad(chords[0],4).forEach(x=>tone(mf(x),t,dur*7.5,{type:"sine",vol:.04,sus:true,a:.3}));nz(t,.02,{vol:.05,f:8000})}
   const lenAt=(arr,i)=>{let n=1;while(i+n<arr.length&&arr[i+n]==="-")n++;return n};
   let lastMel=null;
   for(let i=0;i<steps;i++){const t=at(i),bar=Math.floor(i/8),pos=i%8,ch=chords[bar%chords.length];
     // melody
-    const ln=lead[i];if(ln!=="."&&ln!=="-"){const n=lenAt(lead,i),m=nm(ln)+12*(L.oct||0);lastMel=m;
+    let ln=lead[i];if(L.half){ln=i%2?".":(lead[i]!=="."&&lead[i]!=="-"?lead[i]:(lead[i+1]&&lead[i+1]!=="."&&lead[i+1]!=="-"?lead[i+1]:"."))}
+    if(ln!=="."&&ln!=="-"){const n=L.half?2:lenAt(lead,i),m=nm(ln)+12*(L.oct||0);lastMel=m;
       const d=Math.min(L.stac?Math.min(dur*n*.9,dur*.75):dur*n*.92,left(t));tone(mf(m),t,d,{type:L.type,vol:L.vol,sus:!L.stac});
       for(const p of T.parts||[])if(p.k==="third"){const cand=[];for(let o=3;o<=6;o++)triad(ch,o).forEach(x=>cand.push(x));const h=cand.filter(x=>x<=m-3).pop();if(h)tone(mf(h),t,d,{type:p.type,vol:p.vol,sus:!L.stac})}}
     // bass
@@ -2332,11 +2345,13 @@ function renderTrack(name){const key="trk_"+name;if(AU.cache[key])return asURL(A
     else if(BS.s==="root8")tone(mf(tri2[0]+(pos%2?12:0)),t,Math.min(dur*.8,left(t)),{type:BS.type||"triangle",vol:BS.vol,sus:true});
     else if(BS.s==="oompah"){if(pos===0)tone(mf(tri2[0]),t,Math.min(dur*1.8,left(t)),{type:"triangle",vol:BS.vol,sus:true});if(pos===4)tone(mf(tri2[2]-12),t,Math.min(dur*1.8,left(t)),{type:"triangle",vol:BS.vol,sus:true})}
     else if(BS.s==="half"){if(pos===0||pos===4)tone(mf(tri2[0]),t,Math.min(dur*3.6,left(t)),{type:BS.type||"triangle",vol:BS.vol,sus:true})}
+    else if(BS.s==="octave"){if(pos!==3&&pos!==7)tone(mf(tri2[0]+(pos%2?12:0)),t,Math.min(dur*.7,left(t)),{type:"triangle",vol:BS.vol,sus:true})}
     else if(BS.s==="walk"){if(pos%2===0){const w=[tri2[0],tri2[1],tri2[2],tri2[2]+2][pos/2];tone(mf(w),t,Math.min(dur*1.8,left(t)),{type:"triangle",vol:BS.vol,sus:true})}}
     // accompaniment
     for(const p of T.parts||[]){const tr=triad(ch,p.oct||4);
       if(p.k==="stab"&&pos%2===1)tr.forEach(x=>tone(mf(x),t,Math.min(dur*.45,left(t)),{type:p.type,vol:p.vol}));
       else if(p.k==="arp"){const seq=[tr[0],tr[1],tr[2],tr[0]+12];tone(mf(seq[(i*2)%4]),t,Math.min(dur*.45,left(t)),{type:p.type,vol:p.vol});tone(mf(seq[(i*2+1)%4]),t+dur/2,Math.min(dur*.45,left(t+dur/2)),{type:p.type,vol:p.vol})}
+      else if(p.k==="counter"&&pos>=4&&pos<=6){const c5=triad(ch,p.oct||5);tone(mf([c5[2],c5[1],c5[0]][pos-4]),t,Math.min(dur*.8,left(t)),{type:p.type,vol:p.vol})}
       else if(p.k==="broken"){const seq=[tr[0],tr[2],tr[1],tr[2]];tone(mf(seq[pos%4]),t,Math.min(dur*.9,left(t)),{type:p.type,vol:p.vol})}
       else if(p.k==="pad"&&pos===0)tr.forEach(x=>tone(mf(x),t,Math.min(dur*7.8,left(t)),{type:p.type,vol:p.vol,sus:true,a:.25}));
       else if(p.k==="power"&&(pos===0||pos===4)){const r=triad(ch,p.oct||3)[0];[r,r+7].forEach(x=>tone(mf(x),t,Math.min(dur*3.8,left(t)),{type:p.type,vol:p.vol,sus:true}))}}
@@ -2367,11 +2382,11 @@ setAudioButtons();
 $("#startbtn").onclick=()=>{auInit();$("#startgate").hidden=true;if(S.phase==="explore")startTrack(zoneTrack());setTimeout(()=>sfx("right"),60)};
 document.addEventListener("click",e=>{const b=e.target.closest(".btn,.tab,.mode,.ctrl button,.filters button,.el");if(b&&!b.disabled)sfx("sel")});
 
-function cry(a){if(!AU.on||!AU.sfxOn||!gate("cry",1000))return;const key="cry"+a.no;
+function cry(a,rad){if(!AU.on||!AU.sfxOn||!gate("cry",1000))return;const key="cry"+(rad?"R":"")+a.no;
   if(!AU.cache[key]){const R=mulberry(a.no*97+5),sc=[0,3,5,7,10,12,15,17];CUR=new Float32Array(Math.ceil(SR*1.3));
     const f0=110*Math.pow(2,clamp((22-a.d)/22,0,1)*2+R()),n=3+(R()*4|0),types=["square","sawtooth","triangle"];let t=0;
     for(let i=0;i<n;i++){const k=sc[R()*sc.length|0],f=f0*Math.pow(2,k/12),d=.06+R()*.1;tone(f,t,d,{type:types[(a.no+i)%3],vol:.16,to:f*Math.pow(2,(R()-.5)*.8)});t+=d*.8}
-    const fl=f0*Math.pow(2,sc[R()*sc.length|0]/12);tone(fl,t,.35,{type:types[a.no%3],vol:.18,to:fl*(a.mag?1.5:.55)});if(a.mag||a.reactive)nz(t,.3,{vol:.08,f:3000});
+    const fl=f0*Math.pow(2,sc[R()*sc.length|0]/12);tone(fl,t,.35,{type:types[a.no%3],vol:.18,to:fl*(a.mag?1.5:.55)});if(a.mag||a.reactive)nz(t,.3,{vol:.08,f:3000});if(rad){[0,4,7,12,16].forEach((k,j)=>tone(fl*4*Math.pow(2,k/12),t+.05+j*.05,.12,{type:"triangle",vol:.08}))}
     const url=wavURL(CUR.subarray(0,Math.ceil((t+.4)*SR)));CUR=null;AU.cache[key]=url}
   const el=new Audio(asURL(AU.cache[key]));el.play().catch(()=>{})}
 /* Sound cues keyed to what the dialog box says */
@@ -2384,9 +2399,9 @@ const SAY_FX=[[/^It's super effective/,"super"],[/^It's not very effective/,"par
 const _say=say;say=function(msg){const hit=SAY_FX.find(([re])=>re.test(msg));if(hit&&hit[1])sfx(hit[1]);_say(msg)};
 const _step=step;step=function(dx,dy){const ox=EXP.x,oy=EXP.y,wasBusy=EXP.busy||S.phase!=="explore";const r=_step(dx,dy);if(wasBusy)return r;
   if(EXP.x===ox&&EXP.y===oy)sfx("bump");else sfx(tileAt(EXP.x,EXP.y)===","?"rustle":"step");return r};
-const _encounter=encounter;encounter=function(){stopTrack();sfx("alert");setTimeout(()=>sfx("encounter"),600);_encounter()};
+const _encounter=encounter;encounter=function(){stopTrack();EXP.nextRadiant=Math.random()<1/40;$("#wipe").classList.toggle("gold",EXP.nextRadiant);sfx("alert");setTimeout(()=>sfx(EXP.nextRadiant?"radiant":"encounter"),600);_encounter()};
 const _startExplore=startExplore;startExplore=function(){_startExplore();startTrack(zoneTrack())};
-const _startRound=startRound;startRound=function(){_startRound();startTrack(S.r&&S.r.radiant?"battle_radiant":"battle");const a=S.r&&S.r.a;setTimeout(()=>{if(a)cry(a)},250)};
+const _startRound=startRound;startRound=function(){_startRound();startTrack(S.r&&S.r.radiant?"battle_radiant":"battle");const a=S.r&&S.r.a;const rd=S.r&&S.r.radiant;setTimeout(()=>{if(a)cry(a,rd)},250)};
 const _win=win;win=function(){stopTrack();sfx("caught");_win()};
 const _lose=lose;lose=function(ran){stopTrack();sfx("flee");_lose(ran)};
 const _endRun=endRun;endRun=function(){stopTrack();sfx("fanfare");_endRun()};
