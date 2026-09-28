@@ -2948,6 +2948,14 @@ CHORDS.victory="G D Em C G D C D Em C G D C D G G".split(" ");
   renderAll();say(`Gotcha! ${r.a.name.toUpperCase()} is in your Alloydex. This was a TUTORIAL round, so it earns no points.`)}}
 {const _ra2=renderActions;renderActions=function(){_ra2();const r=S.r;if(r&&r.tut){const sp=document.querySelector("#actions .btn-next, #btn-next");const lab=sp&&sp.nextElementSibling;if(lab&&r.stage==="done")lab.textContent="Tutorial round: no points"}}}
 
+/* ---- "It got away" theme: an original, wistful song for when an alloy escapes or you run, until you keep exploring ---- */
+TRACKS.escape={bpm:92,lv:.1,bv:.22,
+  lead:"E5 - - G5 B5 - A5 G5 E5 - - - C5 - D5 E5 D5 - B4 - G4 - B4 D5 F#5 - - E5 D5 - A4 - G5 - - F#5 E5 - B4 - C5 - E5 - A5 - G5 E5 F#5 - D#5 - B4 - D#5 F#5 B5 - - - A5 - F#5 - G5 - - E5 C5 - E5 G5 B5 - - A5 G5 - D5 - C6 - B5 A5 E5 - A5 C6 B5 - - - G5 - E5 - E5 - G5 - C6 - B5 A5 A5 - F#5 - D5 - A5 - G5 - F#5 - E5 - D#5 - E5 - - - . . . .",
+  bass:"E2 - - - B2 - - - C2 - - - G2 - - - G2 - - - D3 - - - D2 - - - A2 - - - E2 - - - B2 - - - A2 - - - E3 - - - B1 - - - F#2 - - - B1 - - - F#2 - - - C2 - - - G2 - - - G2 - - - D3 - - - A2 - - - E3 - - - E2 - - - B2 - - - C2 - - - G2 - - - D2 - - - A2 - - - E2 - - - B2 - - - E2 - - - B2 - - -",
+  drum:"k . . h s . . h",fill:"k . . h s . c .",parts:[{k:"pad",type:"sine",vol:.045,oct:4},{k:"broken",type:"triangle",vol:.05,oct:4}]};
+CHORDS.escape="Em C G D Em Am B B C G Am Em C D Em Em".split(" ");
+{const _ls=lose;lose=function(ran){_ls(ran);const r=S.r;setTimeout(()=>{if(S.r===r&&r&&r.stage==="done"&&!r.won&&S.phase==="round")startTrack("escape")},1400)}}
+
 newRun();
 </script>
 
