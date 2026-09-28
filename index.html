@@ -472,20 +472,20 @@ dl.props.dd dd{text-align:right}
 .stage.tz-crown::before{animation-duration:90s}
 .tparts{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
 .tparts i{position:absolute;left:var(--x);top:var(--y);display:block;animation:var(--an) var(--d) linear var(--dl) infinite;transform:scale(var(--s))}
-.p-ember{width:5px;height:5px;border-radius:50%;background:#FFB23A;box-shadow:0 0 6px #FF6A1A;--an:rise}
-.p-flake{width:6px;height:6px;background:radial-gradient(circle,#fff 0 30%,transparent 32%),linear-gradient(#EAF6FF,#EAF6FF) center/1px 100% no-repeat,linear-gradient(#EAF6FF,#EAF6FF) center/100% 1px no-repeat;--an:fall;opacity:.8}
-.p-bubble{width:9px;height:9px;border-radius:50%;border:1.5px solid rgba(190,240,255,.7);--an:rise}
-.p-grit{width:3px;height:3px;background:#B8B2A8;--an:fall}
-.p-spore{width:26px;height:18px;border-radius:50%;background:rgba(156,196,106,.35);filter:blur(4px);--an:drift}
-.p-mote{width:4px;height:4px;border-radius:50%;background:#C8A8FF;box-shadow:0 0 8px #A070FF;--an:orbit}
-.p-gold{width:5px;height:5px;background:#FFE27A;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);--an:twinkle}
-.p-scan{left:0!important;width:100%;height:2px;background:rgba(120,240,255,.18);--an:scan}
-@keyframes rise{from{transform:translateY(0) scale(var(--s));opacity:0}15%{opacity:1}to{transform:translateY(-380px) scale(var(--s));opacity:0}}
-@keyframes fall{from{transform:translateY(-40px) scale(var(--s));opacity:0}15%{opacity:.9}to{transform:translateY(380px) scale(var(--s));opacity:0}}
-@keyframes drift{0%{transform:translateX(-40px) scale(var(--s));opacity:0}50%{opacity:1}100%{transform:translateX(60px) scale(var(--s));opacity:0}}
-@keyframes orbit{from{transform:rotate(0) translateX(24px) scale(var(--s))}to{transform:rotate(360deg) translateX(24px) scale(var(--s))}}
-@keyframes twinkle{0%,100%{opacity:0}50%{opacity:1}}
-@keyframes scan{from{transform:translateY(-200px)}to{transform:translateY(400px)}}
+.p-ember{width:5px;height:5px;border-radius:50%;background:#FFB23A;box-shadow:0 0 6px #FF6A1A;--an:tp-rise}
+.p-flake{width:6px;height:6px;background:radial-gradient(circle,#fff 0 30%,transparent 32%),linear-gradient(#EAF6FF,#EAF6FF) center/1px 100% no-repeat,linear-gradient(#EAF6FF,#EAF6FF) center/100% 1px no-repeat;--an:tp-fall;opacity:.8}
+.p-bubble{width:9px;height:9px;border-radius:50%;border:1.5px solid rgba(190,240,255,.7);--an:tp-rise}
+.p-grit{width:3px;height:3px;background:#B8B2A8;--an:tp-fall}
+.p-spore{width:26px;height:18px;border-radius:50%;background:rgba(156,196,106,.35);filter:blur(4px);--an:tp-drift}
+.p-mote{width:4px;height:4px;border-radius:50%;background:#C8A8FF;box-shadow:0 0 8px #A070FF;--an:tp-orbit}
+.p-gold{width:5px;height:5px;background:#FFE27A;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);--an:tp-twinkle}
+.p-scan{left:0!important;width:100%;height:2px;background:rgba(120,240,255,.18);--an:tp-scan}
+@keyframes tp-rise{from{transform:translateY(0) scale(var(--s));opacity:0}15%{opacity:1}to{transform:translateY(-380px) scale(var(--s));opacity:0}}
+@keyframes tp-fall{from{transform:translateY(-40px) scale(var(--s));opacity:0}15%{opacity:.9}to{transform:translateY(380px) scale(var(--s));opacity:0}}
+@keyframes tp-drift{0%{transform:translateX(-40px) scale(var(--s));opacity:0}50%{opacity:1}100%{transform:translateX(60px) scale(var(--s));opacity:0}}
+@keyframes tp-orbit{from{transform:rotate(0) translateX(24px) scale(var(--s))}to{transform:rotate(360deg) translateX(24px) scale(var(--s))}}
+@keyframes tp-twinkle{0%,100%{opacity:0}50%{opacity:1}}
+@keyframes tp-scan{from{transform:translateY(-200px)}to{transform:translateY(400px)}}
 .tplac{position:absolute;right:16px;bottom:48px;z-index:3;width:44px;height:44px;transform:rotate(45deg);background:var(--pc);border:3px solid #FFD23F;border-radius:6px;display:flex;align-items:center;justify-content:center;box-shadow:0 0 0 2px #000}
 .tplac span{transform:rotate(-45deg);font-size:20px;line-height:1;text-shadow:0 1px 0 #000}
 .specimen.holo svg{animation:holo 2.6s steps(1) infinite}
@@ -505,8 +505,8 @@ dl.props.dd dd{text-align:right}
  repeating-conic-gradient(from 90deg at 0 0,rgba(240,240,235,.9) 0 .8deg,transparent .8deg 15deg),
  repeating-radial-gradient(circle at 0 0,transparent 0 17px,rgba(240,240,235,.75) 17px 18px);-webkit-mask:radial-gradient(circle at 0 0,#000 55%,transparent 72%);mask:radial-gradient(circle at 0 0,#000 55%,transparent 72%)}
 .tz-widow .tparts::before{left:0;top:0}.tz-widow .tparts::after{right:0;top:0;transform:scaleX(-1)}
-.p-ash{width:4px;height:4px;background:#4A423C;border-radius:1px;--an:fall;opacity:.8}
-.p-drip{width:3px;height:9px;border-radius:2px;background:#D8DDE3;--an:fall}
+.p-ash{width:4px;height:4px;background:#4A423C;border-radius:1px;--an:tp-fall;opacity:.8}
+.p-drip{width:3px;height:9px;border-radius:2px;background:#D8DDE3;--an:tp-fall}
 @media (prefers-reduced-motion:reduce){#pick-table .el.webbed::after{animation:none}}
 
 /* ---- Phoenix Lattice rebirth cycle ---- */
@@ -526,6 +526,21 @@ dl.props.dd dd{text-align:right}
 .phx-ember.got{animation:none;transform:scale(1.8);opacity:0;transition:.3s}
 @keyframes emb{to{transform:scale(1.15)}}@keyframes embring{from{transform:scale(1.9);opacity:.2}to{transform:scale(.6);opacity:1}}
 @media (prefers-reduced-motion:reduce){.specimen.phx-drift,.phx-ember{animation:none}}
+
+/* ---- tutorial ---- */
+#tut{position:fixed;inset:0;z-index:200;pointer-events:none}#tut[hidden]{display:none}
+.tut-spot{position:fixed;border-radius:14px;box-shadow:0 0 0 4px #FFD23F,0 0 0 9999px rgba(6,12,32,.62);transition:all .25s ease;pointer-events:none}
+.tut-bub{position:fixed;z-index:201;width:min(420px,calc(100vw - 24px));display:flex;gap:10px;align-items:flex-start;background:#FFFDF4;color:#10131C;border:4px solid #243A73;border-radius:14px;padding:12px;box-shadow:0 6px 0 #243A73,0 10px 30px rgba(0,0,0,.4);pointer-events:auto;transition:top .25s ease,left .25s ease}
+.tut-bub.mid{left:50%!important;top:50%!important;transform:translate(-50%,-50%)}
+.tut-face{flex:0 0 56px;height:56px;background:#DDE8FF;border:3px solid #243A73;border-radius:10px;display:flex;align-items:center;justify-content:center}.tut-face svg{width:48px;height:48px}
+.tut-body{flex:1;min-width:0}.tut-body small{display:block;font-family:"Press Start 2P",monospace;font-size:8px;color:#6A7390;margin-bottom:4px}
+.tut-body b{display:block;font-family:"Press Start 2P",monospace;font-size:11px;color:#1E5BCB;margin-bottom:6px;line-height:1.4}
+.tut-body p{margin:0 0 10px;font-weight:700;font-size:14px;line-height:1.45}.tut-body p b{display:inline;font-family:inherit;font-size:inherit;color:#B0121E;margin:0}
+.tut-btns{display:flex;gap:8px;justify-content:flex-end;flex-wrap:wrap}.tut-btns .btn{padding:8px 10px;font-size:9px}.tut-btns .btn[hidden]{display:none}
+.tut-offer{position:fixed;inset:0;z-index:200;background:rgba(6,12,32,.6)}
+.tut-ok{color:#1E8A4A;font-weight:900}
+.tut-bub.nudge{animation:tutnudge .4s}@keyframes tutnudge{20%{margin-left:-8px}40%{margin-left:8px}60%{margin-left:-5px}80%{margin-left:4px}}
+.tutbtn{color:#FFD23F!important;border-color:#FFD23F!important}
 </style>
 
 <div class="app">
@@ -2825,6 +2840,110 @@ Object.assign(TRACKS,{
   "threat_crown":{base:"threat",bpm:118,lead:{type:"triangle",vol:.22},parts:[{k:"counter",type:"square",vol:.045,oct:5},{k:"pad",type:"square",vol:.02,oct:4}],bass:{s:"half",vol:.26},drum:"k . s s k . s .",fill:"k s s s k s c c",chime:true},
   "threat_phoenix":{base:"threat",bpm:132,intro:2,lead:{type:"sawtooth",vol:.075},parts:[{k:"arp",type:"triangle",vol:.04,oct:5},{k:"counter",type:"pulse",vol:.035,oct:5}],bass:{s:"walk",vol:.26},drum:"k h s k . k s h",fill:"k k s k s s c c",hat16:true}
 });
+
+/* =============== FIELD TRAINING (tutorial) ===============
+   A guided first encounter with spotlighted coach marks. Offered once after PRESS START; replay any time from "? HOW TO PLAY".
+   Steps with `wait` advance on their own when the player does the thing. Radiants are deliberately never mentioned. */
+const TUT={on:false,i:0,raf:0};
+const TUT_ALLOY="Brass";
+const TUT_STEPS=[
+ {t:"WELCOME, RECRUIT!",x:"I'm Chief Marlow, head of the Quillmoor field team. Out there, wild alloys hide in the rubble. Your job: find them, test them in the lab, and work out what they're made of. Let's do your first one together.<br><br><b>Heads up: the tutorial round earns NO points.</b> It's just practice, so your score only starts counting on real encounters."},
+ {sel:".modes",t:"GAME MODES",x:"<b>Name → Elements</b>: you're told the alloy's name; you find its elements.<br><b>Mystery</b>: no name given. Type it yourself (no multiple choice!), then find its elements.<br><b>Mixed</b>: a bit of both. Your practice alloy will be a Name → Elements one."},
+ {sel:"#mapwrap",t:"THE FIELD",x:"Move with the <b>arrow keys / WASD</b>, <b>tap a spot</b> on the map, or use the <b>pad</b>. Wild alloys hide in the glittering <b>rubble</b> tiles.<br><br>▶ Walk into some rubble now.",wait:()=>S.phase==="round"&&S.r,enter:()=>{EXP.since=8}},
+ {sel:"#stage",t:"A WILD ALLOY APPEARED!",x:"This is your sample. It always comes as a <b>rod</b> or a <b>vial</b> (vials can hold liquid, granules, beads, powder or shavings). Its name is on the plate. What you <i>see</i> is a clue: look at its color and shine.",delay:1400},
+ {sel:"#dexcard",t:"FIELD NOTES",x:"Its entry: a description, what it's used for and how it's made. Every test you run is written into the <b>LAB NOTEBOOK</b> at the bottom. Nothing here tells you a property directly. You measure everything yourself."},
+ {sel:".kit",t:"FIELD KIT: MAGNET",x:"Drag a tool onto the sample (or tap the tool, then tap the sample).<br><br>▶ Try the <b>magnet</b>: does it stick, tug, or do nothing?",wait:()=>S.r&&S.r.notes.magnet},
+ {sel:".kit",t:"FIELD KIT: SCRATCH TEST",x:"Each scratch tool has a <b>Mohs hardness</b>. If a tool leaves a <b>groove</b>, it's harder than the sample. If it just skids, the sample is harder.<br><br>▶ Scratch the sample with any tool.",wait:()=>S.r&&Object.keys(S.r.scratchLog).length>0},
+ {sel:"#st-scale",t:"LAB STATIONS: SET UP FIRST",x:"Lab gear works like the real thing. The scale: press <b>POWER</b>, wait for it to boot, press <b>TARE</b>, then put the sample on it: drag it, or <b>tap the sample, then tap the scale</b> (easier when the station is far down the page).<br>While I'm teaching one station, the others stay locked.<br><br>▶ Weigh your sample.",wait:()=>S.r&&S.r.notes.mass,scroll:"center"},
+ {sel:"#st-cyl",t:"GRADUATED CYLINDER: VOLUME",x:"Turn the <b>FAUCET</b> on, let it fill to somewhere around 40–60 mL, then turn it <b>OFF</b>. Drag the sample in and read how far the water rises: that rise is the sample's <b>volume</b>. Mass ÷ volume = <b>density</b>. Fill past the rim and it overflows! (Dropped it into a dry cylinder? Press EMPTY and try again.)<br><br>▶ Measure its volume.",wait:()=>S.r&&S.r.notes.vol&&!/dry/.test(S.r.notes.vol),scroll:"center"},
+ {sel:"#st-cyl",t:"GRADUATED CYLINDER: RUST TEST",x:"While the sample is soaking, press <b>SOAK 1 WEEK</b>. Some metals rust into a flaky crust, some grow a thin film, some don't change at all.<br><br>▶ Run the rust test.",wait:()=>S.r&&S.r.notes.rust,scroll:"center"},
+ {sel:"#st-circuit",t:"CONDUCTIVITY TESTER",x:"Drag the sample between the clips, then flip the <b>SWITCH</b>. The brighter the bulb, the better it carries electricity.<br><br>▶ Test its conductivity.",wait:()=>S.r&&S.r.notes.cond,scroll:"center"},
+ {sel:"#st-flame",t:"BUNSEN BURNER",x:"Open the <b>GAS</b>, open the <b>AIR</b>, then press <b>IGNITE</b>. Drag the sample into the flame and watch what color it turns and whether it throws sparks.<br><br>▶ Do a flame test.",wait:()=>S.r&&S.r.notes.flame,scroll:"center"},
+ {sel:"#st-geiger",t:"GEIGER COUNTER",x:"Turn on <b>POWER</b> (and <b>SOUND</b> if you want to hear the clicks), then drag the sample under the probe. More clicks and a higher needle mean more radioactive. Way too much can burn the tube out!<br><br>▶ Check its radiation.",wait:()=>S.r&&S.r.notes.rad,scroll:"center"},
+ {sel:"#st-furnace",t:"FURNACE",x:"Press <b>POWER</b>, drag the sample into the crucible, then <b>HOLD HEAT</b> and watch the temperature. Whatever happens (it melts, smokes, sparks or bursts into flame) gets logged with the temperature. HOLD CHILL cools it down.<br>Cooling never undoes a melt or a reaction on the piece in the crucible. To try again, press <b>TAKE OUT</b> to empty the crucible and put a fresh piece in.<br><br>▶ Heat it until something happens.",wait:()=>S.r&&(S.r.notes.melt||S.r.notes.react),scroll:"center"},
+ {sel:"#tab-table",t:"THE PERIODIC TABLE",x:"Compare your readings with real element data in the <b>Periodic Table</b> tab: density, melting point, hardness, magnetism, flame color and more. You can also hover elements on the scanner."},
+ {sel:"#picker",t:"THE ELEMENT SCANNER",x:"Pick up to <b>5 elements</b> you think are inside, then press <b>ANALYZE</b>.<br>Tip for this one: think of what trumpets are made of: a reddish metal plus the one that coats rust-proof nails.<br><br>▶ Pick some elements, then press <b>ANALYZE</b> just above the scanner.",dock:1,wait:()=>S.r&&(S.r.hit.size>0||S.r.miss.size>0||S.r.stage==="done"),scroll:"start"},
+ {sel:".dialog",t:"READING THE RESULT",x:"<b>Super effective</b>: everything you picked is in it (maybe not all yet).<br><b>Not very effective</b>: some right, some wrong.<br><b>It missed</b>: none right.<br>Each scan that doesn't finish the job costs a <b>SCANNER CHARGE</b>. Run out and the alloy flees. HINT helps but costs points.<br>(Reminder: this practice round earns <b>no points</b>, even if you nail it.)<br><br>▶ Finish identifying it.",dock:1,wait:()=>S.r&&S.r.stage==="done",scroll:"start"},
+ {sel:"#tab-dex",t:"THE ALLOYDEX",x:()=>S.r&&S.r.won?"Registered! Every alloy you identify goes into your <b>Alloydex</b>: stats, its cry, a research log and related alloys. There are over a thousand to find across 8 habitats.":"It got away this time. No worries, alloys come back. Every one you identify goes into your <b>Alloydex</b>: stats, its cry, a research log and related alloys. There are over a thousand to find across 8 habitats."},
+ {t:"ONE LAST THING…",x:"If an alarm ever sounds and a <b>⚠ THREAT</b> appears, stay calm. It's a containment emergency: a meter drains while you work, and each threat fights back in its own way. The screen will tell you what to do. They're rare.<br><br>That's everything. Press <b>KEEP EXPLORING</b> when you're ready. Good luck, recruit!",end:true}
+];
+function tutEl(){let o=$("#tut");if(o)return o;o=document.createElement("div");o.id="tut";o.innerHTML=`<div class="tut-spot" id="tut-spot"></div><div class="tut-bub" id="tut-bub" role="dialog" aria-live="polite"><div class="tut-face">${MINER}</div><div class="tut-body"><small id="tut-n"></small><b id="tut-t"></b><p id="tut-x"></p><div class="tut-btns"><button class="btn" id="tut-skip">SKIP TUTORIAL</button><button class="btn go" id="tut-next">NEXT ▶</button></div></div></div>`;
+  document.body.appendChild(o);$("#tut-skip").onclick=()=>tutEnd(true);$("#tut-next").onclick=()=>tutNext();return o}
+function tutStart(){if(S.phase!=="explore"){if(S.r&&S.r.stage!=="done"){say("Finish or run from this alloy first, then start the tutorial.");return}startExplore()}
+  setView&&setView("play");TUT.on=true;TUT.i=0;tutEl().hidden=false;tutShow();cancelAnimationFrame(TUT.raf);TUT.raf=requestAnimationFrame(tutLoop)}
+function tutEnd(skipped){TUT.on=false;cancelAnimationFrame(TUT.raf);const o=$("#tut");if(o)o.hidden=true;store.set("wta_tut",1);if(skipped)say&&S.r&&say("Tutorial skipped. You can replay it from ? HOW TO PLAY.")}
+function tutNext(){const st=TUT_STEPS[TUT.i];if(st&&st.end)return tutEnd(false);TUT.i++;if(TUT.i>=TUT_STEPS.length)return tutEnd(false);tutShow()}
+function tutShow(){const st=TUT_STEPS[TUT.i];if(st.enter)st.enter();TUT.shownAt=performance.now();
+  $("#tut-n").textContent=`TRAINING ${TUT.i+1}/${TUT_STEPS.length}`;$("#tut-t").textContent=st.t;$("#tut-x").innerHTML=typeof st.x==="function"?st.x():st.x;
+  TUT.pre=!!(st.wait&&st.wait());if(TUT.pre)$("#tut-x").innerHTML+='<br><span class="tut-ok">✓ You already did this one!</span>';
+  const nx=$("#tut-next");nx.hidden=!!st.wait&&!TUT.pre;nx.textContent=st.end?"LET'S GO! ▶":"NEXT ▶";
+  const el=st.sel&&document.querySelector(st.sel);if(el)el.scrollIntoView({behavior:"smooth",block:st.scroll||"nearest"});sfx("sel")}
+function tutLoop(){if(!TUT.on)return;TUT.raf=requestAnimationFrame(tutLoop);const st=TUT_STEPS[TUT.i],spot=$("#tut-spot"),bub=$("#tut-bub");
+  if(st.wait&&!TUT.pre&&st.wait()&&performance.now()-TUT.shownAt>400){TUT.i++;if(TUT.i>=TUT_STEPS.length)return tutEnd(false);sfx("right");
+    const nxt=TUT_STEPS[TUT.i];if(nxt.delay){TUT.hold=performance.now()+nxt.delay;bub.style.visibility="hidden";spot.style.visibility="hidden"}tutShow();return}
+  if(TUT.hold&&performance.now()<TUT.hold)return;if(TUT.hold){TUT.hold=0;bub.style.visibility="";spot.style.visibility=""}
+  const el=st.sel&&document.querySelector(st.sel),vw=innerWidth,vh=innerHeight;
+  if(!el||el.offsetParent===null){spot.style.cssText="left:50%;top:50%;width:0;height:0";bub.className="tut-bub mid";bub.style.left=bub.style.top="";return}
+  const r=el.getBoundingClientRect(),pad=6;spot.style.cssText=`left:${r.left-pad}px;top:${r.top-pad}px;width:${r.width+pad*2}px;height:${r.height+pad*2}px`;
+  const bw=Math.min(420,vw-24),bh=bub.offsetHeight;let top,left=clamp(r.left+r.width/2-bw/2,12,vw-bw-12);
+  if(st.dock){top=vh-bh-12;left=vw-bw-12}
+  else if(r.bottom+pad+12+bh<vh)top=r.bottom+pad+12;else if(r.top-pad-12-bh>0)top=r.top-pad-12-bh;
+  else if(r.right+bw+24<vw){left=r.right+12;top=clamp(r.top,12,vh-bh-12)}else if(r.left-bw-24>0){left=r.left-bw-12;top=clamp(r.top,12,vh-bh-12)}
+  else{top=vh-bh-12;left=vw-bw-12}
+  bub.className="tut-bub";bub.style.left=left+"px";bub.style.top=Math.max(12,top)+"px"}
+/* practice encounter: a friendly Name → Elements alloy, never a threat */
+{const _pa=pickAlloy;pickAlloy=function(kind,used){if(TUT.on&&TUT.i<=3){const a=ALLOYS.find(x=>x.name===TUT_ALLOY);if(a)return a}return _pa(kind,used)}}
+{const _sr2=startRound;startRound=function(){if(TUT.on&&TUT.i<=3){const m=S.mode;S.mode="recipe";EXP.nextRadiant=false;_sr2();S.mode=m;if(S.r)S.r.tut=true}else _sr2()}}
+/* header button + first-time offer */
+{const b=document.createElement("button");b.className="aubtn tutbtn";b.id="tut-open";b.textContent="? HOW TO PLAY";b.onclick=()=>tutStart();$(".audio").prepend(b)}
+{const sb=$("#startbtn"),old=sb.onclick;sb.onclick=e=>{old&&old(e);if(!store.get("wta_tut",0)&&!TUT.offered){TUT.offered=true;setTimeout(()=>{const o=document.createElement("div");o.className="tut-offer";
+  o.innerHTML=`<div class="tut-bub mid"><div class="tut-face">${MINER}</div><div class="tut-body"><b>FIRST TIME HERE?</b><p>Chief Marlow can walk you through your first alloy. It takes about three minutes.</p><div class="tut-btns"><button class="btn" id="tut-no">NO THANKS</button><button class="btn go" id="tut-yes">TEACH ME ▶</button></div></div></div>`;
+  document.body.appendChild(o);$("#tut-yes").onclick=()=>{o.remove();tutStart()};$("#tut-no").onclick=()=>{o.remove();store.set("wta_tut",1)}},500)}}}
+
+/* ---- Tutorial lock: only the thing being taught can be used. Everything else is blocked until the step is done. ---- */
+const TUT_RULES={
+ "THE FIELD":{allow:"#mapwrap,.dpad",keys:true},
+ "FIELD KIT: MAGNET":{allow:'.tool[data-id="magnet"],#specimen',drops:["magnet>sample"]},
+ "FIELD KIT: SCRATCH TEST":{allow:'.tool:not([data-id="magnet"]),#specimen',drops:["scratch>sample"]},
+ "LAB STATIONS: SET UP FIRST":{allow:"#st-scale,#specimen",drops:["sample>scale"]},
+ "GRADUATED CYLINDER: VOLUME":{allow:"#st-cyl,#specimen",drops:["sample>cyl"]},
+ "GRADUATED CYLINDER: RUST TEST":{allow:"#st-cyl"},
+ "CONDUCTIVITY TESTER":{allow:"#st-circuit,#specimen",drops:["sample>circuit"]},
+ "BUNSEN BURNER":{allow:"#st-flame,#specimen",drops:["sample>flame"]},
+ "GEIGER COUNTER":{allow:"#st-geiger,#specimen",drops:["sample>geiger"]},
+ "FURNACE":{allow:"#st-furnace,#specimen",drops:["sample>furnace"]},
+ "THE ELEMENT SCANNER":{allow:"#picker,#btn-analyze",deny:"#btn-flee,#btn-hint"},
+ "READING THE RESULT":{allow:"#picker,#btn-analyze",deny:"#btn-flee,#btn-hint"}};
+const tutRule=()=>TUT.on?(TUT_RULES[TUT_STEPS[TUT.i].t]||{}):null;
+function tutNudge(){if(!gate("tutnudge",700))return;const b=$("#tut-bub");if(b){b.classList.remove("nudge");void b.offsetWidth;b.classList.add("nudge")}sfx("bump")}
+function tutAllowed(el){const R=tutRule();if(!R)return true;if(!el||!el.closest)return false;
+  if(el.closest("#tut-bub,#au-mus,#au-sfx"))return true;
+  if(TUT.hold&&performance.now()<TUT.hold)return false;
+  if(R.deny&&el.closest(R.deny))return false;return !!(R.allow&&el.closest(R.allow))}
+["pointerdown","mousedown","touchstart","click","dblclick","contextmenu"].forEach(ev=>window.addEventListener(ev,e=>{
+  if(!TUT.on||tutAllowed(e.target))return;e.stopImmediatePropagation();e.preventDefault();if(ev==="pointerdown"||ev==="touchstart")tutNudge()},{capture:true,passive:false}));
+window.addEventListener("keydown",e=>{if(!TUT.on||e.key==="Tab")return;const R=tutRule();
+  if(R.keys&&KEYS[e.key])return;if(e.target&&e.target.closest&&e.target!==document.body&&tutAllowed(e.target))return;
+  if(e.target&&e.target.closest&&e.target.closest("#tut-bub"))return;e.stopImmediatePropagation();e.preventDefault()},true);
+{const _dd2=doDrop;doDrop=function(p,key){const R=tutRule();if(R){const what=p.kind==="sample"?"sample":p.id==="magnet"?"magnet":"scratch";
+    if(!(R.drops||[]).includes(what+">"+key)){tutNudge();setHeld(null);return}}_dd2(p,key)}}
+{const _sh=setHeld;setHeld=function(p){const R=tutRule();if(R&&p){const what=p.kind==="sample"?"sample":p.id==="magnet"?"magnet":"scratch";if(!(R.drops||[]).some(d=>d.startsWith(what+">"))){tutNudge();return _sh(null)}}_sh(p)}}
+
+/* ---- Victory theme: an original song that plays after an alloy is profiled, until you keep exploring ---- */
+TRACKS.victory={bpm:132,lv:.11,bv:.28,
+  lead:"G5 - B5 - D6 - B5 G5 A5 - F#5 - D5 - F#5 A5 B5 - G5 E5 G5 - B5 - C6 - B5 A5 G5 - E5 - D5 G5 B5 D6 - B5 G5 B5 A5 - - F#5 A5 - D6 - E6 - D6 C6 B5 - A5 - F#5 - A5 - D6 - - - E5 G5 B5 E6 - D6 B5 - C6 - G5 - E5 - G5 C6 B5 - D6 - G6 - D6 B5 A5 - F#5 - A5 B5 C6 - E6 - C6 - G5 - C6 E6 D6 - A5 - F#5 - A5 D6 G6 - D6 B5 G5 - B5 D6 G5 - - - . . D5 F#5",
+  bass:"G2 . D3 . G3 . D3 . D2 . A2 . D3 . A2 . E2 . B2 . E3 . B2 . C2 . G2 . C3 . G2 . G2 . D3 . G3 . D3 . D2 . A2 . D3 . A2 . C2 . G2 . C3 . G2 . D2 . A2 . D3 . A2 . E2 . B2 . E3 . B2 . C2 . G2 . C3 . G2 . G2 . D3 . G3 . D3 . D2 . A2 . D3 . A2 . C2 . G2 . C3 . G2 . D2 . A2 . D3 . A2 . G2 . D3 . G3 . D3 . G2 . D3 . G3 . D3 .",
+  drum:"k . s h k k s h",fill:"k s k s s s c c",parts:[{k:"arp",type:"triangle",vol:.035,oct:5},{k:"stab",type:"pulse",vol:.022,oct:4}],chime:true};
+CHORDS.victory="G D Em C G D C D Em C G D C D G G".split(" ");
+{const _wv=win;win=function(){_wv();const r=S.r;setTimeout(()=>{if(S.r===r&&r.stage==="done"&&r.won&&S.phase==="round")startTrack("victory")},1500)}}
+
+/* ---- Tutorial rounds never award points (no practice-alloy farming) ---- */
+{const _wt=win;win=function(){const r=S.r,R=S.run;if(!r||!r.tut)return _wt();
+  const best=S.best,streak=R.streak,d=S.dex[r.a.name],db=d&&d.b;_wt();
+  R.score-=r.pts;r.pts=0;R.streak=streak;const lg=R.log[R.log.length-1];if(lg)lg.pts=0;
+  S.best=best;store.set("wta_best2",best);const d2=S.dex[r.a.name];if(d2){if(db==null)delete d2.b;else d2.b=db;saveDex()}
+  renderAll();say(`Gotcha! ${r.a.name.toUpperCase()} is in your Alloydex. This was a TUTORIAL round, so it earns no points.`)}}
+{const _ra2=renderActions;renderActions=function(){_ra2();const r=S.r;if(r&&r.tut){const sp=document.querySelector("#actions .btn-next, #btn-next");const lab=sp&&sp.nextElementSibling;if(lab&&r.stage==="done")lab.textContent="Tutorial round: no points"}}}
 
 newRun();
 </script>
