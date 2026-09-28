@@ -2841,6 +2841,9 @@ Object.assign(TRACKS,{
   "threat_phoenix":{base:"threat",bpm:132,intro:2,lead:{type:"sawtooth",vol:.075},parts:[{k:"arp",type:"triangle",vol:.04,oct:5},{k:"counter",type:"pulse",vol:.035,oct:5}],bass:{s:"walk",vol:.26},drum:"k h s k . k s h",fill:"k k s k s s c c",hat16:true}
 });
 
+
+/* Clear any tutorial overlay left on screen by an older version of the page (live updates can carry old elements over) */
+document.querySelectorAll(".tut-offer,#tut").forEach(e=>e.remove());
 /* =============== FIELD TRAINING (tutorial) ===============
    A guided first encounter with spotlighted coach marks. Offered once after PRESS START; replay any time from "? HOW TO PLAY".
    Steps with `wait` advance on their own when the player does the thing. Radiants are deliberately never mentioned. */
