@@ -67,7 +67,8 @@ header{display:flex;flex-wrap:wrap;align-items:center;justify-content:space-betw
 .specimen.pulled{transform:translate(-6px,-10px) rotate(-3deg)}
 .specimen.slosh svg{animation:slosh .9s ease}
 @keyframes slosh{25%{transform:rotate(4deg)}60%{transform:rotate(-3deg)}}
-.specimen.held,.tool.held{filter:drop-shadow(0 0 6px var(--sun)) drop-shadow(0 0 2px var(--sun))}
+.tool.held{filter:drop-shadow(0 0 6px var(--sun)) drop-shadow(0 0 2px var(--sun))}
+.specimen.held svg>:not(defs):not(.tfx):not(.tfx-bk){filter:drop-shadow(0 0 4px var(--sun)) drop-shadow(0 0 1.5px var(--sun))}
 .flash{position:absolute;inset:0;background:#fff;opacity:0;pointer-events:none;z-index:6}
 .stage.reveal .flash{animation:flash .7s ease-out}
 @keyframes flash{15%{opacity:.95}100%{opacity:0}}
@@ -458,16 +459,21 @@ dl.props.dd dd{text-align:right}
 @media (prefers-reduced-motion:reduce){.bc-stripe,.station.burning::after,#bb-fill.low,.bb-btn.seal.urgent{animation:none}.stage.shake{animation:none}}
 
 /* ---- per-threat looks ---- */
-.stage.tz-cinder{--ray-a:#16324F;--ray-b:#0B1E33}
-.stage.tz-drowned{--ray-a:#0C4250;--ray-b:#062630}
+.stage.tz-cinder{--ray-a:#0C1E38;--ray-b:#050E1E}
+.stage.tz-cinder::before{animation-duration:140s}
+.stage.tz-drowned{--ray-a:#06222C;--ray-b:#020D12}
+.stage.tz-drowned::before{animation-duration:160s;opacity:.5}
 .stage.tz-everburn{--ray-a:#4A1308;--ray-b:#240803}
-.stage.tz-unmaker{--ray-a:#4E4A44;--ray-b:#2A2723}
-.stage.tz-widow{--ray-a:#2B3A18;--ray-b:#141D0A}
-.stage.tz-hollow{--ray-a:#24123E;--ray-b:#0B0616}
-.stage.tz-crown{--ray-a:#40165A;--ray-b:#22092F}
+.stage.tz-unmaker{--ray-a:#3A3F48;--ray-b:#1C2026}
+.p-shard{width:7px;height:7px;background:linear-gradient(135deg,#F4F8FC,#8E98A6 60%,#4A525E);clip-path:polygon(0 0,100% 35%,30% 100%);--an:tp-tumble}
+@keyframes tp-tumble{from{transform:translateY(-40px) rotate(0) scale(var(--s));opacity:0}15%{opacity:1}to{transform:translateY(380px) rotate(540deg) scale(var(--s));opacity:0}}
+.stage.tz-unmaker::before{background:repeating-conic-gradient(from 0deg at 50% 50%,#3A3F48 0 7deg,#1C2026 7deg 11deg,#2E333B 11deg 18deg)}
+.stage.tz-widow{--ray-a:#101408;--ray-b:#060804}
+.stage.tz-hollow{--ray-a:#12081F;--ray-b:#05020C}
+.stage.tz-crown{--ray-a:#1A0A1C;--ray-b:#0C040E}
 .stage.tz-phoenix{--ray-a:#3A0E4A;--ray-b:#0B2C3C}
 .stage[class*="tz-"]::after{background:radial-gradient(circle at 50% 48%,rgba(var(--tcore),.55) 0,rgba(var(--tcore),.22) 26%,rgba(0,0,0,0) 46%,rgba(0,0,0,.6) 100%)}
-.stage.tz-phoenix::before{background:repeating-conic-gradient(from 0deg at 50% 50%,#3A0E4A 0 9deg,#0B2C3C 9deg 18deg,#2A0A3A 18deg 27deg,#0B3C4C 27deg 36deg)}
+.stage.tz-phoenix::before{background:repeating-conic-gradient(from 0deg at 50% 50%,#150A24 0 9deg,#050812 9deg 18deg,#120820 18deg 27deg,#06101C 27deg 36deg)}
 .stage.tz-hollow::before{animation-direction:reverse;animation-duration:30s}
 .stage.tz-crown::before{animation-duration:90s}
 .tparts{position:absolute;inset:0;z-index:0;pointer-events:none;overflow:hidden}
@@ -479,6 +485,10 @@ dl.props.dd dd{text-align:right}
 .p-spore{width:26px;height:18px;border-radius:50%;background:rgba(156,196,106,.35);filter:blur(4px);--an:tp-drift}
 .p-mote{width:4px;height:4px;border-radius:50%;background:#C8A8FF;box-shadow:0 0 8px #A070FF;--an:tp-orbit}
 .p-gold{width:5px;height:5px;background:#FFE27A;clip-path:polygon(50% 0,62% 38%,100% 50%,62% 62%,50% 100%,38% 62%,0 50%,38% 38%);--an:tp-twinkle}
+.p-doc{width:9px;height:11px;background:linear-gradient(#F4F1E6 0 30%,#111 30% 45%,#F4F1E6 45% 60%,#111 60% 72%,#F4F1E6 72%);box-shadow:0 1px 2px rgba(0,0,0,.4);--an:tp-fall}
+.stage.tz-quill{--ray-a:#1A2340;--ray-b:#0A0F22}
+.p-ffdust{width:3px;height:3px;border-radius:50%;background:#DFF2FF;box-shadow:0 0 6px #9FD4FF;--an:tp-rise}
+.stage.tz-quill::before{animation-duration:120s}
 .p-scan{left:0!important;width:100%;height:2px;background:rgba(120,240,255,.18);--an:tp-scan}
 @keyframes tp-rise{from{transform:translateY(0) scale(var(--s));opacity:0}15%{opacity:1}to{transform:translateY(-380px) scale(var(--s));opacity:0}}
 @keyframes tp-fall{from{transform:translateY(-40px) scale(var(--s));opacity:0}15%{opacity:.9}to{transform:translateY(380px) scale(var(--s));opacity:0}}
@@ -541,6 +551,62 @@ dl.props.dd dd{text-align:right}
 .tut-ok{color:#1E8A4A;font-weight:900}
 .tut-bub.nudge{animation:tutnudge .4s}@keyframes tutnudge{20%{margin-left:-8px}40%{margin-left:8px}60%{margin-left:-5px}80%{margin-left:4px}}
 .tutbtn{color:#FFD23F!important;border-color:#FFD23F!important}
+
+/* ---- Quillmoor Institute map: the main specimen hall ---- */
+.z-quill{--floor:#E9EEF3;--wall:#EDE4D0;--wall-top:#2E3F66;--wall-bump:#2E3F66;--rock:#C9CFD8;--rock2:#9AA6B8;--glint:#FFFFFF}
+.z-quill .tile.f,.z-quill .tile.r{background:linear-gradient(90deg,rgba(90,110,140,.18) 1px,transparent 1px) 0 0/50% 50%,linear-gradient(rgba(90,110,140,.18) 1px,transparent 1px) 0 0/50% 50%,#E9EEF3!important;box-shadow:none}
+.z-quill .tile.w{background:linear-gradient(#2E3F66 0 16%,#C9A64A 16% 20%,#EDE4D0 20% 72%,#3A4E7A 72% 80%,#2E3F66 80%);box-shadow:inset 0 -3px 0 rgba(0,0,0,.25)}
+.z-quill .tile.w::after{display:none}
+.z-quill .tile.l{background:linear-gradient(#2E3F66 0 16%,#C9A64A 16% 20%,#EDE4D0 20% 72%,#3A4E7A 72% 80%,#2E3F66 80%)}
+.z-quill .tile.l::after{left:30%;top:28%;width:40%;height:30%;border-radius:40% 40% 10% 10%;background:#FFF4C8;box-shadow:0 0 16px 8px rgba(255,240,190,.6)}
+.z-quill .tile.pa{background:#C8D2DE;box-shadow:none}
+.z-quill .tile.pa[data-e="0000"]{box-shadow:inset 0 3px 0 #F2C94C,inset -3px 0 0 #F2C94C,inset 0 -3px 0 #F2C94C,inset 3px 0 0 #F2C94C}
+.z-quill .tile.pa[data-e="0001"]{box-shadow:inset 0 3px 0 #F2C94C,inset -3px 0 0 #F2C94C,inset 0 -3px 0 #F2C94C}
+.z-quill .tile.pa[data-e="0010"]{box-shadow:inset 0 3px 0 #F2C94C,inset -3px 0 0 #F2C94C,inset 3px 0 0 #F2C94C}
+.z-quill .tile.pa[data-e="0011"]{box-shadow:inset 0 3px 0 #F2C94C,inset -3px 0 0 #F2C94C}
+.z-quill .tile.pa[data-e="0100"]{box-shadow:inset 0 3px 0 #F2C94C,inset 0 -3px 0 #F2C94C,inset 3px 0 0 #F2C94C}
+.z-quill .tile.pa[data-e="0101"]{box-shadow:inset 0 3px 0 #F2C94C,inset 0 -3px 0 #F2C94C}
+.z-quill .tile.pa[data-e="0110"]{box-shadow:inset 0 3px 0 #F2C94C,inset 3px 0 0 #F2C94C}
+.z-quill .tile.pa[data-e="0111"]{box-shadow:inset 0 3px 0 #F2C94C}
+.z-quill .tile.pa[data-e="1000"]{box-shadow:inset -3px 0 0 #F2C94C,inset 0 -3px 0 #F2C94C,inset 3px 0 0 #F2C94C}
+.z-quill .tile.pa[data-e="1001"]{box-shadow:inset -3px 0 0 #F2C94C,inset 0 -3px 0 #F2C94C}
+.z-quill .tile.pa[data-e="1010"]{box-shadow:inset -3px 0 0 #F2C94C,inset 3px 0 0 #F2C94C}
+.z-quill .tile.pa[data-e="1011"]{box-shadow:inset -3px 0 0 #F2C94C}
+.z-quill .tile.pa[data-e="1100"]{box-shadow:inset 0 -3px 0 #F2C94C,inset 3px 0 0 #F2C94C}
+.z-quill .tile.pa[data-e="1101"]{box-shadow:inset 0 -3px 0 #F2C94C}
+.z-quill .tile.pa[data-e="1110"]{box-shadow:inset 3px 0 0 #F2C94C}
+.z-quill .tile.pa[data-e="1111"]{box-shadow:none}
+.z-quill .tile.lq{background:linear-gradient(rgba(255,255,255,.35),transparent 30%),radial-gradient(circle at 50% 60%,#7FD6F2,#2E7FB0 80%);--lqfx:radial-gradient(circle at 30% 70%,rgba(255,255,255,.55) 0 3%,transparent 4%),radial-gradient(circle at 70% 40%,rgba(255,255,255,.45) 0 2.5%,transparent 3.5%),radial-gradient(circle at 50% 85%,rgba(255,255,255,.5) 0 2%,transparent 3%);box-shadow:inset 0 0 0 3px #AAB4C0,inset 0 0 0 5px #5A6470}
+.z-quill .tile.lq[data-e="0000"]{box-shadow:inset 0 3px 0 #AAB4C0,inset 0 5px 0 #5A6470,inset -3px 0 0 #AAB4C0,inset -5px 0 0 #5A6470,inset 0 -3px 0 #AAB4C0,inset 0 -5px 0 #5A6470,inset 3px 0 0 #AAB4C0,inset 5px 0 0 #5A6470}
+.z-quill .tile.lq[data-e="0001"]{box-shadow:inset 0 3px 0 #AAB4C0,inset 0 5px 0 #5A6470,inset -3px 0 0 #AAB4C0,inset -5px 0 0 #5A6470,inset 0 -3px 0 #AAB4C0,inset 0 -5px 0 #5A6470}
+.z-quill .tile.lq[data-e="0010"]{box-shadow:inset 0 3px 0 #AAB4C0,inset 0 5px 0 #5A6470,inset -3px 0 0 #AAB4C0,inset -5px 0 0 #5A6470,inset 3px 0 0 #AAB4C0,inset 5px 0 0 #5A6470}
+.z-quill .tile.lq[data-e="0011"]{box-shadow:inset 0 3px 0 #AAB4C0,inset 0 5px 0 #5A6470,inset -3px 0 0 #AAB4C0,inset -5px 0 0 #5A6470}
+.z-quill .tile.lq[data-e="0100"]{box-shadow:inset 0 3px 0 #AAB4C0,inset 0 5px 0 #5A6470,inset 0 -3px 0 #AAB4C0,inset 0 -5px 0 #5A6470,inset 3px 0 0 #AAB4C0,inset 5px 0 0 #5A6470}
+.z-quill .tile.lq[data-e="0101"]{box-shadow:inset 0 3px 0 #AAB4C0,inset 0 5px 0 #5A6470,inset 0 -3px 0 #AAB4C0,inset 0 -5px 0 #5A6470}
+.z-quill .tile.lq[data-e="0110"]{box-shadow:inset 0 3px 0 #AAB4C0,inset 0 5px 0 #5A6470,inset 3px 0 0 #AAB4C0,inset 5px 0 0 #5A6470}
+.z-quill .tile.lq[data-e="0111"]{box-shadow:inset 0 3px 0 #AAB4C0,inset 0 5px 0 #5A6470}
+.z-quill .tile.lq[data-e="1000"]{box-shadow:inset -3px 0 0 #AAB4C0,inset -5px 0 0 #5A6470,inset 0 -3px 0 #AAB4C0,inset 0 -5px 0 #5A6470,inset 3px 0 0 #AAB4C0,inset 5px 0 0 #5A6470}
+.z-quill .tile.lq[data-e="1001"]{box-shadow:inset -3px 0 0 #AAB4C0,inset -5px 0 0 #5A6470,inset 0 -3px 0 #AAB4C0,inset 0 -5px 0 #5A6470}
+.z-quill .tile.lq[data-e="1010"]{box-shadow:inset -3px 0 0 #AAB4C0,inset -5px 0 0 #5A6470,inset 3px 0 0 #AAB4C0,inset 5px 0 0 #5A6470}
+.z-quill .tile.lq[data-e="1011"]{box-shadow:inset -3px 0 0 #AAB4C0,inset -5px 0 0 #5A6470}
+.z-quill .tile.lq[data-e="1100"]{box-shadow:inset 0 -3px 0 #AAB4C0,inset 0 -5px 0 #5A6470,inset 3px 0 0 #AAB4C0,inset 5px 0 0 #5A6470}
+.z-quill .tile.lq[data-e="1101"]{box-shadow:inset 0 -3px 0 #AAB4C0,inset 0 -5px 0 #5A6470}
+.z-quill .tile.lq[data-e="1110"]{box-shadow:inset 3px 0 0 #AAB4C0,inset 5px 0 0 #5A6470}
+.z-quill .tile.lq[data-e="1111"]{box-shadow:none}
+
+/* ---- notebook redaction (Founder's Folly) ---- */
+.notes li[data-k]{position:relative;overflow:hidden}
+.notes li.redacting::after{content:"";position:absolute;left:0;top:12%;height:76%;width:0;background:#0A0A0A;border-radius:2px;animation:redbar .6s cubic-bezier(.5,0,.3,1) forwards}
+@keyframes redbar{to{width:100%}}
+.notes li.redacting::before{content:"REDACTED";position:absolute;right:14px;top:50%;z-index:2;font-family:var(--pix);font-size:9px;color:#E0282E;border:2px solid #E0282E;border-radius:3px;padding:3px 5px;background:rgba(255,255,255,.08);opacity:0;transform:translateY(-50%) rotate(-9deg) scale(2.6);animation:redstamp .22s .62s cubic-bezier(.3,1.6,.5,1) forwards}
+@keyframes redstamp{to{opacity:1;transform:translateY(-50%) rotate(-9deg) scale(1)}}
+.notes li.redacted{position:relative;background:#E6E2D6;color:#555}
+.notes li.redacted .rbar{flex:1;height:12px;background:repeating-linear-gradient(90deg,#0A0A0A 0 38px,transparent 38px 44px);border-radius:2px}
+.notes li.redacted em{font-style:normal;font-family:var(--pix);font-size:8px;color:#E0282E;border:2px solid #E0282E;border-radius:3px;padding:2px 4px;transform:rotate(-6deg)}
+.notes li.redacted.fresh{animation:redthump .35s}
+@keyframes redthump{30%{transform:scale(1.04)}}
+@media (prefers-reduced-motion:reduce){.notes li.redacting::after,.notes li.redacting::before{animation-duration:.01s;animation-delay:0s}}
+.stage .q,.stage .dexno{z-index:6}
 </style>
 
 <div class="app">
@@ -1037,7 +1103,7 @@ const FLAV=["The team nicknamed it '%N'.","Only %K ingots of the first batch sur
   }
 })(1000);
 
-function habitatOf(a){if(a.fixedHab)return a.fixedHab;const b=a.comp[0][0],w=frac(a),u=(a.uses||"")+" "+(a.lore||"");
+function habitatOf(a){if(a.fixedHab)return a.fixedHab;if(!a.real&&/Quillmoor|Institute/.test(a.lore||""))return"z-quill";const b=a.comp[0][0],w=frac(a),u=(a.uses||"")+" "+(a.lore||"");
   if(a.comp.some(([s])=>BY[s].z>=100)||(a.cov&&!a.comp.some(([s])=>radOf(s)>=1))||["Kamacite","Taenite","Tetrataenite","Awaruite"].includes(a.name)||["Nd","Sm","Ce","La","Pr","Dy","Tb","Gd"].some(s=>(w[s]||0)>=.1))return"z-crater";
   if(a.comp.some(([s])=>radOf(s)>=1)||["Zr","Hf","U","Th"].includes(b)||/nuclear|reactor/i.test(u))return"z-reactor";
   if(a.mp<150||a.reactive)return"z-glacier";
@@ -1104,7 +1170,7 @@ function categoryOf(a){if(a.threat)return"Containment";if(/^(no |nothing|kept on
 [{name:"Cinder Mercury",comp:[["Cs",80],["Fr",20]],d:2.0,mp:-12,mag:0,hard:0,cond:4.5,color:"#E2CF86",tfill:"liquid",fixedHab:"z-glacier",hz:{pyro:1,boom:1,selfheat:1},
   lore:"A eutectic of two of the most violent metals known. This liquid bursts into flame the instant it meets air, explodes in water, and boils itself from its own decay heat. It burns from the outside and cooks from within.",tmade:"Poured remotely inside the Containment Division's sealed argon cell"},
  {name:"Hollow Star",comp:[["At",60],["Fr",40]],d:5.5,mp:250,mag:0,hard:1,cond:2,color:"#8A8FA0",tfill:"vapor",fixedHab:"z-reactor",hz:{vapor:1,selfheat:1},
-  lore:"So radioactive that a visible lump would vaporize from its own heat within moments. It never stays solid long enough to burn anything; it becomes a glowing, lethal vapor.",tmade:"Condensed a few atoms at a time in a cooled containment trap"},
+  lore:"So radioactive that a visible lump would vaporize from its own heat within moments. That is not the end of it: the vapor drifts off, cools, and gathers itself back together somewhere else, usually somewhere worse. Losing track of it means hunting it down all over again.",tmade:"Condensed a few atoms at a time in a cooled containment trap"},
  {name:"Phoenix Lattice",comp:[["Fl",50],["Mc",50]],d:12,mp:200,mag:0,hard:2,cond:3,color:"#B9B2CC",tfill:"vapor",fixedHab:"z-crater",hz:{flash:1,vapor:1,selfheat:1},
   lore:"A hypothetical superheavy intermetallic, two short-lived elements stacked into a laminate. Self-heating, reactive and decaying all at once, it would be gone in under a second: a flash of heat, then nothing. The Institute can only study a projection of it.",tmade:"Projected by the Containment Division's lattice simulator"},
  {name:"Everburn",comp:[["U",60],["Ce",30],["Cs",10]],d:13.5,mp:900,mag:0,hard:3,cond:2.5,color:"#7E7A70",tfill:"granules",fixedHab:"z-volcano",hz:{pyro:1},
@@ -1112,15 +1178,18 @@ function categoryOf(a){if(a.threat)return"Containment";if(/^(no |nothing|kept on
  ,{name:"Widow's Vein",comp:[["Tl",60],["As",25],["Pb",15]],d:11.2,mp:240,mag:0,hard:1.5,cond:3.5,color:"#8C9096",tfill:"granules",fixedHab:"z-mine",hz:{fumes:1},
   lore:"Miners once feared pockets of this in the deepest seams. Every one of its ingredients is a poison, and warmed even slightly it breathes out a choking haze that clings to the tunnel floor.",tmade:"Scraped from a sealed seam by remote-handled tools"},
  {name:"The Unmaker",comp:[["Al",70],["Ga",25],["In",5]],d:3.4,mp:29,mag:0,hard:1,cond:20,color:"#C9CED4",tfill:"granules",fixedHab:"z-scrap",hz:{crumble:1,boom:1},
-  lore:"It seeps along the grain boundaries of ordinary metal and makes it crumble like stale bread, then crumbles itself. Touch it to water and it throws off enough gas to blow the lid off its container.",tmade:"Mixed in a glovebox and never allowed near the scrap piles"},
+  lore:"It seeps along the grain boundaries of ordinary metal and makes it crumble like stale bread. It never runs out: every fragment that breaks away carries the liquid in its seams on to the next thing it touches. Touch it to water and it throws off enough gas to blow the lid off its container.",tmade:"Mixed in a glovebox and never allowed near the scrap piles"},
  {name:"Drowned Fire",comp:[["Mg",60],["Li",30],["Na",10]],d:1.5,mp:450,mag:0,hard:1.5,cond:12,color:"#C8CACC",tfill:"granules",fixedHab:"z-wreck",hz:{pyro:1,boom:1},
   lore:"Blamed for a ship fire that burned below the waterline. Water doesn't put it out; it feeds it. Once lit, it keeps burning underwater and spits out gas that catches fire too.",tmade:"Recovered from a wreck in a sealed, oil-filled drum"},
  {name:"Crown of Rays",comp:[["Au",70],["Ra",20],["Po",10]],d:17,mp:900,mag:0,hard:2.5,cond:20,color:"#E6C35A",tfill:"rod",fixedHab:"z-vault",hz:{glow:1,selfheat:1},
   lore:"A royal treasure from the days when glowing things were thought to be healthy. It shines faintly in the dark, stays warm on its own, and slowly poisons anyone who wears it.",tmade:"Cast long ago by a jeweler who did not live to see it finished"}
+ ,{name:"Founder's Folly",comp:[["Pu",70],["Be",20],["Am",10]],d:6.6,mp:620,mag:0,hard:3,cond:1.2,color:"#6E6A66",tfill:"powder",fixedHab:"z-quill",hz:{pyro:1,selfheat:1,glow:1},
+  lore:"The Institute's own mistake, mixed by its founder in the very first basement lab. He spent the rest of his career trying to make it disappear. It warms itself, poisons the air around it, and is the reason that basement no longer has a door.",tmade:"Mixed by the founder in the first basement lab, then sealed behind a wall"}
 ].forEach(t=>{const a={aliases:[],leak:false,finish:"p",real:false,threat:true,uses:"Nothing. Containment only.",...t};a.reactive=isReactive(frac(a));ALLOYS.push(a)});
-/* DESIGN RULE: exactly ONE threat-class alloy per exploration map. Adding a map means adding one threat; never add a second threat to a map. */
+/* DESIGN RULE: exactly ONE threat-class alloy belongs to each exploration map. Adding a map means adding one threat; never give a map a second threat of its own.
+   The Quillmoor Institute map is the one place other maps' threats can also show up (as visitors); its own threat, Founder's Folly, never leaves it. */
 (function oneThreatPerMap(){const c={};ALLOYS.filter(a=>a.threat).forEach(a=>{c[a.fixedHab]=(c[a.fixedHab]||0)+1});
-  ["z-mine","z-scrap","z-wreck","z-volcano","z-vault","z-reactor","z-glacier","z-crater"].forEach(z=>{if(c[z]!==1)console.warn("Threat rule broken: "+z+" has "+(c[z]||0)+" threat alloys")})})();
+  ["z-mine","z-scrap","z-wreck","z-volcano","z-vault","z-reactor","z-glacier","z-crater","z-quill"].forEach(z=>{if(c[z]!==1)console.warn("Threat rule broken: "+z+" has "+(c[z]||0)+" threat alloys")})})();
 /* ---- Creative names for synthetic alloys (threat alloys keep theirs). Saves made under the old names are migrated. ---- */
 (function renamePass(){const rnd=mulberry(5150515),pick=x=>x[rnd()*x.length|0];
   const ADJ="Hollow Restless Sleeping Broken Crooked Patient Stubborn Wandering Hidden Drowned Frozen Burning Lucky Last Quiet Hungry Sunken Weeping Laughing Northern Southern Midnight Morning Winter Autumn Tidal Gentle Wild Humble Proud Fickle Loyal Borrowed Stolen Forgotten Faithful Reckless Nimble Brave Idle Vanishing Waking Dreaming Howling Whispering Ancient Lonely Merry Grim Tender Feral Crowned Wicked Sly Clever Weary Eager Solemn Jolly Nameless Hushed Brazen Fabled Unlikely Second Seventh Twelfth".split(" ");
@@ -1390,10 +1459,14 @@ function specimenSVG(a,marks){
     else if(fill==="liquid")content=`<path d="M118 120 Q150 108 182 120 L182 196 Q182 222 150 222 Q118 222 118 196 Z" fill="url(#${id}l)"/><ellipse cx="150" cy="118" rx="32" ry="7" fill="${hi}"/><ellipse cx="142" cy="116" rx="12" ry="2.5" fill="#fff" opacity=".8"/><rect x="128" y="130" width="6" height="74" rx="3" fill="#fff" opacity=".65"/>`;
     else if(fill!=="vapor"){const top=fill==="powder"?160:140,cols=[c,hi,mid,lo,shade(c,.3)];
       if(a.reactive)content+=`<rect x="118" y="100" width="64" height="126" fill="#E8D48A" opacity=".35"/>`;
-      if(fill==="granules")for(let k=0;k<90;k++){const x=rn(116,184),y=rn(top,224),r=rn(3.5,6),n=5+(R()*3|0);let pts="";for(let m=0;m<n;m++){const an=m/n*6.283+rn(-.3,.3),rr=r*rn(.7,1.1);pts+=`${F(x+Math.cos(an)*rr)},${F(y+Math.sin(an)*rr*.8)} `}
-        content+=`<polygon points="${pts}" fill="${cols[R()*5|0]}" stroke="${shade(c,-.5)}" stroke-width=".5"/>`}
-      else if(fill==="beads")for(let k=0;k<60;k++){const x=rn(120,180),y=rn(top+4,222);content+=`<circle cx="${F(x)}" cy="${F(y)}" r="5" fill="url(#${id}b)" stroke="${shade(c,-.5)}" stroke-width=".4"/>`}
-      else if(fill==="shavings")for(let k=0;k<55;k++){const x=rn(118,178),y=rn(top,220),r=rn(4,8);content+=`<path d="M${F(x)} ${F(y)} a${F(r)} ${F(r*.6)} 0 1 1 ${F(r*1.2)} ${F(r*.3)} a${F(r*.6)} ${F(r*.4)} 0 1 1 ${F(-r*.5)} ${F(-r*.4)}" stroke="${cols[R()*5|0]}" stroke-width="2" fill="none"/>`}
+      // loose contents pack down from the curved floor of the vial to a slightly mounded top: every piece rests on the ones below it
+      const settle=(sx,sy,jx,jy)=>{const out=[],hw=y=>y<=196?33:33*Math.sqrt(Math.max(0,1-Math.pow((y-196)/27,2)));
+        for(let y=222,row=0;y>top;y-=sy,row++){const w=hw(y);for(let x=150-w+(row%2?sx/2:0)+R()*jx;x<=150+w;x+=sx+R()*jx*.5){const xx=x+(R()-.5)*jx,yy=y+(R()-.5)*jy;
+          if(yy<top+Math.pow((xx-150)/33,2)*5)continue;if(Math.abs(xx-150)>hw(yy)+1)continue;out.push([xx,yy])}}return out};
+      if(fill==="granules")settle(5.2,4.2,2.6,2.4).forEach(([x,y])=>{const r=rn(3.5,5.6),n=5+(R()*3|0);let pts="";for(let m=0;m<n;m++){const an=m/n*6.283+rn(-.3,.3),rr=r*rn(.7,1.1);pts+=`${F(x+Math.cos(an)*rr)},${F(y+Math.sin(an)*rr*.8)} `}
+        content+=`<polygon points="${pts}" fill="${cols[R()*5|0]}" stroke="${shade(c,-.5)}" stroke-width=".5"/>`});
+      else if(fill==="beads")settle(9.4,8,.8,.8).forEach(([x,y])=>{content+=`<circle cx="${F(x)}" cy="${F(y)}" r="5" fill="url(#${id}b)" stroke="${shade(c,-.5)}" stroke-width=".4"/>`});
+      else if(fill==="shavings")settle(7,5,3,3).forEach(([x0,y])=>{const r=rn(4,7),x=x0-r*.6;content+=`<path d="M${F(x)} ${F(y)} a${F(r)} ${F(r*.6)} 0 1 1 ${F(r*1.2)} ${F(r*.3)} a${F(r*.6)} ${F(r*.4)} 0 1 1 ${F(-r*.5)} ${F(-r*.4)}" stroke="${cols[R()*5|0]}" stroke-width="2" fill="none"/>`});
       else{const pc=mix(c,"#8C8C8C",.25);content+=`<path d="M116 ${top+8} Q150 ${top-10} 184 ${top+8} L184 226 L116 226 Z" fill="${pc}"/><path d="M116 ${top+8} Q150 ${top-10} 184 ${top+8} L184 226 L116 226 Z" filter="url(#${id}n)" opacity=".6"/>`;
         for(let k=0;k<12;k++)content+=`<circle cx="${F(rn(122,178))}" cy="${F(rn(top+2,220))}" r=".8" fill="#fff" opacity=".7"/>`}
       const fq=[[214,186],[266,181],[268,204],[216,209]],P=(u,v)=>{const x0=fq[0][0]+(fq[1][0]-fq[0][0])*u,y0=fq[0][1]+(fq[1][1]-fq[0][1])*u,x1=fq[3][0]+(fq[2][0]-fq[3][0])*u,y1=fq[3][1]+(fq[2][1]-fq[3][1])*u;return[F(x0+(x1-x0)*v),F(y0+(y1-y0)*v)]};
@@ -1498,13 +1571,22 @@ const ROUNDS=10,SCANS=4,CAP=5;
 /* Threat odds: exactly 1 in 800 encounters on every map (Recipe and Mixed; Mystery uses real alloys only, so never).
    In Mixed only half the encounters are recipe-type, so those roll at double the rate to keep the overall odds at 1 in 800. */
 const THREAT_ODDS=800;
+/* At the Quillmoor Institute, every other map's threat can also turn up, each at 1 in 650 per encounter (a bit more often than at home).
+   Founder's Folly, the Institute's own threat, stays at the normal 1 in 800 and never appears anywhere else. */
+const VISITOR_ODDS=650;
 function pickAlloy(kind,used){
   let pool;
-  if(kind!=="who"&&Math.random()<(S.mode==="mixed"?2:1)/THREAT_ODDS){const z=EXP.zone&&EXP.zone.cls,t=ALLOYS.find(a=>a.threat&&a.hab===z&&!used.has(a.name));if(t)return t}
+  {const z=EXP.zone&&EXP.zone.cls,m=S.mode==="mixed"?2:1;
+   if(kind!=="who"){const r=Math.random();
+     if(r<m/THREAT_ODDS){const t=ALLOYS.find(a=>a.threat&&a.hab===z&&!used.has(a.name));if(t)return t}
+     else if(z==="z-quill"){const vis=ALLOYS.filter(a=>a.threat&&a.hab!=="z-quill"&&!used.has(a.name));
+       if(vis.length&&r<m/THREAT_ODDS+m*vis.length/VISITOR_ODDS)return vis[Math.random()*vis.length|0]}}}
   if(kind==="who")pool=REAL;
   else pool=Math.random()<.4?REAL.filter(a=>!a.leak):ALLOYS.filter(a=>!a.real);
   pool=pool.filter(a=>!used.has(a.name)&&!a.threat);   // threats only arrive through the fixed roll above
-  const z=EXP.zone&&EXP.zone.cls,local=pool.filter(a=>a.hab===z);if(local.length)pool=local;
+  const z=EXP.zone&&EXP.zone.cls,local=pool.filter(a=>a.hab===z);
+  if(z==="z-quill"){if(local.length&&Math.random()<.3)pool=local}   // the Institute stores samples from every habitat
+  else if(local.length)pool=local;
   let tot=pool.reduce((t,a)=>t+RARITY[a.rar].w,0),r=Math.random()*tot;
   for(const a of pool){r-=RARITY[a.rar].w;if(r<=0)return a}
   return pool[pool.length-1];
@@ -1551,17 +1633,20 @@ function renderStage(){
 }
 function noteRows(){
   const n=S.r.notes,rows=[];
-  if(n.mass)rows.push(`<li><b>Scale</b>${n.mass}</li>`);
-  if(n.vol)rows.push(`<li><b>Water level</b>${n.vol}</li>`);
-  if(n.magnet)rows.push(`<li><b>Magnet</b>${n.magnet}</li>`);
+  if(n.mass)rows.push(`<li data-k="mass"><b>Scale</b>${n.mass}</li>`);
+  if(n.vol)rows.push(`<li data-k="vol"><b>Water level</b>${n.vol}</li>`);
+  if(n.magnet)rows.push(`<li data-k="magnet"><b>Magnet</b>${n.magnet}</li>`);
   const sc=Object.entries(S.r.scratchLog);
   if(sc.length)rows.push(`<li style="flex-wrap:wrap"><b>Scratch test</b>${sc.map(([t,r])=>`${t}: ${r}`).join(" · ")}</li>`);
-  if(n.melt||n.freeze)rows.push(`<li><b>Furnace</b>${[n.melt,n.freeze].filter(Boolean).join("; ")}</li>`);
-  if(n.react)rows.push(`<li style="flex-wrap:wrap"><b>Reaction</b>${n.react.join("; ")}</li>`);
-  if(n.cond)rows.push(`<li><b>Conductivity</b>${n.cond}</li>`);
-  if(n.rust)rows.push(`<li><b>Soak test</b>${n.rust.none?"":`<span class="sw" style="background:${n.rust.col}"></span>`}${n.rust.t}</li>`);
-  if(n.rad)rows.push(`<li><b>Geiger</b>${n.rad}</li>`);
-  if(n.flame)rows.push(`<li><b>Flame</b><span class="sw" style="background:${n.flame.col}"></span>${n.flame.sparks.map(c=>`<span class="dot" style="background:${c}"></span>`).join("")}${n.flame.sparks.length?" sparks":""}</li>`);
+  if(n.melt||n.freeze)rows.push(`<li data-k="${n.melt?"melt":"freeze"}"><b>Furnace</b>${[n.melt,n.freeze].filter(Boolean).join("; ")}</li>`);
+  if(n.react)rows.push(`<li data-k="react" style="flex-wrap:wrap"><b>Reaction</b>${n.react.join("; ")}</li>`);
+  if(n.cond)rows.push(`<li data-k="cond"><b>Conductivity</b>${n.cond}</li>`);
+  if(n.rust)rows.push(`<li data-k="rust"><b>Soak test</b>${n.rust.none?"":`<span class="sw" style="background:${n.rust.col}"></span>`}${n.rust.t}</li>`);
+  if(n.rad)rows.push(`<li data-k="rad"><b>Geiger</b>${n.rad}</li>`);
+  if(n.flame)rows.push(`<li data-k="flame"><b>Flame</b><span class="sw" style="background:${n.flame.col}"></span>${n.flame.sparks.map(c=>`<span class="dot" style="background:${c}"></span>`).join("")}${n.flame.sparks.length?" sparks":""}</li>`);
+  if(typeof TB!=="undefined"&&TB.on&&TB.redacted&&TB.a===S.r.a){TB.redacted=TB.redacted.filter(k=>!n[k]);
+    const LBL={mass:"Scale",vol:"Water level",magnet:"Magnet",melt:"Furnace",freeze:"Furnace",react:"Reaction",cond:"Conductivity",rust:"Soak test",rad:"Geiger",flame:"Flame"};
+    [...new Set(TB.redacted.map(k=>LBL[k]))].forEach(l=>rows.push(`<li class="redacted"><b>${l}</b><span class="rbar"></span><em>REDACTED</em></li>`))}
   return rows.length?rows.join(""):`<li class="empty">No readings yet. Try the field kit and the lab bench.</li>`;
 }
 function renderDex(){
@@ -1806,7 +1891,7 @@ function useStation(key){const r=S.r,a=r.a;
         else say(floats?"It floats! Read the new level.":"Plunk! Read the new level.")}
       renderDex()})}
   if(key==="furnace"){if(LAB.inFurnace){say("The sample is already in the crucible.");return}
-    LAB.inFurnace=true;$("#fz-sample").setAttribute("opacity",1);LAB.meltState=LAB.T>=a.mp?"liquid":"solid";updateFurnaceUI();
+    LAB.inFurnace=true;if(a.mp<LAB.T&&a.mp<30)FZ.mprog=1;$("#fz-sample").setAttribute("opacity",1);LAB.meltState=LAB.T>=a.mp?"liquid":"solid";updateFurnaceUI();
     say(!LAB.fzOn?"The sample sits in a cold crucible. The furnace is off.":LAB.meltState==="liquid"?"It slumps into a puddle in the crucible.":"The sample sits in the crucible.")}
   if(key==="circuit"){if(LAB.ci.sample){say("The sample is already clamped in.");return}LAB.ci.sample=true;updateCircuit();
     say(LAB.ci.on?"Clamped. Watch the bulb.":"Clamped between the clips. The switch is off.")}
@@ -1903,7 +1988,7 @@ function reactionsFor(a){const w=frac(a);const tz=a.threat?[a.hz.fumes?{T:-999,f
   if(fx.smoke==="hal"){const k=["Cl","Br","I","F"].sort((x,y)=>(w[y]||0)-(w[x]||0))[0];fx.smoke=HAL_COL[k]}
   return{...r,fx,T:r.T==="mp"?a.mp:r.T}}))}
 const FZ={fx:[],p:[],ash:false,done:new Set};
-function resetFurnaceFx(){FZ.fx=[];FZ.p=[];FZ.ash=false;FZ.done=new Set;FZ.melted=false;FZ.crust=null;$("#fz-sample").style.visibility=""}
+function resetFurnaceFx(){FZ.fx=[];FZ.p=[];FZ.ash=false;FZ.done=new Set;FZ.melted=false;FZ.mprog=0;FZ.crust=null;$("#fz-sample").style.visibility=""}
 function checkReactions(now){if(!LAB.inFurnace||FZ.ash||(!LAB.fzOn&&!S.r.a.threat))return;
   reactionsFor(S.r.a).forEach((r,i)=>{if(FZ.done.has(i)||LAB.T<r.T)return;FZ.done.add(i);FZ.fx.push({...r.fx,T:r.T,start:now,until:now+4500});if(!r.fx.consume)FZ.crust=r.crust||"#2E2826";
     const at=Math.round(LAB.T/5)*5;(S.r.notes.react=S.r.notes.react||[]).push(`near ${at} °C: ${r.note}`);renderDex();say(r.msg);$("#rd-fz").textContent="Reaction!";
@@ -1942,9 +2027,11 @@ function loop(now){const dt=Math.min(.05,(now-lastT)/1000);lastT=now;
     $("#fz-heat").setAttribute("opacity",g?clamp((T-450)/2500,0,.55):0);$("#fz-heat").setAttribute("fill",g||"#FF6A00");
     checkReactions(now);drawFurnaceFx(now,dt);
     if(LAB.inFurnace&&!FZ.ash){const a=S.r.a;
-      if(T>=a.mp)FZ.melted=true;
-      const f=FZ.melted?1:clamp((T-a.mp)/35+.5,0,1),h=32*(1-f),molten=T>=a.mp;
-      ["#fz-solid","#fz-solidglow","#fz-frost"].forEach(s=>{$(s).setAttribute("y",116-h);$(s).setAttribute("height",Math.max(0,h))});$("#fz-solid").setAttribute("rx",3+10*f);
+      // melting takes time: the sample sags, bulges and runs down into a puddle (faster the hotter it is); cool it mid-melt and it freezes as a slumped lump
+      if(T>=a.mp)FZ.mprog=Math.min(1,(FZ.mprog||0)+dt*(1+Math.max(0,T-a.mp)/250)/2.6);
+      if((FZ.mprog||0)>=1)FZ.melted=true;
+      const f=FZ.melted?1:(FZ.mprog||0),h=32*(1-f),molten=T>=a.mp,bw=36*(1+.35*Math.sin(Math.PI*Math.min(1,f*1.1)));
+      ["#fz-solid","#fz-solidglow","#fz-frost"].forEach(s=>{$(s).setAttribute("y",116-h);$(s).setAttribute("height",Math.max(0,h));$(s).setAttribute("x",90-bw/2);$(s).setAttribute("width",bw)});$("#fz-solid").setAttribute("rx",3+14*f);$("#fz-solidcrust").setAttribute("x",90-bw/2);$("#fz-solidcrust").setAttribute("width",bw);
       ["#fz-liq","#fz-liqglow","#fz-liqcrust"].forEach(s=>{$(s).setAttribute("rx",(molten?27:24)*f);$(s).setAttribute("ry",(molten?5:6.5)*f)});
       $("#fz-solidcrust").setAttribute("y",116-h);$("#fz-solidcrust").setAttribute("height",Math.max(0,h));
       ["#fz-solidcrust","#fz-liqcrust"].forEach(s=>{$(s).setAttribute("fill",FZ.crust||"#000");$(s).setAttribute("opacity",FZ.crust?.65:0)});
@@ -2069,7 +2156,7 @@ function renderElCard(){const e=BY[curEl],x=EX[e.s];
 const formName=a=>a.form==="vial"?({liquid:"Liquid in a vial",granules:"Granules in a vial",beads:"Beads in a vial",powder:"Powder in a vial",shavings:"Shavings in a vial"}[a.fill]||"Vial"):FORM_NAME[a.form];
 const FORM_NAME={rod:"Solid rod",ingot:"Solid ingot",sheet:"Rolled sheet",wire:"Wire coil",coin:"Stamped coins",ball:"Polished sphere",pellets:"Pellets in a dish",ribbon:"Thin ribbon",vial:"Liquid in a vial"};
 const SPARKS=Array.from({length:10},(_,i)=>`<i style="--x:${[12,84,22,74,50,8,90,36,64,48][i]}%;--y:${[18,22,70,76,8,48,52,88,86,40][i]}%;--dl:${(i*.37).toFixed(2)}s"></i>`).join("");
-const HAB={"z-mine":{name:"Rustvein Mine",col:"#B0834E"},"z-scrap":{name:"Tinker's Scrapyard",col:"#8A8579"},"z-wreck":{name:"Sunken Galleon Cove",col:"#3E9BC9"},"z-volcano":{name:"Emberforge Caldera",col:"#E0582A"},"z-vault":{name:"Gilded Vault",col:"#D9A92A"},"z-reactor":{name:"Old Reactor Hall",col:"#7FCB3A"},"z-glacier":{name:"Frostbite Cavern",col:"#8FD0F0"},"z-crater":{name:"Starfall Crater",col:"#7D6FB0"}};
+const HAB={"z-mine":{name:"Rustvein Mine",col:"#B0834E"},"z-scrap":{name:"Tinker's Scrapyard",col:"#8A8579"},"z-wreck":{name:"Sunken Galleon Cove",col:"#3E9BC9"},"z-volcano":{name:"Emberforge Caldera",col:"#E0582A"},"z-vault":{name:"Gilded Vault",col:"#D9A92A"},"z-reactor":{name:"Old Reactor Hall",col:"#7FCB3A"},"z-glacier":{name:"Frostbite Cavern",col:"#8FD0F0"},"z-crater":{name:"Starfall Crater",col:"#7D6FB0"},"z-quill":{name:"Quillmoor Institute",col:"#5A7BD0"}};
 const RARITY={common:{n:"Common",w:10,c:"#8A93A6"},uncommon:{n:"Uncommon",w:6,c:"#3FA66A"},rare:{n:"Rare",w:2,c:"#3B7BF0"},legendary:{n:"Legendary",w:.6,c:"#D9A92A"},threat:{n:"⚠ Threat",w:.25,c:"#B0121E"}};
 const PAGE=48;
 function recOf(a){return S.dex[a.name]||{s:0,c:0}}
@@ -2184,6 +2271,7 @@ const ZONES=[
  {name:"GILDED VAULT",sub:"A forgotten treasury. Mind the coin piles.",cls:"z-vault",map:["#################", "#P.=====L=====..#", "#..=.T.,,,.T.=..#", "#o.=.,,,,,,,.=.o#", "#..=.T.,,,.T.=..#", "###=####.####=###", "#,,=,,,o.o,,,=,,#", "#,,=,T,,.,,T,=,,#", "#..=====.=====..#", "#o,,,,,.o.,,,,,o#", "#################"]},
  {name:"OLD REACTOR HALL",sub:"Decommissioned decades ago. Something still glows.",cls:"z-reactor",map:["#################", "#P..=====..,,,.o#", "#.o.=,,,=..,,,..#", "#...=,~~~~~~,=..#", "#,,.=,~~~~~~,=.,#", "#,,.=,~~~~~~,=,,#", "#,,.=,,,,,,,,=,,#", "#o..====..====.L#", "#.,,,,.o..o.,,,,#", "#L.,,,,..,,,,,.o#", "#################"]},
  {name:"FROSTBITE CAVERN",sub:"So cold that strange liquids freeze in the ice.",cls:"z-glacier",map:["#################", "#,,,,..P..,,,,T.#", "#,T,,.....,,,,..#", "#,,,.===.===.,,,#", "#...=~~~~~~~=...#", "#.T.=~~~~~~~=.T.#", "#...=~~~~~~~=...#", "#,,,.===.===.,,,#", "#,,,,,..T..,,,,,#", "#T.,,,,...,,,,.T#", "#################"]},
+ {name:"QUILLMOOR INSTITUTE",sub:"The Institute's main specimen hall. Samples from every habitat end up somewhere in here.",cls:"z-quill",map:["####L#######L####", "#TT.,,o.P.o,,.TT#", "#...,,,.=.,,,...#", "#.o====.=.====o.#", "#.,=,,..=..,,=,.#", "#.,=.~~~=~~~.=,.#", "#.,=.~~~=~~~.=,.#", "#.,=,,..=..,,=,.#", "#.o====.=.====o.#", "#TT.,,,,=,,,,.TT#", "#################"]},
  {name:"STARFALL CRATER",sub:"A meteor landed here long ago.",cls:"z-crater",map:["#################", "####,,,,,,,,,####", "##,,,,T...,,,,,##", "#,,,.........,,,#", "#,T..,~~~~~,..T,#", "#,,,.,~~~~~,.,,,#", "#,,..,~~~~~,..,,#", "#,o,........P,o,#", "##,,,,,T,,,,,,,##", "####,,,,,,,,,####", "#################"]}
 ];
 const MINER=`<svg viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="20" cy="37.5" rx="10" ry="2.2" fill="#000" opacity=".3"/>
@@ -2208,8 +2296,20 @@ const MINER=`<svg viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="20" cy="37
 <path d="M21.5 17.6 Q23 18.6 24.4 17.6" stroke="#121B40" stroke-width=".9" fill="none" stroke-linecap="round"/></svg>`;
 const EXP={zone:null,x:0,y:0,face:1,busy:true,since:0,target:null,timer:null,hold:null};
 
-function rubbleSVG(z,seed){const R=mulberry(seed*7919+13),rn=(a,b)=>a+R()*(b-a),f=v=>v.toFixed(1);
-  const rocks={"z-wreck":["#9C8B6E","#B7A583","#7E8C86"],"z-volcano":["#3A2E2E","#5A4640","#2A2226"],"z-vault":["#8C7A5E","#A48E6A","#6E6048"],"z-reactor":["#6E7A76","#87938E","#56605C"],"z-glacier":["#DCEFFA","#A9D2EC","#C4E2F4"],"z-mine":["#8C7A66","#A08C74","#766553"],"z-scrap":["#8E949C","#A7ADB5","#7A6F66"],"z-crater":["#6D6488","#877DA6","#5A5272"]}[z];
+function quillSpill(seed){const R=mulberry(seed*7919+13),rn=(a,b)=>a+R()*(b-a),f=v=>v.toFixed(1);let g="";
+  // loose papers
+  for(let i=0;i<2+(R()*2|0);i++){const x=rn(4,26),y=rn(4,26),a=rn(-35,35);g+=`<g transform="rotate(${f(a)} ${f(x+6)} ${f(y+7)})"><rect x="${f(x)}" y="${f(y)}" width="12" height="15" fill="#F7F4EA" stroke="#B8B0A0" stroke-width=".5"/><path d="M${f(x+2)} ${f(y+4)} h8 M${f(x+2)} ${f(y+7)} h7 M${f(x+2)} ${f(y+10)} h8" stroke="#8A94A8" stroke-width=".7"/></g>`}
+  // a knocked-over sample jar with its contents spilled out
+  const jx=rn(10,24),jy=rn(16,26),ja=rn(-80,-20),cols=["#B8C0CC","#D9B86A","#C98A5A","#9AA8B8","#D0D4DA"],c=cols[R()*5|0];
+  for(let i=0;i<6;i++)g+=`<ellipse cx="${f(jx+rn(4,14))}" cy="${f(jy+rn(-3,5))}" rx="${f(rn(1,2.2))}" ry="${f(rn(.8,1.6))}" fill="${c}" stroke="rgba(0,0,0,.35)" stroke-width=".4"/>`;
+  g+=`<g transform="rotate(${f(ja)} ${f(jx)} ${f(jy)})"><rect x="${f(jx-4)}" y="${f(jy-10)}" width="8" height="11" rx="2" fill="rgba(210,235,250,.55)" stroke="#6A8AA8" stroke-width=".8"/><rect x="${f(jx-4.6)}" y="${f(jy-12)}" width="9.2" height="2.6" rx="1" fill="#3A4A6A"/><rect x="${f(jx-3)}" y="${f(jy-6)}" width="6" height="3" fill="#F7F4EA"/></g>`;
+  // a small flask or test tube, sometimes
+  if(R()<.6){const x=rn(24,34),y=rn(22,32);g+=`<path d="M${f(x-2)} ${f(y-9)} v5 l-4 7 q-1 2 1 2 h10 q2 0 1-2 l-4 -7 v-5 z" fill="rgba(210,235,250,.6)" stroke="#6A8AA8" stroke-width=".8"/><path d="M${f(x-4.6)} ${f(y+1)} h9.2 l1 2 q0 1 -1 1 h-10 q-1 0 -1-1 z" fill="${cols[R()*5|0]}" opacity=".8"/>`}
+  // a glint
+  g+=`<path class="tw" d="M${f(rn(8,32))} ${f(rn(8,30))} l1 -3 l1 3 l3 1 l-3 1 l-1 3 l-1 -3 l-3 -1 z" fill="#FFFFFF" style="animation-delay:${f(rn(0,2.4))}s"/>`;
+  return `<svg viewBox="0 0 40 40" aria-hidden="true">${g}</svg>`}
+function rubbleSVG(z,seed){if(z==="z-quill")return quillSpill(seed);const R=mulberry(seed*7919+13),rn=(a,b)=>a+R()*(b-a),f=v=>v.toFixed(1);
+  const rocks={"z-wreck":["#9C8B6E","#B7A583","#7E8C86"],"z-volcano":["#3A2E2E","#5A4640","#2A2226"],"z-vault":["#8C7A5E","#A48E6A","#6E6048"],"z-reactor":["#6E7A76","#87938E","#56605C"],"z-glacier":["#DCEFFA","#A9D2EC","#C4E2F4"],"z-mine":["#8C7A66","#A08C74","#766553"],"z-scrap":["#8E949C","#A7ADB5","#7A6F66"],"z-crater":["#6D6488","#877DA6","#5A5272"],"z-quill":["#C9CFD8","#9AA6B8","#E4E8EE"]}[z];
   let g="";
   for(let i=0;i<9;i++)g+=`<ellipse cx="${f(rn(2,38))}" cy="${f(rn(2,38))}" rx="${f(rn(.5,1.3))}" ry="${f(rn(.4,.9))}" fill="rgba(0,0,0,.28)"/>`;
   for(let i=0;i<6;i++)g+=`<circle cx="${f(rn(2,38))}" cy="${f(rn(2,38))}" r="${f(rn(.3,.7))}" fill="rgba(255,255,255,.18)"/>`;
@@ -2263,6 +2363,9 @@ function propSVG(z,kind,seed){const R=mulberry(seed*131+7),r=(a,b)=>a+R()*(b-a),
     case"z-volcano":return S(`${sh}<polygon points="20,2 27,34 13,34" fill="#1A1420" stroke="#3E3848" stroke-width="1"/><polygon points="20,2 23,20 20,34 16,20" fill="#2E2838"/><path d="M20 6 L22 18" stroke="#9AA0C0" stroke-width=".8"/><path d="M14 30 L26 30" stroke="#FF6A1F" stroke-width="1" opacity=".6"/>`);
     case"z-vault":return S(`${sh}<rect x="12" y="7" width="16" height="27" fill="#EDE6D2" stroke="#8C7A5E" stroke-width="1.2"/><path d="M15 8 V33 M20 8 V33 M25 8 V33" stroke="#C9BFA2" stroke-width="1"/><rect x="9" y="3" width="22" height="5" fill="#D9A92A" stroke="#8C6A12" stroke-width="1"/><rect x="9" y="33" width="22" height="4" fill="#D9A92A" stroke="#8C6A12" stroke-width="1"/>`);
     case"z-reactor":return S(`${sh}<rect x="9" y="6" width="22" height="29" rx="10" fill="#B8C2BC" stroke="#3A4440" stroke-width="1.3"/><rect x="9" y="15" width="22" height="5" fill="#E0B820"/><path d="M9 15 l5 5 M14 15 l5 5 M19 15 l5 5 M24 15 l5 5" stroke="#1E2420" stroke-width="1.2"/><circle cx="20" cy="27" r="3.5" fill="#9CFF4A" opacity=".8"/>`);
+    case"z-quill":return R()<.5
+      ? S(`${sh}<rect x="7" y="2" width="26" height="33" rx="1.5" fill="#5A3A24" stroke="#2E1C10" stroke-width="1.2"/><rect x="9" y="4" width="22" height="29" fill="rgba(200,230,250,.35)" stroke="#8C6A48" stroke-width=".8"/><path d="M9 13.5 H31 M9 23.5 H31" stroke="#8C6A48" stroke-width="1.2"/>${[[11,7],[17,6],[24,8],[12,16],[19,17],[25,15],[11,26],[18,27],[24,25]].map(([x,y],k)=>`<rect x="${x}" y="${y}" width="5" height="${[6,7,5][k%3]}" rx="1.2" fill="rgba(220,240,255,.8)" stroke="#6A8AA8" stroke-width=".5"/><rect x="${x+.6}" y="${y+2.5}" width="3.8" height="${[3,4,2][k%3]}" fill="${["#C98A5A","#9AA8B8","#D9B86A","#8FC0A0","#B8A0D0"][k%5]}"/>`).join("")}<rect x="17" y="34" width="6" height="1.5" fill="#D9A92A"/>`)
+      : S(`${sh}<rect x="7" y="2" width="26" height="33" fill="#6B4A2E" stroke="#3A2414" stroke-width="1.2"/>${[5,15,25].map(y=>`<rect x="9" y="${y}" width="22" height="8" fill="#2A1C12"/>`).join("")}${[[10,6,"#8A3A34"],[13,5,"#2E4A7A"],[16,6,"#3A6A4A"],[19,7,"#6A4A2A"],[22,5,"#4A3A6A"],[26,6,"#8A6A2A"],[10,16,"#2E4A7A"],[13,17,"#6A4A2A"],[17,16,"#8A3A34"],[24,18,"#3A6A4A"],[11,26,"#4A3A6A"],[15,27,"#8A6A2A"],[21,26,"#2E4A7A"],[25,26,"#8A3A34"]].map(([x,y,c])=>`<rect x="${x}" y="${y}" width="2.6" height="${13-(y%10)}" fill="${c}"/>`).join("")}<rect x="21" y="18" width="3" height="5" fill="#F4F1E6"/>`);
     case"z-glacier":return S(`${sh}<polygon points="14,35 18,4 22,35" fill="#DDF2FF" stroke="#7FB6D8" stroke-width="1"/><polygon points="20,35 25,12 29,35" fill="#C4E6FA" stroke="#7FB6D8" stroke-width="1"/><polygon points="8,35 11,20 14,35" fill="#EAF7FF" stroke="#7FB6D8" stroke-width="1"/><path d="M18 8 L18 30" stroke="#fff" stroke-width=".8"/>`);
     default:return S(`${sh}<g><polygon points="12,34 14,14 18,34" fill="#9AE8FF" stroke="#3F7FA8" stroke-width="1"/><polygon points="17,34 21,4 25,34" fill="#C2A8FF" stroke="#6A4FA8" stroke-width="1"/><polygon points="24,34 28,18 30,34" fill="#8FF0D0" stroke="#3FA884" stroke-width="1"/><path d="M21 8 L21 30" stroke="#fff" stroke-width=".8" opacity=".8"/></g>`)}}
   switch(z){
@@ -2272,6 +2375,11 @@ function propSVG(z,kind,seed){const R=mulberry(seed*131+7),r=(a,b)=>a+R()*(b-a),
     case"z-volcano":return S(`${sh}<path d="M6 32 Q4 18 16 12 Q30 8 34 22 Q36 32 26 34 Z" fill="#3A2E2E" stroke="#1A1212" stroke-width="1.2"/><path d="M14 20 L18 24 L24 19 L27 25" stroke="#FF7A2A" stroke-width="1.6" fill="none"/>`);
     case"z-vault":return S(`${sh}<rect x="7" y="17" width="26" height="16" rx="2" fill="#8A5A2E" stroke="#3E2410" stroke-width="1.3"/><path d="M7 17 Q20 6 33 17 Z" fill="#9C6A36" stroke="#3E2410" stroke-width="1.3"/><rect x="7" y="21" width="26" height="3" fill="#D9A92A"/><rect x="18" y="20" width="4" height="6" rx="1" fill="#F2D060" stroke="#8C6A12" stroke-width=".8"/><ellipse cx="20" cy="14" rx="8" ry="2" fill="#F2D060" opacity=".7"/>`);
     case"z-reactor":return S(`${sh}<rect x="10" y="10" width="20" height="24" rx="3" fill="#E0B820" stroke="#5A4A08" stroke-width="1.3"/><ellipse cx="20" cy="10" rx="10" ry="3" fill="#F0CC40" stroke="#5A4A08" stroke-width="1"/><circle cx="20" cy="22" r="5.5" fill="#1E2420"/><path d="M20 22 L20 16.8 A5.2 5.2 0 0 1 24.5 19.4 Z M20 22 L24.5 24.6 A5.2 5.2 0 0 1 15.5 24.6 Z M20 22 L15.5 19.4 A5.2 5.2 0 0 1 20 16.8 Z" fill="#E0B820"/>`);
+    case"z-quill":{const v=R();return v<.34
+      ? S(`${sh}<rect x="4" y="19" width="32" height="4" rx="1" fill="#E8E4DA" stroke="#6A6458" stroke-width="1"/><rect x="6" y="23" width="3" height="12" fill="#8A8478"/><rect x="31" y="23" width="3" height="12" fill="#8A8478"/><path d="M14 19 v-3 h6 v3" fill="#2E3548"/><path d="M17 16 L15 8 L19 6 L22 10 L19 12" stroke="#2E3548" stroke-width="2.4" fill="none" stroke-linecap="round"/><rect x="13.5" y="12" width="6" height="2" rx="1" fill="#3A4A6A"/><circle cx="17" cy="6" r="1.6" fill="#9AB8E0"/><rect x="24" y="14" width="8" height="5" fill="#F7F4EA" transform="rotate(-6 28 16)"/>`)
+      : v<.67
+      ? S(`${sh}<rect x="6" y="20" width="28" height="4" fill="#8A6A48" stroke="#3E2A18" stroke-width="1"/><rect x="8" y="24" width="3" height="11" fill="#6B4A2E"/><rect x="29" y="24" width="3" height="11" fill="#6B4A2E"/><rect x="10" y="6" width="20" height="14" rx="2" fill="#D8D2C2" stroke="#5A5448" stroke-width="1"/><rect x="12.5" y="8" width="15" height="9" rx="1" fill="#1A2E22"/><path d="M14 10.5 h7 M14 12.5 h10 M14 14.5 h5" stroke="#7CF0A0" stroke-width=".9"><animate attributeName="opacity" values="1;.5;1" dur="1.6s" repeatCount="indefinite"/></path><rect x="12" y="20" width="16" height="2" fill="#B8B2A2"/>`)
+      : S(`${sh}<rect x="6" y="20" width="28" height="4" fill="#8A6A48" stroke="#3E2A18" stroke-width="1"/><rect x="8" y="24" width="3" height="11" fill="#6B4A2E"/><rect x="29" y="24" width="3" height="11" fill="#6B4A2E"/><path d="M11 20 L13 10 L17 10 L19 20 Z" fill="rgba(210,235,250,.7)" stroke="#6A8AA8" stroke-width="1"/><rect x="13.5" y="6" width="3" height="4" fill="rgba(210,235,250,.7)" stroke="#6A8AA8" stroke-width=".8"/><path d="M12 16 L18 16 L19 20 L11 20 Z" fill="#8FD0B0" opacity=".85"/><rect x="22" y="9" width="3" height="11" rx="1.5" fill="rgba(210,235,250,.7)" stroke="#6A8AA8" stroke-width=".8"/><rect x="22.3" y="14" width="2.4" height="5.5" fill="#D9B86A"/><rect x="27" y="11" width="3" height="9" rx="1.5" fill="rgba(210,235,250,.7)" stroke="#6A8AA8" stroke-width=".8"/><rect x="27.3" y="15" width="2.4" height="4.5" fill="#B8A0D0"/>`)}
     case"z-glacier":return S(`${sh}<path d="M5 33 Q6 20 15 17 Q22 11 30 18 Q37 23 35 33 Z" fill="#F4FAFF" stroke="#A9D2EC" stroke-width="1.2"/><path d="M12 24 Q18 21 24 24" stroke="#C4E2F4" stroke-width="1" fill="none"/>`);
     default:return S(`${sh}<path d="M7 31 Q5 19 15 14 Q27 9 33 20 Q37 30 27 33 Z" fill="#3A3448" stroke="#1A1628" stroke-width="1.2"/><circle cx="15" cy="22" r="2.2" fill="#2A2438"/><circle cx="24" cy="18" r="1.6" fill="#2A2438"/><circle cx="26" cy="27" r="2.6" fill="#2A2438"/><path d="M10 16 Q20 10 30 15" stroke="#BFE3FF" stroke-width=".8" fill="none" opacity=".6"/>`)}}
 function startExplore(){S.phase="explore";S.r=null;
@@ -2569,8 +2677,9 @@ const BOSS={
  "Everburn":{act:"WILDFIRE",tell:"It sets your lab stations on fire. Put them out before they spread!",drain:.3},
  "The Unmaker":{act:"DEVOURER",tell:"It eats your equipment, piece by piece, for good. Work fast!",drain:.35},
  "Widow's Vein":{act:"VENOM WEB",tell:"It spins webs over your scanner. Tear them (3 clicks) before they bite! Misses inject venom; you get ONE antidote.",drain:.3},
- "Hollow Star":{act:"HALF-LIFE",tell:"It's decaying away. Every half-life burns out one scanner charge!",drain:.5},
+ "Hollow Star":{act:"HALF-LIFE",tell:"Every half-life it boils a little further out of the vial and burns out a scanner charge. Let it all escape and it re-forms somewhere else!",drain:.5},
  "Crown of Rays":{act:"DAZZLE",tell:"Its glare scrambles your scanner, and every test you run on it costs you.",drain:.35},
+ "Founder's Folly":{act:"CRITICAL MASS",tell:"Every test and tool pushes it toward criticality, so space them out! It also keeps REDACTING your lab notebook; re-run a test to get the reading back.",drain:.38},
  "Phoenix Lattice":{act:"REBIRTH CYCLE",tell:"It's only a projection: scans and tests pass through it unless it's STABLE. Catch the ember before each flash. It rises from its ashes TWICE, stronger each time!",drain:.45}
 };
 const TB={on:false};
@@ -2581,7 +2690,7 @@ function bossEl(){let b=$("#bossbar");if(b)return b;b=document.createElement("di
   const ar=document.querySelector(".arena");ar.parentNode.insertBefore(b,ar);return b}
 function bossStart(){const a=S.r.a,B=BOSS[a.name];if(!B)return;
   Object.assign(TB,{on:true,a,B,hp:100,t:0,grace:3.2,drainX:0,lives:1,phase:1,cyc:0,stable:true,flashIn:14,flashWarn:0,saved:false,
-    heat:0,cooling:false,surgeIn:13,surge:0,fireIn:6,fires:{},eatIn:11,eaten:[],venom:0,anti:1,webs:[],webIn:5,missSeen:0,halfIn:18,dazzleIn:12,rebirthIn:20,shuffled:false});
+    heat:0,cooling:false,surgeIn:13,surge:0,fireIn:6,fires:{},eatIn:11,eaten:[],crit:0,redactIn:15,redacted:[],venom:0,anti:1,webs:[],webIn:5,missSeen:0,halfIn:18,dazzleIn:12,rebirthIn:20,shuffled:false});
   if(a.name==="Hollow Star"){S.r.tries++;S.r.maxTries++}   // decays one charge at a time, so it starts with a spare
   const bar=bossEl();bar.hidden=false;bar.className="b-"+a.name.replace(/\W/g,"");
   $("#bb-name").textContent="⚠ "+a.name.toUpperCase();$("#bb-act").textContent="BEHAVIOR: "+B.act;
@@ -2595,6 +2704,7 @@ function bossControls(){const n=TB.a.name,c=$("#bb-ctrl");let h="";
   if(n==="Cinder Mercury")h=`<div class="bb-gauge"><span>HEAT</span><div><i id="bb-heat"></i></div></div><button class="bb-btn cool" id="bb-cool">HOLD COOL</button>`;
   else if(n==="Drowned Fire")h=`<span class="bb-info" id="bb-info"></span><button class="bb-btn seal" id="bb-seal" disabled>SEAL HATCH</button>`;
   else if(n==="Widow's Vein")h=`<span class="bb-venom" id="bb-venom"></span><button class="bb-btn anti" id="bb-anti">ANTIDOTE ×1</button><span class="bb-info" id="bb-info"></span>`;
+  else if(n==="Founder's Folly")h=`<div class="bb-gauge"><span>CRITICALITY</span><div><i id="bb-crit"></i></div></div><span class="bb-info" id="bb-info"></span>`;
   else if(n==="Phoenix Lattice")h=`<span class="bb-lives" id="bb-phase"></span><div class="bb-stab"><i id="bb-stab"></i><span id="bb-stabt"></span></div><span class="bb-info" id="bb-info"></span>`;
   else h=`<span class="bb-info" id="bb-info"></span>`;
   c.innerHTML=h;
@@ -2611,6 +2721,7 @@ function bossHud(){const hp=Math.max(0,TB.hp);$("#bb-fill").style.width=hp+"%";$
     const w=TB.webs.length;info.textContent=(w?`🕸 ${w} web${w>1?"s":""} · next bite in ${sec(Math.min(...TB.webs.map(x=>x.bite)))} · `:"")+"new web in "+sec(TB.webIn)}
   if(n==="Hollow Star")info.textContent=`Next half-life in ${sec(TB.halfIn)} · charges left: ${S.r.tries}`;
   if(n==="Crown of Rays")info.textContent=`Next dazzle in ${sec(TB.dazzleIn)} · each lab test: −3%`;
+  if(n==="Founder's Folly"){const c=$("#bb-crit");c.style.width=TB.crit+"%";c.className=TB.crit>70?"hot":"";info.textContent=(TB.redacted.length?`▇ ${TB.redacted.length} note${TB.redacted.length>1?"s":""} redacted · `:"")+"next redaction in "+sec(TB.redactIn)}
   if(n==="Phoenix Lattice"){const P=PHX[TB.phase-1];$("#bb-phase").textContent=`PHASE ${"I".repeat(TB.phase)} · ${P.n}`;
     const per=P.st+P.fl,c=TB.cyc%per,bar=$("#bb-stab");bar.style.width=(TB.stable?(1-c/P.st):(c-P.st)/P.fl)*100+"%";bar.className=TB.stable?"ok":"bad";
     $("#bb-stabt").textContent=TB.stable?"STABLE":"FLICKERING";info.textContent=TB.flashWarn>0?"✹ CATCH THE EMBER!":"Next flash in "+sec(TB.flashIn);
@@ -2621,6 +2732,7 @@ function hurt(n){TB.hp-=n;const f=$("#bossbar");f.classList.remove("hit");void f
 function bossTick(){if(!bossActive()){bossEnd();return}
   const now=performance.now(),dt=Math.min(.25,(now-TB.last)/1000);TB.last=now;
   if(document.hidden||S.r.stage!=="elements"||$("#stage").offsetParent===null)return;   // paused off-screen
+  if(typeof TUT!=="undefined"&&TUT.on&&(!TUT_STEPS[TUT.i].wait||(TUT.hold&&performance.now()<TUT.hold)))return;   // paused while the tutorial is explaining something
   if(TB.grace>0){TB.grace-=dt;return}
   TB.t+=dt;const n=TB.a.name,r=S.r;let drain=TB.B.drain+TB.drainX;
   if(n==="Cinder Mercury"){TB.heat=clamp(TB.heat+(TB.cooling?-32:7+TB.t*.05)*dt,0,100);
@@ -2633,10 +2745,13 @@ function bossTick(){if(!bossActive()){bossEnd();return}
   if(n==="Widow's Vein"){drain+=.3*TB.venom;
     if((TB.webIn-=dt)<=0){TB.webIn=TB.t>60?7:9;spinWeb()}
     for(const w of [...TB.webs]){if((w.bite-=dt)<=0){hurt(9);w.bite=12;stageFx("fumes");sfx("hiss");say("⚠ A web you left up BIT you! Venom seeps in.");TB.venom++}}}
-  if(n==="Hollow Star"&&(TB.halfIn-=dt)<=0){TB.halfIn=18;r.tries--;sfx("miss");const sp=$("#specimen");sp.style.scale=String(Math.max(.45,+(sp.style.scale||1)-.12));
-    if(r.tries<=0){bossBreach("⚠ It decayed completely away, taking the last scanner charge with it!");return}
-    renderActions();say("☢ HALF-LIFE! It shrinks, and the radiation fries a scanner charge!")}
+  if(n==="Hollow Star"&&!(typeof TUT!=="undefined"&&TUT.on&&!/SCANNER|RESULT/.test(TUT_STEPS[TUT.i].t))&&(TB.halfIn-=dt)<=0){TB.halfIn=18;r.tries--;sfx("miss");const sp=$("#specimen");sp.style.scale=String(Math.max(.45,+(sp.style.scale||1)-.12));
+    if(r.tries<=0){bossBreach("⚠ The last of it boiled out of the vial, taking your final scanner charge with it. Somewhere else, it is already gathering itself back together.");return}
+    renderActions();say("☢ HALF-LIFE! More of it boils out of the vial, and the radiation fries a scanner charge!")}
   if(n==="Crown of Rays"&&(TB.dazzleIn-=dt)<=0){TB.dazzleIn=15;dazzle()}
+  if(n==="Founder's Folly"){TB.crit=Math.max(0,TB.crit-5*dt);
+    if(TB.crit>=100){TB.crit=30;hurt(20);stageFx("flash");stageFx("boom");sfx("breach");const k=ffRedact(2);say(`☢ CRITICALITY EXCURSION! A blinding flash${k?` scrambled ${k} notebook entr${k>1?"ies":"y"}`:""}. Space out your tests!`)}
+    if((TB.redactIn-=dt)<=0){TB.redactIn=TB.t>60?11:15;const k=ffRedact(1);sfx("scratch");say(k?"▇ A classified stamp comes down on your notebook. One reading is REDACTED. Re-run that test to recover it.":"▇ It tries to redact your notebook, but there's nothing to hide yet.")}}
   if(n==="Phoenix Lattice"){const P=PHX[TB.phase-1];TB.cyc+=dt;const st=(TB.cyc%(P.st+P.fl))<P.st;
     if(st!==TB.stable){TB.stable=st;$("#specimen").classList.toggle("phx-flicker",!st);if(!st)sfx("swirl")}
     if(TB.flashWarn>0){TB.flashWarn-=dt;if(TB.flashWarn<=0){TB.flashWarn=0;const em=$("#stage .phx-ember");if(em)em.remove();stageFx("flash");sfx("radiant");
@@ -2652,8 +2767,11 @@ function bossTick(){if(!bossActive()){bossEnd();return}
 function igniteStation(k){const st=$("#st-"+k);if(!st)return;TB.fires[k]=1;st.classList.add("burning");sfx("whoomph");
   const b=document.createElement("button");b.className="exting";b.textContent="🧯 EXTINGUISH";b.onclick=e=>{e.stopPropagation();if(!gate("ext",400))return;delete TB.fires[k];st.classList.remove("burning");b.remove();sfx("hiss")};st.appendChild(b);
   say(`🔥 The ${STATION_NAMES[k]} caught fire! Put it out!`)}
-function devour(){const pool=STATION_KEYS.filter(k=>!TB.eaten.includes("st-"+k)).map(k=>"st-"+k).concat(SCRATCH.map(t=>t.id).concat(["magnet"]).filter(id=>!TB.eaten.includes(id)));
-  if(!pool.length){hurt(10);return}const id=pool[Math.random()*pool.length|0];TB.eaten.push(id);
+const TUT_NEEDS={"magnet":"FIELD KIT: MAGNET","scratch":"FIELD KIT: SCRATCH TEST","st-scale":"LAB STATIONS: SET UP FIRST","st-cyl":"GRADUATED CYLINDER: RUST TEST","st-circuit":"CONDUCTIVITY TESTER","st-flame":"BUNSEN BURNER","st-geiger":"GEIGER COUNTER","st-furnace":"FURNACE"};
+function tutStillNeeds(id){if(typeof TUT==="undefined"||!TUT.on)return false;const t=TUT_NEEDS[id]||TUT_NEEDS[id==="magnet"?"magnet":id.startsWith("st-")?id:"scratch"],i=TUT_STEPS.findIndex(s=>s.t===t);return i>=TUT.i}
+function devour(){let pool=STATION_KEYS.filter(k=>!TB.eaten.includes("st-"+k)).map(k=>"st-"+k).concat(SCRATCH.map(t=>t.id).concat(["magnet"]).filter(id=>!TB.eaten.includes(id)));
+  const inTut=typeof TUT!=="undefined"&&TUT.on;pool=pool.filter(id=>!tutStillNeeds(id));   // during the tutorial it only eats things you've already been taught
+  if(!pool.length){if(!inTut)hurt(10);return}const id=pool[Math.random()*pool.length|0];TB.eaten.push(id);
   const el=id.startsWith("st-")?$("#"+id):document.querySelector(`.tool[data-id="${id}"]`);if(el){el.classList.add("eaten");stationFx&&id.startsWith("st-")&&stationFx(id.slice(3),"fumes")}
   sfx("scratch");const nm=id.startsWith("st-")?"the "+STATION_NAMES[id.slice(3)]:"your "+(id==="magnet"?"magnet":SCRATCH.find(t=>t.id===id).name.toLowerCase());
   say(`⚠ It crumbled ${nm} into dust!`)}
@@ -2683,6 +2801,14 @@ function phxRebirth(){const r=S.r;TB.phase++;TB.hp=TB.phase===2?70:55;TB.cyc=0;T
   $("#specimen").classList.remove("phx-flicker");$("#specimen").classList.toggle("phx-drift",TB.phase===3);$("#stage").classList.add("phx-p"+TB.phase);
   stageFx("flash");stageFx("fire");sfx("breach");setTimeout(()=>sfx("radiant"),500);renderActions();renderPicker();
   say(TB.phase===2?"⚠ It burned to nothing... and RISES AGAIN as a BLAZE! Every lock was lost. (+1 scanner charge)":"⚠ It RISES A FINAL TIME as an INFERNO! Locks lost, and the projection won't hold still! (+1 scanner charge)")}
+/* Founder's Folly: redact notebook entries (they come back if you re-run the test) */
+const FF_NOTE={mass:"scale",vol:"cylinder",rust:"soak test",cond:"conductivity",flame:"flame test",rad:"Geiger",melt:"furnace",react:"furnace",freeze:"furnace",magnet:"magnet"};
+function ffRedact(n){const r=S.r,keys=Object.keys(r.notes).filter(k=>FF_NOTE[k]&&!(TB.pending||[]).includes(k));let done=0;TB.pending=TB.pending||[];
+  for(let i=0;i<n&&keys.length;i++){const k=keys.splice(Math.random()*keys.length|0,1)[0];done++;TB.pending.push(k);
+    const li=document.querySelector(`#dexcard li[data-k="${k}"]`);if(li){li.classList.add("redacting");li.scrollIntoView&&0}
+    setTimeout(()=>{TB.pending=TB.pending.filter(x=>x!==k);if(!bossActive()||S.r!==r)return;delete r.notes[k];TB.redacted.push(k);renderDex();
+      const nl=document.querySelector("#dexcard li.redacted:last-of-type");if(nl){nl.classList.add("fresh")}},li?1300:0)}
+  return done}
 function bossBreach(msg){const r=S.r;stageFx("boom");sfx("breach");bossEnd();lose(false);say(msg)}
 function bossEnd(){if(!TB.on)return;TB.on=false;clearInterval(TB.iv);if(TB.stopHiss){TB.stopHiss();TB.stopHiss=null}
   const bar=$("#bossbar");if(bar)bar.hidden=true;document.querySelectorAll(".phx-ember").forEach(e=>e.remove());const spx=$("#specimen");if(spx)spx.classList.remove("phx-flicker","phx-drift");$("#stage").classList.remove("phx-p2","phx-p3");
@@ -2710,20 +2836,23 @@ Object.assign(SFX,{
     if(TB.a.name==="Phoenix Lattice"&&!TB.stable&&(STATION_NAMES[key]||key==="sample")){hurt(4);bossHud();say("The projection flickered and your test passed straight through it! Wait until it's STABLE.");setHeld(null);return}
     if(p.kind==="sample"&&STATION_NAMES[key]){if(TB.fires[key]){say(`The ${STATION_NAMES[key]} is on fire! Put it out first.`);setHeld(null);return}
       if(TB.eaten.includes("st-"+key)){say(`The ${STATION_NAMES[key]} is gone. It crumbled to dust.`);setHeld(null);return}
+      if(TB.a.name==="Founder's Folly"&&gate("ffcrit",800)){TB.crit+=24;bossHud()}
       if(TB.a.name==="Crown of Rays"&&gate("crownburn",900)){hurt(3);bossHud();setTimeout(()=>say("☢ Handling it stings. The radiation dose cost you containment."),1200)}}
-    if(p.kind!=="sample"&&TB.eaten.includes(p.id)){say("That tool is gone.");setHeld(null);return}}
+    if(p.kind!=="sample"&&TB.eaten.includes(p.id)){say("That tool is gone.");setHeld(null);return}
+    if(p.kind!=="sample"&&key==="sample"&&TB.a.name==="Founder's Folly"&&gate("ffcrit",800)){TB.crit+=18;bossHud()}}
   _dd(p,key)}}
 
 /* ---- Threat looks: every threat gets its own stage palette, drifting particles, hazard placard and animated sample effects ---- */
 const TLOOK={
- "Cinder Mercury":{k:"cinder",a:"#16324F",b:"#0B1E33",core:"255,170,90",tag:"🔥",tagc:"#E8412C",part:"ember",part2:"flake"},
- "Drowned Fire":{k:"drowned",a:"#0C4250",b:"#062630",core:"255,150,60",tag:"🔥",tagc:"#E8412C",part:"bubble"},
- "Everburn":{k:"everburn",a:"#4A1308",b:"#240803",core:"255,120,40",tag:"🔥",tagc:"#E8412C",part:"ember",part2:"ash"},
- "The Unmaker":{k:"unmaker",a:"#4E4A44",b:"#2A2723",core:"210,200,180",tag:"⚗",tagc:"#FFFFFF",part:"grit",part2:"drip"},
- "Widow's Vein":{k:"widow",a:"#2B3A18",b:"#141D0A",core:"170,220,110",tag:"☠",tagc:"#FFFFFF",part:"spore"},
- "Hollow Star":{k:"hollow",a:"#24123E",b:"#0B0616",core:"190,140,255",tag:"☢",tagc:"#F2D12C",part:"mote"},
- "Crown of Rays":{k:"crown",a:"#40165A",b:"#22092F",core:"255,215,120",tag:"☢",tagc:"#F2D12C",part:"gold"},
- "Phoenix Lattice":{k:"phoenix",a:"#3A0E4A",b:"#0B2C3C",core:"120,240,255",tag:"⚠",tagc:"#FF4AC8",part:"scan"}};
+ "Cinder Mercury":{k:"cinder",a:"#0C1E38",b:"#050E1E",core:"255,170,90",tag:"🔥",tagc:"#E8412C",part:"flake",part2:"ember"},
+ "Drowned Fire":{k:"drowned",a:"#06222C",b:"#020D12",core:"255,140,60",tag:"🔥",tagc:"#E8412C",part:"bubble"},
+ "Everburn":{k:"everburn",a:"#2A0804",b:"#120302",core:"255,120,40",tag:"🔥",tagc:"#E8412C",part:"ember",part2:"ash"},
+ "The Unmaker":{k:"unmaker",a:"#3A3F48",b:"#1C2026",core:"205,218,235",tag:"⚗",tagc:"#FFFFFF",part:"shard",part2:"drip"},
+ "Widow's Vein":{k:"widow",a:"#101408",b:"#060804",core:"170,220,110",tag:"☠",tagc:"#FFFFFF",part:"spore"},
+ "Hollow Star":{k:"hollow",a:"#12081F",b:"#05020C",core:"150,110,230",tag:"☢",tagc:"#F2D12C",part:"mote"},
+ "Crown of Rays":{k:"crown",a:"#1A0A1C",b:"#0C040E",core:"140,255,158",tag:"☢",tagc:"#F2D12C",part:"gold"},
+ "Founder's Folly":{k:"quill",a:"#1A2340",b:"#0A0F22",core:"170,215,255",tag:"☢",tagc:"#F2D12C",part:"doc",part2:"ffdust"},
+ "Phoenix Lattice":{k:"phoenix",a:"#150A24",b:"#050812",core:"120,200,255",tag:"⚠",tagc:"#FF4AC8",part:"scan"}};
 function threatSkin(stage,a){const L=a&&a.threat&&TLOOK[a.name];
   stage.className=stage.className.replace(/\btz-\w+/g,"").trim();
   let pl=stage.querySelector(".tparts"),tg=stage.querySelector(".tplac");
@@ -2736,25 +2865,100 @@ function threatSkin(stage,a){const L=a&&a.threat&&TLOOK[a.name];
   if(!tg){tg=document.createElement("div");tg.className="tplac";stage.appendChild(tg)}
   tg.innerHTML=`<span style="color:${L.tagc}">${L.tag}</span>`;tg.style.setProperty("--pc",L.a)}
 function threatFx(host,a){const svg=host&&host.querySelector("svg");if(!svg||!a||!a.threat||svg.querySelector(".tfx"))return;const L=TLOOK[a.name];if(!L)return;
-  const R=mulberry(a.no*13+1),rn=(x,y)=>(x+R()*(y-x)).toFixed(1);let f="",back="";
+  const UID=a.no+"x"+(threatFx.n=(threatFx.n||0)+1),R=mulberry(a.no*13+1),rn=(x,y)=>(x+R()*(y-x)).toFixed(1);let f="",back="";
   const bubble=(n,y0,y1,x0,x1,col,op)=>{let s="";for(let i=0;i<n;i++){const x=rn(x0,x1),d=rn(1.2,2.6),b=rn(0,2.5);s+=`<circle cx="${x}" cy="${y0}" r="${rn(1.5,3.5)}" fill="${col}" opacity="0"><animate attributeName="cy" values="${y0};${y1}" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;${op};0" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/></circle>`}return s};
   const flame=(x,y,w,hgt,col,dur)=>`<g transform="translate(${x} ${y})"><path d="M${-w} 0 Q${-w*.6} ${-hgt*.55} 0 ${-hgt} Q${w*.6} ${-hgt*.55} ${w} 0 Z" fill="${col}"><animateTransform attributeName="transform" type="scale" values="1 1;.85 1.25;1.1 .8;1 1" dur="${dur}s" repeatCount="indefinite"/></path></g>`;
-  if(a.name==="Cinder Mercury"){   // burns on its surface, boils from within, frost clings to the outside of the glass
-    f+=bubble(10,215,122,122,178,"#FFF4C8",.8);
-    f+=flame(134,119,7,22,"#FF7A1A",.5)+flame(150,118,9,30,"#FFB23A",.62)+flame(166,119,7,20,"#FF7A1A",.45)+flame(150,118,4,16,"#FFF2A0",.4);
-    for(let i=0;i<9;i++){const x=i%2?rn(182,190):rn(110,118),y=rn(60,215);f+=`<path d="M${x} ${y} l3 3 l-3 3 l-3 -3 z M${x} ${+y-4} v14 M${+x-6} ${+y+3} h12" stroke="#EAF6FF" stroke-width="1" fill="#EAF6FF" opacity=".75"/>`}
-    f+=`<ellipse cx="150" cy="118" rx="30" ry="6" fill="#FF6A00" opacity=".3"><animate attributeName="opacity" values=".15;.45;.15" dur=".7s" repeatCount="indefinite"/></ellipse>`}
-  if(a.name==="Drowned Fire"){    // sunk in oil, and still burning underneath it
-    f+=`<rect x="117" y="58" width="66" height="166" fill="#6A4A10" opacity=".32"/><path d="M117 60 Q150 54 183 60" stroke="#D9A640" stroke-width="2" fill="none" opacity=".7"/>`;
-    for(let i=0;i<7;i++){const x=rn(124,176),y=rn(150,215),d=rn(.35,.8);f+=`<ellipse cx="${x}" cy="${y}" rx="${rn(4,8)}" ry="${rn(3,6)}" fill="#FF8A1A" opacity=".2"><animate attributeName="opacity" values=".1;.8;.2;.6;.1" dur="${d}s" repeatCount="indefinite"/></ellipse>`}
-    f+=bubble(12,210,62,122,178,"#FFD27A",.85)}
+  if(a.name==="Cinder Mercury"){   // a trapped sun in a glacier: ice crystals erupting around it, lit from within by its fire, light spearing out through the gaps, heat haze warping the flames
+    const N=UID,c=a.color,hi=shade(c,.6),F=v=>(+v).toFixed(1);svg.style.overflow="visible";
+    back+=`<defs>
+      <radialGradient id="cmg${N}" gradientUnits="userSpaceOnUse" cx="150" cy="150" r="190"><stop offset="0" stop-color="#FFD27A" stop-opacity=".9"/><stop offset=".25" stop-color="#FF8A2A" stop-opacity=".45"/><stop offset=".6" stop-color="#FF5A10" stop-opacity=".12"/><stop offset="1" stop-color="#FF5A10" stop-opacity="0"/></radialGradient>
+      <linearGradient id="cmi${N}" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#0B2A4E"/><stop offset=".55" stop-color="#2E7FC0"/><stop offset="1" stop-color="#BFF0FF"/></linearGradient>
+      <linearGradient id="cmo${N}" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FF7A1A" stop-opacity=".75"/><stop offset=".6" stop-color="#FFB24A" stop-opacity=".35"/><stop offset="1" stop-color="#FFE7A0" stop-opacity="0"/></linearGradient>
+      <linearGradient id="cmsh${N}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFC060" stop-opacity=".55"/><stop offset="1" stop-color="#FF7A1A" stop-opacity="0"/></linearGradient>
+      <filter id="cmb${N}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter></defs>`;
+    // the fire's light filling the cavern
+    back+=`<circle cx="150" cy="150" r="190" fill="url(#cmg${N})"><animate attributeName="opacity" values=".75;1;.8;.95;.75" dur="1.4s" repeatCount="indefinite"/></circle>`;
+    // shafts of firelight spearing out between the crystals
+    let sh="";[[-160,18],[-128,14],[-52,16],[-20,12],[196,14],[340,10],[160,10]].forEach(([deg,wd],k)=>{const a1=(deg-wd/2)*Math.PI/180,a2=(deg+wd/2)*Math.PI/180;
+      sh+=`<polygon points="150,150 ${F(150+420*Math.cos(a1))},${F(150+420*Math.sin(a1))} ${F(150+420*Math.cos(a2))},${F(150+420*Math.sin(a2))}" fill="#FFB050" opacity=".22"><animate attributeName="opacity" values=".1;.32;.14;.28;.1" dur="${(1.3+k*.37).toFixed(2)}s" repeatCount="indefinite"/></polygon>`});
+    back+=`<g filter="url(#cmb${N})">${sh}</g>`;
+    // ice crystals erupting behind it, lit orange on the faces that look at the fire
+    const spire=(bx,bw,h,tilt,front)=>{const tx=bx+tilt,ty=232-h,lx=bx-bw/2,rx=bx+bw/2,toward=bx<150?1:-1,mid=bx+tilt*.4+toward*bw*.15;
+      return `<g opacity="${front?.88:1}"><polygon points="${F(lx)},232 ${F(tx)},${F(ty)} ${F(rx)},232" fill="url(#cmi${N})" stroke="#CFF4FF" stroke-width="${front?1.1:.8}" stroke-linejoin="round"/>
+        <polygon points="${F(toward>0?rx:lx)},232 ${F(tx)},${F(ty)} ${F(mid)},232" fill="url(#cmo${N})"><animate attributeName="opacity" values=".7;1;.75;.95;.7" dur="1.4s" repeatCount="indefinite"/></polygon>
+        <path d="M${F(tx)} ${F(ty)} L${F(mid)} 232" stroke="#FFFFFF" stroke-width=".8" opacity=".6"/></g>`};
+    back+=spire(58,40,150,-18)+spire(92,46,205,6)+spire(126,30,120,-4)+spire(176,34,140,6)+spire(212,48,215,-8)+spire(248,38,150,16)+spire(30,30,90,-10)+spire(272,30,100,12);
+    // meltwater pooled at the foot, glowing with reflected fire
+    back+=`<ellipse cx="150" cy="233" rx="120" ry="8" fill="#FF9A3A" opacity=".35" filter="url(#cmb${N})"><animate attributeName="opacity" values=".25;.45;.25" dur="1.4s" repeatCount="indefinite"/></ellipse><ellipse cx="150" cy="233" rx="100" ry="4" fill="#BFEFFF" opacity=".5"/>`;
+    // inside the glass: a white-hot heart, a slow convection spiral, rising bubbles and a surface that won't sit still
+    f+=`<defs><clipPath id="cmv${N}"><path d="M117 46 L183 46 L183 196 Q183 223 150 223 Q117 223 117 196 Z"/></clipPath>
+      <radialGradient id="cmh${N}" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".3" stop-color="#FFE9A0"/><stop offset=".7" stop-color="#FF9A2A" stop-opacity=".6"/><stop offset="1" stop-color="#FF5A10" stop-opacity="0"/></radialGradient>
+      <linearGradient id="cmfl${N}" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FF5A00"/><stop offset=".4" stop-color="#FF9A2A" stop-opacity=".9"/><stop offset="1" stop-color="#FFE27A" stop-opacity="0"/></linearGradient>
+      <linearGradient id="cmfi${N}" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FFFBEA"/><stop offset="1" stop-color="#FFE27A" stop-opacity="0"/></linearGradient>
+      <filter id="cmhz${N}" x="-30%" y="-30%" width="160%" height="160%"><feTurbulence type="fractalNoise" baseFrequency=".03 .09" numOctaves="2" seed="4" result="n"><animate attributeName="baseFrequency" values=".03 .09;.035 .12;.03 .09" dur="2s" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="7"/></filter></defs>
+      <g clip-path="url(#cmv${N})">
+      <circle cx="150" cy="200" r="34" fill="url(#cmh${N})" style="mix-blend-mode:screen"><animate attributeName="r" values="28;38;30;36;28" dur="1.4s" repeatCount="indefinite"/></circle>
+      <path d="M150 205 C120 200 122 170 150 168 C178 166 180 140 150 138" stroke="#FFF1C0" stroke-width="2" fill="none" opacity=".45" stroke-dasharray="8 10"><animate attributeName="stroke-dashoffset" from="0" to="-36" dur="1.6s" repeatCount="indefinite"/></path>`;
+    for(let k=0;k<14;k++){const x=+rn(122,178),d=rn(1,2),b=rn(0,2);f+=`<circle cx="${x}" cy="215" r="${rn(1.2,3)}" fill="none" stroke="#FFF4C8" stroke-width=".9" opacity="0"><animate attributeName="cy" values="215;124" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.9;.9;0" keyTimes="0;.1;.85;1" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/></circle>`}
+    const surf=k=>`M117 ${120+k} Q133 ${114-k} 150 ${120+k} T183 ${120+k} L183 128 L117 128 Z`;
+    f+=`<path d="${surf(0)}" fill="${hi}"><animate attributeName="d" values="${surf(0)};${surf(3)};${surf(-2)};${surf(0)}" dur="1.1s" repeatCount="indefinite"/></path>`;
+    const tongue=(cx,base,w,h,dur,gr)=>{const shp=(dx,hh)=>`M${cx-w} ${base} C${cx-w} ${base-hh*.35} ${cx-w*.55+dx*.3} ${base-hh*.6} ${cx+dx} ${base-hh} C${cx+w*.55+dx*.3} ${base-hh*.6} ${cx+w} ${base-hh*.35} ${cx+w} ${base} Z`;
+      return `<path d="${shp(0,h)}" fill="url(#${gr})"><animate attributeName="d" values="${[shp(0,h),shp(-w*.45,h*.85),shp(w*.35,h*1.1),shp(-w*.1,h*.95),shp(0,h)].join(";")}" dur="${dur}s" repeatCount="indefinite" calcMode="spline" keySplines=".4 0 .6 1;.4 0 .6 1;.4 0 .6 1;.4 0 .6 1"/></path>`};
+    f+=`<g filter="url(#cmhz${N})">`+tongue(126,123,10,52,1.1,"cmfl"+N)+tongue(141,121,13,70,.95,"cmfl"+N)+tongue(159,121,14,76,1.05,"cmfl"+N)+tongue(175,123,10,56,.85,"cmfl"+N)+tongue(149,121,7,44,.8,"cmfi"+N)+tongue(165,121,6,36,.9,"cmfi"+N)+`</g>`;
+    f+=`<rect x="117" y="46" width="66" height="30" fill="#FFB050" opacity=".25"><animate attributeName="opacity" values=".15;.35;.15" dur="1s" repeatCount="indefinite"/></rect></g>`;   // flames pressing against the seal
+    // the glass: rimed with frost at the edges, sweating where fire meets ice
+    f+=`<defs><filter id="cmfr${N}" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency="1.1" numOctaves="2" seed="11"/><feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.5 -.6"/></filter>
+      <linearGradient id="cmfm${N}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#fff"/><stop offset=".18" stop-color="#fff" stop-opacity="0"/><stop offset=".82" stop-color="#fff" stop-opacity="0"/><stop offset="1" stop-color="#fff"/></linearGradient>
+      <mask id="cmmk${N}"><rect x="112" y="40" width="76" height="190" fill="url(#cmfm${N})"/></mask></defs>
+      <g mask="url(#cmmk${N})"><rect x="112" y="40" width="76" height="190" filter="url(#cmfr${N})" opacity=".8"/></g>`;
+    // icicles hanging off the seal, dripping
+    [[122,14],[132,20],[168,18],[178,12]].forEach(([x,l],k)=>{f+=`<path d="M${x-3} 46 L${x} ${46+l} L${x+3} 46 Z" fill="#DFF6FF" stroke="#FFFFFF" stroke-width=".5" opacity=".9"/><circle cx="${x}" cy="${46+l}" r="1.4" fill="#DFF6FF"><animate attributeName="cy" values="${46+l};${60+l};${46+l}" keyTimes="0;.3;1" dur="${(2.2+k*.4).toFixed(1)}s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0;0;1" keyTimes="0;.3;.95;1" dur="${(2.2+k*.4).toFixed(1)}s" repeatCount="indefinite"/></circle>`});
+    // steam hissing off the top where the heat escapes
+    for(let k=0;k<5;k++){const x=+rn(120,180),d=rn(2,3.2),b=rn(0,3);f+=`<circle cx="${x}" cy="20" r="6" fill="#FFFFFF" filter="url(#cmb${N})" opacity="0"><animate attributeName="cy" values="22;-24" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/><animate attributeName="r" values="4;12" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.5;0" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/></circle>`}
+    // a foreground ring of ice around the foot
+    f+=spire(96,30,70,10,1)+spire(112,22,44,-4,1)+spire(190,24,54,6,1)+spire(206,32,80,-12,1)+spire(78,20,40,-6,1)+spire(224,22,46,8,1);}
+  if(a.name==="Drowned Fire"){    // deep, dark water, and in it a fire the sea can't touch: the water boils away into a shimmering pocket of steam, and flames roar around the glass inside it
+    const N=UID,F=v=>(+v).toFixed(1);svg.style.overflow="visible";
+    back+=`<defs>
+      <radialGradient id="dfg${N}" gradientUnits="userSpaceOnUse" cx="150" cy="150" r="230"><stop offset="0" stop-color="#FFE6A8" stop-opacity=".9"/><stop offset=".18" stop-color="#FF9A3A" stop-opacity=".55"/><stop offset=".5" stop-color="#FF6A1A" stop-opacity=".14"/><stop offset="1" stop-color="#FF6A1A" stop-opacity="0"/></radialGradient>
+      <radialGradient id="dfp${N}" cx=".5" cy=".5" r=".5"><stop offset=".72" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".93" stop-color="#FFE9C8" stop-opacity=".22"/><stop offset="1" stop-color="#FFFFFF" stop-opacity=".55"/></radialGradient>
+      <linearGradient id="dff${N}" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FF4A00" stop-opacity=".95"/><stop offset=".45" stop-color="#FF9A2A" stop-opacity=".85"/><stop offset="1" stop-color="#FFE27A" stop-opacity="0"/></linearGradient>
+      <linearGradient id="dfi${N}" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FFFBEA"/><stop offset="1" stop-color="#FFE27A" stop-opacity="0"/></linearGradient>
+      <filter id="dfb${N}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter>
+      <filter id="dfs${N}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.6"/></filter>
+      <filter id="dfw${N}" x="-20%" y="-20%" width="140%" height="140%"><feTurbulence type="fractalNoise" baseFrequency=".02 .05" numOctaves="2" seed="8" result="n"><animate attributeName="baseFrequency" values=".02 .05;.026 .07;.02 .05" dur="3s" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="10"/></filter></defs>`;
+    // the fire's light pushing out into black water, wavering as it goes
+    let rays="";for(let k=0;k<14;k++){const an=k/14*Math.PI*2+.1,w=.07+(k%3)*.02;rays+=`<polygon points="150,150 ${F(150+380*Math.cos(an-w))},${F(150+380*Math.sin(an-w))} ${F(150+380*Math.cos(an+w))},${F(150+380*Math.sin(an+w))}" fill="#FF9A3A" opacity="${k%2?.14:.22}"><animate attributeName="opacity" values="${k%2?".08;.2;.08":".14;.3;.14"}" dur="${(1.4+k%4*.35).toFixed(2)}s" repeatCount="indefinite"/></polygon>`}
+    back+=`<g filter="url(#dfw${N})"><g filter="url(#dfb${N})">${rays}</g></g><circle cx="150" cy="150" r="230" fill="url(#dfg${N})"><animate attributeName="opacity" values=".7;1;.75;.95;.7" dur="1.1s" repeatCount="indefinite"/></circle>`;
+    // a wreck looming out of the dark, rim-lit on the side facing the fire
+    const rib=(x0,y0,cx,cy,x1,y1,w)=>`<path d="M${x0} ${y0} Q${cx} ${cy} ${x1} ${y1}" stroke="#03141C" stroke-width="${w}" fill="none" stroke-linecap="round"/><path d="M${x0} ${y0} Q${cx} ${cy} ${x1} ${y1}" stroke="#FF9A3A" stroke-width="1.4" fill="none" opacity=".75" transform="translate(${x0<150?2.5:-2.5} 0)"><animate attributeName="opacity" values=".45;.9;.5;.85;.45" dur="1.1s" repeatCount="indefinite"/></path>`;
+    back+=rib(-60,250,-86,150,-30,70,10)+rib(-20,250,-44,160,4,90,8)+rib(18,250,-2,170,40,112,7)+rib(360,250,386,150,330,70,10)+rib(322,250,346,160,296,90,8)+rib(284,250,302,172,262,114,7)+rib(-80,110,40,96,70,136,6)+rib(240,40,262,140,300,250,9);
+    // marine snow drifting through the light
+    for(let k=0;k<26;k++){const x=+rn(-100,400),y=+rn(-40,240),d=rn(6,12),b=rn(0,12);back+=`<circle cx="${x}" cy="${y}" r="${rn(.6,1.6)}" fill="#FFE2B8" opacity="0"><animate attributeName="cy" values="${y};${F(y+40)}" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.8;0" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/></circle>`}
+    // the steam pocket: a wobbling bubble of boiled-off water wrapped around the whole vial
+    const bub=(k)=>{let d="";for(let t=0;t<=24;t++){const an=t/24*Math.PI*2,r=96+Math.sin(an*3+k)*4+Math.cos(an*5-k)*3;d+=(t?"L":"M")+F(150+Math.cos(an)*r*.8)+" "+F(138+Math.sin(an)*r)}return d+"Z"};
+    back+=`<path d="${bub(0)}" fill="url(#dfp${N})" stroke="#FFF1DA" stroke-width="1.6" opacity=".95"><animate attributeName="d" values="${bub(0)};${bub(2)};${bub(4)};${bub(0)}" dur="2.4s" repeatCount="indefinite"/></path>
+      <path d="M92 70 Q110 44 142 40" stroke="#FFFFFF" stroke-width="3" fill="none" stroke-linecap="round" opacity=".5"/>`;
+    // fire roaring up around the glass inside the pocket
+    const tongue=(cx,base,w,h,dur,gr)=>{const shp=(dx,hh)=>`M${cx-w} ${base} C${cx-w} ${base-hh*.35} ${cx-w*.55+dx*.3} ${base-hh*.6} ${cx+dx} ${base-hh} C${cx+w*.55+dx*.3} ${base-hh*.6} ${cx+w} ${base-hh*.35} ${cx+w} ${base} Z`;
+      return `<path d="${shp(0,h)}" fill="url(#${gr})" filter="url(#dfs${N})"><animate attributeName="d" values="${[shp(0,h),shp(-w*.45,h*.85),shp(w*.35,h*1.1),shp(-w*.1,h*.95),shp(0,h)].join(";")}" dur="${dur}s" repeatCount="indefinite" calcMode="spline" keySplines=".4 0 .6 1;.4 0 .6 1;.4 0 .6 1;.4 0 .6 1"/></path>`};
+    back+=tongue(104,226,16,120,1.2,"dff"+N)+tongue(124,228,14,160,1,"dff"+N)+tongue(178,228,14,150,1.1,"dff"+N)+tongue(198,226,16,110,.9,"dff"+N)+tongue(114,228,8,90,.85,"dfi"+N)+tongue(188,228,8,84,.95,"dfi"+N)+tongue(150,232,40,40,1.3,"dff"+N);
+    // inside the glass: grains alight in their oil, white-hot where they burn hardest
+    f+=`<defs><clipPath id="dfv${N}"><path d="M117 46 L183 46 L183 196 Q183 223 150 223 Q117 223 117 196 Z"/></clipPath></defs><g clip-path="url(#dfv${N})">
+      <rect x="117" y="58" width="66" height="166" fill="#7A5A14" opacity=".25"/><path d="M117 60 Q150 54 183 60" stroke="#E0B040" stroke-width="2" fill="none" opacity=".7"/>`;
+    for(let k=0;k<12;k++){const x=+rn(122,178),y=+rn(148,218),d=rn(.3,.8);f+=`<circle cx="${x}" cy="${y}" r="${rn(1.4,3)}" fill="#FFFFFF"><animate attributeName="opacity" values=".2;1;.3;1;.2" dur="${d}s" repeatCount="indefinite"/></circle><circle cx="${x}" cy="${y}" r="${rn(5,8)}" fill="#FFD27A" opacity=".3" style="mix-blend-mode:screen"><animate attributeName="opacity" values=".08;.4;.12;.35;.08" dur="${d}s" repeatCount="indefinite"/></circle>`}
+    f+=`</g>`;
+    // the sea boiling off the top of the pocket in torrents of bubbles
+    for(let k=0;k<30;k++){const x=+rn(96,204),d=rn(1.6,3.2),b=rn(0,3.2),r=rn(1.5,5),y0=+(46+Math.abs(x-150)*.55);f+=`<circle cx="${x}" cy="${y0}" r="${r}" fill="rgba(255,240,220,.12)" stroke="#FFF1DA" stroke-width=".9" opacity="0"><animate attributeName="cy" values="${y0};-90" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/><animate attributeName="cx" values="${x};${F(x+(R()-.5)*34)};${F(x+(R()-.5)*20)}" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.95;.8;0" keyTimes="0;.08;.8;1" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/></circle>`}
+    // fish fleeing, lit by the blaze
+    for(let k=0;k<4;k++){const y=[30,190,-10,110][k],d=(4+k*1.4).toFixed(1),dir=k%2?-1:1;f+=`<g><path d="M0 0 q8 -5 14 0 q-6 5 -14 0 z M0 0 l-5 -4 v8 z" fill="#06202A" stroke="#FF9A3A" stroke-width=".7" transform="scale(${dir} 1)"/><animateMotion dur="${d}s" begin="-${(k*1.9).toFixed(1)}s" repeatCount="indefinite" path="M${150+dir*70} ${y} q${dir*120} ${k%2?-30:30} ${dir*380} ${k%2?-40:20}"/></g>`}}
   if(a.name==="Everburn"){        // its grains are alight: metal chunks with white-hot undersides, glowing seams, soft living flames over the pile
     const vc=svg.querySelector(".vc");if(vc)vc.innerHTML="";
-    const N=a.no,c=a.color,H=shade(c,.55),D=shade(c,-.55);
+    const N=UID,c=a.color,H=shade(c,.55),D=shade(c,-.55),F=v=>(+v).toFixed(1);
     let g=`<defs>
       <radialGradient id="ebc${N}" cx=".35" cy=".3" r=".8"><stop offset="0" stop-color="${H}"/><stop offset=".45" stop-color="${c}"/><stop offset="1" stop-color="${D}"/></radialGradient>
       <linearGradient id="ebh${N}" x1="0" y1="0" x2="0" y2="1"><stop offset=".45" stop-color="#FF6A00" stop-opacity="0"/><stop offset=".85" stop-color="#FF7A10" stop-opacity=".85"/><stop offset="1" stop-color="#FFD860" stop-opacity="1"/></linearGradient>
-      <radialGradient id="ebb${N}" cx=".5" cy=".7" r=".7"><stop offset="0" stop-color="#FFF2B0"/><stop offset=".35" stop-color="#FF9A1A"/><stop offset=".75" stop-color="#C42A00"/><stop offset="1" stop-color="#3A0A00"/></radialGradient>
+      <linearGradient id="ebb${N}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFB040"/><stop offset=".35" stop-color="#C43A08"/><stop offset=".75" stop-color="#5A1204"/><stop offset="1" stop-color="#2A0802"/></linearGradient>
       <linearGradient id="ebf${N}" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FF4A00" stop-opacity=".95"/><stop offset=".45" stop-color="#FF8A1A" stop-opacity=".85"/><stop offset="1" stop-color="#FFD04A" stop-opacity="0"/></linearGradient>
       <linearGradient id="ebi${N}" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FFF6D0"/><stop offset=".6" stop-color="#FFE27A" stop-opacity=".8"/><stop offset="1" stop-color="#FFE27A" stop-opacity="0"/></linearGradient>
       <filter id="ebl${N}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.6"/></filter>
@@ -2763,8 +2967,13 @@ function threatFx(host,a){const svg=host&&host.querySelector("svg");if(!svg||!a|
     g+=`<rect x="115" y="150" width="70" height="76" fill="url(#ebb${N})"><animate attributeName="opacity" values=".85;1;.9;1;.85" dur="1.3s" repeatCount="indefinite"/></rect>`;
     g+="<!--FL-->";
     // grains: rounded metal chunks, back rows first, each lit from below
-    const rows=[[156,9],[168,10],[180,10],[192,10],[204,10],[215,9]];let k=0;
-    rows.forEach(([y,n],ri)=>{for(let q=0;q<n;q++){const x=118+(q+.5)*(64/n)+(R()-.5)*4,yy=y+(R()-.5)*4,w=4.2+R()*2.2,h=3.4+R()*1.8,rot=(R()*60-30).toFixed(0);
+    // a settled pile: grains packed tight from the curved glass floor up to a slightly mounded, uneven top, each one jittered and sized differently so no rows show
+    const heap=[],halfW=y=>y<=196?32:32*Math.sqrt(Math.max(0,1-Math.pow((y-196)/27,2))),surf=x=>150+Math.pow((x-150)/33,2)*7;
+    for(let y=222,row=0;y>146;y-=3.6,row++){const hw=halfW(y);if(hw<4)continue;
+      for(let x=150-hw+(row%2?2.6:0)+R()*1.4;x<=150+hw;x+=4.6+R()*1.4){const yy=y+(R()-.5)*3,xx=x+(R()-.5)*2.4;
+        if(yy<surf(xx)+(R()-.5)*3)continue;if(Math.abs(xx-150)>halfW(yy)+1)continue;heap.push([xx,yy,3.4+R()*2.2,2.8+R()*1.8])}}
+    let k=0;
+    heap.forEach(([x,yy,w,h])=>{{const rot=(R()*70-35).toFixed(0);
       const pts=[];for(let m=0;m<7;m++){const an=m/7*6.283,rr=1+(R()-.5)*.35;pts.push([Math.cos(an)*w*rr,Math.sin(an)*h*rr])}
       let d=`M${pts[0][0].toFixed(1)} ${pts[0][1].toFixed(1)}`;for(let m=1;m<=7;m++){const P=pts[m%7],Q=pts[m-1],mx=(P[0]+Q[0])/2,my=(P[1]+Q[1])/2;d+=` Q${Q[0].toFixed(1)} ${Q[1].toFixed(1)} ${mx.toFixed(1)} ${my.toFixed(1)}`}d+="Z";
       const dur=(.8+R()*1.4).toFixed(2);
@@ -2777,52 +2986,237 @@ function threatFx(host,a){const svg=host&&host.querySelector("svg");if(!svg||!a|
       const vals=[sh(0,h),sh(-w*.45,h*.86),sh(w*.35,h*1.08),sh(-w*.15,h*.94),sh(0,h)].join(";");
       return `<path d="${sh(0,h)}" fill="url(#${grad})"${blur?` filter="url(#ebl${N})"`:""}><animate attributeName="d" values="${vals}" dur="${dur}s" repeatCount="indefinite" calcMode="spline" keySplines=".4 0 .6 1;.4 0 .6 1;.4 0 .6 1;.4 0 .6 1"/></path>`};
     g=g.replace("<!--FL-->",tongue(128,164,8,40,1.3,"ebf"+N,1)+tongue(143,162,11,58,1.1,"ebf"+N,1)+tongue(160,161,12,66,1.25,"ebf"+N,1)+tongue(174,164,8,44,.95,"ebf"+N,1)+tongue(144,162,5,34,.9,"ebi"+N,0)+tongue(160,161,6,40,1.05,"ebi"+N,0));
-    // sparks drifting up out of the flames
-    for(let i=0;i<10;i++){const x=+rn(126,174),d=rn(1,2),b=rn(0,2);g+=`<circle cx="${x}" cy="150" r="${rn(.8,1.5)}" fill="#FFE9A0" opacity="0"><animate attributeName="cy" values="150;${rn(52,90)}" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/><animate attributeName="cx" values="${x};${(x+(R()-.5)*14).toFixed(1)};${x}" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/></circle>`}
+    // sparks spit up off the burning pile and fall straight back onto it: nothing hangs in the air, everything settles
+    for(let i=0;i<10;i++){const x=+rn(126,174),d=rn(.7,1.3),b=rn(0,1.3),h=F(rn(8,26)),dx=F((R()-.5)*16);g+=`<circle r="${rn(.8,1.4)}" fill="#FFE9A0" opacity="0"><animateMotion dur="${d}s" begin="-${b}s" repeatCount="indefinite" path="M${x} 152 q${F(dx/2)} -${h} ${dx} 2"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.85;1" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/></circle>`}
     // faint soot high on the glass
     g+=`<rect x="117" y="46" width="66" height="40" fill="#1A0E08" opacity=".25"/>`;
     if(vc)vc.insertAdjacentHTML("beforeend",g);
     back+=`<ellipse cx="150" cy="205" rx="62" ry="34" fill="#FF6A10" opacity=".3"><animate attributeName="opacity" values=".2;.42;.25;.38;.2" dur="1.3s" repeatCount="indefinite"/></ellipse>`;
+    // the scene: a caldera at night, a volcano erupting on the horizon, lava falls, cracked obsidian glowing underfoot, a ring of fire it can't escape and a whirlwind of cinders around it
+    {svg.style.overflow="visible";const F=v=>(+v).toFixed(1),U=UID;
+    let sc=`<defs><linearGradient id="evsky${U}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#1A0604"/><stop offset=".6" stop-color="#5A1406"/><stop offset="1" stop-color="#A8300A"/></linearGradient>
+      <linearGradient id="evlv${U}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE27A"/><stop offset=".4" stop-color="#FF7A1A"/><stop offset="1" stop-color="#C02A00"/></linearGradient>
+      <radialGradient id="evvg${U}" gradientUnits="userSpaceOnUse" cx="300" cy="60" r="120"><stop offset="0" stop-color="#FFB24A" stop-opacity=".8"/><stop offset="1" stop-color="#FF5A10" stop-opacity="0"/></radialGradient>
+      <filter id="evbl${U}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+      <filter id="evhz${U}" x="-10%" y="-10%" width="120%" height="120%"><feTurbulence type="fractalNoise" baseFrequency=".015 .06" numOctaves="2" seed="2" result="n"><animate attributeName="baseFrequency" values=".015 .06;.02 .08;.015 .06" dur="2.5s" repeatCount="indefinite"/></feTurbulence><feDisplacementMap in="SourceGraphic" in2="n" scale="6"/></filter></defs>`;
+    sc+=`<g filter="url(#evhz${U})"><rect x="-200" y="-100" width="700" height="260" fill="url(#evsky${U})"/>`;
+    // ash clouds drifting
+    for(let k=0;k<4;k++){const y=+rn(-70,10),d=rn(18,30),b=rn(0,30);sc+=`<ellipse cx="0" cy="${y}" rx="${rn(60,110)}" ry="${rn(12,22)}" fill="#2A0C06" opacity=".7"><animate attributeName="cx" values="-220;520" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/></ellipse>`}
+    // the volcano erupting on the horizon, lava fountaining from its crater
+    sc+=`<circle cx="300" cy="60" r="120" fill="url(#evvg${U})"><animate attributeName="opacity" values=".6;1;.7;.95;.6" dur="2.2s" repeatCount="indefinite"/></circle>
+      <path d="M180 170 L270 62 L286 58 L300 60 L316 56 L330 62 L440 170 Z" fill="#1A0806"/><path d="M270 62 L286 58 L300 60 L316 56 L330 62" stroke="#FF7A1A" stroke-width="2.4" fill="none"/>
+      <path d="M296 62 Q292 100 280 170" stroke="url(#evlv${U})" stroke-width="5" fill="none"/><path d="M306 60 Q314 110 330 170" stroke="url(#evlv${U})" stroke-width="3.5" fill="none"/>`;
+    for(let k=0;k<12;k++){const d=rn(1.4,2.6),b=rn(0,2.6),dx=F((R()-.5)*90),h=F(40+R()*60);sc+=`<circle cx="300" cy="58" r="${rn(1.2,2.6)}" fill="#FFC060"><animateMotion dur="${d}s" begin="-${b}s" repeatCount="indefinite" path="M300 58 q${F(dx/2)} -${h} ${dx} ${F(-h/3)}"/><animate attributeName="opacity" values="1;1;0" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/></circle>`}
+    // crags on the left with a lava fall pouring down them
+    sc+=`<path d="M-200 170 L-140 70 L-110 90 L-70 40 L-30 96 L20 60 L70 170 Z" fill="#140604"/>
+      <path d="M-70 44 Q-66 90 -58 170" stroke="url(#evlv${U})" stroke-width="6" fill="none" stroke-dasharray="10 6"><animate attributeName="stroke-dashoffset" from="0" to="-32" dur=".8s" repeatCount="indefinite"/></path></g>`;
+    // cracked obsidian ground, veins of lava pulsing out from under the vial
+    sc+=`<path d="M-200 160 Q0 150 150 158 T500 160 L500 280 L-200 280 Z" fill="#0E0605"/>`;
+    let veins="";for(let k=0;k<10;k++){const an=Math.PI*(.05+k*.1),len=+rn(80,200);let d=`M150 226`,px=150,py=226;for(let t=0;t<5;t++){px+=Math.cos(an)*len/5*(k%2?1:-1)*.9+(R()-.5)*10;py+=Math.sin(an)*len/5*.18+(R()-.5)*4;d+=` L${F(px)} ${F(py)}`}veins+=`<path d="${d}"/>`}
+    sc+=`<g stroke="#FF7A1A" stroke-width="2" fill="none" stroke-linecap="round" filter="url(#evbl${U})">${veins}<animate attributeName="opacity" values=".5;1;.6;.9;.5" dur="1.6s" repeatCount="indefinite"/></g><g stroke="#FFE27A" stroke-width=".9" fill="none">${veins}</g>`;
+    // the back half of a ring of fire around it
+    const tg=(cx,base,w,h,dur,op)=>{const shp=(dx,hh)=>`M${F(cx-w)} ${base} C${F(cx-w)} ${F(base-hh*.35)} ${F(cx-w*.55+dx*.3)} ${F(base-hh*.6)} ${F(cx+dx)} ${F(base-hh)} C${F(cx+w*.55+dx*.3)} ${F(base-hh*.6)} ${F(cx+w)} ${F(base-hh*.35)} ${F(cx+w)} ${base} Z`;
+      return `<path d="${shp(0,h)}" fill="url(#evlv${U})" opacity="${op}"><animate attributeName="d" values="${[shp(0,h),shp(-w*.45,h*.85),shp(w*.35,h*1.1),shp(0,h)].join(";")}" dur="${dur}s" repeatCount="indefinite"/></path>`};
+    let ringB="",ringF="";for(let k=0;k<18;k++){const an=k/18*Math.PI*2,x=150+Math.cos(an)*96,y=228+Math.sin(an)*14,w=+rn(7,11),h=+rn(26,44);const t=tg(x,F(y),w,h,rn(.7,1.3),Math.sin(an)<0?.75:.95);if(Math.sin(an)<0)ringB+=t;else if(Math.abs(x-150)>52)ringF+=t}   // no flames in front of the glass, so the pile stays visible to the very bottom
+    sc+=`<g filter="url(#evbl${U})" opacity=".6">${ringB}</g>${ringB}`;
+    back=sc+back;
+    // the front half of the ring, and a whirlwind of cinders spiralling up around the glass
+    f+=`<g filter="url(#evbl${U})" opacity=".6">${ringF}</g>${ringF}`;
+    let whirl="";for(let k=0;k<22;k++){const d=rn(2.2,3.8),b=rn(0,3.8),r0=+rn(72,120),ph=R()*Math.PI*2;let path="";for(let t=0;t<=30;t++){const aa=ph+t/30*Math.PI*4,rr=r0,y=226-t/30*230;path+=(t?" L":"M")+F(150+Math.cos(aa)*rr)+" "+F(y+Math.sin(aa)*rr*.18)}
+      whirl+=`<circle r="${rn(1,2.2)}" fill="${k%3?"#FFB24A":"#FFE9A0"}"><animateMotion dur="${d}s" begin="-${b}s" repeatCount="indefinite" path="${path}"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.8;1" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/></circle>`}
+    back+=whirl;}   // the cinders ride the hot air outside the glass, well clear of the sample
+
     for(let i=0;i<3;i++){const x=rn(135,165),d=rn(2.4,3.4),b=rn(0,3);f+=`<path d="M${x} 14 q-9 -10 0 -20 q9 -10 0 -22" stroke="#4A3F38" stroke-width="7" fill="none" stroke-linecap="round" opacity="0"><animateTransform attributeName="transform" type="translate" values="0 6;0 -10" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.45;0" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/></path>`}}
-  if(a.name==="The Unmaker"){     // eating its own vial: holes through the glass, liquid metal leaking out, the pile collapsing
-    const hole=(cx,cy,r,dl)=>{let pts="";for(let i=0;i<9;i++){const an=i/9*6.283,rr=r*(.6+R()*.5);pts+=`${(cx+Math.cos(an)*rr).toFixed(1)},${(cy+Math.sin(an)*rr).toFixed(1)} `}
-      return `<g transform="translate(${cx} ${cy})"><g><polygon points="${pts}" transform="translate(${-cx} ${-cy})" fill="#1A1714" stroke="#C9CED4" stroke-width="1.2"/><animateTransform attributeName="transform" type="scale" values=".7;1.08;.95;1.12;.7" dur="${dl}s" repeatCount="indefinite"/></g></g>`};
-    f+=hole(126,92,8,5)+hole(176,150,10,6.5)+hole(132,196,6,4.2);
-    f+=`<path d="M117 224 L121 216 L126 222 L131 214 L137 221 L144 213 L151 222 L158 215 L165 221 L171 214 L177 222 L183 216" stroke="#1A1714" stroke-width="5" fill="none"/>`;   // gnawed bottom
-    f+=`<path d="M125 44 l4 -5 l5 4 l6 -6 l5 5 l7 -5 l5 5 l6 -4 l6 5 l5 -4" stroke="#1A1714" stroke-width="4" fill="none"/>`;      // gnawed rim
-    for(let i=0;i<4;i++){const x=rn(120,180),y=rn(60,200),l=rn(20,50);f+=`<path d="M${x} ${y} q${rn(-8,8)} ${+l/2} ${rn(-6,6)} ${l}" stroke="#4A4035" stroke-width="2" fill="none" stroke-dasharray="${l+10}" stroke-dashoffset="${l+10}"><animate attributeName="stroke-dashoffset" values="${l+10};0;0" dur="4s" begin="-${rn(0,4)}s" repeatCount="indefinite"/></path>`}   // corrosion creeping
-    f+=`<path d="M186 152 Q192 170 190 200 Q189 222 196 234" stroke="#D8DDE3" stroke-width="3.5" fill="none" stroke-linecap="round"/><circle cx="190" cy="160" r="2.6" fill="#EEF2F6"><animate attributeName="cy" values="156;232" dur="1.6s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0" dur="1.6s" repeatCount="indefinite"/></circle>`;
-    f+=`<ellipse cx="200" cy="234" rx="18" ry="4" fill="#D8DDE3" stroke="#8A9096" stroke-width="1"><animate attributeName="rx" values="12;24;12" dur="5s" repeatCount="indefinite"/></ellipse><ellipse cx="196" cy="232.5" rx="6" ry="1.2" fill="#fff" opacity=".8"/>`;
-    for(let i=0;i<10;i++){const x=rn(122,178),d=rn(.9,1.7),b=rn(0,2);f+=`<rect x="${x}" y="150" width="2.4" height="2.4" fill="#9A9CA0"><animate attributeName="y" values="148;220" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/></rect>`}   // pile collapsing inside
-    for(let i=0;i<6;i++){const x=rn(216,266),d=rn(1,1.8),b=rn(0,2);f+=`<rect x="${x}" y="206" width="2" height="2" fill="#B8B2A8"><animate attributeName="y" values="206;232" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/></rect>`}}   // the chip crumbling too
-  if(a.name==="Widow's Vein"){    // webbed shut, a widow on a thread, venom beading down the glass, fog clinging to the floor
-    let web="";for(let i=0;i<9;i++){const an=(-170+i*20)*Math.PI/180;web+=`M150 26 L${(150+62*Math.cos(an)).toFixed(1)} ${(26+62*Math.sin(an)+48).toFixed(1)} `}
-    for(let k=1;k<=4;k++){let d="";for(let i=0;i<9;i++){const an=(-170+i*20)*Math.PI/180,rr=k*14;d+=(i?"L":"M")+(150+rr*Math.cos(an)).toFixed(1)+" "+(26+rr*Math.sin(an)+rr*.77).toFixed(1)+" "}web+=d}
-    f+=`<path d="${web}" stroke="#F4F4F0" stroke-width=".9" fill="none" opacity=".75"/>`;
-    f+=`<path d="M116 60 Q112 120 118 190 M184 70 Q190 130 182 200 M122 48 Q140 58 118 90" stroke="#F4F4F0" stroke-width=".7" fill="none" opacity=".55"/>`;
-    f+=`<rect x="117" y="140" width="66" height="84" fill="#6ABF3A" opacity=".2"><animate attributeName="opacity" values=".08;.32;.08" dur="2.4s" repeatCount="indefinite"/></rect>`;   // sickly pulse in the pile
-    f+=`<g><line x1="222" y1="-10" x2="222" y2="70" stroke="#EDEDED" stroke-width=".8"/><g transform="translate(222 74)"><ellipse cx="0" cy="-5" rx="3.2" ry="3" fill="#15121A"/><ellipse cx="0" cy="4" rx="6" ry="7" fill="#15121A"/><path d="M-2 1 L2 1 L0 4 L2 7 L-2 7 L0 4Z" fill="#E0202A"/>`+
-      [-1,1].map(sd=>[-6,-2,2,6].map(y=>`<path d="M${sd*3} ${y-2} q${sd*6} -4 ${sd*10} ${2+Math.abs(y)*.4}" stroke="#15121A" stroke-width="1.3" fill="none"/>`).join("")).join("")+
-      `</g><animateTransform attributeName="transform" type="translate" values="0 0;0 26;0 18;0 30;0 0" dur="7s" repeatCount="indefinite"/></g>`;
-    for(let i=0;i<5;i++){const x=rn(116,184),d=rn(3,5),b=rn(0,4);f+=`<path d="M${x} 36 q${rn(-30,30)} 40 ${rn(-40,40)} 90 q${rn(-20,20)} 40 ${rn(-60,60)} 110" stroke="#9CC46A" stroke-width="${rn(8,14)}" fill="none" stroke-linecap="round" opacity="0"><animate attributeName="opacity" values="0;.3;0" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/></path>`}
-    f+=`<ellipse cx="150" cy="234" rx="140" ry="16" fill="#9CC46A" opacity=".4"><animate attributeName="cx" values="130;170;130" dur="6s" repeatCount="indefinite"/></ellipse><ellipse cx="170" cy="238" rx="120" ry="12" fill="#B8E070" opacity=".3"><animate attributeName="cx" values="180;120;180" dur="5s" repeatCount="indefinite"/></ellipse>`;
-    for(let i=0;i<2;i++)f+=`<ellipse cx="${[115,185][i]}" cy="60" rx="2.6" ry="3.6" fill="#B8E070"><animate attributeName="cy" values="50;220" dur="${[3.4,4.3][i]}s" begin="-${i*1.7}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;1;0" dur="${[3.4,4.3][i]}s" begin="-${i*1.7}s" repeatCount="indefinite"/></ellipse>`}
-  if(a.name==="Hollow Star"){     // a bright shell around an empty middle, with fragments orbiting the vial
-    f+=`<circle cx="150" cy="140" r="26" fill="none" stroke="#E8D6FF" stroke-width="7" opacity=".75"><animate attributeName="r" values="22;32;22" dur="1.6s" repeatCount="indefinite"/><animate attributeName="stroke-width" values="9;3;9" dur="1.6s" repeatCount="indefinite"/></circle><circle cx="150" cy="140" r="12" fill="#0B0616" opacity=".75"><animate attributeName="r" values="10;16;10" dur="1.6s" repeatCount="indefinite"/></circle>`;
-    for(let i=0;i<5;i++){const d=rn(2.2,4),b=rn(0,4),ry=rn(18,34);f+=`<circle r="${rn(2,3.5)}" fill="#C8A8FF"><animateMotion dur="${d}s" begin="-${b}s" repeatCount="indefinite" path="M${150-58} ${140} a58 ${ry} 0 1 0 116 0 a58 ${ry} 0 1 0 -116 0"/></circle>`}}
-  if(a.name==="Crown of Rays"){   // a crown of light behind it and a faint green glow around it
-    let sp="";for(let i=0;i<12;i++){const an=i*30;sp+=`<path d="M150 120 L${(150+130*Math.cos((an-4)*Math.PI/180)).toFixed(1)} ${(120+130*Math.sin((an-4)*Math.PI/180)).toFixed(1)} L${(150+130*Math.cos((an+4)*Math.PI/180)).toFixed(1)} ${(120+130*Math.sin((an+4)*Math.PI/180)).toFixed(1)} Z" fill="#FFE27A"/>`}
-    back=`<g class="tfx-back" opacity=".35"><g>${sp}<animateTransform attributeName="transform" type="rotate" from="0 150 120" to="360 150 120" dur="24s" repeatCount="indefinite"/></g><animate attributeName="opacity" values=".25;.5;.25" dur="2.2s" repeatCount="indefinite"/></g>
-      <g transform="rotate(-20 150 120)"><rect x="30" y="88" width="238" height="64" rx="30" fill="#8CFF9E" opacity=".25"><animate attributeName="opacity" values=".12;.32;.12" dur="3s" repeatCount="indefinite"/></rect></g>`;
-    for(let i=0;i<8;i++){const x=rn(60,240),y=rn(60,180),d=rn(1,2.2),b=rn(0,2);f+=`<path d="M${x} ${+y-5} L${+x+1.5} ${y} L${x} ${+y+5} L${+x-1.5} ${y}Z M${+x-5} ${y} L${x} ${+y+1.5} L${+x+5} ${y} L${x} ${+y-1.5}Z" fill="#FFF3B0" opacity="0"><animate attributeName="opacity" values="0;1;0" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/></path>`}}
-  if(a.name==="Phoenix Lattice"){  // it's only a projection: lattice lines, scanlines, flame-wings
+  if(a.name==="The Unmaker"){     // a clump of grains coming apart along liquid-metal seams, eating through its own vial
+    const vc=svg.querySelector(".vc");if(vc)vc.innerHTML="";
+    const N=UID,c=a.color,hi=shade(c,.55),lo=shade(c,-.45),F=v=>(+v).toFixed(1);svg.style.overflow="visible";
+    {let fr="";const cx=150,cy=150;
+      for(let k=0;k<14;k++){const an=k/14*Math.PI*2+R()*.3;let r=40,px=cx+Math.cos(an)*r,py=cy+Math.sin(an)*r,d=`M${F(px)} ${F(py)}`;
+        for(let t=0;t<6;t++){r+=28+R()*22;const a2=an+(R()-.5)*.28;px=cx+Math.cos(a2)*r;py=cy+Math.sin(a2)*r;d+=` L${F(px)} ${F(py)}`}fr+=`<path d="${d}"/>`}
+      for(const rr of [70,120,180,250]){let d="";const n=18;for(let k=0;k<n;k++){if(R()<.35)continue;const a1=k/n*Math.PI*2,a2=(k+1)/n*Math.PI*2,r1=rr+(R()-.5)*14,r2=rr+(R()-.5)*14;d+=`M${F(cx+Math.cos(a1)*r1)} ${F(cy+Math.sin(a1)*r1)} L${F(cx+Math.cos(a2)*r2)} ${F(cy+Math.sin(a2)*r2)} `}fr+=`<path d="${d}"/>`}
+      back+=`<g stroke="#DDE6F0" stroke-width="1" fill="none" opacity=".22">${fr}<animate attributeName="opacity" values=".12;.3;.12" dur="4s" repeatCount="indefinite"/></g>
+        <ellipse cx="150" cy="176" rx="46" ry="60" fill="#CFE0F4" opacity=".16"><animate attributeName="opacity" values=".08;.2;.08" dur="3.2s" repeatCount="indefinite"/></ellipse>`}
+    // a jittered grid of shared corners: every grain is a quad, every seam is shared, so the seams read as one connected web
+    const C=6,Rw=7,x0=116,x1=184,y0=128,y1=224,V=[];
+    for(let j=0;j<=Rw;j++){V[j]=[];for(let i=0;i<=C;i++){const ex=i===0||i===C,ey=j===Rw;V[j][i]=[x0+(x1-x0)*i/C+(ex?0:(R()-.5)*7),y0+(y1-y0)*j/Rw+(j===0||ey?(R()-.5)*3:(R()-.5)*6)]}}
+    let g=`<defs><linearGradient id="umg${N}" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${hi}"/><stop offset=".55" stop-color="${c}"/><stop offset="1" stop-color="${lo}"/></linearGradient>
+      <radialGradient id="umb${N}" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".25" stop-color="#E6ECF2"/><stop offset=".7" stop-color="#8E98A6"/><stop offset="1" stop-color="#4A525E"/></radialGradient>
+      <linearGradient id="ump${N}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#F4F8FC"/><stop offset=".5" stop-color="#AAB4C0"/><stop offset="1" stop-color="#5A6270"/></linearGradient></defs>`;
+    g+=`<rect x="116" y="126" width="68" height="100" fill="#15181D"/>`;   // what shows through the widening seams
+    const P=(j,i)=>V[j][i].map(F).join(",");
+    for(let j=0;j<Rw;j++)for(let i=0;i<C;i++){const q=[V[j][i],V[j][i+1],V[j+1][i+1],V[j+1][i]],gx=q.reduce((t,p)=>t+p[0],0)/4,gy=q.reduce((t,p)=>t+p[1],0)/4,k=.8+R()*.08;
+      const pts=q.map(p=>F(gx+(p[0]-gx)*k)+","+F(gy+(p[1]-gy)*k)).join(" "),tint=[0,.18,-.12,.08,-.2][(i*3+j*5)%5];   // each grain pulled in from its neighbours, leaving a gap for the metal to flow into
+      const cell=`<polygon points="${pts}" fill="url(#umg${N})"/><polygon points="${pts}" fill="${tint>0?"#FFFFFF":"#000000"}" opacity="${Math.abs(tint).toFixed(2)}"/><polygon points="${pts}" fill="none" stroke="${shade(c,.8)}" stroke-width=".6" opacity=".8"/>
+        <path d="M${F(gx-3)} ${F(gy-2)} L${F(gx+2)} ${F(gy-3.5)}" stroke="#FFFFFF" stroke-width=".8" opacity=".7"/>`;
+      if(j===0){const d=(3.2+R()*2).toFixed(1),b=(R()*5).toFixed(1),dx=((R()-.5)*14).toFixed(1),rot=((R()-.5)*120).toFixed(0),cx=V[j][i][0]+(V[j][i+1][0]-V[j][i][0])/2,cy=V[j][i][1]+6;
+        g+=`<g>${cell}<animateTransform attributeName="transform" type="translate" values="0 0;0 0;${dx} 26;${dx} 26" keyTimes="0;.55;.9;1" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;.6;.9;.97;1" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/></g>`}
+      else g+=cell}
+    // liquid-metal seams: a silver web with bright slugs flowing along it
+    let seams="";
+    for(let j=1;j<Rw;j++)seams+=`M${P(j,0).replace(","," ")}`+V[j].slice(1).map(p=>` L${F(p[0])} ${F(p[1])}`).join("")+" ";
+    for(let i=1;i<C;i++)seams+=`M${F(V[0][i][0])} ${F(V[0][i][1])}`+V.slice(1).map(r=>` L${F(r[i][0])} ${F(r[i][1])}`).join("")+" ";
+    g+=`<path d="${seams}" stroke="#9FB0C4" stroke-width="3" fill="none" stroke-linejoin="round" opacity=".55" filter="url(#umglow${N})"/>
+      <path d="${seams}" stroke="url(#ump${N})" stroke-width="2" fill="none" stroke-linejoin="round"><animate attributeName="stroke-width" values="1.4;2.6;1.4" dur="3.2s" repeatCount="indefinite"/></path>
+      <path d="${seams}" stroke="#FFFFFF" stroke-width="1.6" fill="none" stroke-dasharray="4 14" stroke-linecap="round"><animate attributeName="stroke-dashoffset" from="0" to="-72" dur="1.8s" repeatCount="indefinite"/></path>
+      <filter id="umglow${N}" x="-20%" y="-20%" width="140%" height="140%"><feGaussianBlur stdDeviation="1.4"/></filter>`;
+    // chrome beads crawling along the seams
+    for(let k=0;k<6;k++){const j=1+(k%(Rw-1)),row=V[j],path=`M${F(row[0][0])} ${F(row[0][1])}`+row.slice(1).map(p=>` L${F(p[0])} ${F(p[1])}`).join(""),d=(4+R()*4).toFixed(1),b=(R()*6).toFixed(1),r=(1.6+R()*1.6).toFixed(1);
+      g+=`<circle r="${r}" fill="url(#umb${N})"><animateMotion dur="${d}s" begin="-${b}s" repeatCount="indefinite" ${k%2?'keyPoints="1;0" keyTimes="0;1" calcMode="linear"':""} path="${path}"/></circle>`}
+    // loose grains that already broke off, rattling at the bottom
+    for(let k=0;k<7;k++){const x=+(120+R()*60),y=+(214+R()*8),s2=(1.4+R()*1.8);g+=`<rect x="${F(x)}" y="${F(y)}" width="${F(s2*2)}" height="${F(s2*1.6)}" fill="${[c,hi,lo][k%3]}" transform="rotate(${F(R()*80-40)} ${F(x)} ${F(y)})"/>`}
+    g+=`<defs><clipPath id="umcl${N}"><rect x="116" y="126" width="68" height="100"/></clipPath></defs>`;
+    if(vc)vc.insertAdjacentHTML("beforeend",g);
+    // the glass: frosted where it's being eaten, cracks that keep spreading, a breach leaking liquid metal onto the floor
+    const crack=(d,len,dl)=>`<path d="${d}" stroke="#FFFFFF" stroke-width="1" fill="none" opacity=".85" stroke-dasharray="${len}" stroke-dashoffset="${len}"><animate attributeName="stroke-dashoffset" values="${len};0;0;${len}" keyTimes="0;.45;.9;1" dur="7s" begin="-${dl}s" repeatCount="indefinite"/></path>`;
+    f+=`<defs><filter id="umf${N}" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="7"/><feColorMatrix type="matrix" values="0 0 0 0 1 0 0 0 0 1 0 0 0 0 1 0 0 0 1.3 -.55"/></filter>
+        <clipPath id="umgl${N}"><path d="M114 44 L114 196 Q114 226 150 226 Q186 226 186 196 L186 44 Z"/></clipPath></defs>
+      <g clip-path="url(#umgl${N})"><rect x="110" y="150" width="80" height="80" filter="url(#umf${N})" opacity=".45"/><rect x="110" y="44" width="30" height="60" filter="url(#umf${N})" opacity=".3"/></g>`;
+    f+=crack("M120 176 L128 186 L124 198 L136 208 L132 220",70,0)+crack("M180 110 L171 118 L175 130 L164 138 L169 150",70,2.3)+crack("M126 70 L134 76 L131 88 L140 95",45,4.1)+crack("M178 180 L170 186 L176 194",30,1.2);
+    f+=`<path d="M124 44 l4 -5 l5 4 l6 -6 l5 5 l7 -5 l5 5 l6 -4 l6 5 l5 -4" stroke="#1A1714" stroke-width="3.5" fill="none"/>`;
+    f+=`<path d="M181 196 l5 -4 l3 6 l-2 5 l-6 1 z" fill="#1A1C20" stroke="#DDE3EA" stroke-width=".8"/>`;   // the breach
+    f+=`<path d="M186 199 Q194 206 192 222 Q191 232 197 236" stroke="url(#ump${N})" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M186 199 Q194 206 192 222" stroke="#FFFFFF" stroke-width="1" fill="none" opacity=".8" stroke-dasharray="2 9"><animate attributeName="stroke-dashoffset" from="0" to="-22" dur=".9s" repeatCount="indefinite"/></path>`;
+    f+=`<ellipse cx="204" cy="236" rx="22" ry="4.5" fill="url(#ump${N})" stroke="#5A6270" stroke-width=".8"><animate attributeName="rx" values="16;26;16" dur="6s" repeatCount="indefinite"/></ellipse><ellipse cx="198" cy="234.8" rx="8" ry="1.2" fill="#FFFFFF" opacity=".85"/><ellipse cx="212" cy="236.5" rx="4" ry=".8" fill="#FFFFFF" opacity=".6"/>`;
+    f+=`<circle cx="192" cy="214" r="2.4" fill="url(#umb${N})"><animate attributeName="cy" values="206;234" dur="1.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0" keyTimes="0;.9;1" dur="1.4s" repeatCount="indefinite"/></circle>`;
+    // metal flakes peeling off and drifting down past the vial
+    for(let k=0;k<6;k++){const x=+(100+R()*110),d=(2.6+R()*2).toFixed(1),b=(R()*4).toFixed(1);f+=`<g><polygon points="0,-3 3,1 -1,3" fill="${[hi,c,"#E6ECF2"][k%3]}" stroke="rgba(0,0,0,.3)" stroke-width=".3"><animateTransform attributeName="transform" type="rotate" from="0" to="${k%2?360:-360}" dur="${(1+R()).toFixed(1)}s" repeatCount="indefinite"/></polygon><animateMotion dur="${d}s" begin="-${b}s" repeatCount="indefinite" path="M${F(x)} 40 q${F((R()-.5)*30)} 90 ${F((R()-.5)*20)} 190"/></g>`}}
+  if(a.name==="Widow's Vein"){    // the widow's lair: a dead mine seam, an orb web strung between the timbers, the widow herself waiting in the dark, a dropped lantern, poison fog on the floor
+    const N=UID,F=v=>(+v).toFixed(1);svg.style.overflow="visible";
+    back+=`<defs>
+      <radialGradient id="wvl${N}" gradientUnits="userSpaceOnUse" cx="-40" cy="222" r="150"><stop offset="0" stop-color="#FFD27A" stop-opacity=".55"/><stop offset=".5" stop-color="#FF9A3A" stop-opacity=".12"/><stop offset="1" stop-color="#FF9A3A" stop-opacity="0"/></radialGradient>
+      <linearGradient id="wvt${N}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2A1A0C"/><stop offset=".5" stop-color="#5A3A1C"/><stop offset="1" stop-color="#2A1A0C"/></linearGradient>
+      <radialGradient id="wvh${N}" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FF4A4A"/><stop offset="1" stop-color="#8A0A10"/></radialGradient>
+      <filter id="wvb${N}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter>
+      <filter id="wvg${N}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
+    back+=`<path d="M-200 -90 L500 -90 L500 250 L-200 250 Z" fill="#0C1008"/>`;
+    for(let k=0;k<22;k++){const x=+rn(-180,480),y=+rn(-80,230);back+=`<ellipse cx="${x}" cy="${y}" rx="${rn(14,40)}" ry="${rn(8,22)}" fill="#161C10" opacity=".9"/>`}
+    back+=`<rect x="-14" y="-90" width="22" height="340" fill="url(#wvt${N})"/><rect x="292" y="-90" width="22" height="340" fill="url(#wvt${N})"/><rect x="-30" y="-30" width="360" height="18" fill="url(#wvt${N})"/>
+      <path d="M-14 -12 L30 -30 M314 -12 L270 -30" stroke="#3A2610" stroke-width="7"/>`;
+    back+=`<circle cx="-40" cy="222" r="150" fill="url(#wvl${N})"><animate attributeName="opacity" values=".7;1;.8;.95;.7" dur="1.3s" repeatCount="indefinite"/></circle>
+      <g transform="translate(-40 214) rotate(-70)"><rect x="-8" y="-10" width="16" height="20" rx="3" fill="#FFE2A0" opacity=".85"/><rect x="-10" y="-13" width="20" height="4" fill="#3A3A3A"/><rect x="-10" y="9" width="20" height="4" fill="#3A3A3A"/><path d="M-7 -13 Q0 -24 7 -13" stroke="#3A3A3A" stroke-width="2" fill="none"/></g>`;
+    const cx=232,cy=46;let spokes="",spiral="";
+    for(let k=0;k<14;k++){const an=k/14*Math.PI*2;spokes+=`M${cx} ${cy} L${F(cx+Math.cos(an)*190)} ${F(cy+Math.sin(an)*150)} `}
+    for(let r=14;r<180;r+=12+r*.06){let d="";for(let k=0;k<=14;k++){const an=k/14*Math.PI*2,rr=r*(1+Math.sin(k*1.7)*.04);d+=(k?" L":"M")+F(cx+Math.cos(an)*rr)+" "+F(cy+Math.sin(an)*rr*.79)}spiral+=d+" "}
+    back+=`<g stroke="#DDE6D4" fill="none" opacity=".55"><path d="${spokes}" stroke-width=".9"/><path d="${spiral}" stroke-width=".6"/></g>
+      <path d="${spiral}" stroke="#FFFFFF" stroke-width="1" fill="none" stroke-dasharray="3 60" opacity=".8"><animate attributeName="stroke-dashoffset" from="0" to="-126" dur="4s" repeatCount="indefinite"/></path>`;
+    for(let k=0;k<22;k++){const an=R()*Math.PI*2,r=+rn(30,170);const x=cx+Math.cos(an)*r,y=cy+Math.sin(an)*r*.79;back+=`<circle cx="${F(x)}" cy="${F(y)}" r="${rn(1,2.2)}" fill="${k%3?"#E6F4FF":"#9CE06A"}" filter="url(#wvg${N})"><animate attributeName="opacity" values=".4;1;.4" dur="${rn(1.5,3.5)}s" repeatCount="indefinite"/></circle>`}
+    const leg=(sx,sy,ex,ey,kx,ky,k)=>`<path d="M${sx} ${sy} Q${kx} ${ky} ${ex} ${ey}" stroke="#050605" stroke-width="3.2" fill="none" stroke-linecap="round"><animate attributeName="d" values="M${sx} ${sy} Q${kx} ${ky} ${ex} ${ey};M${sx} ${sy} Q${kx} ${ky-4} ${ex+(k%2?2:-2)} ${ey-2};M${sx} ${sy} Q${kx} ${ky} ${ex} ${ey}" dur="${(3+k*.37).toFixed(2)}s" repeatCount="indefinite"/></path>`;
+    let legs="";[[-1,-8,-52,-40,-40,-36],[-1,-4,-64,-6,-44,-18],[-1,2,-60,22,-42,8],[-1,6,-46,48,-30,30]].forEach(([d,sy,ex,ey,kx,ky],k)=>{legs+=leg(-6,sy,ex,ey,kx,ky,k)+leg(6,sy,-ex,ey,-kx,ky,k+4)});
+    back+=`<g transform="translate(${cx} ${cy-6})"><g transform="scale(1.6)">${legs}<ellipse cx="0" cy="-12" rx="7" ry="6" fill="#050605"/><ellipse cx="0" cy="10" rx="16" ry="19" fill="#050605"/>
+        <path d="M-4 2 L4 2 L0 10 L4 18 L-4 18 L0 10 Z" fill="url(#wvh${N})" filter="url(#wvg${N})"><animate attributeName="opacity" values=".6;1;.6" dur="2.4s" repeatCount="indefinite"/></path>
+        ${[-3,-1,1,3].map(x=>`<circle cx="${x}" cy="-15" r=".9" fill="#FFE2A0"><animate attributeName="opacity" values=".3;1;.3" dur="${(2+Math.abs(x)*.3).toFixed(1)}s" repeatCount="indefinite"/></circle>`).join("")}
+        <path d="M0 29 L0 60" stroke="#DDE6D4" stroke-width=".8" opacity=".7"/></g>
+      <animateTransform attributeName="transform" type="translate" values="${cx} ${cy-6};${cx} ${cy-2};${cx} ${cy-6}" dur="6s" repeatCount="indefinite"/></g>`;
+    f+=`<g stroke="#EEF4E8" fill="none" opacity=".6" stroke-linecap="round"><path d="M112 40 Q150 58 188 34 M112 60 Q150 44 188 72 M113 26 Q150 12 187 30 M114 88 Q150 104 186 80" stroke-width="1.1"/>
+      <path d="M150 -12 L150 14 M136 -10 L144 14 M166 -8 L158 14" stroke-width=".8"/></g>`;
+    for(let k=0;k<3;k++){const x=[120,178,150][k],d=(3.2+k*.7).toFixed(1);f+=`<ellipse cx="${x}" cy="30" rx="2.2" ry="3" fill="#9CE06A" filter="url(#wvg${N})"><animate attributeName="cy" values="${30+k*6};222" dur="${d}s" begin="-${(k*1.3).toFixed(1)}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.85;1" dur="${d}s" begin="-${(k*1.3).toFixed(1)}s" repeatCount="indefinite"/></ellipse>`}
+    f+=`<rect x="117" y="140" width="66" height="84" fill="#6ABF3A" opacity=".15"><animate attributeName="opacity" values=".05;.22;.05" dur="2.4s" repeatCount="indefinite"/></rect>`;
+    f+=`<g filter="url(#wvb${N})"><ellipse cx="120" cy="236" rx="190" ry="18" fill="#9CC46A" opacity=".5"><animate attributeName="cx" values="90;190;90" dur="8s" repeatCount="indefinite"/></ellipse><ellipse cx="220" cy="240" rx="170" ry="14" fill="#B8E070" opacity=".38"><animate attributeName="cx" values="240;110;240" dur="7s" repeatCount="indefinite"/></ellipse></g>`}
+  if(a.name==="Hollow Star"){     // a star with nothing at its heart: an eclipse corona flaring behind the glass, a void inside ringed by burning vapor, starlight being dragged in and swallowed
+    const N=UID,F=v=>(+v).toFixed(1),CX=150,CY=136;svg.style.overflow="visible";
+    back+=`<defs>
+      <radialGradient id="hsc${N}" gradientUnits="userSpaceOnUse" cx="${CX}" cy="${CY}" r="150"><stop offset=".2" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".24" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".32" stop-color="#E6D2FF" stop-opacity=".6"/><stop offset=".55" stop-color="#9A6AFF" stop-opacity=".22"/><stop offset="1" stop-color="#6A3AD0" stop-opacity="0"/></radialGradient>
+      <linearGradient id="hsp${N}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#F4ECFF" stop-opacity=".9"/><stop offset="1" stop-color="#9A6AFF" stop-opacity="0"/></linearGradient>
+      <filter id="hsb${N}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+      <filter id="hsg${N}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.2"/></filter></defs>`;
+    // a field of stars, and some of them being dragged in on spirals and snuffed out
+    for(let k=0;k<40;k++){const x=+rn(-120,420),y=+rn(-60,250);back+=`<circle cx="${x}" cy="${y}" r="${rn(.4,1.3)}" fill="#EDE4FF"><animate attributeName="opacity" values=".2;1;.2" dur="${rn(1.5,4)}s" repeatCount="indefinite"/></circle>`}
+    for(let k=0;k<9;k++){const r0=+rn(140,230),a0=R()*Math.PI*2,d=rn(3,6),b=rn(0,6);let path=`M${F(CX+Math.cos(a0)*r0)} ${F(CY+Math.sin(a0)*r0*.8)}`;
+      for(let t=1;t<=24;t++){const rr=r0*(1-t/24),aa=a0+t/24*Math.PI*1.6;path+=` L${F(CX+Math.cos(aa)*rr)} ${F(CY+Math.sin(aa)*rr*.8)}`}
+      back+=`<g><circle r="1.8" fill="#FFFFFF" filter="url(#hsg${N})"><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.85;1" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/></circle><animateMotion dur="${d}s" begin="-${b}s" repeatCount="indefinite" calcMode="spline" keyTimes="0;1" keySplines=".6 0 1 1" path="${path}"/></g>`}
+    // the corona: streamers flaring out from behind the void, turning slowly
+    let st="";for(let k=0;k<16;k++){const an=k/16*360+(R()-.5)*8,len=+rn(70,150),w=+rn(4,10);st+=`<path d="M0 -${F(w)} C${F(len*.4)} -${F(w*1.2)} ${F(len*.8)} -2 ${F(len)} 0 C${F(len*.8)} 2 ${F(len*.4)} ${F(w*1.2)} 0 ${F(w)} Z" fill="url(#hsp${N})" transform="rotate(${F(an)}) translate(34 0)"><animate attributeName="opacity" values=".45;1;.55;.9;.45" dur="${F(rn(1.8,3.4))}s" repeatCount="indefinite"/></path>`}
+    back+=`<g transform="translate(${CX} ${CY})"><g filter="url(#hsb${N})">${st}<animateTransform attributeName="transform" type="rotate" from="0" to="360" dur="80s" repeatCount="indefinite"/></g></g>`;
+    back+=`<circle cx="${CX}" cy="${CY}" r="150" fill="url(#hsc${N})"><animate attributeName="opacity" values=".85;1;.85" dur="2.2s" repeatCount="indefinite"/></circle><circle cx="${CX}" cy="${CY}" r="34" fill="#05020C"/>`;
+    // polar jets firing out of both ends
+    back+=`<g filter="url(#hsg${N})" opacity=".9"><path d="M${CX-3} ${CY} L${CX} -120 L${CX+3} ${CY} Z" fill="#E6D2FF"><animate attributeName="opacity" values=".3;1;.3" dur="1.3s" repeatCount="indefinite"/></path><path d="M${CX-3} ${CY} L${CX} 360 L${CX+3} ${CY} Z" fill="#E6D2FF"><animate attributeName="opacity" values="1;.3;1" dur="1.3s" repeatCount="indefinite"/></path></g>`;
+    // inside the glass: the vapor wound into a burning ring around the void, brighter on the side swinging toward you
+    f+=`<defs><clipPath id="hsv${N}"><path d="M117 46 L183 46 L183 196 Q183 223 150 223 Q117 223 117 196 Z"/></clipPath>
+      <linearGradient id="hsr${N}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#FFFFFF"/><stop offset=".35" stop-color="#E6D2FF"/><stop offset="1" stop-color="#8A5AE0" stop-opacity=".4"/></linearGradient></defs>
+      <g clip-path="url(#hsv${N})"><circle cx="${CX}" cy="${CY}" r="30" fill="#05020C" opacity=".92"/>
+      <circle cx="${CX}" cy="${CY}" r="33" fill="none" stroke="#FFFFFF" stroke-width="1.6" opacity=".9" filter="url(#hsg${N})"><animate attributeName="r" values="32;35;32" dur="2.2s" repeatCount="indefinite"/></circle>
+      <g transform="rotate(-14 ${CX} ${CY})"><ellipse cx="${CX}" cy="${CY}" rx="32" ry="9" fill="none" stroke="url(#hsr${N})" stroke-width="6" filter="url(#hsg${N})"/>
+        <ellipse cx="${CX}" cy="${CY}" rx="32" ry="9" fill="none" stroke="#FFFFFF" stroke-width="1.6" stroke-dasharray="6 14"><animate attributeName="stroke-dashoffset" from="0" to="-80" dur="1.4s" repeatCount="indefinite"/></ellipse>
+        <path d="M${CX-32} ${CY} A32 9 0 0 0 ${CX+32} ${CY}" fill="none" stroke="url(#hsr${N})" stroke-width="7" opacity=".95"/></g>`;
+    for(let k=0;k<8;k++){const d=rn(1.2,2.4),b=rn(0,2.4),rx=+rn(18,30),ry=+rn(5,9);f+=`<g transform="rotate(-14 ${CX} ${CY})"><circle r="${rn(.8,1.6)}" fill="#FFFFFF"><animateMotion dur="${d}s" begin="-${b}s" repeatCount="indefinite" path="M${CX-rx} ${CY} a${rx} ${ry} 0 1 0 ${2*rx} 0 a${rx} ${ry} 0 1 0 ${-2*rx} 0"/></circle></g>`}
+    f+=`<rect x="117" y="46" width="66" height="178" fill="#FFFFFF" opacity="0"><animate attributeName="opacity" values="0;0;.35;0" keyTimes="0;.9;.93;1" dur="6s" repeatCount="indefinite"/></rect></g>`;   // a decay flash now and then
+    // fragments of it orbiting outside the glass
+    for(let k=0;k<5;k++){const d=rn(2.2,4),b=rn(0,4),ry=rn(18,34);f+=`<circle r="${rn(2,3.5)}" fill="#C8A8FF" filter="url(#hsg${N})"><animateMotion dur="${d}s" begin="-${b}s" repeatCount="indefinite" path="M${CX-70} ${CY} a70 ${ry} 0 1 0 140 0 a70 ${ry} 0 1 0 -140 0"/></circle>`}}
+  if(a.name==="Crown of Rays"){   // cursed regalia on display: a velvet-draped vault alcove, a museum spotlight, the rod on its cushion glowing a sickly green in the dark, and the crown it came from hovering over it
+    const N=UID,F=v=>(+v).toFixed(1);svg.style.overflow="visible";
+    back+=`<defs>
+      <linearGradient id="crd${N}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#2A0A28"/><stop offset=".25" stop-color="#5A1A4A"/><stop offset=".5" stop-color="#34102E"/><stop offset=".75" stop-color="#5A1A4A"/><stop offset="1" stop-color="#2A0A28"/></linearGradient>
+      <linearGradient id="crs${N}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFE8B0" stop-opacity=".55"/><stop offset="1" stop-color="#FFE8B0" stop-opacity="0"/></linearGradient>
+      <linearGradient id="crc${N}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#7A2A6A"/><stop offset="1" stop-color="#3A0E34"/></linearGradient>
+      <linearGradient id="crg${N}" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFF1B0"/><stop offset=".45" stop-color="#E6B83A"/><stop offset="1" stop-color="#8A6010"/></linearGradient>
+      <radialGradient id="crr${N}" gradientUnits="userSpaceOnUse" cx="150" cy="120" r="140"><stop offset="0" stop-color="#8CFF9E" stop-opacity=".5"/><stop offset=".4" stop-color="#5AE08A" stop-opacity=".18"/><stop offset="1" stop-color="#5AE08A" stop-opacity="0"/></radialGradient>
+      <filter id="crb${N}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="4"/></filter>
+      <filter id="crb2${N}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.4"/></filter></defs>`;
+    // the alcove: a stone arch in darkness, velvet drapes pulled back with gold cords
+    back+=`<path d="M40 250 L40 40 Q150 -70 260 40 L260 250" fill="#140816" stroke="#4A2A40" stroke-width="3"/>`;
+    const drape=(x0,dir)=>{let folds="";for(let k=0;k<5;k++)folds+=`<path d="M${x0+dir*k*22} -80 Q${x0+dir*(k*22+10)} 90 ${x0+dir*(k*14+30)} 250" stroke="#1A0418" stroke-width="2" fill="none" opacity=".6"/>`;
+      return `<path d="M${x0} -80 L${x0+dir*120} -80 Q${x0+dir*70} 60 ${x0+dir*40} 110 Q${x0+dir*80} 170 ${x0+dir*120} 250 L${x0} 250 Z" fill="url(#crd${N})"/>${folds}<path d="M${x0+dir*20} 104 Q${x0+dir*44} 118 ${x0+dir*60} 108" stroke="#E6B83A" stroke-width="3" fill="none"/><circle cx="${x0+dir*60}" cy="110" r="4" fill="#E6B83A"/><path d="M${x0+dir*60} 114 l-3 14 h6 z" fill="#E6B83A"/>`};
+    back+=drape(-100,1)+drape(400,-1);
+    // a museum spotlight falling on it, dust turning in the beam
+    back+=`<polygon points="120,-80 180,-80 250,240 50,240" fill="url(#crs${N})" filter="url(#crb${N})"/>`;
+    for(let k=0;k<14;k++){const x=+rn(80,220),y=+rn(-40,220),d=rn(5,9),b=rn(0,9);back+=`<circle cx="${x}" cy="${y}" r="${rn(.5,1.2)}" fill="#FFF1C8"><animate attributeName="cy" values="${y};${F(y-30)};${y}" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values=".2;.9;.2" dur="${F(d/2)}s" begin="-${b}s" repeatCount="indefinite"/></circle>`}
+    // the curse: a green luminescence soaking into everything around it
+    back+=`<circle cx="150" cy="120" r="140" fill="url(#crr${N})"><animate attributeName="opacity" values=".6;1;.6" dur="3.2s" repeatCount="indefinite"/></circle>`;
+    // the velvet cushion it rests on, gold piping and tassels
+    back+=`<g transform="rotate(-20 150 120)"><rect x="28" y="128" width="244" height="34" rx="16" fill="url(#crc${N})" stroke="#E6B83A" stroke-width="2.4"/><path d="M40 145 Q150 152 260 145" stroke="#2A0A28" stroke-width="1.4" fill="none" opacity=".7"/>
+      ${[[30,160],[270,160]].map(([x,y])=>`<g><circle cx="${x}" cy="${y}" r="4" fill="#E6B83A"/><path d="M${x-3} ${y+3} l-2 14 h10 l-2 -14 z" fill="#E6B83A"/><path d="M${x-4} ${y+10} v8 M${x} ${y+10} v9 M${x+4} ${y+10} v8" stroke="#8A6010" stroke-width=".8"/></g>`).join("")}</g>`;
+    // the green glow clinging to the rod itself
+    back+=`<g transform="rotate(-20 150 120)"><rect x="30" y="86" width="238" height="68" rx="32" fill="#8CFF9E" opacity=".3" filter="url(#crb${N})"><animate attributeName="opacity" values=".15;.4;.15" dur="3.2s" repeatCount="indefinite"/></rect></g>`;
+    // the crown hovering above, bobbing slowly, thin green rays leaking from its points
+    const pts=[[-38,0],[-38,-18],[-28,-8],[-19,-30],[-10,-8],[0,-38],[10,-8],[19,-30],[28,-8],[38,-18],[38,0]];
+    let rays2="";[[-38,-18],[-19,-30],[0,-38],[19,-30],[38,-18]].forEach(([x,y],k)=>{const an=Math.atan2(y+10,x)||-Math.PI/2;rays2+=`<path d="M${x} ${y} L${F(x+Math.cos(an)*70)} ${F(y+Math.sin(an)*70)}" stroke="#AFFFC0" stroke-width="1.4" opacity=".6"><animate attributeName="opacity" values=".1;.8;.1" dur="${(1.6+k*.3).toFixed(1)}s" repeatCount="indefinite"/></path>`});
+    f+=`<g><g transform="translate(150 50)">${rays2}
+      <polygon points="${pts.map(p=>p.join(",")).join(" ")}" fill="url(#crg${N})" stroke="#6A4608" stroke-width="1.2" stroke-linejoin="round"/>
+      <rect x="-40" y="-2" width="80" height="12" rx="3" fill="url(#crg${N})" stroke="#6A4608" stroke-width="1.2"/>
+      ${[-26,-9,9,26].map((x,k)=>`<ellipse cx="${x}" cy="4" rx="4" ry="3" fill="${["#C8243A","#2A6AC8","#C8243A","#2A6AC8"][k]}" stroke="#6A4608" stroke-width=".6"/><ellipse cx="${x-1.2}" cy="3" rx="1.2" ry=".8" fill="#fff" opacity=".8"/>`).join("")}
+      ${[[-38,-18],[-19,-30],[0,-38],[19,-30],[38,-18]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="3" fill="#FFF6D0" stroke="#6A4608" stroke-width=".6"/>`).join("")}
+      <path d="M-34 -2 L34 -2" stroke="#FFF6D0" stroke-width="1" opacity=".8"/>
+      <ellipse cx="0" cy="-10" rx="44" ry="30" fill="#8CFF9E" opacity=".12" filter="url(#crb2${N})"><animate attributeName="opacity" values=".05;.2;.05" dur="3.2s" repeatCount="indefinite"/></ellipse></g>
+      <animateTransform attributeName="transform" type="translate" values="0 0;0 -6;0 0" dur="4s" repeatCount="indefinite"/></g>`;
+    // the curse rising off it: pale green wisps spiralling up
+    for(let k=0;k<6;k++){const x=+rn(70,230),d=rn(3,5),b=rn(0,5);f+=`<path d="M${x} 150 q-10 -20 0 -40 q10 -20 0 -40" stroke="#AFFFC0" stroke-width="${rn(2,4)}" fill="none" stroke-linecap="round" filter="url(#crb2${N})" opacity="0"><animateTransform attributeName="transform" type="translate" values="0 0;0 -50" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.55;0" dur="${d}s" begin="-${b}s" repeatCount="indefinite"/></path>`}
+    // glints travelling along the rod
+    f+=`<g transform="rotate(-20 150 120)"><rect x="40" y="100" width="18" height="4" rx="2" fill="#FFFFFF" opacity=".9"><animate attributeName="x" values="40;250;250" keyTimes="0;.5;1" dur="3.6s" repeatCount="indefinite"/><animate attributeName="opacity" values=".9;.9;0" keyTimes="0;.5;.51" dur="3.6s" repeatCount="indefinite"/></rect></g>`;}
+  if(a.name==="Phoenix Lattice"){  // only a projection: a projector throws a cone of light, and in it a wireframe phoenix beats its wings over the vial, bursts into pixels, and re-forms
+    const N=UID,F=v=>(+v).toFixed(1);svg.style.overflow="visible";
+    back+=`<defs>
+      <linearGradient id="plc${N}" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#78F0FF" stop-opacity=".55"/><stop offset=".6" stop-color="#78F0FF" stop-opacity=".12"/><stop offset="1" stop-color="#FF4AC8" stop-opacity="0"/></linearGradient>
+      <linearGradient id="plw${N}" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="#FF4AC8"/><stop offset=".5" stop-color="#B07AFF"/><stop offset="1" stop-color="#78F0FF"/></linearGradient>
+      <filter id="plg${N}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+      <filter id="plb${N}" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="5"/></filter></defs>`;
+    // a synthetic floor grid receding into the dark
+    let grid="";for(let k=-8;k<=8;k++)grid+=`M${150+k*14} 232 L${150+k*70} 300 `;for(let k=0;k<5;k++){const y=232+k*k*3.4;grid+=`M-200 ${F(y)} L500 ${F(y)} `}
+    back+=`<path d="${grid}" stroke="#78F0FF" stroke-width=".8" fill="none" opacity=".35"/>`;
+    // the projector and its cone of light
+    back+=`<polygon points="120,236 180,236 300,-90 0,-90" fill="url(#plc${N})" filter="url(#plb${N})"><animate attributeName="opacity" values=".7;1;.8;1;.7" dur="1.7s" repeatCount="indefinite"/></polygon>
+      <ellipse cx="150" cy="238" rx="44" ry="7" fill="#1A1F2E" stroke="#78F0FF" stroke-width="1.4"/><ellipse cx="150" cy="236" rx="30" ry="4" fill="#78F0FF" opacity=".7"><animate attributeName="opacity" values=".4;.9;.4" dur="1.2s" repeatCount="indefinite"/></ellipse>`;
+    // the phoenix: a triangulated wireframe, wings beating, tail streaming down like flame
+    const wing=dir=>{const P=[[0,0],[dir*40,-30],[dir*84,-62],[dir*126,-70],[dir*150,-52],[dir*112,-40],[dir*140,-26],[dir*98,-16],[dir*120,4],[dir*72,-2],[dir*40,14]];
+      let d="";for(let k=1;k<P.length-1;k++)d+=`M${P[0][0]} ${P[0][1]} L${P[k][0]} ${P[k][1]} L${P[k+1][0]} ${P[k+1][1]} `;
+      d+=`M${P.slice(1).map(p=>p.join(" ")).join(" L")}`;
+      return d};
+    const flap=dir=>`<g><path d="${wing(dir)}" stroke="url(#plw${N})" stroke-width="1.8" fill="rgba(176,122,255,.16)" stroke-linejoin="round"/>
+      <path d="${wing(dir)}" stroke="#FF3A6A" stroke-width=".8" fill="none" opacity=".45" transform="translate(-1.6 0)"/><path d="${wing(dir)}" stroke="#3AF0FF" stroke-width=".8" fill="none" opacity=".45" transform="translate(1.6 0)"/>
+      <animateTransform attributeName="transform" type="scale" values="1 1;1 .35;1 1" keyTimes="0;.5;1" dur="1.6s" calcMode="spline" keySplines=".5 0 .5 1;.5 0 .5 1" repeatCount="indefinite"/></g>`;
+    const tail=[-18,-8,4,14,22].map((x,k)=>{const t=d=>`M${x*.3} 18 C${x} 50 ${x+d} 80 ${x*1.6+d} ${110+k*6}`;return `<path d="${t(0)}" stroke="url(#plw${N})" stroke-width="1.3" fill="none"><animate attributeName="d" values="${t(0)};${t(10)};${t(-8)};${t(0)}" dur="${(1.4+k*.2).toFixed(1)}s" repeatCount="indefinite"/></path>`}).join("");
+    const body=`<path d="M0 -40 L6 -26 L4 -8 L0 18 L-4 -8 L-6 -26 Z M0 -40 L-10 -48 L0 -54 L8 -46 Z M0 -54 L-4 -70 M0 -54 L6 -72 M0 -54 L12 -64" stroke="url(#plw${N})" stroke-width="1.3" fill="rgba(120,240,255,.1)"/><circle cx="-3" cy="-48" r="1.4" fill="#FFFFFF"/>`;
+    const bird=`<g transform="translate(150 50) scale(1.35)">${flap(-1)}${flap(1)}${body}${tail}</g>`;
+    // every few seconds it bursts into pixels and gathers itself back together
+    let px="";for(let k=0;k<40;k++){const an=R()*Math.PI*2,r=+rn(40,150),sx=150+(R()-.5)*140,sy=40+R()*70;px+=`<rect x="-1.5" y="-1.5" width="3" height="3" fill="${k%2?"#78F0FF":"#FF4AC8"}" opacity="0"><animate attributeName="opacity" values="0;0;1;0;0" keyTimes="0;.78;.82;.97;1" dur="7s" repeatCount="indefinite"/><animateMotion dur="7s" repeatCount="indefinite" keyTimes="0;.78;.9;1" keyPoints="0;0;1;0" calcMode="linear" path="M${F(sx)} ${F(sy)} L${F(sx+Math.cos(an)*r)} ${F(sy+Math.sin(an)*r)}"/></rect>`}
+    back+=`<g filter="url(#plg${N})"><g>${bird}<animate attributeName="opacity" values="1;1;0;0;1" keyTimes="0;.78;.8;.96;1" dur="7s" repeatCount="indefinite"/>
+      <animateTransform attributeName="transform" type="translate" values="0 0;0 0;4 0;-3 0;0 0;0 0" keyTimes="0;.3;.31;.32;.33;1" dur="7s" repeatCount="indefinite"/></g>${px}</g>`;
+    // inside the glass: the lattice lines of the projection, a scanline sweeping, a flicker
     let g="";for(let i=0;i<8;i++){g+=`<path d="M${117+i*9} 46 l40 178 M${183-i*9} 46 l-40 178" stroke="#78F0FF" stroke-width=".8"/>`}
-    f+=`<g clip-path="url(#tfxv${a.no})" opacity=".45">${g}<animate attributeName="opacity" values=".45;.2;.45;.05;.45" dur="1.3s" repeatCount="indefinite"/></g>`;
+    f+=`<defs><clipPath id="tfxv${UID}"><rect x="117" y="46" width="66" height="178"/></clipPath></defs><g clip-path="url(#tfxv${UID})" opacity=".45">${g}<animate attributeName="opacity" values=".45;.2;.45;.05;.45" dur="1.3s" repeatCount="indefinite"/></g>`;
     f+=`<rect x="110" y="40" width="80" height="3" fill="#B8FAFF" opacity=".6"><animate attributeName="y" values="40;225" dur="1.8s" repeatCount="indefinite"/></rect>`;
-    f+=`<path d="M114 150 q-40 -20 -50 -70 q20 30 50 40 z" fill="#FF4AC8" opacity=".35"><animate attributeName="opacity" values=".1;.45;.1" dur="1.1s" repeatCount="indefinite"/></path><path d="M186 150 q40 -20 50 -70 q-20 30 -50 40 z" fill="#FF4AC8" opacity=".35"><animate attributeName="opacity" values=".1;.45;.1" dur="1.1s" repeatCount="indefinite"/></path>`;
-    f=`<defs><clipPath id="tfxv${a.no}"><rect x="117" y="46" width="66" height="178"/></clipPath></defs>`+f;
+    // glitch slices tearing across the whole image now and then
+    for(let k=0;k<3;k++){const y=+rn(40,200),h=+rn(3,8);f+=`<rect x="60" y="${y}" width="180" height="${h}" fill="${k%2?"#FF4AC8":"#78F0FF"}" opacity="0"><animate attributeName="opacity" values="0;0;.35;0;0" keyTimes="0;.5;.51;.54;1" dur="${(3+k*1.3).toFixed(1)}s" repeatCount="indefinite"/><animate attributeName="x" values="60;60;${60+(k%2?-14:14)};60;60" keyTimes="0;.5;.51;.54;1" dur="${(3+k*1.3).toFixed(1)}s" repeatCount="indefinite"/></rect>`}
     host.classList.add("holo")}
-  if(back)svg.insertAdjacentHTML("afterbegin",back);
+  if(back)svg.insertAdjacentHTML("afterbegin",`<g class="tfx-bk" pointer-events="none">${back}</g>`);
   svg.insertAdjacentHTML("beforeend",`<g class="tfx" pointer-events="none">${f}</g>`)}
 {const _rs=renderStage;renderStage=function(){_rs();const a=S.r&&S.r.a;$("#specimen").classList.remove("holo");threatSkin($("#stage"),a);if(a&&a.threat)threatFx($("#specimen"),a)}}
 {const _od=openDex;openDex=function(no){_od(no);const a=ALLOYS[no-1];if(a&&a.threat&&statusOf(a)!=="unseen"){const sc=$("#ddscreen"),L=TLOOK[a.name];if(sc&&L){sc.style.background=`repeating-conic-gradient(from 0deg at 50% 45%,${L.a} 0 9deg,${L.b} 9deg 18deg)`;threatFx(sc.querySelector(".ddspec"),a)}}}}
@@ -2841,6 +3235,7 @@ Object.assign(TRACKS,{
   "threat_widow":{base:"threat",bpm:108,lead:{type:"sine",vol:.24,half:true},parts:[{k:"pad",type:"triangle",vol:.05,oct:3},{k:"broken",type:"sine",vol:.08,oct:4}],bass:{s:"half",vol:.24},drum:"k . . . s . . h",fill:"k . . k s . s ."},
   "threat_hollow":{base:"threat",bpm:140,lead:{type:"pulse",vol:.11},parts:[{k:"ostinato",type:"square",vol:.024,oct:5},{k:"pad",type:"sine",vol:.04,oct:4}],bass:{s:"octave",vol:.25},drum:"k h h s k h h s",fill:"k h s h k s c c",hat16:true},
   "threat_crown":{base:"threat",bpm:118,lead:{type:"triangle",vol:.22},parts:[{k:"counter",type:"square",vol:.045,oct:5},{k:"pad",type:"square",vol:.02,oct:4}],bass:{s:"half",vol:.26},drum:"k . s s k . s .",fill:"k s s s k s c c",chime:true},
+  "threat_quill":{base:"threat",bpm:136,lead:{type:"square",vol:.1},parts:[{k:"third",type:"triangle",vol:.08},{k:"stab",type:"pulse",vol:.024,oct:4}],bass:{s:"walk",type:"sawtooth",vol:.1},drum:"k . s . k s s .",fill:"k s s s k s c c",hat16:true,chime:true},
   "threat_phoenix":{base:"threat",bpm:132,intro:2,lead:{type:"sawtooth",vol:.075},parts:[{k:"arp",type:"triangle",vol:.04,oct:5},{k:"counter",type:"pulse",vol:.035,oct:5}],bass:{s:"walk",vol:.26},drum:"k h s k . k s h",fill:"k k s k s s c c",hat16:true}
 });
 
@@ -2851,6 +3246,7 @@ document.querySelectorAll(".tut-offer,#tut").forEach(e=>e.remove());
    A guided first encounter with spotlighted coach marks. Offered once after PRESS START; replay any time from "? HOW TO PLAY".
    Steps with `wait` advance on their own when the player does the thing. Radiants are deliberately never mentioned. */
 const TUT={on:false,i:0,raf:0};
+/* The tutorial's practice alloy. */
 const TUT_ALLOY="Brass";
 const TUT_STEPS=[
  {t:"WELCOME, RECRUIT!",x:"I'm Dr. Marlow, head of the Quillmoor field team. Out there, wild alloys hide in the rubble. Your job: find them, test them in the lab, and work out what they're made of. Let's do your first one together.<br><br><b>Heads up: the tutorial round earns NO points.</b> It's just practice, so your score only starts counting on real encounters."},
@@ -2868,7 +3264,7 @@ const TUT_STEPS=[
  {sel:"#st-geiger",t:"GEIGER COUNTER",x:"Turn on <b>POWER</b> (and <b>SOUND</b> if you want to hear the clicks), then drag the sample under the probe. More clicks and a higher needle mean more radioactive. Way too much can burn the tube out!<br><br>▶ Check its radiation.",wait:()=>S.r&&S.r.notes.rad,scroll:"center"},
  {sel:"#st-furnace",t:"FURNACE",x:"Press <b>POWER</b>, drag the sample into the crucible, then <b>HOLD HEAT</b> and watch the temperature. Whatever happens (it melts, smokes, sparks or bursts into flame) gets logged with the temperature. HOLD CHILL cools it down.<br>Cooling never undoes a melt or a reaction on the piece in the crucible. To try again, press <b>TAKE OUT</b> to empty the crucible and put a fresh piece in.<br><br>▶ Heat it until something happens.",wait:()=>S.r&&(S.r.notes.melt||S.r.notes.react),scroll:"center"},
  {sel:"#tab-table",t:"THE PERIODIC TABLE",x:"Compare your readings with real element data in the <b>Periodic Table</b> tab: density, melting point, hardness, magnetism, flame color and more. You can also hover elements on the scanner."},
- {sel:"#picker",t:"THE ELEMENT SCANNER",x:"Pick up to <b>5 elements</b> you think are inside, then press <b>ANALYZE</b>.<br>Tip for this one: think of what trumpets are made of: a reddish metal plus the one that coats rust-proof nails.<br><br>▶ Pick some elements, then press <b>ANALYZE</b> just above the scanner.",dock:1,wait:()=>S.r&&(S.r.hit.size>0||S.r.miss.size>0||S.r.stage==="done"),scroll:"start"},
+ {sel:"#picker",t:"THE ELEMENT SCANNER",x:"Pick up to <b>5 elements</b> you think are inside, then press <b>ANALYZE</b>.<br>"+(TUT_ALLOY==="Brass"?"Tip for this one: think of what trumpets are made of: a reddish metal plus the one that coats rust-proof nails.<br>":"")+"<br>▶ Pick some elements, then press <b>ANALYZE</b> just above the scanner.",dock:1,wait:()=>S.r&&(S.r.hit.size>0||S.r.miss.size>0||S.r.stage==="done"),scroll:"start"},
  {sel:".dialog",t:"READING THE RESULT",x:"<b>Super effective</b>: everything you picked is in it (maybe not all yet).<br><b>Not very effective</b>: some right, some wrong.<br><b>It missed</b>: none right.<br>Each scan that doesn't finish the job costs a <b>SCANNER CHARGE</b>. Run out and the alloy flees. HINT helps but costs points.<br>(Reminder: this practice round earns <b>no points</b>, even if you nail it.)<br><br>▶ Finish identifying it.",dock:1,wait:()=>S.r&&S.r.stage==="done",scroll:"start"},
  {sel:"#tab-dex",t:"THE ALLOYDEX",x:()=>S.r&&S.r.won?"Registered! Every alloy you identify goes into your <b>Alloydex</b>: stats, its cry, a research log and related alloys. There are over a thousand to find across 8 habitats.":"It got away this time. No worries, alloys come back. Every one you identify goes into your <b>Alloydex</b>: stats, its cry, a research log and related alloys. There are over a thousand to find across 8 habitats."},
  {t:"ONE LAST THING…",x:"If an alarm ever sounds and a <b>⚠ THREAT</b> appears, stay calm. It's a containment emergency: a meter drains while you work, and each threat fights back in its own way. The screen will tell you what to do. They're rare.<br><br>That's everything. Press <b>KEEP EXPLORING</b> when you're ready. Good luck, recruit!",end:true}
@@ -2923,7 +3319,7 @@ const TUT_RULES={
 const tutRule=()=>TUT.on?(TUT_RULES[TUT_STEPS[TUT.i].t]||{}):null;
 function tutNudge(){if(!gate("tutnudge",700))return;const b=$("#tut-bub");if(b){b.classList.remove("nudge");void b.offsetWidth;b.classList.add("nudge")}sfx("bump")}
 function tutAllowed(el){const R=tutRule();if(!R)return true;if(!el||!el.closest)return false;
-  if(el.closest("#tut-bub,#au-mus,#au-sfx"))return true;
+  if(el.closest("#tut-bub,#au-mus,#au-sfx,#bossbar,.exting,.phx-ember"))return true;   // threat controls always work, even mid-lesson
   if(TUT.hold&&performance.now()<TUT.hold)return false;
   if(R.deny&&el.closest(R.deny))return false;return !!(R.allow&&el.closest(R.allow))}
 ["pointerdown","mousedown","touchstart","click","dblclick","contextmenu"].forEach(ev=>window.addEventListener(ev,e=>{
@@ -2958,6 +3354,48 @@ TRACKS.escape={bpm:92,lv:.1,bv:.22,
   drum:"k . . h s . . h",fill:"k . . h s . c .",parts:[{k:"pad",type:"sine",vol:.045,oct:4},{k:"broken",type:"triangle",vol:.05,oct:4}]};
 CHORDS.escape="Em C G D Em Am B B C G Am Em C D Em Em".split(" ");
 {const _ls=lose;lose=function(ran){_ls(ran);const r=S.r;setTimeout(()=>{if(S.r===r&&r&&r.stage==="done"&&!r.won&&S.phase==="round")startTrack("escape")},1400)}}
+
+/* ---- Lab bench samples: rods are drawn as real rods, standing upright on every station except the conductivity clips
+   (which keep the original clamped block). Vials (liquids, powders, granules...) keep the original colored block everywhere. ---- */
+const SKINS=["sc-chunk","cy-chunk","gm-chunk","fz-solid"];
+let skinN=0;
+function rodDims(x,y,w,h,id){if(id==="fz-solid"){const f=FZ.melted?1:(FZ.mprog||0),rw=14*(1+.8*f),rh=Math.max(0,36*(1-f));return{cx:x+w/2,rw,rh,top:y+h-rh,bot:y+h,f}}
+  if(id==="cy-chunk")return{cx:x+w/2,rw:16,rh:74,top:y+h-74,bot:y+h};   // a full-size rod standing in the cylinder
+  const rw=Math.max(6,Math.min(w*.42,14)),rh=Math.max(h,Math.min(rw*2.8,40));return{cx:x+w/2,rw,rh,top:y+h-rh,bot:y+h}}
+function rodSVG(a,x,y,w,h,id){const u="sk"+(skinN++),c=a.color,hi=shade(c,.6),lo=shade(c,-.5),face=shade(c,.25),F=v=>(+v).toFixed(1),{cx,rw,rh,top,bot,f=0}=rodDims(x,y,w,h,id),ry=Math.min(rh/2,rw*(.22+.4*f));
+  return `<defs><linearGradient id="${u}" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${lo}"/><stop offset=".28" stop-color="${hi}"/><stop offset=".5" stop-color="${c}"/><stop offset="1" stop-color="${shade(c,-.6)}"/></linearGradient></defs>
+    <ellipse cx="${F(cx)}" cy="${F(bot)}" rx="${F(rw/2)}" ry="${F(ry)}" fill="${lo}"/>
+    <rect x="${F(cx-rw/2)}" y="${F(top)}" width="${F(rw)}" height="${F(rh)}" fill="url(#${u})"/>
+    <rect x="${F(cx-rw*.28)}" y="${F(top+ry+1)}" width="${F(Math.max(.8,rw*.12))}" height="${F(Math.max(0,rh-ry*2-2))}" fill="#fff" opacity=".55"/>
+    <ellipse cx="${F(cx)}" cy="${F(top)}" rx="${F(rw/2)}" ry="${F(ry)}" fill="${face}" stroke="rgba(0,0,0,.3)" stroke-width=".6"/>`}
+function syncSkins(){requestAnimationFrame(syncSkins);const a=S.r&&S.r.a;if(!a)return;const rod=a.form!=="vial";
+  for(const id of SKINS){const el=document.getElementById(id);if(!el)continue;const rect=el.tagName==="g"?el.querySelector("rect"):el;if(!rect)continue;
+    let sk=document.getElementById("skin-"+id);if(!sk){sk=document.createElementNS("http://www.w3.org/2000/svg","g");sk.id="skin-"+id;sk.setAttribute("pointer-events","none");rect.parentNode.insertBefore(sk,rect.nextSibling)}
+    rect.style.fillOpacity=rod?"0":"";rect.style.strokeOpacity=rod?"0":"";
+    const g=k=>+rect.getAttribute(k)||0,sig=[a.no,rod,g("x"),g("y"),g("width"),g("height"),id==="fz-solid"?Math.round((FZ.mprog||0)*40):0].join("|");
+    const vis=el.tagName==="g"?el.getAttribute("opacity"):rect.getAttribute("opacity");sk.setAttribute("opacity",vis==null?1:vis);
+    if(sk.dataset.sig!==sig){sk.dataset.sig=sig;sk.innerHTML=rod&&g("width")>0&&g("height")>0?rodSVG(a,g("x"),g("y"),g("width"),g("height"),id):""}}
+  // furnace glow/crust/frost and the soak film sit on the rod itself, not on the old block
+  const fs=document.getElementById("fz-solid");
+  if(fs){const x=+fs.getAttribute("x"),y=+fs.getAttribute("y"),w=+fs.getAttribute("width"),h=+fs.getAttribute("height");
+    ["fz-solidglow","fz-solidcrust","fz-frost"].forEach(id=>{const e=document.getElementById(id);if(!e)return;
+      if(rod&&h>0){const d=rodDims(x,y,w,h,"fz-solid");e.setAttribute("x",d.cx-d.rw/2);e.setAttribute("width",d.rw);e.setAttribute("y",d.top);e.setAttribute("height",d.rh);e.setAttribute("rx",1)}
+      else{e.setAttribute("x",x);e.setAttribute("width",w);e.setAttribute("rx",3)}})}
+  // runs of molten metal down the sides while it melts
+  if(fs){let dr=document.getElementById("fz-drips");if(!dr){dr=document.createElementNS("http://www.w3.org/2000/svg","g");dr.id="fz-drips";fs.parentNode.appendChild(dr)}
+    const f=FZ.melted?1:(FZ.mprog||0),x=+fs.getAttribute("x"),y=+fs.getAttribute("y"),w=+fs.getAttribute("width"),h=+fs.getAttribute("height");
+    const box=rod?rodDims(x,y,w,h,"fz-solid"):{cx:x+w/2,rw:w,rh:h,top:y,bot:y+h},sig=[a.no,Math.round(f*40),Math.round(box.rw),Math.round(box.rh)].join("|");
+    if(dr.dataset.sig!==sig){dr.dataset.sig=sig;
+      if(f<=0||f>=1||box.rh<2){dr.innerHTML=""}
+      else{const c=a.color,hi=shade(c,.6),L=box.rh*.9*Math.min(1,f*1.6),xs=[box.cx-box.rw*.46,box.cx+box.rw*.1,box.cx+box.rw*.44],sd=[.35,.15,.55];
+        dr.innerHTML=xs.map((px,k)=>{const y0=box.top+box.rh*sd[k]*(1-f),y1=Math.min(box.bot,y0+L*(.6+.2*k)),r=1.4+1.4*f;
+          return `<path d="M${px.toFixed(1)} ${y0.toFixed(1)} L${px.toFixed(1)} ${y1.toFixed(1)}" stroke="${c}" stroke-width="${(2+2*f).toFixed(1)}" stroke-linecap="round"/><circle cx="${px.toFixed(1)}" cy="${y1.toFixed(1)}" r="${r.toFixed(1)}" fill="${c}"/><circle cx="${(px-.6).toFixed(1)}" cy="${(y1-.8).toFixed(1)}" r="${(r*.35).toFixed(1)}" fill="${hi}" opacity=".8"/>`}).join("")+
+          `<ellipse cx="${box.cx.toFixed(1)}" cy="${box.bot.toFixed(1)}" rx="${(box.rw*.5+8*f).toFixed(1)}" ry="${(2+3*f).toFixed(1)}" fill="${c}"/>`}}}
+  const cc=document.getElementById("cy-chunk"),cr=document.getElementById("cy-rust");
+  if(cc&&cr){const x=+cc.getAttribute("x"),y=+cc.getAttribute("y"),w=+cc.getAttribute("width"),h=+cc.getAttribute("height");
+    if(rod){const d=rodDims(x,y,w,h,"cy-chunk");cr.setAttribute("x",d.cx-d.rw/2);cr.setAttribute("width",d.rw);cr.setAttribute("y",d.top);cr.setAttribute("height",d.rh);cr.setAttribute("rx",1)}
+    else{cr.setAttribute("x",x);cr.setAttribute("width",w);cr.setAttribute("y",y);cr.setAttribute("height",h);cr.setAttribute("rx",3)}}}
+requestAnimationFrame(syncSkins);
 
 newRun();
 </script>
