@@ -2847,7 +2847,7 @@ Object.assign(TRACKS,{
 const TUT={on:false,i:0,raf:0};
 const TUT_ALLOY="Brass";
 const TUT_STEPS=[
- {t:"WELCOME, RECRUIT!",x:"I'm Chief Marlow, head of the Quillmoor field team. Out there, wild alloys hide in the rubble. Your job: find them, test them in the lab, and work out what they're made of. Let's do your first one together.<br><br><b>Heads up: the tutorial round earns NO points.</b> It's just practice, so your score only starts counting on real encounters."},
+ {t:"WELCOME, RECRUIT!",x:"I'm Dr. Marlow, head of the Quillmoor field team. Out there, wild alloys hide in the rubble. Your job: find them, test them in the lab, and work out what they're made of. Let's do your first one together.<br><br><b>Heads up: the tutorial round earns NO points.</b> It's just practice, so your score only starts counting on real encounters."},
  {sel:".modes",t:"GAME MODES",x:"<b>Name → Elements</b>: you're told the alloy's name; you find its elements.<br><b>Mystery</b>: no name given. Type it yourself (no multiple choice!), then find its elements.<br><b>Mixed</b>: a bit of both. Your practice alloy will be a Name → Elements one."},
  {sel:"#mapwrap",t:"THE FIELD",x:"Move with the <b>arrow keys / WASD</b>, <b>tap a spot</b> on the map, or use the <b>pad</b>. Wild alloys hide in the glittering <b>rubble</b> tiles.<br><br>▶ Walk into some rubble now.",wait:()=>S.phase==="round"&&S.r,enter:()=>{EXP.since=8}},
  {sel:"#stage",t:"A WILD ALLOY APPEARED!",x:"This is your sample. It always comes as a <b>rod</b> or a <b>vial</b> (vials can hold liquid, granules, beads, powder or shavings). Its name is on the plate. What you <i>see</i> is a clue: look at its color and shine.",delay:1400},
@@ -2897,7 +2897,7 @@ function tutLoop(){if(!TUT.on)return;TUT.raf=requestAnimationFrame(tutLoop);cons
 /* header button + first-time offer */
 {const b=document.createElement("button");b.className="aubtn tutbtn";b.id="tut-open";b.textContent="? HOW TO PLAY";b.onclick=()=>tutStart();$(".audio").prepend(b)}
 {const sb=$("#startbtn"),old=sb.onclick;sb.onclick=e=>{old&&old(e);if(!store.get("wta_tut",0)&&!TUT.offered){TUT.offered=true;setTimeout(()=>{const o=document.createElement("div");o.className="tut-offer";
-  o.innerHTML=`<div class="tut-bub mid"><div class="tut-face">${MINER}</div><div class="tut-body"><b>FIRST TIME HERE?</b><p>Chief Marlow can walk you through your first alloy. It takes about three minutes.</p><div class="tut-btns"><button class="btn" id="tut-no">NO THANKS</button><button class="btn go" id="tut-yes">TEACH ME ▶</button></div></div></div>`;
+  o.innerHTML=`<div class="tut-bub mid"><div class="tut-face">${MINER}</div><div class="tut-body"><b>FIRST TIME HERE?</b><p>Dr. Marlow can walk you through your first alloy. It takes about three minutes.</p><div class="tut-btns"><button class="btn" id="tut-no">NO THANKS</button><button class="btn go" id="tut-yes">TEACH ME ▶</button></div></div></div>`;
   document.body.appendChild(o);$("#tut-yes").onclick=()=>{o.remove();tutStart()};$("#tut-no").onclick=()=>{o.remove();store.set("wta_tut",1)}},500)}}}
 
 /* ---- Tutorial lock: only the thing being taught can be used. Everything else is blocked until the step is done. ---- */
