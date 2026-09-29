@@ -667,6 +667,82 @@ dl.props.dd dd{text-align:right}
 @keyframes redthump{30%{transform:scale(1.04)}}
 @media (prefers-reduced-motion:reduce){.notes li.redacting::after,.notes li.redacting::before{animation-duration:.01s;animation-delay:0s}}
 .stage .q,.stage .dexno{z-index:6}
+
+/* ---- the wider world: people, items, the Syndicate ---- */
+.npc,.mapitem{position:absolute;z-index:2;pointer-events:none;transition:left .2s linear,top .2s linear}
+.npc svg{width:100%;height:100%;display:block;transform:scaleX(var(--face,1))}
+.npc .bang{position:absolute;left:50%;bottom:92%;transform:translateX(-50%);font-family:var(--pix);font-size:14px;color:var(--red);background:#fff;border:3px solid var(--ink);border-radius:8px;padding:3px 7px 2px;opacity:0;z-index:3}
+.npc.alert .bang{opacity:1;animation:pop .25s}
+.npc.grunt::after{content:"";position:absolute;left:10%;right:10%;bottom:-6%;height:10%;border-radius:50%;background:rgba(255,122,26,.35);filter:blur(2px)}
+.mapitem{display:flex;align-items:center;justify-content:center;animation:itembob 1.6s ease-in-out infinite}.mapitem svg{width:70%;height:70%;filter:drop-shadow(0 2px 2px rgba(0,0,0,.45))}
+@keyframes itembob{50%{transform:translateY(-8%)}}
+.expctl{display:flex;flex-direction:column;gap:6px;align-items:flex-end}
+.expbtns{display:flex;gap:6px}.expbtns .btn{font-size:9px;padding:8px 10px}
+.dowse{display:flex;align-items:center;gap:4px;font-family:var(--pix);font-size:8px;color:var(--muted)}
+.dowse i{width:8px;height:14px;border-radius:2px;background:#0C1A44;border:2px solid var(--line)}.dowse i.on{background:var(--sun)}
+.dowse em{font-style:normal;color:#fff;margin-left:4px;min-width:110px}.dowse[data-lv="4"] em{color:var(--sun)}
+.npcname{color:var(--sun);font-weight:400}.npcname.slag{color:#FF8A3A}
+#bag{position:fixed;inset:0;z-index:95;background:rgba(6,10,30,.7);display:flex;align-items:center;justify-content:center;padding:16px}
+#bag[hidden]{display:none}
+.bag-card{width:min(520px,100%);max-height:80vh;overflow:auto;background:var(--paper);color:var(--ink);border:4px solid var(--line);border-radius:14px;padding:14px 16px;display:flex;flex-direction:column;gap:10px}
+.bag-top{display:flex;justify-content:space-between;align-items:center}.bag-top b{font-family:var(--pix);font-size:13px}
+.bag-item{display:grid;grid-template-columns:auto 1fr auto;gap:10px;align-items:center;background:var(--paper-2);border-radius:10px;padding:8px 10px}
+.bag-item b{font-weight:900}.bag-item b span{color:var(--soft)}.bag-item p{margin:2px 0 0;font-size:13px;font-weight:700;color:var(--soft)}
+.bag-empty{margin:0;font-weight:700;color:var(--soft)}
+#bagbtn b{color:var(--sun);font-weight:400}
+#world{position:absolute;left:0;top:0;transition:transform .2s linear}
+#world .map{position:absolute;inset:0}
+.glintmark{position:absolute;z-index:1;pointer-events:none;background:radial-gradient(circle,rgba(255,233,168,.9) 0 12%,rgba(255,233,168,.25) 30%,transparent 60%);animation:glintm 1.2s ease-in-out infinite}
+@keyframes glintm{50%{transform:scale(1.3);opacity:.6}}
+.npc{z-index:1}
+
+#dlg{position:absolute;left:3%;right:3%;bottom:4%;z-index:9;background:#fff;color:var(--ink);border:4px solid var(--line);border-radius:12px;box-shadow:inset 0 0 0 3px #fff,inset 0 0 0 6px #7FA0E8,0 6px 18px rgba(0,0,0,.45);padding:14px 18px 16px;min-height:22%;cursor:pointer}
+#dlg[hidden]{display:none}
+#dlg-who{position:absolute;left:14px;top:-16px;background:var(--sun);color:var(--ink);font-family:var(--pix);font-size:10px;padding:5px 9px;border:3px solid var(--line);border-radius:8px}
+#dlg-txt{margin:6px 0 0;font-family:var(--pix);font-size:clamp(9px,1.5vw,12px);line-height:2}
+#dlg-more{position:absolute;right:14px;bottom:8px;color:var(--red);font-style:normal;font-size:12px;animation:blink 1s steps(2) infinite}
+#dlg-form{display:flex;gap:8px;margin-top:8px}#dlg-form[hidden]{display:none}#dlg-in{flex:1;min-width:0;border:3px solid var(--line);border-radius:8px;padding:8px 10px;font:inherit;font-weight:900;font-size:15px;color:var(--ink);background:var(--paper)}
+.npc .talkmark{position:absolute;left:50%;bottom:95%;transform:translateX(-50%);font-family:var(--pix);font-size:10px;color:var(--ink);background:#fff;border:2px solid var(--ink);border-radius:8px;padding:2px 5px 4px;opacity:0;transition:opacity .2s;z-index:3}
+.npc.near .talkmark{opacity:1}
+.mapobj{position:absolute;z-index:1;pointer-events:none}.mapobj svg{width:100%;height:100%;display:block}
+.mapobj.near{filter:drop-shadow(0 0 5px var(--sun)) drop-shadow(0 0 2px var(--sun))}
+.modal{position:fixed;inset:0;z-index:95;background:rgba(6,10,30,.7);display:flex;align-items:center;justify-content:center;padding:16px}.modal[hidden]{display:none}
+.bag-item.key,.bag-item.clue{grid-template-columns:1fr}.bag-item.key{background:#FFF3C8}
+#jbtn.new{color:var(--sun);border-color:var(--sun-deep);animation:pulse 1.2s ease-in-out infinite}
+.ev{display:inline-block;margin:4px 6px 0 0;border:2px solid var(--line);border-radius:8px;background:var(--paper-2);color:var(--ink);font-family:var(--body);font-weight:800;font-size:12px;padding:5px 8px;cursor:pointer}
+.ev.on{background:var(--sun);border-color:var(--sun-deep)}.evlist{display:block;margin:6px 0 8px}.evgo{font-size:9px;padding:7px 10px}
+.bag-item.side{background:#E4F4E8}
+#duelbar{position:sticky;top:6px;z-index:79;margin:0 0 10px;background:#1A1206;color:#fff;border:3px solid #FF7A1A;border-radius:12px;padding:8px 10px;box-shadow:0 6px 24px rgba(0,0,0,.5);font-weight:800;font-size:12px}
+#duelbar[hidden]{display:none}#duelbar.boss{border-color:#FFD23F}
+.db-top{display:flex;justify-content:space-between;gap:8px;margin-bottom:5px}#db-name{font-family:var(--pix);font-size:11px;color:#FF8A3A}.db-top span{color:#FFD23F;letter-spacing:.06em}
+.db-meter{position:relative;height:16px;border-radius:8px;background:#3A2410;overflow:hidden;border:2px solid #000}
+#db-fill{position:absolute;inset:0 auto 0 0;background:linear-gradient(90deg,#FF7A1A,#FFB24A);transition:width .15s linear}
+#db-txt{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-size:10px;font-family:var(--pix);text-shadow:0 1px 0 #000}
+.z-mine .tile.fd{background:repeating-linear-gradient(0deg,#8A6440 0 30%,#6E4E30 30% 34%);box-shadow:inset 0 0 0 .5px rgba(0,0,0,.2)}
+.z-scrap .tile.fd{background:radial-gradient(circle at 30% 60%,rgba(40,30,20,.22) 0 18%,transparent 19%),linear-gradient(90deg,rgba(0,0,0,.08) 1px,transparent 1px) 0 0/50% 100%,#A3A19A}
+.z-wreck .tile.fd{background:repeating-radial-gradient(ellipse at 50% 130%,transparent 0 6px,rgba(255,255,255,.14) 6px 7px),#BBA474}
+.z-volcano .tile.fd{background:linear-gradient(35deg,transparent 44%,rgba(255,110,30,.6) 46% 48%,transparent 50%),linear-gradient(-50deg,transparent 60%,rgba(255,110,30,.35) 61% 62%,transparent 63%),#35282A}
+.z-vault .tile.fd{background:radial-gradient(circle,#9A5A8A 0 16%,transparent 17%) 0 0/50% 50%,#5A2A4A;box-shadow:none}
+.z-reactor .tile.fd{background:repeating-linear-gradient(0deg,#4A5652 0 2px,transparent 2px 6px),repeating-linear-gradient(90deg,#4A5652 0 2px,transparent 2px 6px),#7A8682}
+.z-glacier .tile.fd{background:radial-gradient(circle at 30% 30%,#FFFFFF 0 10%,transparent 11%),radial-gradient(circle at 70% 70%,#E6F2FA 0 8%,transparent 9%),#F6FBFF;box-shadow:none}
+.z-quill .tile.fd{background:radial-gradient(circle,#B25A62 0 14%,transparent 15%) 0 0/50% 50%,#7A2E38!important;box-shadow:none}
+.z-crater .tile.fd{background:radial-gradient(circle at 25% 35%,rgba(255,255,255,.08) 0 7%,transparent 8%),radial-gradient(circle at 70% 70%,rgba(0,0,0,.18) 0 9%,transparent 10%),var(--floor)}
+.tile.sh{overflow:hidden;box-shadow:none;background:linear-gradient(rgba(110,190,235,.62),rgba(70,150,210,.7)),var(--floor)}
+.z-mine .tile.sh{background:linear-gradient(rgba(80,110,120,.75),rgba(60,90,100,.8)),#6E5B47}
+.z-wreck .tile.sh{background:linear-gradient(rgba(90,210,220,.55),rgba(60,170,200,.65)),#D8C08A}
+.tile.sh::after{content:"";position:absolute;inset:-50%;background:repeating-linear-gradient(165deg,transparent 0 8px,rgba(255,255,255,.22) 8px 9px);animation:lqmove 6s linear infinite}
+.tile.dk{background:#060608;box-shadow:none}
+.lit .tile.dk{background:radial-gradient(circle,rgba(255,200,110,.16),transparent 75%),#2E2820}
+.bag-h{margin:8px 0 0;font-size:11px;font-weight:900;letter-spacing:.14em;color:var(--soft)}
+.bag-item.toolrow{background:#E6EEFF}
+.bag-item .always{font-size:10px;font-weight:900;letter-spacing:.08em;color:#2E6A44;white-space:nowrap}
+.choices{display:flex;flex-wrap:wrap;gap:6px;align-items:center;width:100%;margin-top:4px}.choices span{font-weight:900;font-size:12px;letter-spacing:.08em}
+.go-zone{text-align:left;border:0;cursor:pointer;grid-template-columns:1fr;font:inherit;color:inherit;width:100%}
+.go-zone:hover,.go-zone:focus-visible{outline:3px solid var(--line)}
+.mapobj.decoyfig svg{width:100%;height:100%}
+@media (prefers-reduced-motion:reduce){.tile.sh::after{animation:none}}
+.z-glacier .tile.pa{background:repeating-linear-gradient(90deg,#D4ECF8 0 44%,#9ACAE6 44% 50%);box-shadow:inset 0 2px 0 rgba(255,255,255,.7),inset 0 -2px 0 rgba(70,130,170,.35)}
+.z-crater .tile.pa{background:radial-gradient(circle at 30% 40%,rgba(255,255,255,.14) 0 8%,transparent 9%),radial-gradient(circle at 70% 70%,rgba(255,255,255,.1) 0 6%,transparent 7%),#7A6E98}
 </style>
 
 <div class="app">
@@ -1317,6 +1393,9 @@ function categoryOf(a){if(a.threat)return THREAT_CAT[a.name]||"Hazard";if(/^(no 
 (function recover(){const caught=store.get("wta_caught2",[]),dex=store.get("wta_dex2",{}),have=new Set(ALLOYS.map(a=>a.name));
   caught.forEach(n=>{if(have.has(n))return;const d=dex[n]&&dex[n].def;if(!d||!d.comp)return;
     const a={...d,name:n,aliases:[],leak:false,real:false,recovered:true};a.reactive=isReactive(frac(a));ALLOYS.push(a);have.add(n)})})();
+/* the Sealbreaker: a quest casting from the founder's recovered notes. It never turns up in the wild. */
+ALLOYS.push({name:"Sealbreaker",comp:[["W",40],["Hf",20],["Ta",20],["Re",12],["Os",8]],d:18.6,mp:3000,mag:0,hard:7.5,cond:9,color:"#8C8F96",finish:"p",aliases:[],leak:false,real:false,recovered:true,quest:true,fixedHab:"z-quill",
+  lore:"A casting drawn up in the founder's own notes for one job only: cutting through the seal he set on his basement. He wrote it down, scattered the pages, and never cast it himself.",tmade:"Cast in the Institute's old crucible from the founder's recovered recipe",uses:"Breaking one particular seal",origin:"The Institute's founder (name struck from the record)",creditKind:"person"});
 ALLOYS.forEach((a,i)=>{a.no=i+1;a.types=typesOf(a);a.form=a.mp<25?"vial":"rod";a.hab=habitatOf(a);a.rar=rarityOf(a);a.cat=categoryOf(a)});
 /* ---- Sample forms, manufacturing and (for synthetic alloys) unique lore ---- */
 const FORM_RULES=[[/wire|resistor|thermocouple|heating|toaster|strain gauge|coil|string|spring|filament|winding|antenna|glow plug|hair-dryer/i,"wire"],
@@ -1658,7 +1737,7 @@ function pickAlloy(kind,used){
        if(vis.length&&r<m/THREAT_ODDS+m*vis.length/VISITOR_ODDS)return vis[Math.random()*vis.length|0]}}}
   if(kind==="who")pool=REAL;
   else pool=Math.random()<.4?REAL.filter(a=>!a.leak):ALLOYS.filter(a=>!a.real);
-  pool=pool.filter(a=>!used.has(a.name)&&!a.threat);   // threats only arrive through the fixed roll above
+  pool=pool.filter(a=>!used.has(a.name)&&!a.threat&&!a.quest);   // threats only arrive through the fixed roll above
   const z=EXP.zone&&EXP.zone.cls,local=pool.filter(a=>a.hab===z);
   if(z==="z-quill"){if(local.length&&Math.random()<.3)pool=local}   // the Institute stores samples from every habitat
   else if(local.length)pool=local;
@@ -2460,15 +2539,14 @@ function propSVG(z,kind,seed){const R=mulberry(seed*131+7),r=(a,b)=>a+R()*(b-a),
     default:return S(`${sh}<path d="M7 31 Q5 19 15 14 Q27 9 33 20 Q37 30 27 33 Z" fill="#3A3448" stroke="#1A1628" stroke-width="1.2"/><circle cx="15" cy="22" r="2.2" fill="#2A2438"/><circle cx="24" cy="18" r="1.6" fill="#2A2438"/><circle cx="26" cy="27" r="2.6" fill="#2A2438"/><path d="M10 16 Q20 10 30 15" stroke="#BFE3FF" stroke-width=".8" fill="none" opacity=".6"/>`)}}
 function startExplore(){S.phase="explore";S.r=null;
   $("#game").hidden=true;$("#endscreen").hidden=true;$("#explore").hidden=false;
-  EXP.zone=ZONES[Math.random()*ZONES.length|0];EXP.since=0;EXP.path=null;EXP.busy=false;clearInterval(EXP.timer);
+  EXP.zone=EXP.forceZone||ZONES[Math.random()*ZONES.length|0];EXP.forceZone=null;EXP.since=0;EXP.path=null;EXP.busy=false;clearInterval(EXP.timer);
   const M=EXP.zone.map;EXP.W=M[0].length;EXP.H=M.length;
   $("#zone-name").textContent=EXP.zone.name;$("#zone-sub").textContent=EXP.zone.sub;const mw=$("#mapwrap");mw.className="mapwrap "+EXP.zone.cls;mw.style.aspectRatio=`${EXP.W}/${EXP.H}`;
   $("#map").style.gridTemplateColumns=`repeat(${EXP.W},1fr)`;$("#map").style.gridTemplateRows=`repeat(${EXP.H},1fr)`;
   const edge=(x,y,c)=>{const n=[[0,-1],[1,0],[0,1],[-1,0]].map(([dx,dy])=>(M[y+dy]||"")[x+dx]===c?1:0);return n.join("")};
   let h="",k=0;M.forEach((row,y)=>row.split("").forEach((c,x)=>{if(c==="P"){EXP.x=x;EXP.y=y}
     const seed=x*31+y*17+EXP.zone.name.length;
-    const cls=c==="#"?"w":c==="L"?"l":c===","?"r":c==="="?"pa":c==="~"?"lq":c==="o"?"f pr":c==="T"?"f tl":"f";
-    const inner=c===","?rubbleSVG(EXP.zone.cls,seed):c==="o"?propSVG(EXP.zone.cls,"o",seed):c==="T"?propSVG(EXP.zone.cls,"T",seed):"";
+    const[cls,inner]=tileLook(c,x,y,seed,M);
     h+=`<div class="tile ${cls}" data-x="${x}" data-y="${y}" data-e="${c==="="?edge(x,y,"="):c==="~"?edge(x,y,"~"):""}" style="--d:${(k++%7)*.35}s">${inner}</div>`}));
   $("#map").innerHTML=h;$("#wipe").innerHTML=Array.from({length:8},(_,i)=>`<i style="--k:${i}"></i>`).join("");$("#wipe").className="wipe";
   const pl=$("#player");pl.className="player";pl.style.width=(100/EXP.W)+"%";pl.style.height=(100/EXP.H)+"%";pl.innerHTML=`<span class="bang">!</span>`+MINER;placePlayer(true);
@@ -2478,13 +2556,13 @@ function placePlayer(instant){const pl=$("#player");if(instant){pl.style.transit
   pl.style.left=(EXP.x/EXP.W*100)+"%";pl.style.top=(EXP.y/EXP.H*100)+"%";pl.style.setProperty("--face",EXP.face);
   if(instant){void pl.offsetWidth;pl.style.transition=""}}
 const tileAt=(x,y)=>(EXP.zone.map[y]||"")[x]||"#";
-const passable=c=>c==="."||c===","||c==="="||c==="P";
+const passable=c=>canWalk(c);
 function step(dx,dy){if(EXP.busy||S.phase!=="explore")return false;
   if(dx)EXP.face=dx;const nx=EXP.x+dx,ny=EXP.y+dy;
   if(!passable(tileAt(nx,ny))){placePlayer();return false}
   EXP.x=nx;EXP.y=ny;const pl=$("#player");pl.classList.remove("walk");void pl.offsetWidth;pl.classList.add("walk");placePlayer();
   if(tileAt(nx,ny)===","){const t=document.querySelector(`.tile[data-x="${nx}"][data-y="${ny}"]`);t.classList.remove("rustle");void t.offsetWidth;t.classList.add("rustle");
-    EXP.since++;if(Math.random()<(EXP.since>=8?1:.16)){encounter();return false}}
+    EXP.since++;if(Math.random()<(EXP.since>=RUBBLE_PITY?1:RUBBLE_P)){encounter();return false}}
   return true}
 function encounter(){EXP.busy=true;EXP.path=null;clearInterval(EXP.timer);clearInterval(EXP.hold);
   $("#player").classList.add("alert");$("#expmsg").textContent="Something moved in the rubble!";
@@ -3832,7 +3910,7 @@ const TUT_ALLOY="Brass";
 const TUT_STEPS=[
  {t:"WELCOME, RECRUIT!",x:"I'm Dr. Marlow, head of the Quillmoor field team. Out there, wild alloys hide in the rubble. Your job: find them, test them in the lab, and work out what they're made of. Let's do your first one together.<br><br><b>Heads up: the tutorial round earns NO points.</b> It's just practice, so your score only starts counting on real encounters."},
  {sel:".modes",t:"GAME MODES",x:"<b>Name → Elements</b>: you're told the alloy's name; you find its elements.<br><b>Mystery</b>: no name given. Type it yourself (no multiple choice!), then find its elements.<br><b>Mixed</b>: a bit of both. Your practice alloy will be a Name → Elements one."},
- {sel:"#mapwrap",t:"THE FIELD",x:"Move with the <b>arrow keys / WASD</b>, <b>tap a spot</b> on the map, or use the <b>pad</b>. Wild alloys hide in the glittering <b>rubble</b> tiles.<br><br>▶ Walk into some rubble now.",wait:()=>S.phase==="round"&&S.r,enter:()=>{EXP.since=8}},
+ {sel:"#mapwrap",t:"THE FIELD",x:"Move with the <b>arrow keys / WASD</b>, <b>tap a spot</b> on the map, or use the <b>pad</b>. Wild alloys hide in the glittering <b>rubble</b> tiles.<br><br>▶ Walk into some rubble now.",wait:()=>S.phase==="round"&&S.r,enter:()=>{EXP.since=RUBBLE_PITY}},
  {sel:"#stage",t:"A WILD ALLOY APPEARED!",x:"This is your sample. It always comes as a <b>rod</b> or a <b>vial</b> (vials can hold liquid, granules, beads, powder or shavings). Its name is on the plate. What you <i>see</i> is a clue: look at its color and shine.",delay:1400},
  {sel:"#dexcard",t:"FIELD NOTES",x:"Its entry: a description, what it's used for and how it's made. Every test you run is written into the <b>LAB NOTEBOOK</b> at the bottom. Nothing here tells you a property directly. You measure everything yourself."},
  {sel:".kit",t:"FIELD KIT: MAGNET",x:"Drag a tool onto the sample (or tap the tool, then tap the sample).<br><br>▶ Try the <b>magnet</b>: does it stick, tug, or do nothing?",wait:()=>S.r&&S.r.notes.magnet},
@@ -3977,6 +4055,801 @@ function syncSkins(){requestAnimationFrame(syncSkins);const a=S.r&&S.r.a;if(!a)r
     if(rod){const d=rodDims(x,y,w,h,"cy-chunk");cr.setAttribute("x",d.cx-d.rw/2);cr.setAttribute("width",d.rw);cr.setAttribute("y",d.top);cr.setAttribute("height",d.rh);cr.setAttribute("rx",1)}
     else{cr.setAttribute("x",x);cr.setAttribute("width",w);cr.setAttribute("y",y);cr.setAttribute("height",h);cr.setAttribute("rx",3)}}}
 requestAnimationFrame(syncSkins);
+
+
+const RUBBLE_PITY=26,RUBBLE_P=.05;   // wild alloys are scarce now: about 1 in 20 rubble steps, and a sure thing after 26 without one
+/* =============== THE WIDER WORLD: hand-laid maps with a scrolling camera, an INTERACT button, proper dialogue, the people who live out there, items, the Slag Syndicate, and the founder's quest =============== */
+
+/* ---- the maps: every one laid out by hand. The view is 17 by 11 tiles and follows you around. ---- */
+const VIEW={w:17,h:11};
+const MAPS={"z-mine": ["########################################", "#y:y:y:y#############,,,x,,,,,##,,,,,,##", "#:::::::ddddddddd####,,,,,,,,,##,,,x,,##", "#:::::::ddddddddd####,,x,,,T,,##,,,,,,##", "#y:::::y########dd####,,,,,,,####,,,,###", "################dd######,,,######,,,,###", "################dd#######K########o.S###", "#,,T,,,,,,##L###dd#######.####L###...###", "#,,,,,,,,,..............=..............#", "#,,,,,T,,,..............=...........T..#", "#,,,,,,,,,#############.=###############", "#,,T,,,,,,#cxx.x..c####.=#.,,......#####", "#,,,,,,,,,#........####.=#....wwwwww####", "#,,,,T,,,,#.............=.....w~~~~w,,,#", "#,,,,,,,,,#S.....y.####.=#,...w~~~~w,x,#", "#,,,T,,,,,#cc..xx..####.=#....w~~~~w,,,#", "#######################.=#.T..w~~~~w,,,#", "##y:::S:::y############.=#....w~~~~w,,,#", "##:::::::::############.=#....wwwwww####", "##:::::::::###..........=###############", "##::x::::::...,,,,......=......#########", "##:::::::::...,,,.......=...o..#,,,,,,,#", "##::::::x::...,,........=.......,,x,,,,#", "##:::::::::#........,...P......#,,,,,,,#", "############..................##,,,,,,,#", "######################L.....L###########"], "z-scrap": ["########################################", "#.x..x..x..x................o~~~~~o....#", "#.T,,T..T,,T...............o~~~~~~~o.,.#", "#.T,,T,,T,,T.,..............~~~~~~..,,.#", "#.T..T,,T..T,,..............o~~~~o..,x.#", "#.T,,T,,T,.T,,.........................#", "#.T,.T..T,,T....:::::::::::.......T..T.#", "#.T,,T.,T,,T.,,.:o:::::::o:.x.x..,,,,,.#", "#.T,,T,,T..T,,..::::y::::::.,,,..,,x,,.#", "#.T..T,,T,,T....:::::::::::.,,,..,,,,,.#", "#.x..x..x..x....:o:::::::o:.x.x...T..T.#", "#...............:::::::=:::.....########", "#.xx..,,,..x...........=........#,,,,,,#", "#.x,,,,,,,.xx.....o....=....,,,.#,,T,,,#", "#..,,,xx,,,............=...,,,,.#,x,,,,#", "#.,,,,xx,,,,....x......=....,,.S#,,,,T,#", "#.,,x,,,,,x,,..........=........c,,,,,,#", "#..,,,,,,,,,......o....=....x...#,,x,,,#", "#.x.,,,..,,..x.........=........#,,,,,T#", "#......................=..#######,,,,,,#", "#..~~~....T.T..........=..S::::##T,,x,,#", "#.~~~~~..TTT...........=...::o:##,,,,,,#", "#..~~~o...T............=..#:o::##,,T,,,#", "#.o...................P=..#######,,,,,,#", "#.x.x................L.=.L##############", "#######################=################"], "z-wreck": ["~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", "~~~~~~~T..T~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", "~~~~~T.,,.,..T~~~~~~~~~~~~~~~~wwww~~~~~~", "~~~~.,,T,,.,,,.T~~~~~~~~~~~~wwwyyww~~~~~", "~~~T..,,,..T.,,,..~~~~~~~~~wwww##www~~~~", "~~~..,,.T...,,..T..~~~~~~~~ww##,,##ww~~~", "~~.T.........::....:~~~~~~~ww#,,.,,#ww~~", "~~..x......:::::::::w~~~~~~ww#,,,x,#ww~~", "~~.....::::wwwwwwww:w~~~~~~ww#,,,,,#ww~~", "~~.#####.::w~~~~~~w::www~~~ww#,,,,,#ww~~", "~~.#:::#.::w~o~~~~w:::wwwwwww##,,,##www~", "~~.#:y:S..:www~~~ww::::::::www#,,,#www~~", "~~.#:::#...::wwwww::,,,,::::www#.##ww~~~", "~~.##.##....::::::::,,,,,:::wwwwwwww~~~~", "~~...........,,,......,,,,:::::::ww~~~~~", "~~.x......,,,,,,..............:::~~~~~~~", "~~..o....,,,,,,,......o.........====~~~~", "~~.......,,,T,,.......o.........====~~~~", "~~T...........................:::~~~~~~~", "~~~...o......,,,,,.......,,,,::::~~~~~~~", "~~~~.........,,,,,,.....,,,,,,::~~~~~~~~", "~~~~~..x...P...........,,,,,:::~~~~~~~~~", "~~~~~~:::::::::::::::::::::::~~~~~~~~~~~", "~~~~~~~~wwwwwwwwwwwwwwwwwwww~~~~~~~~~~~~", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~", "~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~~"], "z-volcano": ["########################################", "#####...T..######~~~##..y..y..##~~~#####", "###..,,,..,,..###~~~#.y.::::.y.#~~~#####", "##..,,T,,..,,..##~~~..::::::::..~~~#..##", "##.,,,,,,,,,,,..#~~~y.:::~~:::.y~~~,,,.#", "#..,,,T,,..,,,...===.::::~~::::.===.,,.#", "#..##.##.,,,,...#~~~y.::::::::.y~~~,,,,#", "#..#::x#..,,,T..#~~~#.y.::::.y.#~~~,T,,#", "#..#:::::.,,,,..#~~~##........##~~~,,,.#", "#..#x::S#...,,..#~~~###..T...###~~~..,.#", "#..###.##.......#~~~#....,,....#~~~...##", "#......T........#~~~#..,,,,,,..#~~~#..##", "#..,,,,.....T...#~~~#.,,,,,,,,.#~~~#..##", "#..,,,,,,........===..,,,T,,,,..===....#", "#.T,,,,,,,..T...#~~~#.,,,,,,,,.#~~~.,,##", "#..,,,,,......,,#~~~#..,,,,,,..#~~~.,,##", "#.....T...,,,,,,#~~~#....,,....#~~~..T##", "##.....,,,,,,T,,#~~~##..x..x..##~~~#K###", "##..T..,,,,,,,,.#~~~#.T......T.#~~~,,,,#", "###..............===............~~~,x,,#", "###..,,,.....T..#~~~#....T.....#~~~,,,,#", "####.,,,,,...P..#~~~#..........#~~~,,T,#", "#####.,,........#~~~##..,,,,..##~~~,,,,#", "######.........##~~~###.,,,,.###~~~#####", "#################~~~############~~~#####", "########################################"], "z-vault": ["########################################", "#####c,,,c##########o==o#########,,,,###", "#####,,,,,##########====########,,x,,###", "#####c,,,c######T##y====y##T####,,,,,###", "#######.#######..#..====..#..###K#######", "#,,,,#...#,,,,#..x..====..x..#...#,,,,,#", "#,oo,#...#,,o,#.....====.....#.x.#,,o,,#", "#,,,,c...c,,,,#..T..====..T..#...c,,,,,#", "###.##...##.###.....====.....###.##.####", "#...................====..............##", "#..x..y..x..T.......====.......T..x..y.#", "#...................====...............#", "#..T....T....T..x...====...x..T....T...#", "#...................====...............#", "##########.#####T...====...T#####.######", "#yyy.....#.#........====........#......#", "#y:::::::#.#..x..T..====..T..x..#.,,,,.#", "#y:::S:::..#........====........#.,,,,.#", "#y:::::::#.###.####.====.####.###.,,,,.#", "#yyy.....#...#.#....====....#.#...,,,,.#", "######.###...#.#..x.====.x..#.#........#", "#............#.#....====....#.#...o..o.#", "#..T....T....#.#....====....#.#........#", "#............#.##L..====..L##.#........#", "#............#......====.......#.......#", "####################=P==################"], "z-reactor": ["########################################", "#yx:x:xy#......T..T..T......#c.c.c.c.c.#", "#:::::::#...................#..........#", "#:::S:::#..,,,,..........,,,#c.c.c...c.#", "#:::::::.....,,,,,,.....,,,,...........#", "#::y::::#..,,,,,,,.......,,,#c.c.c.c.c.#", "####.####...................############", "#..........====================........#", "#..T...o...=::::::::::::::::::=....o...#", "#..........=:~~~~~~~~~~~~~~~~:=........#", "#y.,,,,....=:~~~~~~~~~~~~~~~~:=....,,,.#", "#..,,,,,...=:~~~~~~oooo~~~~~~:=...,,,,.#", "#..,,,,....=:~~~~~~oooo~~~~~~:=...,,,,y#", "#..,,,.....=:~~~~~~~~~~~~~~~~:=....,,,.#", "#y.........=:~~~~~~~~~~~~~~~~:=........#", "#..T.......=::::::::::::::::::=....T...#", "#..........====================........#", "#......o...........................o...#", "####.#######...,,,,.......,,,,...#######", "#wwwwwww##.....,,,,,.....,,,,,...#yTTTy#", "#w,,,,,w##..T..,,,..........T....#:::::#", "#w,,,,,w......................o..#::::.#", "#wwwwwww##......y........y.......#:y:::#", "##########........................:::::#", "#y...........o...P....o...........:::::#", "########################################"], "z-glacier": ["########################################", "###::::::::::::::####::::::::::::::#####", "##::T:::,,,,:::T:::##::::,,,,::::T:::###", "#:::::,,,,,,,,:::::::::::,,,,,,::::::::#", "#::#####::,,,,,,:::::::::::,,,,:::T:::##", "#::#:::#:::::::::.........::::::::::::##", "#::#:y:.::::::......~~~~.......:::::::##", "#::#:S:#::::....~~~~~~~~~~~~....::::T::#", "#::##.##:::...~~~~~~~~~~~~~~~~...::::::#", "#:::::::::...~~~~~~~~~~~~~~~~~~..::::::#", "#::T::::=========================::::::#", "#:::::::::...~~~~~~~~~~~~~~~~~~..::x:::#", "#::::::::::...~~~~~~~~~~~~~~~~..y.:::::#", "##:::T::::::...~~~~~~~~~~~~~~...x:::T::#", "##::::::::::::....~~~~~~~~.....:::::::##", "###wwww:::::::::.............::::::::::#", "#wwT,,w::::::::::::::::::::::::::::::::#", "#w,,,,w::::::,,,,,:::::T:::::,,,,,:::::#", "#w,,T,w::T:::,,,,,,:::::::::,,,,,,:::::#", "#ww,,ww::::::,,,,,::::::::::::,,,,:::::#", "####KK####::::::::::::T:::::::::::::::##", "#,,,,,,,,#:::::::::::::::::::::::####T##", "#,T,,,,T,#::::::P::::::::::::::::#,,,,,#", "#,,,,x,,,K::::::::::::::::::::::::,,T,,#", "#,,T,,,,,#:::::::::::::::::::::::#,,,,,#", "########################################"], "z-quill": ["########################################", "#xxxx.xxxx#..T..T..==..T..T..#o.o...o.o#", "#:::::::::#........==........#.........#", "#::o:::o::...T..T..==..T..T............#", "#:::::::::#........==........#o.o...o.o#", "#::o:::o::#..T..T..==..T..T..#.........#", "#x:::::::x#........==........#x...S...x#", "###########..T..T..==..T..T..###########", "#x.x.x.x.x#........==........#y.......y#", "#..................==...........o...o..#", "#x.x...x.x#........==........#.........#", "#.........#..T..T..==..T..T..#..o...o..#", "#x.x.x.xSx#........==........#y...S...y#", "###########........==........###########", "#y.................==.................y#", "#..................==..................#", "#..TT..TT..TT......==......TT..TT..TT..#", "#..................==..................#", "#.,,,,,,.....o.....==.....o.....,,,,,,.#", "#.,,,,,,...........==...........,,,,,,.#", "#.,,,,,,....y......==......y....,,,,,,.#", "#..................==..................#", "#......ooo.........==.........ooo......#", "#y.................==.................y#", "#..................=P..................#", "#################L#..L##################"], "z-crater": ["########################################", "#::::::::::::::::::::::::###############", "#::,,,,:::T::::::::,,,,::#x...x....y#.,#", "#:,,,,,,:::::::::::,,,,,:#..........K..#", "#::,,,,:::::::T::::::,,::#....S.....#,,#", "#::::::::::::::::::::::::#..........####", "#:::T:::=================#...x..x...#::#", "#:::::::=:::::::::::::::=#####.######::#", "#::y::::=::::,,,,,,,::::=::::::::::::::#", "#:::::::=:::,,,~~~~,,,::=::::::T:::::::#", "#:::::::=:::,,~~~~~~~~,,=::::::::::::::#", "#:::T:::=::,,~~~~~~~~~~,=:::::y::::::::#", "#:::::::=::,~~~~yy~~~~~~=::::::::::::::#", "#:::::::=::,,~~~~~~~~~~,=:::::::::::T::#", "#:::::::=:::,,~~~~~~~~,,=::::::::::::::#", "#::T::::=::::,,,~~~~,,,:=::::,,,,::::::#", "#:::::::=:::::,,,,,,,:::=:::,,,,,,:::::#", "#:::::::=:::::::::::::::=::::,,,,::::::#", "#:,,,:::=================::::::::::y:::#", "#,,,,,:::::::::::::::::::::::::::::::::#", "#,,T,,::::::y:::::::T:::::::::::::,,,::#", "#:,,,::::::::::::::::::::::::::::,,,,,:#", "#::::::::::P:::::::::::::::::::::,,T,,:#", "#::::T::::::::::::::::T:::::::::::,,,::#", "#::::::::::::::::::::::::::::::::::::::#", "########################################"]};
+const SPOTS={"z-mine": {"keeper": [21, 23], "disc": [4, 21], "amb1": [28, 13], "amb2": [8, 19], "side": [37, 9], "book": [4, 3]}, "z-scrap": {"keeper": [18, 8], "disc": [15, 21], "amb1": [22, 10], "amb2": [13, 11], "side": [1, 18]}, "z-wreck": {"keeper": [5, 14], "disc": [17, 18], "amb1": [10, 6], "amb2": [20, 21], "side": [4, 5], "chest": [32, 6]}, "z-volcano": {"keeper": [25, 8], "disc": [9, 11], "amb1": [3, 16], "amb2": [26, 19], "side": [9, 10]}, "z-vault": {"keeper": [6, 17], "disc": [6, 22], "amb1": [21, 12], "amb2": [27, 13]}, "z-reactor": {"keeper": [5, 7], "disc": [5, 2], "amb1": [22, 17], "amb2": [36, 21], "logs": [35, 3]}, "z-glacier": {"keeper": [6, 9], "disc": [20, 16], "amb1": [34, 12], "amb2": [36, 20], "side": [35, 22]}, "z-quill": {"keeper": [5, 4], "disc": [8, 21], "amb1": [15, 15], "amb2": [34, 10], "cabinet": [5, 10], "seal": [20, 0], "portrait": [26, 0], "crucible": [32, 3], "motto": [18, 25]}, "z-crater": {"keeper": [28, 5], "disc": [4, 10], "amb1": [29, 12], "amb2": [10, 18], "film": [38, 3]}};
+/* fixed landmarks in the Institute's hall */
+const HALL={seal:SPOTS["z-quill"].seal,portrait:SPOTS["z-quill"].portrait,crucible:SPOTS["z-quill"].crucible,motto:SPOTS["z-quill"].motto};
+const BASEMENT={name:"THE FOUNDER'S BASEMENT",sub:"The first lab the Institute ever had. Nobody has breathed this air in decades.",cls:"z-quill",special:"basement",map:["#################","#.......#.......#","#.......#.......#","#...............#","#.......#.......#","####.####.......#","#.......#.......#","#...............#","#.......#.......#","#.......P.......#","#################"]};
+const STUDY={name:"A HIDDEN STUDY",sub:"Behind the portrait. Somebody has been living here.",cls:"z-quill",special:"study",map:["#############","#...........#","#...........#","#...........#","#.....P.....#","#############"]};
+{const _se=startExplore;startExplore=function(){ZONES.forEach(z=>{z.map=openedMap(z.cls)});if(!EXP.forceZone&&questPull())EXP.forceZone=questPull();_se();camSetup()}}
+function camSetup(){const mw=$("#mapwrap");mw.style.aspectRatio=`${VIEW.w}/${VIEW.h}`;let w=$("#world");if(!w){w=document.createElement("div");w.id="world";mw.insertBefore(w,mw.firstChild);w.appendChild($("#map"));w.appendChild($("#player"))}
+  w.style.width=(EXP.W/VIEW.w*100)+"%";w.style.height=(EXP.H/VIEW.h*100)+"%";cam(true)}
+function cam(instant){const w=$("#world");if(!w||!EXP.W)return;const ax=(v,W,V)=>W<=V?-(V-W)/2:Math.max(0,Math.min(W-V,v-(V-1)/2)),cx=ax(EXP.x,EXP.W,VIEW.w),cy=ax(EXP.y,EXP.H,VIEW.h);
+  if(instant)w.style.transition="none";w.style.transform=`translate(${-cx/EXP.W*100}%,${-cy/EXP.H*100}%)`;if(instant){void w.offsetWidth;w.style.transition=""}}
+{const _pp=placePlayer;placePlayer=function(instant){_pp(instant);cam(instant);nearMarks()}}
+addEventListener("resize",()=>cam(true));
+
+/* ---- quest state ---- */
+const Q={get s(){return store.get("wta_q",0)},set s(v){store.set("wta_q",v);store.set("wta_qf_seenJ",0);journalDot()},flag(k){return !!store.get("wta_qf_"+k,0)},set(k){if(k!=="seenJ")store.set("wta_qf_seenJ",0);store.set("wta_qf_"+k,1);journalDot()}};
+const PAGE_MAPS=["z-mine","z-wreck","z-volcano","z-glacier"];
+const PAGES={
+ "z-mine":{t:"Page one",x:"...the first ingredient is the stubborn one. It will not melt for any furnace we have; they spin it into the threads that glow inside lamps. Heaviest-hearted of the lot. — A.M."},
+ "z-wreck":{t:"Page two",x:"...the second hid inside another metal for a century before anyone noticed it. They named it for the old name of a harbour city in the north, Hafnia. — A.M."},
+ "z-volcano":{t:"Page three",x:"...the third is named for the king in the old story, punished to stand forever in water he could never drink. It shrugs off acid like he shrugged off everything else. — A.M."},
+ "z-glacier":{t:"Page four",x:"...the fourth was the last stable one anyone ever found. Named for a great river. A little goes a long way. — A.M."},
+ "z-crater":{t:"Page five",x:"...the last is the densest thing a hand can hold, named for its smell. Cast all five together in the old crucible and it will cut my seal. I could never bring myself to do it. — A.M."}};
+function pagesGot(){return store.get("wta_pages",[])}
+function questPull(){const s=Q.s;if(s<=0)return null;const want=s===1?PAGE_MAPS.filter(z=>!pagesGot().includes(z)):s===2?["z-crater"]:[3,6,7,8,11,13].includes(s)?["z-quill"]:s===4||s===9||s===12?["z-vault"]:s===5?["z-reactor"]:[];
+  if(!want.length||Math.random()>.45)return null;return ZONES.find(z=>z.cls===want[Math.random()*want.length|0])}
+function vaultCaught(){return [...S.caught].filter(n=>{const a=ALLOYS.find(x=>x.name===n);return a&&a.hab==="z-vault"&&!a.threat}).length}
+function evidenceCount(){return EVIDENCE.filter(e=>e.good&&Q.flag(e.f)).length}
+function questObjective(){const s=Q.s,p=pagesGot().length;return [
+  "Visit the Quillmoor Institute and talk to Archivist Wren in the reading room.",
+  `Find the founder's lost notebook pages (${p}/4). They went out with the first field teams: Rustvein Mine, Sunken Galleon Cove, Emberforge Caldera and Frostbite Cavern. Ask the people who've lived there longest.`,
+  "The fifth page was stolen. Rumour says a Syndicate foreman has it, out at Starfall Crater.",
+  "You have all five pages. Take them back to Archivist Wren at the Institute.",
+  `Chronicler Vell at the Gilded Vault can read the founder's shorthand, but wants proof you know your stuff: register 3 different alloys from the vault (${Math.min(3,vaultCaught())}/3).`,
+  Q.flag("orrinAsk")?"Night Watchman Orrin at the Old Reactor Hall holds the crucible key. He wants you to beat a Slag Syndicate grunt first.":"The recipe needs the Institute's old crucible. Its key is with Night Watchman Orrin at the Old Reactor Hall.",
+  "You have the crucible key and the recipe. Cast the Sealbreaker in the crucible in the Institute's old lab.",
+  "You have the Sealbreaker. Use it on the sealed wall at the head of the Institute's hall.",
+  "The basement is open. Search it. The founder's desk drawer is locked with two letter dials: his initials.",
+  "The founder's letter is torn in half. The rest, it says, is with 'the one I trusted first'. Who was that?",
+  "The second half of the letter speaks of the founder's 'oldest face', his ring, and 'the words I carved over the front door'.",
+  "The study is empty. Marlow's diary says he goes somewhere every night. Where would the founder go?",
+  "Marlow said to meet him in the study. Before you do, make sure you can prove what you think. People who knew the founder long ago might remember more now.",
+  `Confront Dr. Marlow in the hidden study. Bring evidence (${evidenceCount()} strong pieces so far).`,
+  "You know who the founder is."][Math.min(s,14)]}
+/* the evidence you can present at the end. Only some of it proves anything about Marlow. */
+const EVIDENCE=[
+ {f:"coat",t:"The lab coat",x:"Name tape torn to '...LOW'. Field badge number 001, the same number Marlow wore.",good:1},
+ {f:"vellYoung",t:"Vell's memory",x:"The founder taught her as a girl. She saw him in the hall last spring, not a day older.",good:1},
+ {f:"nightlog",t:"Orrin's night log",x:"Badge 001 signs in every night at two in the morning, to a room that isn't on any floor plan.",good:1},
+ {f:"lampbook",t:"Nettie's lamp book",x:"Sixty years ago a young scientist signed out a lamp: 'A.M., badge 001, Quillmoor'.",good:1},
+ {f:"manifest",t:"The salvage manifest",x:"The galleon salvage, sixty years ago: 'Scientist aboard: A.M., Institute badge 001'.",good:1},
+ {f:"letters",t:"The recruitment letters",x:"Hundreds of letters in the study, every one signed 'A.M., Head of Field Team'.",good:1},
+ {f:"photo",t:"The photograph",x:"Opening day: 'A. M., with my first student, little V.'",good:0},
+ {f:"ledger",t:"The ledger",x:"'Sample 1. Do not name it.' Someone else later called it Founder's Folly.",good:0},
+ {f:"recipe",t:"The Sealbreaker recipe",x:"Tungsten, hafnium, tantalum, rhenium and osmium, cast together in the old crucible.",good:0},
+ {f:"diary",t:"Marlow's diary",x:"'Every night I go down to tend the cell. The recruit is close now.'",good:0},
+ {f:"motto",t:"The motto over the door",x:"QVAERE POST MVRVM: 'seek behind the wall'.",good:0}];
+/* ---- interacting: one button to talk, examine, use doors, or search the ground ---- */
+const DLG={open:false,lines:[],i:0,who:"",done:null,prompt:null};
+function dlgEl(){let d=$("#dlg");if(!d){d=document.createElement("div");d.id="dlg";d.innerHTML=`<b id="dlg-who"></b><p id="dlg-txt"></p><form id="dlg-form" hidden><input id="dlg-in" autocomplete="off" maxlength="24"><button class="btn" type="submit">OK</button></form><i id="dlg-more">▼</i>`;$("#mapwrap").appendChild(d);
+    d.onclick=e=>{if(e.target.closest("form"))return;dlgNext()};$("#dlg-form").onsubmit=e=>{e.preventDefault();const v=$("#dlg-in").value.trim();const p=DLG.prompt;DLG.prompt=null;$("#dlg-form").hidden=true;dlgClose();p&&p(v)}}return d}
+function talk(who,lines,done,prompt){const d=dlgEl();Object.assign(DLG,{open:true,lines:[].concat(lines),i:0,who,done,prompt});EXP.busy=true;EXP.path=null;clearInterval(EXP.timer);d.hidden=false;dlgShow()}
+let dlgTyper=null;
+function dlgShow(){const t=DLG.lines[DLG.i]||"";$("#dlg-who").textContent=DLG.who?DLG.who.toUpperCase():"";$("#dlg-who").hidden=!DLG.who;const el=$("#dlg-txt");clearInterval(dlgTyper);let k=0;el.textContent="";
+  dlgTyper=setInterval(()=>{k+=2;el.textContent=t.slice(0,k);if(k>=t.length){clearInterval(dlgTyper);dlgTyper=null;const last=DLG.i>=DLG.lines.length-1;$("#dlg-more").hidden=last&&!!DLG.prompt;if(last&&DLG.prompt){$("#dlg-form").hidden=false;$("#dlg-in").value="";$("#dlg-in").focus()}}},16);sfx("sel")}
+function dlgNext(){if(!DLG.open)return;if(dlgTyper){clearInterval(dlgTyper);dlgTyper=null;$("#dlg-txt").textContent=DLG.lines[DLG.i];if(DLG.i>=DLG.lines.length-1&&DLG.prompt){$("#dlg-form").hidden=false;$("#dlg-in").focus()}return}
+  if(DLG.prompt&&DLG.i>=DLG.lines.length-1)return;DLG.i++;if(DLG.i>=DLG.lines.length){dlgClose();const f=DLG.done;DLG.done=null;f&&f()}else dlgShow()}
+function dlgClose(){DLG.open=false;const d=$("#dlg");if(d)d.hidden=true;EXP.busy=false}
+function frontOf(){const d=EXP.dir||[EXP.face||1,0];return[EXP.x+d[0],EXP.y+d[1]]}
+function thingsAt(x,y){return[...(EXP.grunts||[]).filter(g=>!g.done&&g.x===x&&g.y===y),...(EXP.npcs||[]).filter(p=>p.x===x&&p.y===y),...(EXP.objs||[]).filter(o=>o.x===x&&o.y===y)]}
+function interact(){if(DLG.open){dlgNext();return}if(S.phase!=="explore"||EXP.busy)return;if(!gate("interact",250))return;
+  const[fx,fy]=frontOf();let t=thingsAt(EXP.x,EXP.y)[0]||thingsAt(fx,fy)[0];
+  if(!t){const adj=[[1,0],[-1,0],[0,1],[0,-1]].flatMap(([dx,dy])=>thingsAt(EXP.x+dx,EXP.y+dy));t=adj.find(q=>q.grunt||q.talks)||adj[0]}   // people first, then objects
+  if(t){if(t.grunt)slagChallenge(t);else if(t.use)t.use();else talkTo(t);return}
+  searchHere()}
+function nearMarks(){const all=[...(EXP.npcs||[]),...(EXP.objs||[])];all.forEach(p=>{if(!p.el)return;const n=Math.abs(p.x-EXP.x)+Math.abs(p.y-EXP.y)<=1;p.el.classList.toggle("near",n)})}
+
+
+/* ---- the look of the people ---- */
+function npcSVG(L){const skin=L.skin||"#F2C7A5",ink="#121B40",wide=L.stout?3:0,hair=L.hair||"#3A2414";let hairSvg="";
+  switch(L.hs){case"bald":hairSvg=`<path d="M13.4 11 Q14 7.5 16 7" stroke="${hair}" stroke-width="1.6" fill="none"/><path d="M26.6 11 Q26 7.5 24 7" stroke="${hair}" stroke-width="1.6" fill="none"/>`;break;
+    case"long":hairSvg=`<path d="M12.5 13 Q12 5 20 5 Q28 5 27.5 13 L28.5 22 Q26 20 26 16 Q24 9 20 9 Q16 9 14 16 Q14 20 11.5 22 Z" fill="${hair}" stroke="${ink}" stroke-width="1.1"/>`;break;
+    case"bun":hairSvg=`<circle cx="20" cy="4.5" r="3.4" fill="${hair}" stroke="${ink}" stroke-width="1.1"/><path d="M13 12 Q13 5.5 20 5.5 Q27 5.5 27 12 Q24 8 20 8.6 Q16 8 13 12 Z" fill="${hair}" stroke="${ink}" stroke-width="1.1"/>`;break;
+    case"spiky":hairSvg=`<path d="M13 11 L14 5 L16.5 8 L18 3.5 L20.5 7.5 L22.5 3.5 L24 8 L26.5 5 L27 11 Q24 8.5 20 9 Q16 8.5 13 11 Z" fill="${hair}" stroke="${ink}" stroke-width="1.1"/>`;break;
+    case"curly":hairSvg=[[14,9],[17,6.5],[20.5,5.8],[24,6.8],[26.4,9.4],[13,12]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="3" fill="${hair}" stroke="${ink}" stroke-width=".9"/>`).join("");break;
+    default:hairSvg=`<path d="M13 12 Q13 5.5 20 5.5 Q27 5.5 27 12 Q24 8.5 20 9 Q16 8.5 13 12 Z" fill="${hair}" stroke="${ink}" stroke-width="1.2"/>`}
+  const acc=L.acc||[],has=a=>acc.includes(a);
+  return `<svg viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="20" cy="37.5" rx="${10+wide}" ry="2.2" fill="#000" opacity=".3"/>
+  <rect x="${14.5-wide/2}" y="30" width="4.5" height="6.5" rx="1" fill="${L.legs||"#2E3548"}"/><rect x="${21+wide/2}" y="30" width="4.5" height="6.5" rx="1" fill="${L.legs||"#2E3548"}"/>
+  <path d="M${12-wide} 21 Q20 18 ${28+wide} 21 L${29+wide} 32 L${11-wide} 32 Z" fill="${L.coat}" stroke="${ink}" stroke-width="1.5" stroke-linejoin="round"/>
+  ${has("apron")?`<path d="M15 22 H25 V32 H15 Z" fill="${L.apron||"#E8E4DA"}" stroke="${ink}" stroke-width=".9"/>`:""}
+  ${has("scarf")?`<path d="M14 20 Q20 23 26 20 L25 23 Q20 25 15 23 Z M22 22 L24 29 L21 28 Z" fill="${L.scarf||"#C8243A"}" stroke="${ink}" stroke-width=".8"/>`:""}
+  ${has("badge")?`<rect x="22.5" y="24" width="3.4" height="2.4" rx=".5" fill="#FFD23F" stroke="${ink}" stroke-width=".6"/>`:""}
+  <path d="M${12-wide} 22 Q${9.5-wide} 27 ${10.5-wide} 31" stroke="${ink}" stroke-width="3.4" stroke-linecap="round" fill="none"/><path d="M${12-wide} 22 Q${9.5-wide} 27 ${10.5-wide} 31" stroke="${L.coat}" stroke-width="1.9" stroke-linecap="round" fill="none"/>
+  <path d="M${28+wide} 22 Q${30.5+wide} 27 ${29.5+wide} 31" stroke="${ink}" stroke-width="3.4" stroke-linecap="round" fill="none"/><path d="M${28+wide} 22 Q${30.5+wide} 27 ${29.5+wide} 31" stroke="${L.coat}" stroke-width="1.9" stroke-linecap="round" fill="none"/>
+  ${has("cane")?`<path d="M${31+wide} 24 V37 M${31+wide} 24 Q${33+wide} 22 ${34+wide} 24" stroke="#6A4A2A" stroke-width="1.6" fill="none" stroke-linecap="round"/>`:""}
+  ${has("book")?`<rect x="${7-wide}" y="26" width="6" height="7" rx=".6" fill="#8A3A34" stroke="${ink}" stroke-width=".8"/>`:""}
+  ${has("lamp")?`<path d="M${31+wide} 26 v3" stroke="${ink}" stroke-width=".8"/><rect x="${29.5+wide}" y="29" width="3.4" height="4.4" rx=".8" fill="#FFE2A0" stroke="${ink}" stroke-width=".8"/>`:""}
+  <circle cx="20" cy="13" r="7" fill="${skin}" stroke="${ink}" stroke-width="1.5"/>${hairSvg}
+  ${has("helmet")?`<path d="M12 11 Q12 4 20 4 Q28 4 28 11 Z" fill="${L.hat||"#E0B820"}" stroke="${ink}" stroke-width="1.2"/><rect x="18" y="5.5" width="4" height="3" rx=".8" fill="#FFF1C0" stroke="${ink}" stroke-width=".7"/>`:""}
+  ${has("cap")?`<path d="M12.5 10 Q20 3.5 27.5 10 Z" fill="${L.hat||"#2E3548"}" stroke="${ink}" stroke-width="1.1"/><path d="M26 10 H31" stroke="${L.hat||"#2E3548"}" stroke-width="2" stroke-linecap="round"/>`:""}
+  ${has("brim")?`<path d="M13.5 9.5 Q20 1.5 26.5 9.5 Z" fill="${L.hat||"#3A2A1A"}" stroke="${ink}" stroke-width="1.1"/><rect x="9.5" y="8.8" width="21" height="2.2" rx="1" fill="${L.hat||"#3A2A1A"}" stroke="${ink}" stroke-width=".9"/>`:""}
+  ${has("glasses")?`<circle cx="17.2" cy="13.4" r="2.3" fill="rgba(200,230,255,.5)" stroke="${ink}" stroke-width="1"/><circle cx="22.8" cy="13.4" r="2.3" fill="rgba(200,230,255,.5)" stroke="${ink}" stroke-width="1"/><path d="M19.5 13.4 H20.5" stroke="${ink}" stroke-width=".8"/>`:`<circle cx="17.4" cy="13.6" r="1.1" fill="${ink}"/><circle cx="22.6" cy="13.6" r="1.1" fill="${ink}"/>`}
+  ${has("goggles")?`<path d="M12.6 11.2 H27.4" stroke="#3A3A3A" stroke-width="1.6"/><rect x="14" y="9.6" width="5" height="3.2" rx="1.4" fill="#8FE3FF" stroke="${ink}" stroke-width=".8"/><rect x="21" y="9.6" width="5" height="3.2" rx="1.4" fill="#8FE3FF" stroke="${ink}" stroke-width=".8"/>`:""}
+  ${has("beard")?`<path d="M14 15 Q14 22 20 22.5 Q26 22 26 15 Q24 18.5 20 18.5 Q16 18.5 14 15 Z" fill="${L.beard||hair}" stroke="${ink}" stroke-width=".9"/>`:`<path d="M18 17 Q20 18.2 22 17" stroke="${ink}" stroke-width=".9" fill="none" stroke-linecap="round"/>`}
+  ${has("mustache")?`<path d="M16.8 16.4 Q20 14.8 23.2 16.4 Q20 17.4 16.8 16.4 Z" fill="${L.beard||hair}"/>`:""}</svg>`}
+
+/* ---- the people. Keepers remember their map's legend; a few locals named an alloy once; most are just getting on with their day. ---- */
+const KEEPERS={
+ "z-mine":{n:"Nettie Crane",look:{coat:"#6A4A2A",hair:"#D8D8D8",hs:"bun",acc:["helmet","lamp","cane"],skin:"#E8B894"},talks:[
+   ["Forty-one years I kept the lamps in this mine. Three hundred and six of them. I could tell you which one was coming round the corner by the sound of its wick.","Lamps hate being shouted near. The lads never believed me. Their lamps always went out first."],
+   ["The seam up north-east with the rope across it? The widow's seam, the crews called it. A widow's husband was the only man whose lamp ever came back out of there.","Just the lamp, mind. She kept it lit on her windowsill for twenty years. I trimmed the wick for her every Sunday."],
+   ["Mind the sump by the rails. Looks like a puddle. It's deeper than the church spire is tall. I measured it once with a lot of string."]],
+  page:["A notebook page? Oh, that. It's been folded into my lamp book for sixty-odd years, between two Tuesdays.","A young scientist from the Institute left it there. Said somebody would come asking. Said to make them wait.","You waited. Here."]},
+ "z-scrap":{n:"Bolt",look:{coat:"#B06A3E",hair:"#E8A060",hs:"spiky",acc:["goggles","apron"],apron:"#6A4A2A",skin:"#C88A64"},talks:[
+   ["See that crane? I built her out of four other cranes. So she's got four birthdays. I celebrate every one. There's cake.","Bring me anything broken. If I can't fix it, I'll take it apart very neatly and put it in a labelled tin."],
+   ["The east heaps are fenced off because of one jar. One! Somebody dropped it and the car underneath went soft, like a biscuit in tea.","I kept what was left of the car. It's in a bucket in the gatehouse. It's called Keith."],
+   ["Syndicate lot came by trying to buy scrap by the kilo. I sold 'em a kilo of bolts. Just bolts. They didn't know what to do. I'm still laughing."]]},
+ "z-wreck":{n:"Captain Ysolde Fenn",look:{coat:"#1E2E4A",hair:"#FFFFFF",hs:"long",acc:["cap"],hat:"#1E2E4A",skin:"#D8A07A"},talks:[
+   ["Captain Ysolde Fenn, harbour master. Retired. The harbour retired first. I'm keeping it company.","The tide tables on the office wall have been wrong since 1958. Wrong very consistently, mind you. So they're still useful."],
+   ["That galleon went down on fire and kept burning under the water. My grandmother watched from this beach. The sea went orange and smelled of matches.","The salvage divers brought up a drum of whatever was doing the burning. First thing in history to make a diver come up faster than he went down."],
+   ["Want to read the weather? Watch the gulls. If they're sitting down, so should you."]],
+  page:["Something of the founder's? My grandmother kept a page of his. She kept everything. Tide tables, string, grudges.","He was out on the salvage boat, writing about the fire while everybody else wrote about the gold. Tore out a page and pressed it on her.","She told me somebody would come for it. I told her nobody ever would. I owe her an apology."]},
+ "z-volcano":{n:"Brother Ashlin",gift:"stasis",look:{coat:"#5A2A14",hair:"#1A1A1A",hs:"bald",acc:["beard","scarf"],scarf:"#E0B820",beard:"#8A8A8A",skin:"#B87A54"},talks:[
+   ["I keep the fire company. It does not need company. But I think it likes being looked at.","We are an order of one. I was elected unanimously."],
+   ["The fire in the ring of stones burned before the stones were put there. We placed them so that people would stop tripping into it.","The Institute took a spark of it away in a jar. I am told it still burns in the jar. I pray for the jar."],
+   ["When the rivers glow brighter, it will rain. When they glow dimmer, it will rain. It rains a great deal up here."]],
+  page:["A young man from the Institute climbed up here once. He asked me for nothing. That is rare.","He sat by the fire for an hour, wrote one page, and gave it to me to keep. He said he did not trust himself with it.","I have kept it. I have not read it. Both were difficult."]},
+ "z-vault":{n:"Chronicler Vell",gift:"guide",look:{coat:"#4A2A5A",hair:"#E8D8A8",hs:"long",acc:["glasses","book"],skin:"#F2C7A5"},talks:[
+   ["Chronicler Vell. I record what enters the vault, what leaves it, and what the tour guides claim is in it. That last list is much the longest.","Kindly do not lean on the display cases. They are older than your family."],
+   ["The crown in the sealed chamber was made for a coronation that never happened. The jeweller fell ill. His apprentice finished it, and fell ill too.","Its inventory card says 'condition: warm'. Nobody has had the nerve to correct it in a hundred years."],
+   ["I read six dead shorthands and one living one. The living one belongs to someone I have not spoken to in a very long time."]]},
+ "z-reactor":{n:"Night Watchman Orrin",gift:"sieve",look:{coat:"#3A4440",hair:"#6A6A6A",hs:"short",acc:["cap","mustache","badge"],hat:"#E0B820",skin:"#8A5A3A"},talks:[
+   ["Night Watchman Orrin. Nights only. Days are for people who enjoy questions.","Rounds every hour. Door, door, pool, door, tea. Two hundred thousand times, give or take. The tea is the best bit."],
+   ["The pool in the middle never gets cold. Forty years. I warm my tea on the rail in winter.","One of the old experiments boiled off in here and put itself back together three floors down. I don't do three floors down."],
+   ["Before this posting I did nights at the Institute itself. Forty years of sign-in books. You learn who comes and goes when they think nobody's looking."]]},
+ "z-glacier":{n:"Dr. Pia Holm",look:{coat:"#E8E4DA",hair:"#8A6A4A",hs:"short",acc:["goggles","scarf"],scarf:"#3B7BF0",skin:"#F2D2B8"},talks:[
+   ["Dr. Pia Holm, glaciologist. I study ice, which is mostly waiting for ice to do something.","The hut was built the Institute's first winter. Two-foot walls, and it's still colder inside than out. Nobody knows why. I've stopped asking."],
+   ["We keep one of the Institute's worst samples out here, under argon, behind two walls of glass. Cold slows it down. Cold slows everything down. That's my whole career in a sentence.","The lake froze solid the week it arrived and hasn't thawed since. I'd call it a coincidence if I believed in them."],
+   ["If you ever go through the ice, don't panic. Panicking wastes heat. Swear instead. Swearing is free and surprisingly warm."]],
+  page:["The founder's page? It's pinned inside the hut door. Every station chief since the first winter has read it and understood nothing.","It's become a tradition. We toast it at midwinter.","Take it. Tell whoever ends up with it that we'll need a new toast."]},
+ "z-crater":{n:"Projectionist Tamsin",gift:"cloth",look:{coat:"#3A2A5A",hair:"#E8A060",hs:"curly",acc:["glasses"],skin:"#6A4A34"},talks:[
+   ["Projectionist Tamsin. The observatory's the only cinema for a hundred miles, and it only shows one film: the sky.","Plus whatever's in the film vault. Which I'd love to show you, except the vault door caved in the year of the big frost."],
+   ["Whatever lives in the crater comes apart and puts itself back together in a flash that would blind you. So we watch it through the projector. Delayed, darkened, safe.","Best show I've ever run. The audience is mostly me. I bring snacks for both of us."],
+   ["A Syndicate foreman came through with a torn page, laughing like the villain in a matinee. Grist, they call him. Tips like one too."]]},
+ "z-quill":{n:"Archivist Wren",gift:"survey",look:{coat:"#4A3A2A",hair:"#1A1A1A",hs:"bun",acc:["glasses","book"],skin:"#C88A64"},talks:[
+   ["Archivist Wren. If it's written down and in this building, I know where it is. If it isn't written down, I'm quietly worried about it.","The reading room's the one with the chairs. They all have books. People ask."],
+   ["The wall at the head of the hall with the red seal is newer than the rest of the building. The founder's basement is behind it. It was sealed the year the Containment Division began.","I've asked for the key eleven times. Eleven times I've been told there isn't one."],
+   ["Dr. Marlow? Head of the field team. Hires people and forgets to tell us. His office isn't on any floor plan and his post just... goes."]]}};
+/* a few locals did name something once, and each of them tells it differently */
+const DISCOVERERS={
+ "z-mine":{a:"Tappite",n:"Oswin Tapp",look:{coat:"#3B7BF0",hair:"#E8A060",hs:"spiky",acc:[],skin:"#F2C7A5"},talks:[["I'm Oswin and I'm eight and three quarters and I play the triangle.","I found Tappite in the percussion cupboard. It was behind the tambourines. Nobody else looked behind the tambourines.","I'm its guardian now. That's official. I made a badge."],["Do you want to hear the triangle? I don't have it with me. But imagine it. Ting."]]},
+ "z-scrap":{a:"Milk Round Mix",n:"Alf Dimmock",look:{coat:"#E8E4DA",hair:"#8A8A8A",hs:"bald",acc:["cap"],hat:"#FFFFFF",skin:"#E8B894"},talks:[["Forty years on the milk round, me. Tadmore estate, five in the morning, rain or shine.","One morning in '79 I left a crate of the wrong stuff on a doorstep instead of two pints. They didn't complain. They named it after my round.","I come down here to see if any of the old float turned up. Never has."],["You want to know the secret of a good milk round? Quiet boots and a whistle nobody can hear."]]},
+ "z-wreck":{a:"Lusk's Lake Metal",n:"Postmaster Edwin Lusk",look:{coat:"#8A3A34",hair:"#FFFFFF",hs:"short",acc:["glasses","mustache"],beard:"#FFFFFF",skin:"#F2D2B8"},talks:[["1910. A parcel addressed to number four, Lake Road. There was no number four. There was only the lake.","I sent it back with a note. A strongly worded note. They named the stuff inside after me anyway.","I have never been so insulted in my life. I keep the note framed."],["Do you know how many parcels I've delivered? Neither do I. I stopped counting at the lake."]]},
+ "z-volcano":{a:"Mott's No. 9",n:"Cyril Mott",look:{coat:"#3A4A5A",hair:"#3A2414",hs:"short",acc:["cap","badge"],hat:"#3A4A5A",skin:"#8A5A3A"},talks:[["Night watchman, Gantry Wharf, thirty years. Warehouse number nine was the only building on the docks with no rats.","I put it down to the crate in the corner. The rats never said otherwise.","I've retired up here now. Fewer rats. More lava. Swings and roundabouts."],["If you ever find a warehouse with no rats, check the corners."]]},
+ "z-vault":{a:"Hettie's Soup Metal",n:"Hettie Marsh",look:{coat:"#C8243A",hair:"#6B4424",hs:"curly",acc:["apron"],apron:"#FFFFFF",skin:"#C88A64"},talks:[["I was the cook on a dig. I was burying the potato peelings and hit something that went clunk.","They named the trench after my soup, and the metal after the trench. I'll take it.","The soup was leek and potato. It was very good soup."],["Are you eating properly? Field scientists never eat properly."]]},
+ "z-reactor":{a:"Coincidium",n:"Forecaster Ada Crill",look:{coat:"#5A6A4A",hair:"#1A1A1A",hs:"long",acc:["scarf"],scarf:"#E0B820",skin:"#6A4A34"},talks:[["The barometer dropped like a stone the very hour that batch was finished. I wrote down one word. 'Coincidence?'","Now it's called Coincidium. I didn't mean it as a name. I meant it as a question.","I still don't know the answer. I check the barometer every day."],["It's going to rain on Thursday. Or it isn't. Write that down."]]},
+ "z-glacier":{a:"Brandtium",n:"Coach Hester Brandt",look:{coat:"#E0B820",hair:"#3A2414",hs:"short",acc:["cap"],hat:"#1E2E4A",skin:"#F2C7A5"},talks:[["Volleyball. Eleven losses in a row. And there was that crate, in the corner of the gym, the whole time.","I had it moved out. We won the next day. Then we lost it, and we lost again, so I asked for it back.","Is that science? I don't care. We won the regional final."],["Keep your eye on the ball. Also on any suspicious crates."]]},
+ "z-crater":{a:"Thursday Metal",n:"Grandmother Nell Crumley",look:{coat:"#4A2A5A",hair:"#FFFFFF",hs:"bun",acc:["glasses","cane"],skin:"#E8B894"},talks:[["The tea leaves said, clear as day: something new from something old, found on a Wednesday.","It was found on a Thursday. I maintain that's close enough.","Would you like me to read yours? No? Suit yourself. They say you'll find something behind a wall."],["The leaves are never wrong. They're just occasionally a day out."]]},
+ "z-quill":{a:"Sandpit Special",n:"Pim Harrow",look:{coat:"#FF8A7A",hair:"#1A1A1A",hs:"bun",acc:[],skin:"#8A5A3A"},talks:[["I invented Sandpit Special. In the sandpit. When I was six.","The Institute says they can't prove I didn't. So I did.","I'm seven now. I'm going to invent something even better. Probably in the bath."],["Do you work here? Can I see the basement? Everyone says there's a basement."]]}};
+/* everybody else: just living their lives. Some of them have lost something. */
+const AMBIENT={
+ "z-mine":[{n:"Gerta",look:{coat:"#3B7BF0",hair:"#E8A060",hs:"long",acc:["helmet"],hat:"#FF8A3A",skin:"#F2D2B8"},talks:[["Caving holiday! Well, a caving afternoon. I brought a flask of tea and I'm not leaving till it's gone.","It's so quiet down here. You can hear yourself think. I'm thinking about biscuits."]]},
+   {n:"Foreman Dray",look:{coat:"#5A4A3A",hair:"#1A1A1A",hs:"short",acc:["helmet","beard"],hat:"#E0B820",skin:"#C88A64"},side:{id:"lamp",thing:"Dray's brass lamp",reward:"lure",ask:["Lost my good brass lamp along the top tunnel, right out at the east end. Put it down to tie a boot and never saw it again.","If you come across it, I'd be grateful. It was my dad's."],thanks:["That's it! That's the one! Look at that, not a scratch.","Here, take this for your trouble. My dad would've wanted you to have something."],done:["Lamp's back where it belongs. Thanks again."]}}],
+ "z-scrap":[{n:"Dotty Pruitt",look:{coat:"#FF9AD5",hair:"#D8D8D8",hs:"curly",acc:["glasses"],skin:"#F2C7A5"},talks:[["Picnic on the crane pad. Best view in the yard, if you like rust. I do.","My husband proposed to me in a scrapyard. Not this one. A nicer one. Still, it brings it all back."]]},
+   {n:"Kez",look:{coat:"#2E6F9E",hair:"#E8A060",hs:"spiky",acc:["cap"],hat:"#C8243A",skin:"#C88A64"},side:{id:"cap",thing:"the gold-rimmed bottle cap",reward:"charm",ask:["I collect bottle caps. I've got four hundred and twelve.","There's a gold-rimmed one in this yard. I saw it glint once, right down the west side of the yard by the car bodies, and then I lost it. It's the rarest one ever made."],thanks:["NO WAY. That's it! Four hundred and thirteen!","You can have my lucky charm. I don't need luck anymore. I have THIS."],done:["Four hundred and thirteen. I polish it every night."]}}],
+ "z-wreck":[{n:"Albrecht Voss",look:{coat:"#6A4A2A",hair:"#FFFFFF",hs:"bald",acc:["glasses","beard","cane"],beard:"#FFFFFF",skin:"#F2D2B8"},side:{id:"watch",thing:"Albrecht's pocket watch",reward:"timer",ask:["Fifty years a clockmaker, and I lose my own pocket watch in the dunes. The irony is not lost on me.","Somewhere up by the palms, I think. I sat down to watch the tide and when I stood up it was gone."],thanks:["You found it! Still ticking. Of course it's still ticking. I made it.","Take this little timer. It's not as good as my watch, but it's better than anybody else's."],done:["Twelve minutes past. It's always twelve minutes past something."]}},
+   {n:"The Moss twins",look:{coat:"#E0B820",hair:"#6B4424",hs:"curly",acc:[],skin:"#8A5A3A"},talks:[["We're building a sandcastle! It's going to be the biggest one ever built!","It keeps falling down. We think the sea is jealous."]]}],
+ "z-volcano":[{n:"Juno",look:{coat:"#5A6A4A",hair:"#1A1A1A",hs:"long",acc:["cap","scarf"],hat:"#8A5A34",scarf:"#FF8A3A",skin:"#6A4A34"},talks:[["Hiking the caldera rim! My friend Beck went ahead to get a photo of the fire. I stayed to eat his sandwich.","Isn't it amazing up here? The ground's warm. My boots are warm. Everything's warm. I love it."]]},
+   {n:"Ranger Okafor",look:{coat:"#3A5A3A",hair:"#1A1A1A",hs:"short",acc:["brim","badge"],hat:"#6A5A2A",skin:"#6A4A34"},side:{id:"radio",thing:"the ranger's radio",reward:"patch",ask:["Stay on the stone bridges, please. The rivers aren't water.","And if you see a radio lying around, it's mine. Dropped it near the old forge when a boulder shifted."],thanks:["My radio! Oh, that's a relief. Headquarters thought I'd fallen in.","Have this patch kit. You're more likely to need it than I am."],done:["Radio's working. Headquarters says hello."]}}],
+ "z-vault":[{n:"Tour Guide Henrietta",look:{coat:"#1E2E4A",hair:"#B8683A",hs:"bun",acc:["badge","glasses"],skin:"#F2C7A5"},talks:[["And on your left, ladies and gentlemen, the grand aisle! Laid in the year the vault was built, and walked on by six monarchs and one very lost goose.","Please don't touch the display cases. Please don't touch the crown chamber. Please don't touch the goose. He's still here somewhere."]]},
+   {n:"Kit",look:{coat:"#26262C",hair:"#3A2414",hs:"long",acc:[],skin:"#C88A64"},talks:[["School trip. Everyone else is doing the worksheet. I'm doing the wall.","Someone dared me to touch the crown case. I'm not going to. I'm just going to stand near it. Menacingly."]]}],
+ "z-reactor":[{n:"Janitor Lu",look:{coat:"#5A6A7A",hair:"#1A1A1A",hs:"short",acc:["apron"],apron:"#8FD0FF",skin:"#E8B894"},talks:[["Mopping a decommissioned reactor hall. Somebody's got to. The floor doesn't know it's decommissioned.","Some nights the lights in the control room flicker on by themselves. I just say good evening and carry on mopping."]],deliver:"toby"},
+   {n:"Inspector Pratt",look:{coat:"#E8E4DA",hair:"#8A6A4A",hs:"short",acc:["glasses","book"],skin:"#F2D2B8"},talks:[["Safety inspection. I've found forty-one violations and it's not even lunch.","Violation forty-two: that barrel is facing the wrong way. I don't know which way is right. But that isn't it."]]}],
+ "z-glacier":[{n:"Ole",look:{coat:"#C8243A",hair:"#E8D8A8",hs:"short",acc:["cap","beard"],hat:"#3B7BF0",beard:"#E8D8A8",skin:"#F2D2B8"},talks:[["Ice fishing. Three days now. Not a single bite.","Best three days of my life. Nobody asks me anything out here. Well. Until you."]]},
+   {n:"Sunniva",look:{coat:"#E8E4DA",hair:"#E8A060",hs:"long",acc:["scarf"],scarf:"#FF9AD5",skin:"#F2D2B8"},side:{id:"lens",thing:"Sunniva's lens cap",reward:"cloth",ask:["I'm photographing the crevasse grotto. Or I was, until I dropped my lens cap somewhere down there.","Without it the lens frosts over in seconds. If you're passing the grotto, keep an eye out?"],thanks:["My lens cap! You're a star.","Take this cloth. It's the good one. It gets the frost off anything."],done:["Look at this shot of the lake. Look at it!"]}}],
+ "z-crater":[{n:"Marisol",look:{coat:"#4A2A5A",hair:"#1A1A1A",hs:"long",acc:["book","scarf"],scarf:"#FFD23F",skin:"#C88A64"},talks:[["I'm writing a poem about the meteor. So far I have: 'Oh, rock.' It's a work in progress.","Do you know a word that rhymes with crater? Later. Greater. Potato, if you say it wrong. I say it wrong."]]},
+   {n:"Mr. Pennyworth",look:{coat:"#3B7BF0",hair:"#FFFFFF",hs:"bald",acc:[],skin:"#E8B894"},talks:[["Morning! Forty laps of the crater rim, every day, rain or shine. Doctor's orders.","Well, my doctor said 'get some exercise'. The forty laps were my idea."]]}],
+ "z-quill":[{n:"Intern Toby",look:{coat:"#FFFFFF",hair:"#6B4424",hs:"spiky",acc:["badge","glasses"],skin:"#F2D2B8"},side:{id:"toby",thing:"Toby's note",deliver:"Janitor Lu",reward:"cell",ask:["First week! I've been lost in this hall for two hours. Is the reading room the one with the books? They all have books.","Could you do me a favour? My aunt Lu works nights at the Old Reactor Hall. Can you give her this note? It just says I'm alive. She worries."],thanks:["You gave it to Aunt Lu? She sent a note back? It says 'eat a vegetable'. Classic Aunt Lu.","Here, have this spare cell from the supply cupboard. I don't think anyone counts them. I hope."],done:["I found the reading room! It was the one with the books."]}},
+   {n:"Mrs. Gale",look:{coat:"#8A6AB0",hair:"#FFFFFF",hs:"curly",acc:["glasses","cane"],skin:"#E8B894"},talks:[["I come every Tuesday to look at the specimens. They never change, and neither do I. It's very restful.","My late husband worked here, you know. In the old days. He always said the founder was a lovely young man. Terribly sad eyes."]]}]};
+function sideState(id){return store.get("wta_sq_"+id,0)}
+function setSide(id,v){store.set("wta_sq_"+id,v)}
+
+/* ---- talking ---- */
+function talkTo(p){if(p.quest&&p.quest()!==false)return;
+  if(p.side){const sd=p.side,st=sideState(sd.id);
+    if(sd.deliver){if(st===0){talk(p.n,sd.ask,()=>{setSide(sd.id,1);say0(`You're carrying ${sd.thing}. Deliver it to ${sd.deliver}.`)});return}if(st===1){talk(p.n,["Did you find my aunt yet? Old Reactor Hall. She'll be the one mopping."]);return}if(st===2){talk(p.n,sd.thanks,()=>{setSide(sd.id,3);giveItem(sd.reward);say0(`You got a ${ITEMS[sd.reward].name.toUpperCase()}!`)});return}talk(p.n,sd.done);return}
+    if(st===0){talk(p.n,sd.ask,()=>{setSide(sd.id,1);sideSeed();say0(`Keep an eye out for ${sd.thing}. The dowsing meter will pick it up.`)});return}
+    if(st===1){talk(p.n,[sd.ask[1]]);return}if(st===2){talk(p.n,sd.thanks,()=>{setSide(sd.id,3);giveItem(sd.reward);say0(`You got a ${ITEMS[sd.reward].name.toUpperCase()}!`)});return}talk(p.n,sd.done);return}
+  if(p.deliver&&sideState(p.deliver)===1){talk(p.n,["A note? From Toby?","'Dear Aunt Lu, I am alive. Love, Toby.' Oh, that boy.","Hang on. Take this back to him."],()=>{setSide(p.deliver,2);say0("Janitor Lu wrote a reply. Take it back to Intern Toby at the Institute.")});return}
+  const t=p.talks[(p.said||0)%p.talks.length];p.said=(p.said||0)+1;const key="wta_gift_"+p.n.replace(/\W/g,""),first=!!p.gift&&!store.get(key,0);
+  talk(p.n,t,first?()=>{store.set(key,1);giveItem(p.gift);talk(p.n,[`You're with the Institute, aren't you? Here. You'll get more use out of this than I will.`,`(You got a ${ITEMS[p.gift].name.toUpperCase()}!)`])}:null)}
+function sideSeed(){(EXP.npcs||[]).forEach(p=>{if(p.side&&!p.side.deliver&&sideState(p.side.id)===1&&!(EXP.hidden||[]).some(h=>h.side===p.side.id)){const[x,y]=SPOTS[EXP.zone.cls].side;EXP.hidden.push({x,y,side:p.side.id,thing:p.side.thing})}});dowse()}
+
+/* ---- the quest, told through the people and the places ---- */
+function questHooks(z){const K=(EXP.npcs||[]).find(p=>p.keeper);if(!K)return;
+  if(z==="z-quill")K.quest=()=>{const s=Q.s;
+    if(s===0){talk(K.n,["You're new. One of Dr. Marlow's field recruits? He never tells us when he hires.","I'm glad you're here, actually. I need someone who travels.","When the Institute was young, the founder sent pages of his notebook out with the first field teams. Nobody knows why. Four of them should still be out there.","Rustvein Mine, the galleon cove, the caldera and the ice caverns. Ask whoever's lived there longest. The founder's handwriting is... distinctive. Signed A.M., always."],()=>{Q.s=1;say0("New objective in your JOURNAL.")});return}
+    if(s===1||s===2){talk(K.n,[`Any luck with the pages? You have ${pagesGot().length} of them.`,s===2?"The fifth was stolen? By the Syndicate? Then get it back. Please.":"Keep looking. The people out there remember more than they let on."]);return}
+    if(s===3){talk(K.n,["All five. You actually found all five.","It's a recipe. He calls it the Sealbreaker: something to cut through the seal on his own basement.","Half of it's in his private shorthand. I can't read it. Chronicler Vell at the Gilded Vault can. She claims the founder taught her himself.","Take the pages to her."],()=>{Q.s=4;say0("New objective in your JOURNAL.")});return}
+    if(s>=8&&s<14&&!Q.flag("wrenAM")){talk(K.n,["You got into the basement? Then you've seen more of the founder than anyone alive.","A.M.? Those initials are on the old staff roster. Only twice. The founder, and...","No. That can't be right. Dr. Marlow has been here forever, but not THAT long. Has he?"]);Q.set("wrenAM");return}
+    return false};
+  if(z==="z-vault")K.quest=()=>{const s=Q.s;
+    if(s===4){if(vaultCaught()<3){talk(K.n,["The founder's pages? Oh, I'd know that hand anywhere.","But I don't read his shorthand for just anyone. Prove you're a real field scientist.",`Register three different alloys from this vault. You've got ${vaultCaught()} so far.`]);return}
+      talk(K.n,["Three vault alloys. Well done. Let me see those pages.","Tungsten. Hafnium. Tantalum. Rhenium. Osmium. Five of the most stubborn metals there are.","Cast together in the old crucible, they'd cut through anything he could have sealed.","The crucible is locked. Night Watchman Orrin at the reactor hall keeps the old Institute keys."],()=>{Q.s=5;Q.set("recipe");say0("The Sealbreaker recipe is in your JOURNAL.")});return}
+    if(s===9){talk(K.n,["That ring. Where did you get that ring?","...His desk. Of course. He always said someone would come.","He gave me something, the day he sealed the basement. Half a letter. He said, 'Give this to whoever comes with my ring, little V.'","Nobody has called me little V in sixty years.","Here. I never read it. I promised."],()=>{Q.s=10;Q.set("half2");say0("The second half of the letter is in your JOURNAL.")});return}
+    if(s>=9&&s<14&&!Q.flag("vellYoung")){talk(K.n,["The founder taught me his shorthand when I was a girl. He was a young man then. Round spectacles, always a notebook.","It's strange. I've grown old. But I'd swear I passed him in the Institute's hall last spring, looking exactly the same.","I told myself it was his grandson. I've been telling myself that for a year."],()=>Q.set("vellYoung"));return}
+    return false};
+  if(z==="z-reactor")K.quest=()=>{const s=Q.s;
+    if(s===5){if(!Q.flag("orrinAsk")){store.set("wta_q_slag0",slagWins());Q.set("orrinAsk");talk(K.n,["The crucible key? That's Institute property. Nobody's asked for it in forty years.","And the Syndicate would love to get their hands on it. How do I know you're not one of them?","Beat one of their grunts in a fair challenge. Then come back and we'll talk."]);return}
+      if(slagWins()<=store.get("wta_q_slag0",0)){talk(K.n,["Still waiting on that Syndicate grunt. They stand watch out on the maps. Walk into their line of sight and they'll come to you."]);return}
+      talk(K.n,["Word travels fast. You beat one of the Syndicate's grunts.","Here. The crucible key. I've been holding it for the founder since before you were born.","He told me someone would come for it. He was very particular about that."],()=>{Q.s=6;Q.set("key");say0("You got the CRUCIBLE KEY.")});return}
+    if(s>=12&&s<14&&!Q.flag("nightlog")){talk(K.n,["You want the old Institute sign-in books? Funny you should ask. There's one thing I never could explain.","Every night, two in the morning, the same badge signed in. Number 001. To a room that isn't on any floor plan.","Badge 001 belongs to Dr. Marlow. It always has. As far as the books go back, it always has."],()=>{Q.set("nightlog");say0("New evidence in your JOURNAL.")});return}
+    return false};
+  if(z==="z-mine")K.quest=()=>{const s=Q.s;if(s>=12&&s<14&&!Q.flag("lampbook")){talk(K.n,["The young fellow with the spectacles? I've still got the lamp book from that year. Every lamp signed out, signed back in.","Here. Look at the first page. 'A.M., badge 001, Quillmoor.' Sixty-one years ago, that is.","Funny thing. Dr. Marlow signed out a lamp last month. Same hand. I'd swear to it."],()=>{Q.set("lampbook");say0("New evidence in your JOURNAL.")});return}
+    if(s>=1&&!pagesGot().includes("z-mine"))return pageGive(K,"z-mine");return false};
+  if(z==="z-wreck")K.quest=()=>{const s=Q.s;if(s>=12&&s<14&&!Q.flag("manifest")){talk(K.n,["The salvage manifest? It's in the harbour office. My grandmother kept everything.","Here it is. 'Scientist aboard: A.M., Institute badge 001.' Sixty years ago, give or take.","Badge 001. Isn't that what your Dr. Marlow wears?"],()=>{Q.set("manifest");say0("New evidence in your JOURNAL.")});return}
+    if(s>=1&&!pagesGot().includes("z-wreck"))return pageGive(K,"z-wreck");return false};
+  if(PAGE_MAPS.includes(z)&&!K.quest)K.quest=()=>{if(Q.s>=1&&!pagesGot().includes(z))return pageGive(K,z);return false}}
+function pageGive(K,z){talk(K.n,[K.talks[1][0],K.talks[1][1],"He left a page of his notes with me. Said somebody from the Institute would come for it one day. Took them long enough.",`(You got the founder's ${PAGES[z].t.toLowerCase()}!)`],()=>{const g=pagesGot();if(!g.includes(z))g.push(z);store.set("wta_pages",g);if(Q.s===1&&PAGE_MAPS.every(m=>g.includes(m)))Q.s=2;say0("A founder's page was added to your JOURNAL.")})}
+function say0(t){$("#expmsg").textContent=t}
+function questObjs(){const z=EXP.zone,W=EXP.W,H=EXP.H;EXP.objs=[];
+  const add=(x,y,cls,html,use)=>{const d=document.createElement("div");d.className="mapobj "+cls;d.style.width=(100/W)+"%";d.style.height=(100/H)+"%";d.style.left=(x/W*100)+"%";d.style.top=(y/H*100)+"%";d.innerHTML=html;$("#world").insertBefore(d,$("#player"));const o={x,y,el:d,use};EXP.objs.push(o);return o};
+  const STAIRS=`<svg viewBox="0 0 40 40"><path d="M6 36 H34 V30 H28 V24 H22 V18 H16 V12 H10 V6 H6 Z" fill="#6A6254" stroke="#3A342C" stroke-width="1.5"/></svg>`;
+  if(z.cls==="z-quill"&&!z.special){
+    const[sx,sy]=HALL.seal,open=Q.s>=8;add(sx,sy,"seal"+(open?" open":""),open?`<svg viewBox="0 0 40 40"><rect x="6" y="4" width="28" height="36" fill="#0A0806"/><path d="M6 4 L10 0 L30 0 L34 4" fill="#3A342C"/><path d="M12 14 H28 M14 22 H26 M16 30 H24" stroke="#2A2420" stroke-width="2"/></svg>`:`<svg viewBox="0 0 40 40"><rect x="2" y="2" width="36" height="36" fill="#6A6254" stroke="#3A342C" stroke-width="2"/><path d="M2 12 H38 M2 22 H38 M2 32 H38 M12 2 V12 M26 12 V22 M12 22 V32 M26 32 V38" stroke="#4A443A" stroke-width="1.2"/><circle cx="20" cy="20" r="8" fill="#A8161E" stroke="#6A0A10" stroke-width="1.5"/><text x="20" y="24" text-anchor="middle" font-family="Georgia,serif" font-size="11" font-weight="700" fill="#F2D0C0">Q</text></svg>`,
+      ()=>{const s=Q.s;if(s>=8){talk("",["Stone steps lead down into the dark. The air smells of dust and something faintly sweet.","You go down."],()=>goZone(BASEMENT));return}
+        if(s===7){talk("",["You set the Sealbreaker against the wax seal. It bites into the stone like a hot knife into butter.","The wall that isn't a wall comes down in a rush of dust. Behind it, stone steps go down."],()=>{Q.s=8;goZone(BASEMENT)});return}
+        talk("",["A section of wall newer than the rest of the hall, stamped with the Institute's seal in dark wax.",Q.flag("recipe")?"Nothing you have could cut through it. Not yet.":"Something behind it hums, very faintly. No tool you own would so much as scratch it."])});
+    const[cx,cy]=HALL.crucible;add(cx,cy,"crucible",`<svg viewBox="0 0 40 40"><ellipse cx="20" cy="35" rx="15" ry="3.5" fill="#000" opacity=".3"/><path d="M8 14 L32 14 L29 33 L11 33 Z" fill="#5A4A3A" stroke="#2A2018" stroke-width="1.6"/><ellipse cx="20" cy="14" rx="12" ry="3.5" fill="#3A2E24" stroke="#2A2018" stroke-width="1.4"/><rect x="17" y="21" width="6" height="6" rx="1" fill="#C8A060" stroke="#2A2018"/><circle cx="20" cy="24" r="1.2" fill="#2A2018"/></svg>`,
+      ()=>{const s=Q.s;if(s<6){talk("",["The Institute's old crucible. Blackened with use, and padlocked shut.",Q.flag("recipe")?"Night Watchman Orrin has the key.":"Whoever used it last left a long time ago."]);return}
+        if(s===6){talk("",["The crucible key turns stiffly in the lock.","You load it with the five metals from the founder's recipe and light the burner underneath.","Something is taking shape in there. It has to be identified before it will set. Get ready!"],()=>{EXP.questAlloy="Sealbreaker";encounter()});return}
+        talk("",["The old crucible, cold now. You've already cast the Sealbreaker."])});
+    const[mx,my]=HALL.motto;add(mx,my,"motto",`<svg viewBox="0 0 40 40"><rect x="3" y="10" width="34" height="20" rx="2" fill="#C8A060" stroke="#6A4A12" stroke-width="2"/><path d="M8 17 H32 M10 23 H30" stroke="#6A4A12" stroke-width="2"/></svg>`,
+      ()=>{Q.set("motto");talk("",["A brass plaque over the front doors, so old most people have stopped seeing it.","QVAERE POST MVRVM.","Someone has scratched a translation underneath, very small: 'seek behind the wall'."])});
+    const[px,py]=HALL.portrait;add(px,py,"portrait",`<svg viewBox="0 0 40 40"><rect x="4" y="3" width="32" height="34" fill="#6B4A2E" stroke="#3A2414" stroke-width="2"/><rect x="8" y="7" width="24" height="26" fill="#2A2420"/><circle cx="20" cy="17" r="5" fill="#8A7A6A"/><path d="M12 33 Q20 22 28 33 Z" fill="#6A5A4A"/><circle cx="18.2" cy="16.8" r="1.6" fill="none" stroke="#EEE" stroke-width=".6"/><circle cx="21.8" cy="16.8" r="1.6" fill="none" stroke="#EEE" stroke-width=".6"/><rect x="11" y="29" width="18" height="3" fill="#C8A060"/></svg>`,
+      ()=>{const s=Q.s;if(s>=11){talk("",["The founder's portrait. It swings aside on its hinge. The study is behind it."],()=>goZone(STUDY));return}
+        if(s===10){talk("",["The founder's portrait, the nameplate scratched away. There's a small recess in the frame, just the size of a signet ring.","You press the ring into it. Nothing moves. Then, faintly, a brass dial clicks out beside it, lettered like a lock.","The letter said it would open for his ring and for 'the words I carved over the front door'."],null,v=>{const x=v.toLowerCase().replace(/[^a-z ]/g,"").replace(/\s+/g," ").trim();
+          if(x==="quaere post murum"||x==="qvaere post mvrvm"||x==="seek behind the wall"){talk("",["You spell out the words on the dial. Something heavy clicks behind the wall.","The whole portrait swings open like a door."],()=>{Q.s=11;goZone(STUDY)})}else talk("",[`You spell out '${v||"nothing"}'. The dial spins back to blank.`,"Words carved over the front door. Maybe take a closer look at the front doors."])});return}
+        talk("",["A portrait of the Institute's founder as a young man. Round spectacles. The nameplate has been scratched off.",Q.flag("vellYoung")?"You've seen that face somewhere. You're sure of it.":"He looks like he's about to say something."])})}
+  if(z.special==="basement"){
+    add(8,9,"stairs",STAIRS,()=>talk("",["Go back up to the hall?"],()=>{EXP.forceZone=ZONES.find(q=>q.cls==="z-quill");EXP.spawn=[HALL.seal[0],HALL.seal[1]+1];startExplore()}));
+    add(3,2,"desk",`<svg viewBox="0 0 40 40"><rect x="3" y="16" width="34" height="5" fill="#6B4A2E" stroke="#3A2414" stroke-width="1.2"/><rect x="5" y="21" width="4" height="15" fill="#5A3A24"/><rect x="31" y="21" width="4" height="15" fill="#5A3A24"/><rect x="12" y="21" width="16" height="7" fill="#5A3A24" stroke="#3A2414"/><circle cx="20" cy="24.5" r="1.3" fill="#C8A060"/><rect x="10" y="10" width="10" height="6" fill="#E8E2D0" transform="rotate(-8 15 13)"/></svg>`,
+      ()=>{if(Q.s>=9){talk("",["The founder's desk. The drawer stands open and empty."]);return}
+        talk("",["The founder's desk. Papers everywhere, all of them blacked out except one line, repeated over and over: 'I should never have mixed it.'","The drawer has a small brass lock with two letter dials. His initials, probably."],null,v=>{const x=v.toUpperCase().replace(/[^A-Z]/g,"");if(x==="AM"){talk("",["The dials click into place. A.M. The drawer slides open.","Inside: a heavy signet ring stamped with a Q, and a letter torn clean in half.","'If you are reading this, you have my ring, and I have failed to undo what I made. The rest of this letter I left with the one I trusted first.'","(You got the FOUNDER'S SIGNET RING and half a letter.)"],()=>{Q.s=9;Q.set("ring");say0("New objective in your JOURNAL.")})}else talk("",[`You set the dials to '${x||"??"}'. The lock doesn't budge.`,"Surely there's something else down here with his name on it."])})});
+    add(12,1,"photo",`<svg viewBox="0 0 40 40"><rect x="7" y="8" width="26" height="22" fill="#E8E2D0" stroke="#6B4A2E" stroke-width="2"/><rect x="10" y="11" width="20" height="13" fill="#8A8278"/><circle cx="16" cy="16" r="2.4" fill="#5A544A"/><circle cx="24" cy="16" r="2.4" fill="#5A544A"/><path d="M11 24 Q16 18 21 24 M19 24 Q24 18 29 24" fill="#5A544A"/></svg>`,
+      ()=>{Q.set("photo");talk("",["A faded photograph: two people in front of the Institute on its opening day. A young man with round spectacles, and a girl holding a book.","Written underneath: 'Opening day, May \'64. A. M., with my first student, little V.'"])});
+    add(14,6,"coat",`<svg viewBox="0 0 40 40"><path d="M20 4 V9" stroke="#6A6254" stroke-width="2"/><path d="M12 10 L28 10 L31 36 L9 36 Z" fill="#F4F4EC" stroke="#8A8478" stroke-width="1.4"/><path d="M20 10 V36" stroke="#C8C4B8"/><rect x="22" y="15" width="6" height="2.4" fill="#FFFFFF" stroke="#8A8478" stroke-width=".6"/></svg>`,
+      ()=>{Q.set("coat");talk("",["A lab coat hangs on a hook, yellowed with age. The name tape has been torn off, all but the last few letters: '...LOW'.","In the pocket, a field badge. The number on it is 001.","Dr. Marlow's badge, the day he recruited you, was number 001."])});
+    add(2,7,"ledger",`<svg viewBox="0 0 40 40"><rect x="4" y="8" width="32" height="28" fill="#5A3A24" stroke="#2A1A0C" stroke-width="1.4"/>${[10,17,24,31].map(y=>`<rect x="6" y="${y}" width="28" height="5" fill="#3A2414"/>`).join("")}<rect x="8" y="11" width="5" height="4" fill="#8A3A34"/><rect x="15" y="18" width="4" height="4" fill="#2E4A7A"/></svg>`,
+      ()=>{Q.set("ledger");talk("",["A ledger of every sample the founder ever mixed. The last entry is circled so hard the nib tore the page.","'Sample 1. Do not name it. Do not sell it. Do not let anyone else near it.'","Beside it, in a later, shakier hand: 'Founder's Folly. He hated that name.'"])});
+    const mh=Q.s===13;add(12,3,"cell",`<svg viewBox="0 0 40 40"><rect x="8" y="4" width="24" height="32" rx="3" fill="#2A2E36" stroke="#1A1C22" stroke-width="2"/><rect x="12" y="8" width="16" height="20" fill="#0A0C10"/><circle cx="20" cy="18" r="3" fill="#BFE4FF" opacity=".7"><animate attributeName="opacity" values=".3;.9;.3" dur="2.4s" repeatCount="indefinite"/></circle><path d="M12 8 L28 28 M28 8 L12 28" stroke="#6A7482" stroke-width="1"/></svg>`,
+      ()=>talk("",["A containment cell, its door cracked down the middle. Something inside still glows with a slow heartbeat.","So that's why it only ever turns up in Quillmoor. It's been leaking out of here, a little at a time, for years."]));
+    if(mh){const m=marlowNPC(true);m.x=12;m.y=4;EXP.npcs.push(m)}}
+  if(z.special==="study"){
+    add(6,4,"stairs",STAIRS,()=>talk("",["Go back out to the hall?"],()=>{EXP.forceZone=ZONES.find(q=>q.cls==="z-quill");EXP.spawn=[HALL.portrait[0],HALL.portrait[1]+1];startExplore()}));
+    add(3,1,"desk",`<svg viewBox="0 0 40 40"><rect x="3" y="16" width="34" height="5" fill="#6B4A2E" stroke="#3A2414" stroke-width="1.2"/><rect x="5" y="21" width="4" height="15" fill="#5A3A24"/><rect x="31" y="21" width="4" height="15" fill="#5A3A24"/><rect x="11" y="9" width="8" height="7" fill="#E8E2D0"/><rect x="21" y="10" width="7" height="6" fill="#8A3A34"/></svg>`,
+      ()=>{Q.set("letters");talk("",["A desk piled with recruitment letters. Hundreds of them, going back decades, every one signed 'A.M., Head of Field Team'.","One of them has your name on it."])});
+    add(9,1,"diary",`<svg viewBox="0 0 40 40"><rect x="8" y="16" width="24" height="5" fill="#6B4A2E"/><rect x="12" y="9" width="16" height="8" fill="#2E3A5A" stroke="#1A2034"/><path d="M20 9 V17" stroke="#C8A060"/></svg>`,
+      ()=>{if(Q.s===11){talk("",["A diary, open at yesterday's date. Every line is in a cramped private shorthand: loops, hooks and dots. You can't read a word of it.","Only the inside cover is in plain writing: 'For little V's eyes, if ever she wants them.'","(You took MARLOW'S DIARY.)"],()=>{Q.s=12;say0("New objective in your JOURNAL.")});return}
+        if(Q.s===12){talk("",["The desk where the diary was. You have it. Chronicler Vell can read it."]);return}
+        if(Q.flag("diary")){talk("",["Marlow's diary, and Vell's translation of the last entry: 'Every night I go down to tend the cell.'"]);return}
+        talk("",["A shelf of old diaries in the same shorthand, going back decades."])})}}
+function marlowNPC(inBasement){const m={n:"Dr. Marlow",look:{coat:"#FFFFFF",hair:"#6B4424",hs:"short",acc:["glasses","badge","book"],skin:"#F2C7A5"},talks:[["..."]]};
+  m.quest=()=>{const s=Q.s;
+    if(inBasement){talk(m.n,["Hello, recruit. You found me.","No. Not here. Not with it listening.","The study. Come and find me there when you're ready. Bring whatever you think you know. And be certain of it."],()=>{Q.s=13;say0("Marlow went back up to the study. Gather your evidence first.");goZone(BASEMENT)});return}
+    if(s>=14){talk(m.n,["You found me out, recruit. I'm still proud of you for it.","Go on. The field needs you more than it needs me. And Quillmoor needs someone who isn't afraid to look behind the walls."]);return}
+    if(s<13){talk(m.n,["Not now, recruit. Not yet."]);return}
+    talk(m.n,["So. The recruit. Sit, if you like.","You've come a long way to find an old man hiding behind his own portrait.","Before I say anything else, I want to hear it from you.","Who founded this Institute, and made the thing in that basement?"],null,v=>{const x=v.toLowerCase();
+      if(!/marlow|aldous|\byou\b|^a\.?\s?m\.?$/.test(x)){talk(m.n,[`'${v||"..."}'? No. That isn't it.`,"Go back through what you've found. Then ask me again."]);return}
+      talk(m.n,["...Bold. Very bold.","Anyone can say a name. Show me why. Four things. Things that prove it about me, not just about the founder."],()=>evidencePick(picks=>{
+        const good=picks.filter(f=>EVIDENCE.find(e=>e.f===f).good).length;
+        if(good<4){talk(m.n,[good===0?"None of that says anything about me, recruit.":good===1?"One of those is interesting. The rest proves nothing about me.":good===2?"Two of those hold up. Two don't.":"Three good ones. Not four.","Find more. People who knew him long ago might remember things now they'd never say before."]);return}
+        Q.s=14;talk(m.n,["...Yes.","Aldous Marlow. Founder of the Quillmoor Institute, mixer of sample number one, and the only person who ever called it a mistake to its face.","I made it down there when I was younger than you. I wanted to make something that would last forever. It does. It keeps me going too, I think. That's why I haven't aged a day since.","I sealed the basement, I scratched my name off every record, and I started again as plain Dr. Marlow, head of the field team.","I couldn't cut my own seal. So I scattered the recipe, and I trained people like you, and I waited for someone who would look.","You did it, recruit. Not the metal. The looking.","(Your JOURNAL is complete. The founder's secret is yours.)"],()=>{giveItem("charm");say0("The founder's quest is complete.")})}))})};return m}
+function evidencePick(done){const have=EVIDENCE.filter(e=>Q.flag(e.f));const d=dlgEl();DLG.open=true;EXP.busy=true;d.hidden=false;$("#dlg-who").textContent="PRESENT EVIDENCE";$("#dlg-who").hidden=false;$("#dlg-more").hidden=true;
+  const sel=new Set;$("#dlg-txt").innerHTML=`<span>Choose four pieces of evidence, then press PRESENT.</span><span class="evlist">${have.map(e=>`<button class="ev" data-f="${e.f}" title="${e.x}">${e.t}</button>`).join("")}</span><button class="btn go evgo" disabled>PRESENT</button>`;
+  d.querySelectorAll(".ev").forEach(b=>b.onclick=e=>{e.stopPropagation();const f=b.dataset.f;if(sel.has(f))sel.delete(f);else if(sel.size<4)sel.add(f);b.classList.toggle("on",sel.has(f));d.querySelector(".evgo").disabled=sel.size!==4;sfx("sel")});
+  d.querySelector(".evgo").onclick=e=>{e.stopPropagation();dlgClose();done([...sel])}}
+
+/* ---- items: each one its own thing, drawn as itself. Effects stay small on purpose. ---- */
+const ITEMS={
+  cell:{name:"Spare Scanner Cell",desc:"A fat little battery that clicks into the scanner. One more scan on the alloy you're facing.",when:"round",w:9},
+  token:{name:"Field Hint Token",desc:"A brass token the Institute hands out for good fieldwork. Trade it for a hint and keep your points.",when:"round",w:13},
+  charm:{name:"Lucky Charm",desc:"A four-leaf clover pressed in resin. The next alloy you identify is worth 20% more.",when:"any",w:9},
+  patch:{name:"Containment Patch",desc:"A riveted plate with sealant. Slaps over a leak for +8% containment in a threat fight.",when:"boss",w:12},
+  stasis:{name:"Stasis Pack",desc:"A frosty canister. Crack it and containment can't drop for 5 seconds.",when:"boss",w:8},
+  cloth:{name:"Lens Cloth",desc:"Soft, lint-free, faintly lavender. Wipes a dazzled scanner back into order.",when:"dazzled",w:7},
+  quiet:{name:"Muffled Boots",desc:"Felt-soled overshoes. Nothing jumps out of the rubble for your next 25 steps.",when:"explore",w:11},
+  lure:{name:"Rubble Lure",desc:"A jar of glittering filings that alloys can't resist. The next rubble you step into will hold one.",when:"explore",w:12},
+  glint:{name:"Glint Lens",desc:"A jeweller's loupe. Look through it and anything dropped on this map sparkles.",when:"explore",w:7},
+  decoy:{name:"Syndicate Decoy",desc:"A cardboard cut-out wearing a stolen orange badge. Grunts on this map will watch it instead of you.",when:"explore",w:6},
+  timer:{name:"Pocket Timer",desc:"A wind-up timer that ticks very loudly. Throw it at a grunt and their fencing takes 12 seconds longer.",when:"duel",w:6}};
+const ICONS={
+  cell:`<rect x="6" y="5" width="12" height="16" rx="2" fill="#2E3A5A" stroke="#0B1330" stroke-width="1.3"/><rect x="9.5" y="2.8" width="5" height="2.4" rx=".6" fill="#9AA6C2" stroke="#0B1330" stroke-width=".8"/><rect x="8" y="14" width="8" height="5" rx="1" fill="#6BE08A"/><rect x="8" y="9.5" width="8" height="3.5" rx="1" fill="#6BE08A" opacity=".5"/><path d="M12 6.5 v3 M10.5 8 h3" stroke="#fff" stroke-width="1"/>`,
+  token:`<circle cx="12" cy="12" r="9" fill="#E6B83A" stroke="#6A4608" stroke-width="1.3"/><circle cx="12" cy="12" r="6.5" fill="none" stroke="#FFF1B0" stroke-width=".8"/><path d="M9.8 9.6 Q10 7.4 12.2 7.4 Q14.4 7.4 14.4 9.4 Q14.4 10.8 12.4 11.8 V13.2" stroke="#6A4608" stroke-width="1.6" fill="none" stroke-linecap="round"/><circle cx="12.4" cy="15.8" r="1" fill="#6A4608"/>`,
+  charm:`<circle cx="12" cy="13" r="8.5" fill="rgba(200,240,210,.5)" stroke="#6A8A6A" stroke-width="1"/>${[[0,-3.2],[3.2,0],[0,3.2],[-3.2,0]].map(([x,y])=>`<circle cx="${12+x}" cy="${13+y}" r="2.8" fill="#3AA05A" stroke="#1E5A2A" stroke-width=".6"/>`).join("")}<path d="M12 13 Q14 18 13 20.5" stroke="#1E5A2A" stroke-width="1.1" fill="none"/><path d="M12 4.5 V2.5" stroke="#9AA6C2" stroke-width="1.4"/>`,
+  patch:`<rect x="4" y="5" width="16" height="14" rx="2" fill="#9AA6B4" stroke="#3A4450" stroke-width="1.3" transform="rotate(-8 12 12)"/>${[[6.5,7.5],[17,6],[7.5,17.5],[18,16]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="1" fill="#E6ECF2" stroke="#3A4450" stroke-width=".5"/>`).join("")}<path d="M12 8.5 V15.5 M8.5 12 H15.5" stroke="#E8412C" stroke-width="2.4" stroke-linecap="round"/>`,
+  stasis:`<rect x="6.5" y="4" width="11" height="17" rx="3" fill="#CFF0FF" stroke="#2E6F9E" stroke-width="1.3"/><rect x="8.5" y="2.4" width="7" height="2.4" rx=".8" fill="#2E6F9E"/><path d="M12 8 V17 M8.2 10.3 L15.8 14.7 M15.8 10.3 L8.2 14.7" stroke="#2E6F9E" stroke-width="1.2" stroke-linecap="round"/>`,
+  cloth:`<path d="M4 8 L16 4 L20 14 L8 19 Z" fill="#E6DCF4" stroke="#8A7AB0" stroke-width="1.2"/><path d="M8 19 L7 21.5 L19 17 L20 14" fill="#CFC2E8" stroke="#8A7AB0" stroke-width="1"/><path d="M8 10 L15 7.5 M9.5 13.5 L17 10.5" stroke="#B8A8D8" stroke-width=".8"/><path d="M18.5 3.5 l.6 1.6 1.6.6 -1.6.6 -.6 1.6 -.6-1.6 -1.6-.6 1.6-.6z" fill="#fff"/>`,
+  quiet:`<path d="M6 4 H12 V13 Q12 15 14 15.5 L19 16.5 Q21 17 21 19 V20 H5 V13 Z" fill="#8A7AB0" stroke="#3A2E5A" stroke-width="1.3" stroke-linejoin="round"/><path d="M5 20 H21" stroke="#3A2E5A" stroke-width="2.4"/><path d="M6.5 7 H11.5 M6.5 10 H11.5" stroke="#B8A8D8" stroke-width="1"/>`,
+  lure:`<path d="M8 8 H16 V19 Q16 21 14 21 H10 Q8 21 8 19 Z" fill="rgba(220,240,255,.6)" stroke="#4A6A8A" stroke-width="1.2"/><rect x="7.2" y="5" width="9.6" height="3.4" rx="1" fill="#C8A060" stroke="#6A4A12" stroke-width=".9"/>${[[10,13],[13,15],[11,18],[14,11.5],[12,16.5]].map(([x,y],k)=>`<circle cx="${x}" cy="${y}" r="${k%2?.9:1.3}" fill="${["#FFE27A","#8FE3FF","#FF9AD5"][k%3]}"/>`).join("")}<path d="M18 5 l.5 1.3 1.3.5 -1.3.5 -.5 1.3 -.5-1.3 -1.3-.5 1.3-.5z" fill="#FFE27A"/>`,
+  glint:`<circle cx="10" cy="10" r="6" fill="rgba(200,230,255,.55)" stroke="#6A4A12" stroke-width="2"/><path d="M14.5 14.5 L20.5 20.5" stroke="#6A4A12" stroke-width="3" stroke-linecap="round"/><path d="M7.4 8 Q8.4 6.4 10 6.2" stroke="#fff" stroke-width="1.2" fill="none"/><path d="M10 9 l.5 1.2 1.2.5 -1.2.5 -.5 1.2 -.5-1.2 -1.2-.5 1.2-.5z" fill="#FFE27A"/>`,
+  decoy:`<path d="M8 22 V13 Q8 10 12 10 Q16 10 16 13 V22 Z" fill="#C8A878" stroke="#6A5A3A" stroke-width="1.2"/><circle cx="12" cy="6.5" r="3.2" fill="#C8A878" stroke="#6A5A3A" stroke-width="1.2"/><path d="M9 5 Q12 1.5 15 5 Z" fill="#26262C"/><circle cx="12" cy="15" r="2" fill="#FF7A1A" stroke="#26262C" stroke-width=".7"/><path d="M6 22 H18" stroke="#6A5A3A" stroke-width="1.6"/>`,
+  timer:`<circle cx="12" cy="13.5" r="7.5" fill="#E8E2D0" stroke="#8A6A2A" stroke-width="1.6"/><rect x="10.5" y="3" width="3" height="3" rx=".8" fill="#8A6A2A"/><path d="M12 13.5 V9 M12 13.5 L15 15.5" stroke="#2A2018" stroke-width="1.3" stroke-linecap="round"/><path d="M5.5 6.5 L7.4 8.2 M18.5 6.5 L16.6 8.2" stroke="#8A6A2A" stroke-width="1.4" stroke-linecap="round"/>`};
+function itemIcon(k,s=22){return `<svg viewBox="0 0 24 24" width="${s}" height="${s}" aria-hidden="true">${ICONS[k]||ICONS.token}</svg>`}
+const BAG=store.get("wta_bag",{});for(const k in BAG)if(!ITEMS[k])delete BAG[k];
+const saveBag=()=>store.set("wta_bag",BAG);
+function rollItem(){const ks=Object.keys(ITEMS);let t=ks.reduce((s,k)=>s+ITEMS[k].w,0),r=Math.random()*t;for(const k of ks){r-=ITEMS[k].w;if(r<=0)return k}return"token"}
+function giveItem(k,n=1){BAG[k]=(BAG[k]||0)+n;saveBag();bagCount()}
+function takeItem(k){if(!BAG[k])return false;BAG[k]--;if(!BAG[k])delete BAG[k];saveBag();bagCount();return true}
+function bagCount(){const b=$("#bagbtn");if(b){const n=Object.values(BAG).reduce((s,v)=>s+v,0);b.innerHTML=`BAG <b>${n}</b>`}}
+function itemUsable(k){const w=ITEMS[k].when,r=S.r,live=S.phase==="round"&&r&&(r.stage==="elements"||r.stage==="name"),boss=typeof bossActive==="function"&&bossActive();
+  if(w==="explore")return S.phase==="explore"&&!EXP.busy&&!EXP.zone.special&&!(k==="glint"&&EXP.glint)&&!(k==="decoy"&&EXP.decoy);
+  if(w==="boss")return boss&&!(k==="stasis"&&TB.stasis>0);
+  if(w==="dazzled")return boss&&!!TB.orig;
+  if(w==="duel")return live&&!!r.duel;
+  if(w==="any")return !S.charm;
+  if(w==="round"){if(!live)return false;if(k==="token")return !r.a.threat&&!r.a.quest&&r.hints<2;return true}
+  return false}
+function useItem(k){if(!itemUsable(k)||!takeItem(k))return;const r=S.r;sfx("pickup");
+  if(k==="cell"){r.tries++;r.maxTries++;renderActions();say("Click. The spare cell slots in. +1 scanner charge.")}
+  if(k==="token"){hint();S.run.score+=15;renderHud();setTimeout(()=>say("You hand over the token. The hint's on the house."),2600)}
+  if(k==="charm"){S.charm=true;const m="You tuck the clover charm in your pocket. The next alloy you identify is worth 20% more.";S.phase==="explore"?say0(m):say(m)}
+  if(k==="patch"){TB.hp=Math.min(100,TB.hp+8);bossHud();say("You slap the plate over the worst leak and rivet it down. +8% containment.")}
+  if(k==="stasis"){TB.stasis=5;say("You crack the canister. Frost races over everything. For five seconds, containment holds.")}
+  if(k==="cloth"){TB.orig.forEach(([e,rr,c])=>{e.style.gridRow=rr;e.style.gridColumn=c});TB.orig=null;say("A quick wipe, and the glare's gone. The scanner is back in order.")}
+  if(k==="quiet"){EXP.quiet=25;say0("You pull the felt overshoes on. Nothing will notice you for the next 25 steps.")}
+  if(k==="lure"){EXP.lure=true;say0("You scatter the glittering filings. The next rubble you step into is sure to hold something.")}
+  if(k==="glint"){EXP.glint=true;glintShow();say0("Through the loupe, dropped things sparkle. They're marked on the map now.")}
+  if(k==="decoy"){EXP.decoy=true;say0("You prop up the cardboard grunt. Any Syndicate grunt here will be busy staring at it.")}
+  if(k==="timer"){r.duel.T+=12;say("You wind the timer and lob it. It ticks so loudly the grunt loses count. +12 seconds.")}
+  renderBag()}
+{const _bt=bossTick;bossTick=function(){const hp=TB.hp;_bt();if(TB.on&&TB.stasis>0){TB.stasis-=.1;if(TB.hp<hp)TB.hp=hp;if(typeof bossHud==="function")bossHud()}}}
+function keyItems(){const s=Q.s,L=[];if(Q.flag("key")&&s<7)L.push(["CRUCIBLE KEY","A heavy iron key from Orrin's ring. Opens the old crucible."]);if(s===7)L.push(["SEALBREAKER","A casting made for one job: cutting the founder's seal."]);
+  if(Q.flag("ring")&&s<14)L.push(["FOUNDER'S SIGNET RING","Heavy, stamped with a Q. It fits something."]);if(sideState("toby")===1)L.push(["TOBY'S NOTE","For Janitor Lu, at the Old Reactor Hall."]);if(sideState("toby")===2)L.push(["LU'S REPLY","'Eat a vegetable.' For Intern Toby."]);return L}
+function renderBag(){const m=$("#bag");if(!m||m.hidden)return;const ks=Object.keys(ITEMS).filter(k=>BAG[k]);
+  m.querySelector(".bag-list").innerHTML=keyItems().map(([t,x])=>`<div class="bag-item key"><b>${t}</b><p>${x}</p></div>`).join("")+(ks.length?ks.map(k=>`<div class="bag-item">${itemIcon(k,34)}<div><b>${ITEMS[k].name} <span>×${BAG[k]}</span></b><p>${ITEMS[k].desc}</p></div><button class="btn" data-use="${k}" ${itemUsable(k)?"":"disabled"}>USE</button></div>`).join("")
+    :`<p class="bag-empty">No supplies. Search the maps for things people have dropped.</p>`);
+  m.querySelectorAll("[data-use]").forEach(b=>b.onclick=()=>useItem(b.dataset.use))}
+function modal(id,title){let m=$("#"+id);if(!m){m=document.createElement("div");m.id=id;m.className="modal";m.innerHTML=`<div class="bag-card"><div class="bag-top"><b>${title}</b><button class="btn">CLOSE</button></div><div class="bag-list"></div></div>`;document.body.appendChild(m);
+    m.onclick=e=>{if(e.target===m)m.hidden=true};m.querySelector(".bag-top .btn").onclick=()=>{m.hidden=true}}m.hidden=false;sfx("sel");return m}
+function openBag(){modal("bag","BAG");renderBag()}
+function openJournal(){const m=modal("journal","JOURNAL"),s=Q.s,g=pagesGot();store.set("wta_qf_seenJ",1);journalDot();const C=[];
+  if(Q.flag("recipe"))C.push(["The Sealbreaker recipe","Tungsten, hafnium, tantalum, rhenium and osmium, cast together in the Institute's old crucible."]);
+  [...PAGE_MAPS,"z-crater"].forEach(z=>{if(g.includes(z))C.push([`The founder's notes: ${PAGES[z].t.toLowerCase()}`,PAGES[z].x])});
+  if(Q.flag("ring"))C.push(["The founder's letter, first half","'If you are reading this, you have my ring, and I have failed to undo what I made. The rest of this letter I left with the one I trusted first.'"]);
+  if(Q.flag("half2"))C.push(["The founder's letter, second half","'...My study lies behind my oldest face. It will open for my ring, and for the words I carved over the front door. — A.M.'"]);
+  if(Q.flag("wrenAM"))C.push(["The staff roster","Only two people on the old roster ever had the initials A.M."]);
+  EVIDENCE.forEach(e=>{if(Q.flag(e.f))C.push([e.t,e.x])});
+  const sq=[...Object.values(AMBIENT).flat().filter(p=>p.side)].filter(p=>sideState(p.side.id)>0&&sideState(p.side.id)<3).map(p=>[`Favour: ${p.n}`,p.side.deliver?`Deliver ${p.side.thing} to ${p.side.deliver}.`:sideState(p.side.id)===1?`Find ${p.side.thing}.`:`Take ${p.side.thing} back to ${p.n}.`]);
+  m.querySelector(".bag-list").innerHTML=(s>0?`<div class="bag-item key"><b>${s>=14?"COMPLETE":"CURRENT OBJECTIVE"}</b><p>${questObjective()}</p></div>`:`<div class="bag-item key"><b>NO ACTIVE QUEST</b><p>People around the maps might need your help. The Quillmoor Institute is a good place to start.</p></div>`)
+    +sq.map(([t,x])=>`<div class="bag-item clue side"><b>${t}</b><p>${x}</p></div>`).join("")+(C.length?C.map(([t,x])=>`<div class="bag-item clue"><b>${t}</b><p>${x}</p></div>`).join(""):"")}
+function journalDot(){const b=$("#jbtn");if(b)b.classList.toggle("new",!store.get("wta_qf_seenJ",0))}
+{const a=$(".audio"),b=document.createElement("button");b.className="aubtn";b.id="bagbtn";b.onclick=openBag;a.prepend(b);const j=document.createElement("button");j.className="aubtn";j.id="jbtn";j.textContent="JOURNAL";j.onclick=openJournal;a.prepend(j);bagCount()}
+/* ---- the Slag Syndicate ---- */
+const SLAG_NAMES=["Grunt Rikket","Grunt Vosk","Grunt Pella","Grunt Durn","Grunt Mabry","Grunt Skoll","Grunt Tamsk","Grunt Brack"];
+const SLAG_INTRO=["Hold it right there! This rubble is Slag Syndicate territory!","Well, well. A little Institute scientist, all alone.","You've got a sharp eye. Let's see if it's sharper than mine!"];
+const SLAG_MOTTO="Melt it down, sell it off, leave no trace! That's the Syndicate way!";
+const SLAG_DEFEAT=["No way! You named it before I could fence it?!","The boss is not going to like this...","Fine! Keep your rock. There's plenty more where it came from!"];
+const SLAG_WIN=["Too slow! This one's going straight to the smelter. And I'll take a little something for my trouble!","Ha! Sold before you even figured it out. Thanks for the tip money!"];
+function slagWins(){return store.get("wta_slag",0)}
+function gruntLook(boss){return{coat:"#26262C",hair:"#1A1A1E",hs:boss?"bald":"short",acc:boss?["cap","beard","badge"]:["cap"],hat:"#1A1A1E",legs:"#1A1A1E",beard:"#3A3A3A",skin:boss?"#C88A64":"#F2C7A5"}}
+function gruntSVG(boss){return npcSVG(gruntLook(boss)).replace("</svg>",`<circle cx="20" cy="26" r="3.4" fill="#FF7A1A" stroke="#121B40" stroke-width="1"/><path d="M18.5 24.7 Q20 23.6 21.5 24.7 Q20 26 18.5 27.3 Q20 28.4 21.5 27.3" stroke="#121B40" stroke-width="1" fill="none"/></svg>`)}
+
+
+/* ---- placing everything on the map ---- */
+function worldPlace(){const M=EXP.zone.map,z=EXP.zone.cls,W=EXP.W,H=EXP.H,sp=EXP.zone.special;
+  document.querySelectorAll("#world .npc,#world .mapitem,#world .glintmark,#world .mapobj").forEach(e=>e.remove());
+  Object.assign(EXP,{npcs:[],items:[],hidden:[],grunts:[],objs:[],glint:false,decoy:false,lure:false,quiet:0,dir:[1,0]});
+  const inTut=typeof TUT!=="undefined"&&TUT.on,S0=SPOTS[z]||{},taken=new Set(Object.values(S0).map(([x,y])=>x+","+y)),floor=[];
+  M.forEach((row,y)=>row.split("").forEach((c,x)=>{if(c==="."&&Math.abs(x-EXP.x)+Math.abs(y-EXP.y)>=4&&!taken.has(x+","+y)&&!(z==="z-quill"&&!sp&&y<=1))floor.push([x,y])}));
+  for(let i=floor.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[floor[i],floor[j]]=[floor[j],floor[i]]}
+  const used=new Set,spot=()=>{while(floor.length){const[x,y]=floor.pop(),k=x+","+y;if(!used.has(k)){used.add(k);return[x,y]}}return null};
+  const addEl=(cls,x,y,html)=>{const d=document.createElement("div");d.className=cls;d.style.width=(100/W)+"%";d.style.height=(100/H)+"%";d.style.left=(x/W*100)+"%";d.style.top=(y/H*100)+"%";d.innerHTML=html;$("#world").insertBefore(d,$("#player"));return d};
+  const person=(p,at)=>{EXP.npcs.push({...p,x:at[0],y:at[1],el:addEl("npc",at[0],at[1],`<span class="talkmark">...</span>`+npcSVG(p.look)),said:0})};
+  questObjs();
+  if(sp==="study"&&Q.s!==12){const m=marlowNPC(false);if(Q.s>=13)person(m,[6,2])}
+  if(sp==="basement")EXP.npcs.filter(p=>p.n==="Dr. Marlow").forEach(p=>{p.el=addEl("npc",p.x,p.y,`<span class="talkmark">...</span>`+npcSVG(p.look))});
+  if(!inTut&&!sp){
+    if(KEEPERS[z]&&S0.keeper)person({...KEEPERS[z],keeper:true},S0.keeper);
+    const D=DISCOVERERS[z];if(D&&S0.disc&&ALLOYS.some(a=>a.name===D.a))person(D,S0.disc);
+    (AMBIENT[z]||[]).forEach((p,i)=>{const at=S0["amb"+(i+1)];if(at)person(p,at)});
+    questHooks(z);sideSeed();
+    const forceGrist=Q.s===2&&z==="z-crater";
+    if(S.run.idx>=1||forceGrist){const n=forceGrist?1:Math.random()<.45?(Math.random()<.3?2:1):0;for(let i=0;i<n;i++){const at=spot();if(!at)break;const boss=forceGrist||(i===0&&slagWins()>=3&&Math.random()<.35);
+      const g={n:boss?"Foreman Grist":SLAG_NAMES[Math.random()*SLAG_NAMES.length|0],boss,page:forceGrist,grunt:true,x:at[0],y:at[1],face:[[1,0],[-1,0],[0,1],[0,-1]][Math.random()*4|0]};g.el=addEl("npc grunt",g.x,g.y,`<span class="bang">!</span>`+gruntSVG(boss));EXP.grunts.push(g);slagFace(g)}}
+    for(let i=0;i<2;i++){if(Math.random()<.6){const at=spot();if(at){const k=rollItem();EXP.items.push({x:at[0],y:at[1],k,el:addEl("mapitem",at[0],at[1],itemIcon(k,40))})}}}
+    const spots=[];M.forEach((row,y)=>row.split("").forEach((c,x)=>{if((c==="."||c===",")&&!used.has(x+","+y)&&!taken.has(x+","+y)&&Math.abs(x-EXP.x)+Math.abs(y-EXP.y)>=4)spots.push([x,y])}));
+    for(let i=0;i<5&&spots.length;i++){const[x,y]=spots.splice(Math.random()*spots.length|0,1)[0];EXP.hidden.push({x,y,k:rollItem()})}}
+  dowse();nearMarks()}
+function glintShow(){const W=EXP.W,H=EXP.H;(EXP.hidden||[]).forEach(h=>{if(h.mark)return;const d=document.createElement("div");d.className="glintmark";d.style.width=(100/W)+"%";d.style.height=(100/H)+"%";d.style.left=(h.x/W*100)+"%";d.style.top=(h.y/H*100)+"%";$("#world").insertBefore(d,$("#player"));h.mark=d})}
+function slagFace(g){if(!g||!g.el)return;g.el.style.setProperty("--face",g.face[0]<0?-1:1)}
+function goZone(z){EXP.forceZone=z;EXP.spawn=null;startExplore()}
+{const _se=startExplore;startExplore=function(){const sp=EXP.spawn;_se();if(sp){EXP.x=sp[0];EXP.y=sp[1];EXP.spawn=null;placePlayer(true)}}}
+
+/* ---- walking ---- */
+{const _step=step;step=function(dx,dy){if(DLG.open)return false;if(EXP.busy||S.phase!=="explore")return _step(dx,dy);EXP.dir=[dx,dy];const nx=EXP.x+dx,ny=EXP.y+dy;
+  const c=tileAt(nx,ny);if(c===","&&EXP.quiet<=0&&EXP.lure){EXP.since=RUBBLE_PITY;EXP.lure=false}
+  const px=EXP.x,py=EXP.y,ok=_step(dx,dy);nearMarks();if(EXP.x===px&&EXP.y===py)return ok;
+  if(EXP.quiet>0){EXP.quiet--;if(!EXP.quiet)say0("Your muffled boots have worn thin. Alloys can find you again.")}
+  const it=(EXP.items||[]).find(i=>i.x===EXP.x&&i.y===EXP.y);
+  if(it){EXP.items=EXP.items.filter(i=>i!==it);it.el.remove();giveItem(it.k);sfx("pickup");say0(`You found a ${ITEMS[it.k].name.toUpperCase()}! It went into your BAG.`)}
+  const g=(EXP.grunts||[]).find(p=>!p.done&&p.x===EXP.x&&p.y===EXP.y);if(g&&!EXP.busy)slagChallenge(g);
+  dowse();slagSight();return ok}}
+function dowse(){const d=$("#dowse");if(!d)return;const hs=EXP.hidden||[];if(!hs.length){d.innerHTML=`<span>DOWSING</span><i></i><i></i><i></i><em>nothing left here</em>`;d.dataset.lv=0;return}
+  const dist=Math.min(...hs.map(h=>Math.abs(h.x-EXP.x)+Math.abs(h.y-EXP.y))),lv=dist===0?4:dist<=1?3:dist<=3?2:dist<=7?1:0;
+  d.innerHTML=`<span>DOWSING</span>${[1,2,3].map(i=>`<i class="${lv>=i?"on":""}"></i>`).join("")}<em>${["no signal","faint signal","getting warmer","very close!","right here!"][lv]}</em>`;d.dataset.lv=lv}
+function searchHere(){if(S.phase!=="explore"||EXP.busy)return;if(!gate("search",600))return;const hs=EXP.hidden||[],near=q=>Math.abs(q.x-EXP.x)+Math.abs(q.y-EXP.y),h=hs.find(q=>near(q)===0)||hs.find(q=>near(q)===1);
+  if(h){EXP.hidden=hs.filter(q=>q!==h);if(h.mark)h.mark.remove();sfx("pickup");if(h.side){setSide(h.side,2);say0(`You found ${h.thing}! Take it back to its owner.`)}else{giveItem(h.k);say0(`You searched the ground and turned up a ${ITEMS[h.k].name.toUpperCase()}! It went into your BAG.`)}}
+  else{sfx("beep");say0("Nobody to talk to and nothing to examine here. You search the ground... nothing. Watch the dowsing meter.")}dowse()}
+function slagSight(){if(EXP.busy||DLG.open||S.phase!=="explore"||EXP.decoy||(typeof TUT!=="undefined"&&TUT.on))return;
+  for(const g of EXP.grunts||[]){if(g.done)continue;const[fx,fy]=g.face;
+    for(let d=1;d<=4;d++){const x=g.x+fx*d,y=g.y+fy*d;if(x===EXP.x&&y===EXP.y){slagSpot(g,d);return}if(!passable(tileAt(x,y)))break}}}
+function slagSpot(g,d){EXP.busy=true;EXP.path=null;clearInterval(EXP.timer);clearInterval(EXP.hold);g.el.classList.add("alert");sfx("alert");
+  let n=d-1;const walk=()=>{if(n<=0){g.el.classList.remove("alert");slagChallenge(g);return}g.x+=g.face[0];g.y+=g.face[1];g.el.style.left=(g.x/EXP.W*100)+"%";g.el.style.top=(g.y/EXP.H*100)+"%";n--;setTimeout(walk,220)};setTimeout(walk,700)}
+function slagChallenge(g){if(g.done)return;g.done=true;
+  const lines=[g.boss?"Foreman Grist of the Slag Syndicate. You've been embarrassing my grunts.":SLAG_INTRO[Math.random()*SLAG_INTRO.length|0],SLAG_MOTTO,g.page?"Looking for this? A page from the Institute's founder. Collectors pay a fortune. Name my sample before I fence it, and maybe I'll hand it over.":g.boss?"Let's see you name this one before I have it smelted!":"I've got a sample right here. Figure out what's in it before I can fence it. Deal?"];
+  talk(g.n,lines,()=>{EXP.duel={n:g.n,boss:g.boss,page:g.page,T:g.boss?75:95};encounter()})}
+setInterval(()=>{if(EXP.busy||DLG.open||S.phase!=="explore")return;(EXP.grunts||[]).forEach(g=>{if(!g.done&&Math.random()<.5){g.face=[[1,0],[-1,0],[0,1],[0,-1]][Math.random()*4|0];slagFace(g)}});slagSight()},1800);
+
+/* ---- the duel, and the quest's special casting ---- */
+{const _en=encounter;encounter=function(){if(EXP.quiet>0&&!EXP.duel&&!EXP.questAlloy&&S.phase==="explore")return;_en()}}
+{const _pa=pickAlloy;pickAlloy=function(kind,used){if(EXP.questAlloy){const a=ALLOYS.find(x=>x.name===EXP.questAlloy);if(a)return a}if(EXP.duel){for(let i=0;i<30;i++){const a=_pa(kind,used);if(!a.threat)return a}}return _pa(kind,used)}}
+{const _sr=startRound;startRound=function(){const D=EXP.duel,QA=EXP.questAlloy;EXP.duel=null;let m=S.mode;if(QA)S.mode="recipe";_sr();S.mode=m;EXP.questAlloy=null;if(QA&&S.r)S.r.quest=true;if(D&&S.r&&!S.r.a.threat){S.r.duel={...D,t:0};duelStart()}}}
+function duelBar(){let b=$("#duelbar");if(!b){b=document.createElement("div");b.id="duelbar";b.innerHTML=`<div class="db-top"><b id="db-name"></b><span>SLAG SYNDICATE CHALLENGE</span></div><div class="db-meter"><i id="db-fill"></i><span id="db-txt"></span></div>`;const ar=document.querySelector(".arena");ar.parentNode.insertBefore(b,ar)}return b}
+function duelStart(){const D=S.r.duel,b=duelBar();b.hidden=false;b.classList.toggle("boss",!!D.boss);$("#db-name").textContent=D.n.toUpperCase();duelHud();clearInterval(D.iv);D.last=performance.now();D.iv=setInterval(duelTick,100);
+  setTimeout(()=>{if(S.r&&S.r.duel===D)say(`${D.n.toUpperCase()} wants to fence this sample! Identify it before their bar fills up.`)},300)}
+function duelHud(){const D=S.r&&S.r.duel;if(!D)return;const p=Math.min(100,D.t/D.T*100);$("#db-fill").style.width=p+"%";$("#db-txt").textContent=`FENCING THE SAMPLE · ${Math.max(0,Math.ceil(D.T-D.t))}s`}
+function duelTick(){const r=S.r,D=r&&r.duel;if(!D||r.stage==="done"){duelEnd();return}const now=performance.now(),dt=Math.min(.25,(now-D.last)/1000);D.last=now;
+  if(document.hidden||$("#stage").offsetParent===null)return;D.t+=dt;duelHud();if(D.t>=D.T){D.lost=true;lose(false)}}
+function duelEnd(){const b=$("#duelbar");if(b)b.hidden=true;const D=S.r&&S.r.duel;if(D)clearInterval(D.iv)}
+{const _w=win;win=function(){const r=S.r,D=r&&r.duel,charm=S.charm;_w();
+  if(r.quest&&r.a.quest){Q.s=7;setTimeout(()=>say("The SEALBREAKER has set! It went into your BAG. Now for that sealed wall..."),2400)}
+  if(charm){S.charm=false;const x=Math.round(r.pts*.2);r.pts+=x;S.run.score+=x;renderHud();setTimeout(()=>say(`Your lucky charm paid off: +${x} points.`),D?4200:2400)}
+  if(!D){if(S.run.score>S.best){S.best=S.run.score;store.set("wta_best2",S.best)}return}
+  clearInterval(D.iv);duelEnd();const extra=r.pts;r.pts+=extra;S.run.score+=extra;if(S.run.score>S.best){S.best=S.run.score;store.set("wta_best2",S.best)}
+  store.set("wta_slag",slagWins()+1);const k1=rollItem();giveItem(k1);let got=ITEMS[k1].name.toUpperCase();if(D.boss){const k2=rollItem();giveItem(k2);got+=" and a "+ITEMS[k2].name.toUpperCase()}renderHud();
+  if(D.page&&!pagesGot().includes("z-crater")){const g=pagesGot();g.push("z-crater");store.set("wta_pages",g);if(Q.s===2)Q.s=3;got+=", and the founder's FIFTH PAGE"}
+  setTimeout(()=>say(`${D.n.toUpperCase()}: "${SLAG_DEFEAT[Math.random()*SLAG_DEFEAT.length|0]}" You beat the Syndicate! Points doubled, and they dropped a ${got}.`),1800)}}
+{const _l=lose;lose=function(ran){const r=S.r,D=r&&r.duel;_l(ran);if(r&&r.quest)setTimeout(()=>say("The casting cracked before it could set. The crucible can be fired again."),1800);if(!D)return;clearInterval(D.iv);duelEnd();
+  const ks=Object.keys(BAG).filter(k=>BAG[k]);let what;if(ks.length){const k=ks[Math.random()*ks.length|0];takeItem(k);what=`They swiped a ${ITEMS[k].name.toUpperCase()} from your bag!`}else{const n=Math.min(S.run.score,40);S.run.score-=n;renderHud();what=n?`They took ${n} points' worth of your field notes!`:"Your bag was empty, so they just laughed at you."}
+  say(`${D.n.toUpperCase()}: "${SLAG_WIN[Math.random()*SLAG_WIN.length|0]}" ${what}`)}}
+
+/* ---- wiring: INTERACT (A), the dowsing meter, BAG and JOURNAL ---- */
+{const bar=document.querySelector(".expbar");const box=document.createElement("div");box.className="expctl";box.innerHTML=`<div class="dowse" id="dowse"></div><div class="expbtns"><button class="btn go" id="btn-act">A · INTERACT</button><button class="btn" id="btn-bag2">BAG</button></div>`;bar.insertBefore(box,bar.querySelector(".dpad"));
+  $("#btn-act").onclick=interact;$("#btn-bag2").onclick=openBag}
+document.addEventListener("keydown",e=>{if(S.phase!=="explore"||$("#view-play").hidden)return;if(e.target.closest&&e.target.closest("input,textarea"))return;
+  if(e.key==="e"||e.key==="E"||e.key===" "||e.key==="Enter"){e.preventDefault();interact()}else if(e.key==="b"||e.key==="B"){openBag()}else if(e.key==="j"||e.key==="J"){openJournal()}},true);
+{const _se=startExplore;startExplore=function(){if(DLG.open)dlgClose();_se();worldPlace();if(!EXP.zone.special){$("#zone-name").textContent=EXP.zone.name}if(EXP.grunts&&EXP.grunts.length)setTimeout(()=>{if(!EXP.busy)say0("Someone in a dark coat is standing watch out here. Stay out of their line of sight, or be ready for a challenge.")},900)}}
+journalDot();
+
+
+/* =============== HAND-LAID MAPS: what each tile is, what you can read, and what your tools can open =============== */
+/* legend: # wall  . floor  : laid floor (planks, rugs, snow...)  , rubble  = path/rails/bridge  ~ deep liquid
+   o T x y  things that belong to that place  L wall lamp  S sign  c nailed crate  K cracked rock or old ice
+   w shallow water (waders)  d unlit tunnel (lamp) */
+const SIGNS={
+ "z-mine":{"36,6":["THE WIDOW'S SEAM.","Closed by order of the Quillmoor Institute. The rope is there for a reason. The reason is not a nice one."],
+   "11,14":["STORES.","Crates to be opened by the foreman only.","Underneath, in pencil: 'the foreman has lost the crowbar again'."],
+   "6,17":["FOREMAN'S OFFICE.","Knock. If nobody answers, knock louder. Then give up and go and find him."]},
+ "z-scrap":{"31,15":["EAST HEAPS CLOSED.","Do not climb the fence. Do not move the crate. Do not ask why. I mean it. — Bolt"],
+   "25,20":["WEIGHBRIDGE.","All loads weighed. All weights final. Arguing with the scale is not permitted and has never once worked."]},
+ "z-wreck":{"7,11":["HARBOUR OFFICE.","Tide tables inside. Low water this afternoon, if you trust the tables.","Somebody has added: 'don't'."]},
+ "z-volcano":{"7,9":["EMBERFORGE.","Once the finest forge in three counties. Now mostly a roof, and not much of one."]},
+ "z-vault":{"5,17":["READING ROOM.","Visitors must sign the book. The book must not be eaten.","(There was an incident. We do not discuss the incident.)"]},
+ "z-reactor":{"4,3":["CONTROL ROOM.","Every switch in this room is off. Please do not check."]},
+ "z-glacier":{"5,7":["RESEARCH HUT No. 1.","Institute property since the first winter. Wipe your boots. Shut the door. The cold gets in and then it won't leave."]},
+ "z-quill":{"8,12":["RECORDS. STAFF ONLY.","Staff files are kept by badge number.","Each cabinet opens to its owner's badge number, followed by the year they joined."],
+   "34,6":["OLD LAB.","Crucible out of use. Key held off site. Please stop asking the archivist."],
+   "34,12":["STAFF LOUNGE.","Mugs are not specimens. Specimens are not mugs. Label everything."]},
+ "z-crater":{"30,4":["OBSERVATORY.","Viewing by projector only. Never look at the crater directly.","The film vault door caved in the winter of the big frost. Mind the rubble."]}};
+
+/* ---- tools: you keep these forever, and each one opens a different kind of place ---- */
+const TOOLS={
+ lamp:{name:"Miner's Lamp",desc:"Nettie's spare, trimmed for forty years out of habit. Unlit tunnels are walkable while you carry it.",icon:`<path d="M9 8 H15 L16 11 H8 Z" fill="#6A4A12"/><rect x="8" y="11" width="8" height="9" rx="1.5" fill="rgba(255,230,150,.8)" stroke="#6A4A12" stroke-width="1.2"/><path d="M12 13 Q10.5 15.5 12 17.5 Q13.5 15.5 12 13Z" fill="#FF9A2A"/><path d="M9.5 8 Q12 3 14.5 8" fill="none" stroke="#6A4A12" stroke-width="1.2"/><rect x="7.5" y="20" width="9" height="2" rx=".6" fill="#6A4A12"/>`},
+ crowbar:{name:"Crowbar",desc:"Bolt's second-best. His best one has a name. Pries open any crate that's been nailed shut.",icon:`<path d="M6 20 L16 6 Q17.5 4 19 5 Q20 6 18.5 7.2" fill="none" stroke="#B8242A" stroke-width="2.6" stroke-linecap="round"/><path d="M6 20 L4.5 18.6" stroke="#B8242A" stroke-width="2.6" stroke-linecap="round"/>`},
+ boots:{name:"Wading Boots",desc:"Captain Fenn's old waders, dry to the hip. Shallow water is walkable while you wear them.",icon:`<path d="M8 3 H14 V15 Q14 16.5 15.5 17 L19 18 Q20.5 18.5 20.5 20 V21 H7 V15 Z" fill="#3A6A4A" stroke="#1E3A28" stroke-width="1.2" stroke-linejoin="round"/><path d="M7 21 H20.5" stroke="#1E3A28" stroke-width="2"/><path d="M8 6 H14" stroke="#6A9A7A" stroke-width="1"/><path d="M3 20 Q5 18.5 7 20 M21 20 Q22 19 23 20" stroke="#6AB4E0" stroke-width="1" fill="none"/>`},
+ pick:{name:"Ice Pick",desc:"Institute issue, older than Dr. Holm. Splits old ice and rotten rock alike.",icon:`<path d="M12 7 V21" stroke="#8A5A34" stroke-width="2.2" stroke-linecap="round"/><path d="M4 8 Q12 3 20 8 L18 8.6 Q12 5.5 6 8.6 Z" fill="#AAB6C2" stroke="#4A5664" stroke-width="1"/><path d="M4 8 L3 10" stroke="#4A5664" stroke-width="1.3"/>`}};
+function toolList(){return store.get("wta_tools",[])}
+function hasTool(k){return toolList().includes(k)}
+function giveTool(k){const l=toolList();if(!l.includes(k)){l.push(k);store.set("wta_tools",l)}litUpdate();sfx("pickup")}
+function litUpdate(){const m=$("#mapwrap");if(m)m.classList.toggle("lit",hasTool("lamp"))}
+const KEEPER_TOOL={"z-mine":["lamp",["Hold up. You're not going anywhere off the rails without a light.","The north tunnels haven't seen a lamp since I retired. Here. My spare. Keep it trimmed.","(You got the MINER'S LAMP. Unlit tunnels are walkable now.)"]],
+ "z-scrap":["crowbar",["You're gonna want to open crates. Everybody does. At least do it with the right tool.","Second-best crowbar. My best crowbar is called Doreen and you can't have her.","(You got the CROWBAR. Nailed-shut crates can be opened now.)"]],
+ "z-wreck":["boots",["You'll want to get out to that hull. Everybody does, once.","Take my old waders. The shallows are kind if you know where to put your feet, and these know.","(You got the WADING BOOTS. Shallow water is walkable now.)"]],
+ "z-glacier":["pick",["If you're going to poke about in my caverns, don't use your hands. Or your face.","Institute ice pick. Splits old ice and rotten rock alike. It's older than I am, so be nice to it.","(You got the ICE PICK. Cracked rock and ice blocks can be broken now.)"]]};
+
+/* ---- the map as it is now: crates you've opened and rocks you've split stay that way ---- */
+function openedList(){return store.get("wta_opened",[])}
+function openedMap(cls){const M=MAPS[cls].slice();openedList().filter(k=>k.startsWith(cls+":")).forEach(k=>{const[x,y]=k.split(":")[1].split(",").map(Number);M[y]=M[y].slice(0,x)+"."+M[y].slice(x+1)});return M}
+function markOpened(x,y){const cls=EXP.zone.cls,l=openedList(),k=cls+":"+x+","+y;if(!l.includes(k)){l.push(k);store.set("wta_opened",l)}
+  const row=EXP.zone.map[y];EXP.zone.map[y]=row.slice(0,x)+"."+row.slice(x+1);const t=document.querySelector(`#map .tile[data-x="${x}"][data-y="${y}"]`);if(t){t.className="tile f";t.innerHTML=""}
+  EXP.objs=(EXP.objs||[]).filter(o=>!(o.tile&&o.x===x&&o.y===y));gatedCompute()}
+function canWalk(c){return c==="."||c===","||c==="="||c==="P"||c===":"||(c==="w"&&hasTool("boots"))||(c==="d"&&hasTool("lamp"))}
+
+/* ---- how each tile looks ---- */
+const PSH=`<ellipse cx="20" cy="35" rx="14" ry="3.5" fill="#000" opacity=".3"/>`;
+const PS=b=>`<svg viewBox="0 0 40 40" preserveAspectRatio="xMidYMid meet" aria-hidden="true">${PSH}${b}</svg>`;
+const CRATE=`<rect x="7" y="11" width="26" height="23" fill="#A8743E" stroke="#4A2E18" stroke-width="1.5"/><rect x="9.5" y="13.5" width="21" height="18" fill="none" stroke="#7A4E26" stroke-width="1.2"/><path d="M10 14 L30 31" stroke="#7A4E26" stroke-width="2.4"/>${[[9,13],[31,13],[9,32],[31,32]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r=".9" fill="#2A1A0C"/>`).join("")}<path d="M7 17 H33" stroke="#C8945E" stroke-width=".8"/>`;
+const BOULDER=`<path d="M6 33 Q4 20 13 13 Q21 7 30 13 Q37 19 34 33 Z" fill="#8A8278" stroke="#3A342C" stroke-width="1.4"/><path d="M12 16 Q18 12 24 14" stroke="#B0A89E" stroke-width="1.4" fill="none"/><path d="M21 10 L19 17 L23 21 L18 27 L21 33" stroke="#2A2420" stroke-width="1.6" fill="none" stroke-linejoin="round"/><path d="M23 21 L28 23" stroke="#2A2420" stroke-width="1.1"/>`;
+const ICEBLOCK=`<rect x="6" y="9" width="28" height="25" rx="3" fill="#BFE4F8" stroke="#5A9AC8" stroke-width="1.4"/><path d="M9 12 H22" stroke="#FFFFFF" stroke-width="2" opacity=".8"/><path d="M20 9 L18 16 L23 21 L17 28 L20 34" stroke="#3A7AA8" stroke-width="1.5" fill="none" stroke-linejoin="round"/><path d="M23 21 L29 24" stroke="#3A7AA8" stroke-width="1"/>`;
+const SIGNPOST=`<rect x="18.5" y="16" width="3" height="19" fill="#6B4A2E" stroke="#3A2414" stroke-width=".8"/><rect x="5" y="6" width="30" height="13" rx="1.5" fill="#D8C090" stroke="#5A3A1E" stroke-width="1.4"/><path d="M9 10.5 H31 M9 14.5 H25" stroke="#5A3A1E" stroke-width="1.4" stroke-linecap="round"/>`;
+const ZPROPS={
+ "z-mine":{x:{svg:`<path d="M7 34 Q5 22 11 18 Q15 16 18 19 Q20 23 19 34 Z" fill="#B89A6A" stroke="#5A4424" stroke-width="1.2"/><path d="M20 34 Q19 21 26 17 Q31 15 34 20 Q35 27 33 34 Z" fill="#A88A5A" stroke="#5A4424" stroke-width="1.2"/><path d="M9 19 Q13 16 17 19 M22 18 Q27 14 32 19" stroke="#5A4424" stroke-width="1.4" fill="none"/><circle cx="13" cy="18" r="2" fill="#D07A3A"/><circle cx="27" cy="17" r="2.2" fill="#E9B949"/><circle cx="30" cy="18.5" r="1.4" fill="#9AA0A8"/>`},
+   y:{svg:`<rect x="5" y="8" width="30" height="4" fill="#7A5230" stroke="#3A2414"/><rect x="6" y="12" width="3" height="23" fill="#6B4A2E"/><rect x="31" y="12" width="3" height="23" fill="#6B4A2E"/><path d="M13 12 V31 M21 12 V31 M28 12 V31" stroke="#8A5A34" stroke-width="1.8"/><path d="M9 16 Q13 13 17 16" stroke="#9AA6B4" stroke-width="2.2" fill="none"/><path d="M17 20 Q21 17 25 20" stroke="#9AA6B4" stroke-width="2.2" fill="none"/><path d="M25 18 L31 18 L31 21 L25 21 Z" fill="#9AA6B4"/>`}},
+ "z-scrap":{x:{svg:`${[30,23,16].map(y=>`<ellipse cx="20" cy="${y}" rx="12" ry="4.5" fill="#26262A" stroke="#0E0E10" stroke-width="1"/><ellipse cx="20" cy="${y}" rx="5.5" ry="1.8" fill="#4A4A52"/>`).join("")}`},
+   y:{tall:1,svg:`<rect x="15" y="14" width="10" height="21" fill="#E0B820" stroke="#5A4A08" stroke-width="1.2"/><path d="M15 14 L25 21 M25 14 L15 21 M15 21 L25 28 M25 21 L15 28" stroke="#5A4A08" stroke-width="1"/><path d="M20 14 L38 3" stroke="#E0B820" stroke-width="4"/><path d="M20 14 L38 3" stroke="#5A4A08" stroke-width="1" stroke-dasharray="2 2"/><path d="M36 4 V14" stroke="#2A2A2E" stroke-width=".8"/><path d="M34 14 H38 L37 17 H35 Z" fill="#6E757D"/><rect x="12" y="33" width="16" height="3" fill="#3A3A42"/>`}},
+ "z-wreck":{x:{svg:`<path d="M3 24 Q20 36 37 24 L35 20 Q20 28 5 20 Z" fill="#8A4A2E" stroke="#3A1E10" stroke-width="1.3"/><path d="M5 20 Q20 14 35 20" fill="#6E3A22" stroke="#3A1E10" stroke-width="1.2"/><path d="M12 19 V26 M20 17 V29 M28 19 V26" stroke="#B87A54" stroke-width="1"/>`},
+   y:{svg:`<ellipse cx="14" cy="28" rx="10" ry="5" fill="none" stroke="#C8A868" stroke-width="2.4"/><ellipse cx="14" cy="28" rx="6" ry="3" fill="none" stroke="#B89858" stroke-width="2"/><path d="M28 8 V30 M23 13 H33" stroke="#4A5058" stroke-width="2.6" stroke-linecap="round"/><path d="M21 26 Q28 35 35 26" stroke="#4A5058" stroke-width="2.6" fill="none" stroke-linecap="round"/><circle cx="28" cy="7" r="2" fill="none" stroke="#4A5058" stroke-width="1.5"/>`}},
+ "z-volcano":{x:{svg:`<path d="M5 15 H33 Q36 15 36 18 L28 20 V25 H12 V20 L7 19 Q4 18 5 15 Z" fill="#3A3A42" stroke="#121216" stroke-width="1.3"/><path d="M13 25 L10 34 H30 L27 25" fill="#2A2A30" stroke="#121216" stroke-width="1.2"/><path d="M8 16 H32" stroke="#6A6A74" stroke-width="1"/><circle cx="18" cy="17" r="1" fill="#FF8A2A"/>`},
+   y:{tall:1,svg:`<path d="M12 36 L10 10 Q11 3 20 2 Q29 3 30 10 L28 36 Z" fill="#6A625E" stroke="#2A2422" stroke-width="1.4"/><path d="M20 12 m-5 0 a5 5 0 1 0 10 0 a3.5 3.5 0 1 0 -7 0 a2 2 0 1 0 4 0" fill="none" stroke="#FF8A2A" stroke-width="1.2" opacity=".85"/><path d="M14 24 H26 M15 29 H25" stroke="#4A4240" stroke-width="1.2"/>`}},
+ "z-vault":{x:{svg:`<rect x="10" y="24" width="20" height="11" fill="#6B4A2E" stroke="#3A2414" stroke-width="1.2"/><rect x="9" y="7" width="22" height="17" fill="rgba(210,235,250,.45)" stroke="#8C7A5E" stroke-width="1.4"/><path d="M11 9 L15 9 L11 14" fill="#FFFFFF" opacity=".6"/><polygon points="20,11 24,15 20,21 16,15" fill="#3AA0E2" stroke="#1A5A8A" stroke-width=".8"/><rect x="15" y="21" width="10" height="3" fill="#D9A92A"/>`},
+   y:{tall:1,svg:`<rect x="11" y="24" width="18" height="12" fill="#EDE6D2" stroke="#8C7A5E" stroke-width="1.2"/><rect x="9" y="22" width="22" height="3" fill="#D9A92A"/><path d="M13 22 Q12 13 20 12 Q28 13 27 22 Z" fill="#D8D0BC" stroke="#8C7A5E" stroke-width="1.2"/><circle cx="20" cy="8" r="5.5" fill="#D8D0BC" stroke="#8C7A5E" stroke-width="1.2"/><path d="M16 4 Q20 1 24 4" stroke="#B8AE96" stroke-width="1.4" fill="none"/>`}},
+ "z-reactor":{x:{svg:`<path d="M5 22 H35 L33 35 H7 Z" fill="#7A847E" stroke="#2E3430" stroke-width="1.2"/><rect x="9" y="6" width="22" height="15" rx="1.5" fill="#2E3430" stroke="#1A1E1C" stroke-width="1.2"/><rect x="11" y="8" width="18" height="11" fill="#1A2E22"/><path d="M13 16 L16 12 L19 14 L23 10 L27 13" stroke="#9CFF4A" stroke-width="1" fill="none"/>${[10,15,20,25,30].map((x,i)=>`<circle cx="${x}" cy="27" r="1.5" fill="${["#E23A3A","#E0B820","#9CFF4A","#E0B820","#3AA0E2"][i]}"/>`).join("")}`},
+   y:{svg:`<rect x="3" y="20" width="34" height="8" fill="#8A9692" stroke="#3A4440" stroke-width="1.2"/><rect x="17" y="12" width="6" height="10" fill="#8A9692" stroke="#3A4440" stroke-width="1.2"/><circle cx="20" cy="10" r="7" fill="none" stroke="#C8242A" stroke-width="2.4"/><path d="M13 10 H27 M20 3 V17" stroke="#C8242A" stroke-width="1.6"/><circle cx="20" cy="10" r="1.6" fill="#6A1216"/><path d="M8 20 V28 M32 20 V28" stroke="#5A6662" stroke-width="1.4"/>`}},
+ "z-glacier":{x:{svg:`<path d="M3 34 L20 7 L37 34 Z" fill="#FF7A2A" stroke="#8A3A0E" stroke-width="1.4" stroke-linejoin="round"/><path d="M20 7 L16 34 H24 Z" fill="#C8541A"/><path d="M20 7 L20 3" stroke="#6A4A2A" stroke-width="1.4"/><path d="M3 34 H37" stroke="#8A3A0E" stroke-width="1.5"/>`},
+   y:{svg:`<ellipse cx="20" cy="27" rx="13" ry="6" fill="#DDF2FF" stroke="#8AC0E0" stroke-width="1.2"/><ellipse cx="20" cy="27" rx="8" ry="3.4" fill="#1E3E58"/><path d="M26 27 L34 6" stroke="#6A4A2A" stroke-width="1.4"/><path d="M34 6 Q35 18 22 27" stroke="#E8E8E8" stroke-width=".6" fill="none"/><rect x="30" y="29" width="7" height="5" fill="#8A5A34" stroke="#3A2414" stroke-width=".8"/>`}},
+ "z-quill":{x:{tall:1,svg:`<rect x="6" y="2" width="28" height="33" fill="#6B4A2E" stroke="#3A2414" stroke-width="1.2"/>${[4,15,26].map(y=>`<rect x="8" y="${y}" width="24" height="8" fill="#2A1C12"/>`).join("")}${[[9,5,"#8A3A34"],[12,4,"#2E4A7A"],[15,6,"#3A6A4A"],[19,5,"#6A4A2A"],[23,4,"#4A3A6A"],[27,6,"#8A6A2A"],[9,16,"#2E4A7A"],[13,17,"#6A4A2A"],[17,16,"#8A3A34"],[25,17,"#3A6A4A"],[10,27,"#4A3A6A"],[15,27,"#8A6A2A"],[21,28,"#2E4A7A"],[26,27,"#8A3A34"]].map(([x,y,c])=>`<rect x="${x}" y="${y}" width="2.8" height="${12-(y%11)}" fill="${c}"/>`).join("")}`},
+   y:{svg:`<path d="M12 24 H28 L26 35 H14 Z" fill="#C8643A" stroke="#6A2E14" stroke-width="1.2"/><rect x="11" y="22" width="18" height="3" fill="#D8744A" stroke="#6A2E14" stroke-width="1"/><path d="M20 22 Q18 12 10 8 M20 22 Q22 10 30 6 M20 22 Q20 14 20 4 M20 22 Q14 17 7 17 M20 22 Q27 17 33 16" stroke="#2E7A3A" stroke-width="2.2" fill="none" stroke-linecap="round"/>`}},
+ "z-crater":{x:{tall:1,svg:`<path d="M20 22 L12 36 M20 22 L28 36 M20 22 V36" stroke="#3A3448" stroke-width="1.6"/><rect x="8" y="9" width="24" height="8" rx="2" fill="#C8CED8" stroke="#3A3448" stroke-width="1.3" transform="rotate(-28 20 13)"/><rect x="28" y="2" width="6" height="10" rx="1" fill="#8A92A0" stroke="#3A3448" stroke-width="1" transform="rotate(-28 20 13)"/><circle cx="20" cy="20" r="2.4" fill="#3A3448"/>`},
+   y:{svg:`<path d="M6 33 Q3 22 11 16 Q19 10 28 14 Q37 19 34 33 Z" fill="#2A2436" stroke="#120E1A" stroke-width="1.3"/>${[[13,22,2.4],[22,19,1.8],[27,27,2.6],[16,29,1.6]].map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r}" fill="#1A1624"/>`).join("")}<path d="M10 20 Q18 14 27 16" stroke="#B08CFF" stroke-width="1" fill="none" opacity=".7"/><circle cx="24" cy="24" r="1.2" fill="#BFE3FF"/>`}}};
+function tileLook(c,x,y,seed,M){const z=EXP.zone.cls;
+  if(c==="#")return["w",""];if(c==="L")return["l",""];if(c===",")return["r",rubbleSVG(z,seed)];if(c==="=")return["pa",""];if(c==="~")return["lq",""];
+  if(c===":")return["f fd",""];if(c==="w")return["sh",""];if(c==="d")return["dk",""];
+  const under=()=>{let a=0,b=0;[[1,0],[-1,0],[0,1],[0,-1]].forEach(([dx,dy])=>{const n=(M[y+dy]||"")[x+dx];if(n===":")a++;if(n==="."||n===",")b++});return a>b?" fd":""};
+  if(c==="o")return["f pr"+under(),propSVG(z,"o",seed)];if(c==="T")return["f tl"+under(),propSVG(z,"T",seed)];
+  if(c==="x"||c==="y"){const p=(ZPROPS[z]||{})[c];return[(p&&p.tall?"f tl":"f pr")+under(),p?PS(p.svg):""]}
+  if(c==="c")return["f pr"+under(),PS(CRATE)];if(c==="K")return["f pr"+under(),PS(z==="z-glacier"?ICEBLOCK:BOULDER)];if(c==="S")return["f pr"+under(),PS(SIGNPOST)];
+  return["f",""]}
+
+/* ---- signs, crates and cracked rock are things you INTERACT with ---- */
+const CRATE_LOOT=["cell","guide","sieve","patch","stasis","quiet","lure","glint","survey","charm","decoy","timer","cloth"];
+function tileObjs(){if(EXP.zone.special)return;const M=EXP.zone.map,z=EXP.zone.cls;
+  M.forEach((row,y)=>row.split("").forEach((c,x)=>{
+    if(c==="S"){const t=(SIGNS[z]||{})[x+","+y]||["The paint has flaked off past reading."];EXP.objs.push({x,y,tile:1,use:()=>talk("",t)})}
+    if(c==="c")EXP.objs.push({x,y,tile:1,use:()=>{if(!hasTool("crowbar")){talk("",["A crate, nailed shut. The lid won't move for fingers.","A crowbar would do it."]);return}
+      const k=CRATE_LOOT[(x*7+y*13+z.length)%CRATE_LOOT.length];sfx("pickup");markOpened(x,y);giveItem(k);talk("",["You work the crowbar under the lid. The nails shriek, and it comes away.",`Inside, packed in straw: a ${ITEMS[k].name.toUpperCase()}. It went into your BAG.`])}});
+    if(c==="K")EXP.objs.push({x,y,tile:1,use:()=>{const ice=z==="z-glacier";if(!hasTool("pick")){talk("",[ice?"A block of old blue ice, clouded right through. Something is on the other side.":"A boulder with a crack running right through it. It sounds hollow when you knock.","An ice pick would split it."]);return}
+      sfx("clunk");markOpened(x,y);talk("",[ice?"You set the pick in the cloudy seam and lean on it. The block splits with a sound like a gunshot.":"One good swing into the crack and the boulder falls apart like a loaf.","The way is open."])}})}))}
+
+/* ---- rubble behind a gate hasn't been picked over. Alloys there come quicker, and shine more often. ---- */
+function gatedCompute(){const M=EXP.zone.map,W=EXP.W,H=EXP.H,seen=new Set,q=[];if(!M)return;
+  let s=null;M.forEach((r,y)=>{const x=r.indexOf("P");if(x>=0)s=[x,y]});if(!s)s=[EXP.x,EXP.y];
+  const ok=c=>c==="."||c===","||c==="="||c==="P"||c===":";seen.add(s+"");q.push(s);
+  while(q.length){const[x,y]=q.shift();for(const[dx,dy]of[[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+dx,ny=y+dy,k=nx+","+ny;if(nx<0||ny<0||nx>=W||ny>=H||seen.has(k)||!ok(M[ny][nx]))continue;seen.add(k);q.push([nx,ny])}}
+  EXP.open=seen}
+function inGated(x,y){return EXP.open&&!EXP.zone.special&&!EXP.open.has(x+","+y)}
+{const _en=encounter;encounter=function(){EXP.fromGated=inGated(EXP.x,EXP.y);_en()}}
+{const _sr=startRound;startRound=function(){if(EXP.fromGated&&!EXP.nextRadiant&&Math.random()<.1)EXP.nextRadiant=true;EXP.fromGated=false;_sr()}}
+{const _st=step;step=function(dx,dy){if(!DLG.open&&!EXP.busy&&S.phase==="explore"){const c=tileAt(EXP.x+dx,EXP.y+dy);
+    if(c==="w"&&!hasTool("boots")&&gate("wadeMsg",1500))say0("Too deep for ordinary shoes. A pair of waders would get you through.");
+    if(c==="d"&&!hasTool("lamp")&&gate("darkMsg",1500))say0("Pitch black in there. You'd need a lamp.");
+    if((c==="c"||c==="K"||c==="S")&&gate("bumpMsg",1500))say0(c==="c"?"A nailed-shut crate. Try INTERACT.":c==="K"?"Cracked rock blocks the way. Try INTERACT.":"A sign. Press INTERACT to read it.")}
+  const px=EXP.x,py=EXP.y,r=_st(dx,dy);if((EXP.x!==px||EXP.y!==py)&&inGated(EXP.x,EXP.y)&&tileAt(EXP.x,EXP.y)===","&&EXP.quiet<=0)EXP.since=(EXP.since||0)+1;return r}}
+
+
+/* =============== ITEMS: every one does a different kind of thing, not a bigger or smaller number of the same thing =============== */
+if(BAG.token){BAG.guide=(BAG.guide||0)+BAG.token;delete BAG.token;saveBag()}
+delete ITEMS.token;
+Object.assign(ITEMS,{
+  cell:{name:"Spare Scanner Cell",cat:"lab",desc:"Clicks into the scanner. Gives you one more scan on the alloy in front of you.",when:"elements",w:9},
+  guide:{name:"Field Guide Page",cat:"lab",desc:"A torn page of the Institute field guide. Narrows a nameless alloy down to three names. One of them is right.",when:"name",w:10},
+  sieve:{name:"Sorting Sieve",cat:"lab",desc:"Shake the sample through it and eight elements that aren't in there fall away from the scanner. Costs no charge.",when:"elements",w:9},
+  charm:{name:"Lucky Charm",cat:"lab",desc:"A four-leaf clover pressed in resin. Carry it and the next alloy you register is worth 20% more.",when:"any",w:7},
+  patch:{name:"Containment Patch",cat:"threat",desc:"A riveted plate with sealant. Mends one leak at once: +8% containment in a threat fight.",when:"boss",w:9},
+  stasis:{name:"Stasis Pack",cat:"threat",desc:"A frosty canister. Crack it and nothing can pull containment down for 5 seconds. It doesn't mend anything.",when:"boss",w:7},
+  cloth:{name:"Lens Cloth",cat:"threat",desc:"Soft and lint-free. Wipes a dazzled scanner back into order in one pass.",when:"dazzled",w:6},
+  quiet:{name:"Muffled Boots",cat:"field",desc:"Felt overshoes. Nothing jumps out of the rubble at you for 25 steps. For walking somewhere in peace.",when:"explore",w:9},
+  lure:{name:"Rubble Lure",cat:"field",desc:"A jar of glittering filings. The very next rubble you step into will have an alloy in it.",when:"explore",w:9},
+  glint:{name:"Glint Lens",cat:"field",desc:"A jeweller's loupe. Look through it and everything dropped on this map is marked with a sparkle.",when:"explore",w:7},
+  decoy:{name:"Syndicate Decoy",cat:"field",desc:"A cardboard grunt with a stolen orange badge. Stand it up in front of you and the grunts on this map stare at it instead.",when:"explore",w:6},
+  survey:{name:"Survey Map",cat:"field",desc:"An Institute survey sheet, folded small. Unfold it and walk straight to any map you choose.",when:"explore",w:5},
+  timer:{name:"Pocket Timer",cat:"duel",desc:"Ticks very loudly. Lob it at a grunt mid-duel and they lose count: +12 seconds on the clock.",when:"duel",w:6}});
+Object.assign(ICONS,{
+  guide:`<path d="M5 4 H16 L19 7 V21 H5 Z" fill="#F2EAD2" stroke="#6A5A3A" stroke-width="1.2"/><path d="M16 4 V7 H19" fill="#D8CCA8" stroke="#6A5A3A" stroke-width="1"/><path d="M7.5 10 H16 M7.5 13.5 H16 M7.5 17 H13" stroke="#8A7A5A" stroke-width="1.2"/><circle cx="17" cy="17" r="1.4" fill="#C8242A"/><path d="M5 21 L7 19 L9 21 L11 19 L13 21" fill="none" stroke="#6A5A3A" stroke-width=".8"/>`,
+  sieve:`<ellipse cx="12" cy="9" rx="9" ry="3.2" fill="#C8A060" stroke="#6A4A12" stroke-width="1.2"/><path d="M3 9 Q4 18 12 19 Q20 18 21 9" fill="#E8D8A8" stroke="#6A4A12" stroke-width="1.2"/><path d="M6 12 H18 M7 15 H17 M9 9.5 V17.5 M12 9.5 V18.5 M15 9.5 V17.5" stroke="#8A6A2A" stroke-width=".7"/><circle cx="9" cy="22" r=".9" fill="#9AA0A8"/><circle cx="13" cy="21.5" r=".8" fill="#9AA0A8"/><circle cx="15.5" cy="22.4" r=".7" fill="#9AA0A8"/>`,
+  survey:`<path d="M3 6 L9 4 L15 6 L21 4 V19 L15 21 L9 19 L3 21 Z" fill="#E8F0D8" stroke="#4A6A3A" stroke-width="1.2" stroke-linejoin="round"/><path d="M9 4 V19 M15 6 V21" stroke="#9AB08A" stroke-width=".8"/><path d="M5 15 Q8 11 11 13 T18 9" stroke="#C8242A" stroke-width="1.2" fill="none" stroke-dasharray="1.6 1.2"/><path d="M17 7.5 l2.2 2.2 M19.2 7.5 l-2.2 2.2" stroke="#C8242A" stroke-width="1.2"/>`});
+function rollItem(){const ks=Object.keys(ITEMS);let t=ks.reduce((s,k)=>s+ITEMS[k].w,0),r=Math.random()*t;for(const k of ks){r-=ITEMS[k].w;if(r<=0)return k}return"cell"}
+function itemUsable(k){const w=ITEMS[k].when,r=S.r,boss=typeof bossActive==="function"&&bossActive();
+  if(w==="explore")return S.phase==="explore"&&!EXP.busy&&!DLG.open&&!EXP.zone.special&&!(k==="glint"&&EXP.glint)&&!(k==="decoy"&&EXP.decoy)&&!(k==="quiet"&&EXP.quiet>0)&&!(k==="lure"&&EXP.lure)&&!(typeof TUT!=="undefined"&&TUT.on);
+  if(w==="boss")return boss&&!(k==="stasis"&&TB.stasis>0)&&!(k==="patch"&&TB.hp>=100);
+  if(w==="dazzled")return boss&&!!TB.orig;
+  if(w==="any")return !S.charm;
+  const live=S.phase==="round"&&r;if(!live)return false;
+  if(w==="duel")return (r.stage==="elements"||r.stage==="name")&&!!r.duel;
+  if(w==="name")return r.stage==="name"&&!r.a.threat&&!r.a.quest&&!r.choices;
+  if(w==="elements"){if(r.stage!=="elements")return false;if(k==="sieve")return !r.sieved&&sieveable().length>0;return true}
+  return false}
+function sieveable(){const r=S.r,ans=new Set(r.a.comp.map(x=>x[0]));return EL.map(e=>e.s).filter(s=>!ans.has(s)&&!r.miss.has(s)&&!r.hit.has(s))}
+function guideChoices(a){const pool=ALLOYS.filter(x=>x!==a&&!x.threat&&!x.quest&&x.name!==a.name),same=pool.filter(x=>x.hab===a.hab),src=same.length>=6?same:pool,out=new Set;
+  while(out.size<2&&src.length){out.add(src[Math.random()*src.length|0].name)}const L=[a.name,...out];for(let i=L.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[L[i],L[j]]=[L[j],L[i]]}return L}
+function useItem(k){if(!itemUsable(k)||!takeItem(k))return;const r=S.r;sfx("pickup");
+  if(k==="cell"){r.tries++;r.maxTries++;renderActions();say("Click. The spare cell slots in. One more scan.")}
+  if(k==="guide"){r.choices=guideChoices(r.a);renderActions();say("You smooth out the field guide page. Three names, one of them right. Pick carefully: a wrong pick still counts.")}
+  if(k==="sieve"){const L=sieveable();for(let i=L.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[L[i],L[j]]=[L[j],L[i]]}const out=L.slice(0,8);out.forEach(s=>{r.miss.add(s);r.sel.delete(s)});r.sieved=true;renderActions();renderPicker();say(`You shake the sample through the sieve. ${out.join(", ")} fall away. None of them are in there.`)}
+  if(k==="charm"){S.charm=true;const m="You tuck the clover charm in your pocket. The next alloy you register is worth 20% more.";S.phase==="explore"?say0(m):say(m)}
+  if(k==="patch"){TB.hp=Math.min(100,TB.hp+8);bossHud();say("You slap the plate over the worst leak and rivet it down. +8% containment.")}
+  if(k==="stasis"){TB.stasis=5;say("You crack the canister. Frost races over everything. For five seconds, nothing gets worse.")}
+  if(k==="cloth"){TB.orig.forEach(([e,rr,c])=>{e.style.gridRow=rr;e.style.gridColumn=c});TB.orig=null;say("A quick wipe, and the glare's gone. The scanner is back in order.")}
+  if(k==="quiet"){EXP.quiet=25;say0("You pull the felt overshoes on. Nothing will jump out at you for the next 25 steps.")}
+  if(k==="lure"){EXP.lure=true;say0("You scatter the glittering filings ahead of you. The next rubble you step into will hold something.")}
+  if(k==="glint"){EXP.glint=true;glintShow();say0("Through the loupe, dropped things sparkle. They're marked on the map now.")}
+  if(k==="decoy"){const[fx,fy]=frontOf(),ok=canWalk(tileAt(fx,fy))&&!thingsAt(fx,fy).length,[x,y]=ok?[fx,fy]:[EXP.x,EXP.y];EXP.decoy=true;
+    const d=document.createElement("div");d.className="mapobj decoyfig";d.style.width=(100/EXP.W)+"%";d.style.height=(100/EXP.H)+"%";d.style.left=(x/EXP.W*100)+"%";d.style.top=(y/EXP.H*100)+"%";d.innerHTML=`<svg viewBox="0 0 24 24">${ICONS.decoy}</svg>`;$("#world").insertBefore(d,$("#player"));
+    (EXP.grunts||[]).forEach(g=>{if(g.done)return;g.face=Math.abs(x-g.x)>=Math.abs(y-g.y)?[Math.sign(x-g.x)||1,0]:[0,Math.sign(y-g.y)||1];slagFace(g)});
+    say0("You stand the cardboard grunt up. Every Syndicate grunt on this map turns to stare at it.")}
+  if(k==="survey"){const m=modal("survey","SURVEY MAP");closeBag();m.querySelector(".bag-list").innerHTML=`<p class="bag-empty">Where to? You'll walk straight there.</p>`+ZONES.map((z,i)=>`<button class="bag-item go-zone" data-i="${i}"><b>${z.name}</b><p>${z.sub}</p></button>`).join("");
+    m.querySelectorAll(".go-zone").forEach(b=>b.onclick=()=>{m.hidden=true;goZone(ZONES[+b.dataset.i])});const back=()=>{m.hidden=true;giveItem("survey");say0("You fold the survey map back up.")};m.querySelector(".bag-top .btn").onclick=back;m.onclick=e=>{if(e.target===m)back()}}
+  if(k==="timer"){r.duel.T+=12;say("You wind the timer and lob it. It ticks so loudly the grunt loses count. +12 seconds.")}
+  renderBag()}
+function closeBag(){const b=$("#bag");if(b)b.hidden=true}
+{const _ra=renderActions;renderActions=function(){_ra();const r=S.r;if(!r||r.stage!=="name"||!r.choices||!r.choices.length)return;
+  const d=document.createElement("div");d.className="choices";d.innerHTML=`<span>FIELD GUIDE:</span>`+r.choices.map(n=>`<button class="btn choice">${n}</button>`).join("");$("#actions").appendChild(d);
+  d.querySelectorAll(".choice").forEach(b=>b.onclick=()=>{const n=b.textContent;if(!nameMatches(n,r.a))r.choices=r.choices.filter(x=>x!==n);guessName(n);if(S.r===r&&r.stage==="name")renderActions()})}}
+function keyItems(){const s=Q.s,L=[];if(Q.flag("key")&&s<7)L.push(["CRUCIBLE KEY","A heavy iron key from Orrin's ring. Opens the old crucible."]);if(s===7)L.push(["SEALBREAKER","A casting made for one job: cutting the founder's seal."]);
+  if(Q.flag("ring")&&s<15)L.push(["FOUNDER'S SIGNET RING","Heavy, stamped with a Q. It fits something."]);if(s===12)L.push(["MARLOW'S DIARY","Written in a private shorthand you can't read. Chronicler Vell can."]);
+  if(sideState("toby")===1)L.push(["TOBY'S NOTE","For Janitor Lu, at the Old Reactor Hall."]);if(sideState("toby")===2)L.push(["LU'S REPLY","'Eat a vegetable.' For Intern Toby."]);return L}
+const BAGCATS=[["lab","FOR THE LAB"],["threat","FOR THREAT FIGHTS"],["field","FOR THE FIELD"],["duel","FOR SYNDICATE DUELS"]];
+function renderBag(){const m=$("#bag");if(!m||m.hidden)return;const tl=toolList();
+  let h=keyItems().map(([t,x])=>`<div class="bag-item key"><b>${t}</b><p>${x}</p></div>`).join("");
+  h+=`<h5 class="bag-h">TOOLS</h5>`+(tl.length?tl.map(k=>`<div class="bag-item toolrow"><svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true">${TOOLS[k].icon}</svg><div><b>${TOOLS[k].name}</b><p>${TOOLS[k].desc}</p></div><span class="always">ALWAYS ON</span></div>`).join(""):`<p class="bag-empty">No tools yet. The people who know each map best might lend you one.</p>`);
+  const any=Object.keys(ITEMS).some(k=>BAG[k]);
+  if(!any)h+=`<p class="bag-empty">No supplies. Search the maps for things people have dropped, and crates people have nailed shut.</p>`;
+  BAGCATS.forEach(([c,t])=>{const ks=Object.keys(ITEMS).filter(k=>ITEMS[k].cat===c&&BAG[k]);if(!ks.length)return;
+    h+=`<h5 class="bag-h">${t}</h5>`+ks.map(k=>`<div class="bag-item">${itemIcon(k,34)}<div><b>${ITEMS[k].name} <span>×${BAG[k]}</span></b><p>${ITEMS[k].desc}</p></div><button class="btn" data-use="${k}" ${itemUsable(k)?"":"disabled"}>USE</button></div>`).join("")});
+  m.querySelector(".bag-list").innerHTML=h;m.querySelectorAll("[data-use]").forEach(b=>b.onclick=()=>useItem(b.dataset.use))}
+
+
+/* =============== THE FOUNDER'S QUEST, longer: the diary needs a translator, the case needs proof from all over the map =============== */
+if(store.get("wta_qv",1)<2){const s=store.get("wta_q",0);if(s>=12)store.set("wta_q",s+1);store.set("wta_qv",2)}
+{const E=k=>EVIDENCE.find(e=>e.f===k);
+ E("vellYoung").x="The founder taught her as a girl. A chip in his left lens he never got round to fixing. She passed him in the hall last spring, not a day older.";
+ E("lampbook").x="'A.M., badge 001, Quillmoor' signs out a lamp sixty-one years ago, and again last month, in the same hand.";
+ E("nightlog").x="'Badge 001. Basement.' Every night at two in the morning, for forty years, in handwriting that never changes.";
+ E("manifest").x="The galleon salvage, sixty years ago: 'Scientist aboard: A.M., Institute badge 001. Would not stop asking about the fire.'";
+ E("photo").x="Opening day, May '64: 'A. M., with my first student, little V.'";
+ E("diary").x="Translated by Vell: 'Every night I go down to tend the cell. The recruit is close now.'";
+ EVIDENCE.splice(6,0,{f:"film",t:"The opening-day film",x:"The founder cutting the ribbon, sixty years ago. His left lens has a star-shaped chip. So does Marlow's.",good:1},
+   {f:"stafffile",t:"Marlow's staff file",x:"Badge 001. Joined on opening day. Birth date left blank, photograph removed, next of kin 'the Institute'.",good:1})}
+const NEED_EVIDENCE=6;
+const LEADS={lampbook:"Nettie's old lamp book, on its hook in the unlit lamp room north of Rustvein Mine's top tunnel.",manifest:"Captain Fenn's grandmother's sea chest, out in the galleon's hull at Sunken Galleon Cove.",nightlog:"The old Institute sign-in books, crated up in the Old Reactor Hall's storage bay.",film:"The opening-day film reel, in Starfall Crater's caved-in film vault.",stafffile:"Marlow's own staff file, in the records room at the Institute.",vellYoung:"Whatever Chronicler Vell remembers about the founder's face.",coat:"The lab coat in the founder's basement.",letters:"The papers on the study desk."};
+function questObjective(){const s=Q.s,p=pagesGot().length;
+  const leads=Object.keys(LEADS).filter(k=>!Q.flag(k)).map(k=>LEADS[k]);
+  return [
+  "Visit the Quillmoor Institute and talk to Archivist Wren in the reading room.",
+  `Find the founder's lost notebook pages (${p}/4). They went out with the first field teams: Rustvein Mine, Sunken Galleon Cove, Emberforge Caldera and Frostbite Cavern. Ask whoever has lived there longest.`,
+  "The fifth page was stolen. Rumour says a Syndicate foreman has it, out at Starfall Crater.",
+  "You have all five pages. Take them back to Archivist Wren at the Institute.",
+  `Chronicler Vell at the Gilded Vault can read the founder's shorthand, but wants proof you know your stuff: register 3 different alloys from the vault (${Math.min(3,vaultCaught())}/3).`,
+  Q.flag("orrinAsk")?"Night Watchman Orrin at the Old Reactor Hall holds the crucible key. He wants you to beat a Slag Syndicate grunt first.":"The recipe needs the Institute's old crucible. Its key is with Night Watchman Orrin at the Old Reactor Hall.",
+  "You have the crucible key and the recipe. Cast the Sealbreaker in the crucible in the Institute's old lab.",
+  "You have the Sealbreaker. Use it on the sealed wall at the head of the Institute's hall.",
+  "The basement is open. Search it. The founder's desk drawer is locked with two letter dials: his initials.",
+  "The founder's letter is torn in half. The rest, it says, is with 'the one I trusted first'. Who was that?",
+  "The second half of the letter speaks of the founder's 'oldest face', his ring, and 'the words I carved over the front door'.",
+  "You're in the founder's hidden study, and somebody has been living in it. Search the desks.",
+  "The diary in the study is written in the founder's private shorthand. Chronicler Vell at the Gilded Vault is the only person who can still read it.",
+  "Vell read the diary: whoever writes it goes down to the basement cell every night. Go down there and see who comes.",
+  `Dr. Marlow is waiting for you in the hidden study. Don't go in with a hunch. Build a case: ${evidenceCount()}/${NEED_EVIDENCE} strong pieces of proof.`+(leads.length?` Leads you haven't followed: ${leads.join(" ")}`:" You've followed every lead."),
+  "You know who the founder is."][Math.min(s,15)]}
+
+function pageGive(K,z){talk(K.n,[...(K.page||["He left a page of his notes with me. Said somebody from the Institute would come for it one day."]),`(You got the founder's ${PAGES[z].t.toLowerCase()}!)`],()=>{const g=pagesGot();if(!g.includes(z))g.push(z);store.set("wta_pages",g);if(Q.s===1&&PAGE_MAPS.every(m=>g.includes(m)))Q.s=2;say0("A founder's page was added to your JOURNAL.")})}
+function hintOnce(k,who,lines){if(Q.flag("hint_"+k)||Q.flag(k))return false;talk(who,lines,()=>{Q.set("hint_"+k);say0("A new lead is in your JOURNAL.")});return true}
+function questHooks(z){const K=(EXP.npcs||[]).find(p=>p.keeper);if(!K)return;
+  if(z==="z-quill")K.quest=()=>{const s=Q.s;
+    if(s===0){talk(K.n,["You're new. One of Dr. Marlow's field recruits? He never tells us when he hires.","I'm glad you're here, actually. I need somebody who travels.","When the Institute was young, the founder sent pages of his notebook out with the first field teams. Nobody knows why. Four should still be out there.","Rustvein Mine, the galleon cove, the caldera and the ice caverns. Ask whoever's lived there longest. The founder's handwriting is... distinctive. Signed A.M., always."],()=>{Q.s=1;say0("New objective in your JOURNAL.")});return}
+    if(s===1||s===2){talk(K.n,[`Any luck with the pages? You've got ${pagesGot().length} of them.`,s===2?"The fifth was stolen? By the Syndicate? Then get it back. Please. I'll alphabetise something while I wait.":"Keep looking. The people out there remember more than they let on."]);return}
+    if(s===3){talk(K.n,["All five. You actually found all five.","It's a recipe. He calls it the Sealbreaker: something to cut through the seal on his own basement.","Half of it's in his private shorthand. I can't read it. Chronicler Vell at the Gilded Vault can. She says the founder taught her himself.","Take the pages to her."],()=>{Q.s=4;say0("New objective in your JOURNAL.")});return}
+    if(s>=8&&s<15&&!Q.flag("wrenAM")){talk(K.n,["You got into the basement? Then you've seen more of the founder than anybody alive.","A.M.? Those initials are on the old staff roster twice. The founder, and...","No. That can't be right. Dr. Marlow has been here forever, but not THAT long. Has he?"]);Q.set("wrenAM");return}
+    if(s>=13&&hintOnce("stafffile",K.n,["Staff files? They're in the records room, by badge number. Each cabinet opens to its owner's badge number and then the year they joined. Two digits for the year.","Marlow's never told anyone his birthday. The only date he ever gives is the day he joined: 'the day the doors first opened', he always says.","I'm not saying you should open it. I'm saying I didn't see you."]))return;
+    return false};
+  if(z==="z-vault")K.quest=()=>{const s=Q.s;
+    if(s===4){if(vaultCaught()<3){talk(K.n,["The founder's pages? I'd know that hand in the dark.","But I don't read his shorthand for just anyone. Show me you're a real field scientist.",`Register three different alloys from this vault. You have ${vaultCaught()} so far.`]);return}
+      talk(K.n,["Three vault alloys. Acceptable. Let me see the pages.","Tungsten. Hafnium. Tantalum. Rhenium. Osmium. Five of the most stubborn metals there are.","Cast together in the old crucible, they'd cut through anything he could have sealed.","The crucible is locked. Night Watchman Orrin at the reactor hall keeps the old Institute keys."],()=>{Q.s=5;Q.set("recipe");say0("The Sealbreaker recipe is in your JOURNAL.")});return}
+    if(s===9){talk(K.n,["That ring. Where did you get that ring?","...His desk. Of course. He always said someone would come.","He gave me something, the day he sealed the basement. Half a letter. He said, 'Give this to whoever comes with my ring, little V.'","Nobody has called me little V in sixty years.","Here. I never read it. I promised."],()=>{Q.s=10;Q.set("half2");say0("The second half of the letter is in your JOURNAL.")});return}
+    if(s===12){talk(K.n,["His diary. You found his diary.","Give it here. My hands are shaking, not my eyes.","'The recruit found the ring. I knew they would.'","'Every night I go down to tend the cell. I will go tonight as always. If they are clever, they will know where to find me.'","...This entry is dated yesterday.","Go. Go to the basement tonight, and see who comes down the stairs."],()=>{Q.s=13;Q.set("diary");say0("New objective in your JOURNAL.")});return}
+    if(s>=9&&s<15&&!Q.flag("vellYoung")){talk(K.n,["He taught me his shorthand when I was a girl. He was a young man then. Always a notebook. A little star-shaped chip in his left lens that he never got round to fixing.","It's strange. I've grown old. But I'd swear I passed him in the Institute's hall last spring, looking exactly the same. Same chipped lens.","I told myself it was his grandson. I've been telling myself that for a year."],()=>{Q.set("vellYoung");say0("New evidence in your JOURNAL.")});return}
+    return false};
+  if(z==="z-reactor")K.quest=()=>{const s=Q.s;
+    if(s===5){if(!Q.flag("orrinAsk")){store.set("wta_q_slag0",slagWins());Q.set("orrinAsk");talk(K.n,["The crucible key? Institute property. Nobody's asked for it in forty years.","The Syndicate would love to get their hands on it. How do I know you're not one of them?","Beat one of their grunts in a fair challenge. Then come back and we'll talk."]);return}
+      if(slagWins()<=store.get("wta_q_slag0",0)){talk(K.n,["Still waiting on that Syndicate grunt. They stand watch out on the maps. Walk into their line of sight and they'll come to you."]);return}
+      talk(K.n,["Word travels fast. You beat one of the Syndicate's grunts.","Here. The crucible key. I've been holding it for the founder since before you were born.","He told me someone would come for it. He was very particular about that."],()=>{Q.s=6;Q.set("key");say0("You got the CRUCIBLE KEY.")});return}
+    if(s>=13&&hintOnce("nightlog",K.n,["The old Institute sign-in books? When they shut the Institute's night desk, the inspectors crated the lot and sent it here.","They're in the storage bay, nailed shut. Crate says NIGHTS on the side.","There's one entry in those books I never could explain. Look for yourself. You'll know it when you see it."]))return;
+    return false};
+  if(z==="z-mine")K.quest=()=>{const s=Q.s;
+    if(s>=13&&hintOnce("lampbook",K.n,["The lamp book from those years? Still on its hook in the old lamp room. North tunnels, past the top level. Nobody's lit them since me.","You've got my spare lamp. Go and read the first page, and then the last one."]))return;
+    if(s>=1&&!pagesGot().includes("z-mine"))return pageGive(K,"z-mine");return false};
+  if(z==="z-wreck")K.quest=()=>{const s=Q.s;
+    if(s>=13&&hintOnce("manifest",K.n,["The salvage manifest? That went out to the hull with my grandmother's sea chest. She asked to have her things put aboard the old galleon. Sentimental.","Wade out at low water and you'll find it in the hold. Mind the barnacles."]))return;
+    if(s>=1&&!pagesGot().includes("z-wreck"))return pageGive(K,"z-wreck");return false};
+  if(z==="z-crater")K.quest=()=>{const s=Q.s;
+    if(s>=13&&hintOnce("film",K.n,["Opening day at the Institute? There's a reel of it. The founder cutting the ribbon. My predecessor filmed it.","It's in the film vault. The one that caved in. If you can get through the rubble, run the first few frames against the light.","Tell me if he's handsome. Nobody's seen that reel in forty years."]))return;
+    return false};
+  if(PAGE_MAPS.includes(z)&&!K.quest)K.quest=()=>{if(Q.s>=1&&!pagesGot().includes(z))return pageGive(K,z);return false}}
+
+/* the proof out in the world */
+function questObjs2(){const z=EXP.zone,sp=SPOTS[z.cls]||{},W=EXP.W,H=EXP.H;if(z.special)return;
+  const add=(at,cls,svg,use)=>{if(!at)return;const[x,y]=at,d=document.createElement("div");d.className="mapobj "+cls;d.style.width=(100/W)+"%";d.style.height=(100/H)+"%";d.style.left=(x/W*100)+"%";d.style.top=(y/H*100)+"%";d.innerHTML=svg;$("#world").insertBefore(d,$("#player"));EXP.objs.push({x,y,el:d,use})};
+  const got=(k,lines)=>{Q.set(k);sfx("pickup");talk("",lines,()=>say0("New evidence in your JOURNAL."))};
+  if(z.cls==="z-mine")add(sp.book,"book",`<svg viewBox="0 0 40 40"><path d="M20 3 V9" stroke="#6A6254" stroke-width="1.6"/><rect x="9" y="9" width="22" height="26" rx="1.5" fill="#6A3A24" stroke="#2A140A" stroke-width="1.4"/><rect x="12" y="12" width="16" height="20" fill="#E8DCC0"/><path d="M14 16 H26 M14 20 H26 M14 24 H22" stroke="#8A7A5A" stroke-width="1"/></svg>`,
+    ()=>{if(Q.flag("lampbook")){talk("",["The lamp book. First page and last page, the same hand, sixty-one years apart."]);return}
+      if(Q.s<13){talk("",["An old lamp book, hanging on its hook. Sixty years of signatures, in and out.","Whatever you'd be looking for in here, you don't know it yet."]);return}
+      got("lampbook",["You open the lamp book at the first page. The ink is brown with age.","'A.M., badge 001, Quillmoor.' Signed out: one lamp. Signed back in the same evening.","You turn to the last page. Last month's date. The ink is still black.","'A.M., badge 001, Quillmoor.' The same loops. The same hook on the 'Q'. The same hand."])});
+  if(z.cls==="z-wreck")add(sp.chest,"chest",`<svg viewBox="0 0 40 40"><ellipse cx="20" cy="35" rx="15" ry="3" fill="#000" opacity=".3"/><rect x="6" y="17" width="28" height="17" rx="2" fill="#6A4A2E" stroke="#2A1A0C" stroke-width="1.4"/><path d="M6 17 Q20 5 34 17 Z" fill="#7A5634" stroke="#2A1A0C" stroke-width="1.4"/><rect x="6" y="20" width="28" height="3" fill="#4A5058"/><rect x="18" y="19" width="4" height="6" rx="1" fill="#C8A060" stroke="#6A4A12"/></svg>`,
+    ()=>{if(Q.flag("manifest")){talk("",["Fenn's grandmother's sea chest. String, tide tables, and one salvage manifest you've already read."]);return}
+      if(Q.s<13){talk("",["An old sea chest, lashed down in the hold. Full of string, tide tables and old papers.","You leave it be. It's somebody's grandmother's."]);return}
+      got("manifest",["The sea chest is exactly as Fenn said: string, tide tables, grudges written on the backs of envelopes.","Underneath them all, the salvage manifest from sixty years ago.","'Scientist aboard: A.M., Institute badge 001. Remarks: would not stop asking about the fire.'"])});
+  if(z.cls==="z-reactor")add(sp.logs,"logcrate",`<svg viewBox="0 0 40 40"><ellipse cx="20" cy="35" rx="15" ry="3" fill="#000" opacity=".3"/>${CRATE}<rect x="11" y="19" width="18" height="7" fill="#E8E2D0" stroke="#5A4A2A" stroke-width=".8"/><text x="20" y="24.6" text-anchor="middle" font-size="5" font-weight="900" fill="#3A2A12" font-family="sans-serif">NIGHTS</text></svg>`,
+    ()=>{if(Q.flag("nightlog")){talk("",["The crate of night books. Badge 001, every night at two, for forty years."]);return}
+      if(!hasTool("crowbar")){talk("",["A crate stencilled SIGN-IN BOOKS: NIGHTS. Nailed shut by somebody who really meant it.","A crowbar would do it."]);return}
+      if(Q.s<13){talk("",["You lever the lid up an inch. Forty years of night sign-in books, stacked to the top.","You don't know what you'd be looking for. You let the lid back down."]);return}
+      got("nightlog",["You lever the lid off. Forty years of the Institute's night sign-in books.","You flick through them at random. Every night, at two in the morning, the same line.","'Badge 001. Basement.' Forty years. The handwriting never changes. Not even a little shake."])});
+  if(z.cls==="z-crater")add(sp.film,"reel",`<svg viewBox="0 0 40 40"><ellipse cx="20" cy="35" rx="13" ry="3" fill="#000" opacity=".3"/><circle cx="20" cy="21" r="12" fill="#4A4E58" stroke="#1A1C22" stroke-width="1.4"/><circle cx="20" cy="21" r="3" fill="#1A1C22"/>${[0,72,144,216,288].map(a=>`<circle cx="${20+7*Math.cos(a*Math.PI/180)}" cy="${21+7*Math.sin(a*Math.PI/180)}" r="2.4" fill="#1A1C22"/>`).join("")}<path d="M31 24 Q37 28 35 34" stroke="#3A2A1A" stroke-width="2" fill="none"/></svg>`,
+    ()=>{if(Q.flag("film")){talk("",["The opening-day reel. The founder's left lens, chipped in a little star."]);return}
+      if(Q.s<13){talk("",["A film can, labelled OPENING DAY in faded pencil.","It's Tamsin's. You leave it where it is for now."]);return}
+      got("film",["A film can labelled OPENING DAY. You unspool the first few frames and hold them against the light.","A young man in a lab coat cuts a ribbon across the Institute's doors. His face is turned away from the camera.","But his spectacles catch the sun, frame after frame. The left lens has a little star-shaped chip in it.","You have seen that chip before. Recently."])});
+  if(z.cls==="z-quill")add(sp.cabinet,"cabinet",`<svg viewBox="0 0 40 40"><ellipse cx="20" cy="36" rx="13" ry="2.5" fill="#000" opacity=".3"/><rect x="9" y="3" width="22" height="32" rx="1.5" fill="#6E7A86" stroke="#2E3640" stroke-width="1.4"/>${[5,15,25].map(y=>`<rect x="11" y="${y}" width="18" height="8" fill="#8A96A2" stroke="#2E3640" stroke-width=".8"/><rect x="17" y="${y+3}" width="6" height="2" rx="1" fill="#2E3640"/>`).join("")}<circle cx="27" cy="9" r="1.6" fill="#C8A060"/></svg>`,
+    ()=>{if(Q.flag("stafffile")){talk("",["Marlow's staff file. Badge 001. No birthday. No photograph. Next of kin: the Institute."]);return}
+      talk("",["A staff cabinet in the records room. The label says '001'.","A brass combination dial underneath, five digits wide."],null,v=>{const d=v.replace(/\D/g,"");
+        if(d==="00164"||d==="0011964")got("stafffile",["The dial clicks round to 0-0-1-6-4 and the drawer rolls open.","One thin file. 'MARLOW, A. Badge 001. Joined: opening day.'","Date of birth: left blank. Photograph: removed. Next of kin: 'the Institute'.","Under 'previous employment', in the same neat hand: 'this one'."]);
+        else talk("",[`You set the dial to ${d||"nothing much"}. The drawer doesn't budge.`,"Badge number first, then the year he joined. Two digits for the year."])})});}
+
+function marlowNPC(inBasement){const m={n:"Dr. Marlow",look:{coat:"#FFFFFF",hair:"#6B4424",hs:"short",acc:["glasses","badge","book"],skin:"#F2C7A5"},talks:[["..."]]};
+  m.quest=()=>{const s=Q.s;
+    if(inBasement){talk(m.n,["Hello, recruit. You found me.","(Up close he is older than you remember, and somehow exactly the same. His left spectacle lens has a little star-shaped chip in it.)","No. Not here. Not with it listening.","The study. Come and find me there when you can prove whatever it is you think you know. Be certain of it. I will be."],()=>{Q.s=14;say0("Marlow went back up to the study. Build your case first.");goZone(BASEMENT)});return}
+    if(s>=15){talk(m.n,["You found me out, recruit. I'm still proud of you for it.","Go on. The field needs you more than it needs me. And Quillmoor needs somebody who isn't afraid to look behind walls."]);return}
+    if(s<14){talk(m.n,["Not now, recruit. Not yet."]);return}
+    const no=()=>talk(m.n,["No.","Go back through what you've found. Then come and try again. I have time. I have, as it turns out, a great deal of time."]);
+    talk(m.n,["So. The recruit. Sit, if you like.","You've come a long way to find an old man hiding behind his own portrait.","Before you tell me what you think, let's see what you know. Answer me three things.","The founder mixed one sample, and only one, that he never let anyone name. What does everyone call it now?"],null,a1=>{
+      if(!/folly|sample ?(1|one)\b/i.test(a1))return no();
+      talk(m.n,["Yes. He hated that name.","His field badge. What number was on it?"],null,a2=>{
+        if(!/^\s*(0*1|one|number one|no\.? ?0*1)\s*$/i.test(a2))return no();
+        talk(m.n,["Yes.","Who was his first student?"],null,a3=>{
+          if(!/vell|little ?v\b/i.test(a3))return no();
+          talk(m.n,["...Yes. She kept her promise, then.","Now. Who founded this Institute, and made the thing in that basement?"],null,v=>{
+            if(!/marlow|aldous|\byou\b|^\s*a\.?\s?m\.?\s*$/i.test(v)){talk(m.n,[`'${v||"..."}'? No. That isn't it.`,"Go back through what you've found. Then ask me again."]);return}
+            talk(m.n,["...Bold. Very bold.",`Anyone can say a name. Show me why. ${NEED_EVIDENCE} things. Things that prove it about me, not just about the founder.`],()=>evidencePick(picks=>{
+              const good=picks.filter(f=>EVIDENCE.find(e=>e.f===f).good).length;
+              if(good<NEED_EVIDENCE){talk(m.n,[good===0?"None of that says a thing about me, recruit.":`${good} of those hold up. ${NEED_EVIDENCE-good} ${NEED_EVIDENCE-good===1?"doesn't":"don't"}. Something that proves the founder existed isn't proof that he's me.`,"Find more. People who knew him long ago might remember things now they'd never have said before."]);return}
+              Q.s=15;talk(m.n,["...Yes.","Aldous Marlow. Founder of the Quillmoor Institute. Mixer of sample number one, and the only person who ever called it a mistake to its face.","I made it down there when I was younger than you. I wanted to make something that would last forever. It does. It keeps me going too, I think. That's why I haven't aged a day since.","I sealed the basement, scratched my name off every record, and started again as plain Dr. Marlow, head of the field team.","I couldn't cut my own seal. So I scattered the recipe, and I trained people like you, and I waited for somebody who would look.","You did it, recruit. Not the metal. The looking.","(Your JOURNAL is complete. The founder's secret is yours.)"],()=>{giveItem("charm");giveItem("survey");say0("The founder's quest is complete.")})},NEED_EVIDENCE))})})})})};return m}
+function evidencePick(done,need=4){const have=EVIDENCE.filter(e=>Q.flag(e.f));const d=dlgEl();DLG.open=true;EXP.busy=true;d.hidden=false;$("#dlg-who").textContent="PRESENT EVIDENCE";$("#dlg-who").hidden=false;$("#dlg-more").hidden=true;
+  const sel=new Set;$("#dlg-txt").innerHTML=`<span>Choose ${need} pieces of evidence, then press PRESENT.</span><span class="evlist">${have.map(e=>`<button class="ev" data-f="${e.f}" title="${e.x}">${e.t}</button>`).join("")}</span><button class="btn go evgo" disabled>PRESENT</button>`;
+  d.querySelectorAll(".ev").forEach(b=>b.onclick=e=>{e.stopPropagation();const f=b.dataset.f;if(sel.has(f))sel.delete(f);else if(sel.size<need)sel.add(f);b.classList.toggle("on",sel.has(f));d.querySelector(".evgo").disabled=sel.size!==need;sfx("sel")});
+  d.querySelector(".evgo").onclick=e=>{e.stopPropagation();dlgClose();done([...sel])}}
+
+{const _tt=talkTo;talkTo=function(p){const T=p.keeper&&!EXP.zone.special&&KEEPER_TOOL[EXP.zone.cls];
+  if(T&&!hasTool(T[0])){talk(p.n,T[1],()=>{giveTool(T[0]);say0(`The ${TOOLS[T[0]].name.toUpperCase()} is in your BAG, under TOOLS.`)});return}_tt(p)}}
+
+function openJournal(){const m=modal("journal","JOURNAL"),s=Q.s,g=pagesGot();store.set("wta_qf_seenJ",1);journalDot();const C=[];
+  if(Q.flag("recipe"))C.push(["The Sealbreaker recipe","Tungsten, hafnium, tantalum, rhenium and osmium, cast together in the Institute's old crucible."]);
+  [...PAGE_MAPS,"z-crater"].forEach(z=>{if(g.includes(z))C.push([`The founder's notes: ${PAGES[z].t.toLowerCase()}`,PAGES[z].x])});
+  if(Q.flag("ring"))C.push(["The founder's letter, first half","'If you are reading this, you have my ring, and I have failed to undo what I made. The rest of this letter I left with the one I trusted first.'"]);
+  if(Q.flag("half2"))C.push(["The founder's letter, second half","'...My study lies behind my oldest face. It will open for my ring, and for the words I carved over the front door. — A.M.'"]);
+  if(Q.flag("wrenAM"))C.push(["The staff roster","Only two people on the old roster ever had the initials A.M."]);
+  const ev=EVIDENCE.filter(e=>Q.flag(e.f));
+  const sq=[...Object.values(AMBIENT).flat().filter(p=>p.side)].filter(p=>sideState(p.side.id)>0&&sideState(p.side.id)<3).map(p=>[`Favour: ${p.n}`,p.side.deliver?`Deliver ${p.side.thing} to ${p.side.deliver}.`:sideState(p.side.id)===1?`Find ${p.side.thing}.`:`Take ${p.side.thing} back to ${p.n}.`]);
+  m.querySelector(".bag-list").innerHTML=(s>0?`<div class="bag-item key"><b>${s>=15?"COMPLETE":"CURRENT OBJECTIVE"}</b><p>${questObjective()}</p></div>`:`<div class="bag-item key"><b>NO ACTIVE QUEST</b><p>People around the maps might need your help. The Quillmoor Institute is a good place to start.</p></div>`)
+    +sq.map(([t,x])=>`<div class="bag-item clue side"><b>${t}</b><p>${x}</p></div>`).join("")
+    +(ev.length?`<h5 class="bag-h">EVIDENCE</h5>`+ev.map(e=>`<div class="bag-item clue"><b>${e.t}</b><p>${e.x}</p></div>`).join(""):"")
+    +(C.length?`<h5 class="bag-h">NOTES</h5>`+C.map(([t,x])=>`<div class="bag-item clue"><b>${t}</b><p>${x}</p></div>`).join(""):"")}
+
+/* ---- placing everything on the map ---- */
+function worldPlace(){const M=EXP.zone.map,z=EXP.zone.cls,W=EXP.W,H=EXP.H,sp=EXP.zone.special;
+  document.querySelectorAll("#world .npc,#world .mapitem,#world .glintmark,#world .mapobj").forEach(e=>e.remove());
+  Object.assign(EXP,{npcs:[],items:[],hidden:[],grunts:[],objs:[],glint:false,decoy:false,lure:false,quiet:0,dir:[1,0]});
+  gatedCompute();litUpdate();
+  const inTut=typeof TUT!=="undefined"&&TUT.on,S0=SPOTS[z]||{},taken=new Set(Object.values(S0).map(([x,y])=>x+","+y)),floor=[];
+  M.forEach((row,y)=>row.split("").forEach((c,x)=>{if((c==="."||c===":")&&Math.abs(x-EXP.x)+Math.abs(y-EXP.y)>=4&&!taken.has(x+","+y)&&!(z==="z-quill"&&!sp&&y<=1))floor.push([x,y])}));
+  for(let i=floor.length-1;i>0;i--){const j=Math.random()*(i+1)|0;[floor[i],floor[j]]=[floor[j],floor[i]]}
+  const used=new Set,spot=open=>{for(let i=floor.length-1;i>=0;i--){const[x,y]=floor[i],k=x+","+y;if(used.has(k)||(open&&inGated(x,y)))continue;floor.splice(i,1);used.add(k);return[x,y]}return null};
+  const addEl=(cls,x,y,html)=>{const d=document.createElement("div");d.className=cls;d.style.width=(100/W)+"%";d.style.height=(100/H)+"%";d.style.left=(x/W*100)+"%";d.style.top=(y/H*100)+"%";d.innerHTML=html;$("#world").insertBefore(d,$("#player"));return d};
+  const person=(p,at)=>{EXP.npcs.push({...p,x:at[0],y:at[1],el:addEl("npc",at[0],at[1],`<span class="talkmark">...</span>`+npcSVG(p.look)),said:0})};
+  questObjs();tileObjs();questObjs2();
+  if(sp==="study"&&Q.s>=14)person(marlowNPC(false),[6,2]);
+  if(sp==="basement")EXP.npcs.filter(p=>p.n==="Dr. Marlow").forEach(p=>{p.el=addEl("npc",p.x,p.y,`<span class="talkmark">...</span>`+npcSVG(p.look))});
+  if(!inTut&&!sp){
+    if(KEEPERS[z]&&S0.keeper)person({...KEEPERS[z],keeper:true},S0.keeper);
+    const D=DISCOVERERS[z];if(D&&S0.disc&&ALLOYS.some(a=>a.name===D.a))person(D,S0.disc);
+    (AMBIENT[z]||[]).forEach((p,i)=>{const at=S0["amb"+(i+1)];if(at)person(p,at)});
+    questHooks(z);sideSeed();
+    const forceGrist=Q.s===2&&z==="z-crater";
+    if(S.run.idx>=1||forceGrist){const n=forceGrist?1:Math.random()<.45?(Math.random()<.3?2:1):0;for(let i=0;i<n;i++){const at=spot(true);if(!at)break;const boss=forceGrist||(i===0&&slagWins()>=3&&Math.random()<.35);
+      const g={n:boss?"Foreman Grist":SLAG_NAMES[Math.random()*SLAG_NAMES.length|0],boss,page:forceGrist,grunt:true,x:at[0],y:at[1],face:[[1,0],[-1,0],[0,1],[0,-1]][Math.random()*4|0]};g.el=addEl("npc grunt",g.x,g.y,`<span class="bang">!</span>`+gruntSVG(boss));EXP.grunts.push(g);slagFace(g)}}
+    for(let i=0;i<2;i++){if(Math.random()<.6){const at=spot();if(at){const k=rollItem();EXP.items.push({x:at[0],y:at[1],k,el:addEl("mapitem",at[0],at[1],itemIcon(k,40))})}}}
+    const spots=[];M.forEach((row,y)=>row.split("").forEach((c,x)=>{if((c==="."||c===","||c===":")&&!used.has(x+","+y)&&!taken.has(x+","+y)&&Math.abs(x-EXP.x)+Math.abs(y-EXP.y)>=4)spots.push([x,y])}));
+    for(let i=0;i<5&&spots.length;i++){const[x,y]=spots.splice(Math.random()*spots.length|0,1)[0];EXP.hidden.push({x,y,k:rollItem()})}}
+  dowse();nearMarks()}
+
 
 newRun();
 </script>
