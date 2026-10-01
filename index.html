@@ -1,4 +1,3 @@
-
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <meta charset="utf-8">
 <title>Who's That Alloy?</title>
@@ -803,6 +802,61 @@ dl.props.dd dd{text-align:right}
 #explore.cs-on .expbar,#explore.cs-on .note{opacity:.35;pointer-events:none;transition:opacity .4s}
 #explore.cs-on #dlg{z-index:9}
 #explore.cs-on #dlg{min-height:0;padding:10px 16px 12px}
+/* the journal and bag scroll; nothing inside them is ever squashed or cut off */
+.bag-card{max-height:86vh;overflow-y:auto;overscroll-behavior:contain}
+.bag-card>*{flex-shrink:0}
+.bag-list{display:flex;flex-direction:column;gap:8px}
+.bag-list>*{flex-shrink:0}
+.bag-item p{overflow-wrap:anywhere}
+.bag-item.key.obj.sub{margin-left:14px;border-left:4px solid #C8A060}
+.bag-item.key.obj{display:block}
+/* the founder's basement: one material per room, quiet floors, no scratch marks on every tile */
+.mapwrap.z-basement #world{filter:sepia(.12) saturate(.9) brightness(.92)}
+.mapwrap.z-basement::after{box-shadow:inset 0 0 80px 26px rgba(0,0,0,.6)}
+.z-basement .tile.f.bm-flag{background:linear-gradient(90deg,rgba(0,0,0,.24) 0 3%,transparent 3%),linear-gradient(rgba(0,0,0,.24) 0 3%,transparent 3%),#5C554A}
+.z-basement .tile.f.bm-flag.v1{background:linear-gradient(90deg,rgba(0,0,0,.24) 0 3%,transparent 3%),linear-gradient(transparent 0 48%,rgba(0,0,0,.2) 48% 51%,transparent 51%),linear-gradient(rgba(0,0,0,.24) 0 3%,transparent 3%),#595246}
+.z-basement .tile.f.bm-flag.v2{background:linear-gradient(90deg,rgba(0,0,0,.24) 0 3%,transparent 3%),linear-gradient(rgba(0,0,0,.24) 0 3%,transparent 3%),#5F584C}
+.z-basement .tile.f.bm-flag.v3{background:linear-gradient(90deg,transparent 0 55%,rgba(0,0,0,.2) 55% 58%,transparent 58%),linear-gradient(rgba(0,0,0,.24) 0 3%,transparent 3%),#5A5347}
+.z-basement .tile.f.bm-flag.stain{background:radial-gradient(ellipse at 45% 60%,rgba(30,24,16,.35) 0 26%,transparent 27%),linear-gradient(90deg,rgba(0,0,0,.24) 0 3%,transparent 3%),linear-gradient(rgba(0,0,0,.24) 0 3%,transparent 3%),#5C554A}
+.z-basement .tile.f.bm-oak{background:repeating-linear-gradient(90deg,#5E4632 0 23%,#3E2C1E 23% 25%),#5E4632}
+.z-basement .tile.f.bm-oak.v1{background:linear-gradient(transparent 0 40%,#3E2C1E 40% 43%,transparent 43%) 12% 0/25% 100% no-repeat,repeating-linear-gradient(90deg,#5A4230 0 23%,#3E2C1E 23% 25%),#5A4230}
+.z-basement .tile.f.bm-rug{background:repeating-linear-gradient(45deg,rgba(200,160,90,.18) 0 6%,transparent 6% 18%),repeating-linear-gradient(-45deg,rgba(200,160,90,.18) 0 6%,transparent 6% 18%),#6E2C28}
+.z-basement .tile.f.bm-rug.rt{background:linear-gradient(#C8A060 0 8%,#6E2C28 8% 14%,transparent 14%),repeating-linear-gradient(45deg,rgba(200,160,90,.18) 0 6%,transparent 6% 18%),#6E2C28}
+.z-basement .tile.f.bm-rug.rb{background:linear-gradient(transparent 86%,#6E2C28 86% 92%,#C8A060 92%),repeating-linear-gradient(45deg,rgba(200,160,90,.18) 0 6%,transparent 6% 18%),#6E2C28}
+.z-basement .tile.f.bm-chk{background:linear-gradient(rgba(60,54,44,.28),rgba(60,54,44,.28)),conic-gradient(#86847A 25%,#64625A 0 50%,#86847A 0 75%,#64625A 0) 0 0/50% 50%}
+.z-basement .tile.f.bm-chk.crk{background:linear-gradient(125deg,transparent 46%,rgba(30,28,24,.6) 47% 49%,transparent 50%),linear-gradient(rgba(60,54,44,.28),rgba(60,54,44,.28)),conic-gradient(#86847A 25%,#64625A 0 50%,#86847A 0 75%,#64625A 0) 0 0/50% 50%}
+.z-basement .tile.f.bm-steel{background:radial-gradient(circle at 8% 8%,#8A929A 0 4%,transparent 5%),radial-gradient(circle at 92% 8%,#8A929A 0 4%,transparent 5%),radial-gradient(circle at 8% 92%,#8A929A 0 4%,transparent 5%),radial-gradient(circle at 92% 92%,#8A929A 0 4%,transparent 5%),linear-gradient(135deg,#565E66,#4A5158)}
+.z-basement .tile.f.bm-haz{background:repeating-linear-gradient(45deg,#8A7428 0 14%,#2E2E2C 14% 28%)}
+.z-basement .tile.f.bm-earth{background:radial-gradient(circle at 30% 40%,rgba(0,0,0,.18) 0 6%,transparent 7%),radial-gradient(circle at 70% 75%,rgba(255,255,255,.06) 0 5%,transparent 6%),#4C4336}
+.z-basement .tile.f.bm-earth.v1{background:radial-gradient(circle at 65% 30%,rgba(0,0,0,.18) 0 5%,transparent 6%),#4A4134}
+.z-basement .tile.f.bm-earth.v2{background:radial-gradient(circle at 25% 75%,rgba(255,255,255,.06) 0 6%,transparent 7%),#4E4538}
+.z-basement .tile.f.bm-damp{background:radial-gradient(ellipse at 50% 50%,rgba(120,150,150,.18),transparent 70%),#3C3830}
+.z-basement .tile.f.bm-board{background:repeating-linear-gradient(0deg,#76593C 0 30%,#553F2A 30% 33.4%)}
+.z-basement .tile.f.bm-rag{background:repeating-linear-gradient(0deg,#8A5A4A 0 12%,#5A6A7A 12% 24%,#9A8A5A 24% 36%,#6A7A5A 36% 48%)}
+.z-basement .tile.lq{background:radial-gradient(ellipse at 40% 40%,rgba(160,190,190,.25),transparent 60%),#2E3838}
+.z-basement .tile.f{position:relative}
+.obj-list{display:flex;flex-direction:column;gap:5px;margin-top:7px}.obj-list span{padding-left:10px;border-left:3px solid #C8A060;font-size:12.5px}
+.bag-item.obj.fav b::before{content:"FAVOUR · ";color:#3A8A4A;font-size:11px;letter-spacing:.06em}
+.bag-item.obj.done{opacity:.75}
+.bag-item.obj.fw{background:#EAF4EA}
+/* the Slag Works */
+.z-slag{--floor:#3A3430;--wall:#2A2422;--wall-top:#1E1816;--wall-bump:#FF7A1A;--rock:#3A2E2E;--rock2:#5A4640;--glint:#FFB347}
+.z-slag .tile.f.sl-cinder{background:radial-gradient(circle at 30% 30%,rgba(0,0,0,.2) 0 5%,transparent 6%),radial-gradient(circle at 70% 70%,rgba(255,140,60,.06) 0 8%,transparent 9%),#3E3732}
+.z-slag .tile.f.sl-cinder.v1{background:radial-gradient(circle at 60% 40%,rgba(0,0,0,.2) 0 6%,transparent 7%),#3B3430}
+.z-slag .tile.f.sl-cinder.v2{background:radial-gradient(circle at 25% 75%,rgba(255,140,60,.07) 0 7%,transparent 8%),#403934}
+.z-slag .tile.f.sl-plank{background:repeating-linear-gradient(90deg,#5A4230 0 23%,#3A2A1E 23% 25%)}
+.z-slag .tile.f.sl-kiln{background:#5A3424;overflow:hidden}
+.z-slag .tile.w::after{opacity:.4}
+.z-slag .tile.lq{background:radial-gradient(circle at 50% 50%,#FFD24A,#FF6A1A 55%,#C0300E);--lqfx:radial-gradient(circle at 30% 30%,rgba(255,240,160,.6) 0 6%,transparent 7%),radial-gradient(circle at 70% 60%,rgba(40,10,0,.4) 0 10%,transparent 11%)}
+.z-slag .tile.pa{background:linear-gradient(90deg,transparent 0 20%,#6A6A70 20% 26%,transparent 26% 74%,#6A6A70 74% 80%,transparent 80%),repeating-linear-gradient(0deg,#4A3624 0 18%,transparent 18% 50%),#3A3430}
+.mapwrap.z-slag::after{content:"";position:absolute;inset:0;pointer-events:none;z-index:6;box-shadow:inset 0 0 70px 20px rgba(60,20,0,.55)}
+/* Kiln Heart controls */
+.bb-gauge.kh div{position:relative}
+.bb-gauge.kh .kh-band{position:absolute;left:40%;width:30%;top:0;bottom:0;background:rgba(80,200,120,.28);border-left:1px solid #4AC878;border-right:1px solid #4AC878;z-index:1}
+#bb-heat.cold{background:#6AA8E8}#bb-heat.ok{background:#4AC878}#bb-heat.hot{background:#FF6A1A}
+.bb-btn.stoke{background:#C8641E;color:#fff}.bb-btn.quench{background:#3B7BF0;color:#fff}
+.station.slagged{filter:grayscale(.6) brightness(.6);position:relative}
+.station.slagged::after{content:"SLAGGED";position:absolute;inset:auto 0 40% 0;text-align:center;font-family:var(--pix);font-size:9px;color:#FFB347;text-shadow:0 1px 0 #000}
 </style>
 
 <div class="app">
@@ -4744,7 +4798,7 @@ function keyItems(){const s=Q.s,L=[];if(Q.flag("key")&&s<7)L.push(["CRUCIBLE KEY
 const BAGCATS=[["lab","FOR THE LAB"],["threat","FOR THREAT FIGHTS"],["field","FOR THE FIELD"],["duel","FOR SYNDICATE DUELS"]];
 function renderBag(){const m=$("#bag");if(!m||m.hidden)return;const tl=toolList();
   let h=keyItems().map(([t,x])=>`<div class="bag-item key"><b>${t}</b><p>${x}</p></div>`).join("");
-  h+=`<h5 class="bag-h">TOOLS</h5>`+(tl.length?tl.map(k=>`<div class="bag-item toolrow"><svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true">${TOOLS[k].icon}</svg><div><b>${TOOLS[k].name}</b><p>${TOOLS[k].desc}</p></div><span class="always">ALWAYS ON</span></div>`).join(""):`<p class="bag-empty">No tools yet. The people who know each map best might lend you one.</p>`);
+  h+=`<h5 class="bag-h">TOOLS</h5>`+(tl.length?tl.map(k=>`<div class="bag-item toolrow"><svg viewBox="0 0 24 24" width="34" height="34" aria-hidden="true">${TOOLS[k].icon}</svg><div><b>${TOOLS[k].name}</b><p>${TOOLS[k].desc}</p></div><span class="always">ALWAYS ON</span></div>`).join(""):`<p class="bag-empty">No tools yet. Some of the locals lend them out if you do them a favour: try Bolt at the Scrapyard, Foreman Dray at Rustvein Mine, and Ole out on the ice at Frostbite Cavern.</p>`);
   const any=Object.keys(ITEMS).some(k=>BAG[k]);
   if(!any)h+=`<p class="bag-empty">No supplies. Search the maps for things people have dropped, and crates people have nailed shut.</p>`;
   BAGCATS.forEach(([c,t])=>{const ks=Object.keys(ITEMS).filter(k=>ITEMS[k].cat===c&&BAG[k]);if(!ks.length)return;
@@ -4801,7 +4855,7 @@ function questHooks(z){const K=(EXP.npcs||[]).find(p=>p.keeper);if(!K)return;
   if(z==="z-vault")K.quest=()=>{const s=Q.s;
     if(s===4){if(vaultCaught()<3){talk(K.n,["The founder's pages? I'd know that hand in the dark.","But I don't read his shorthand for just anyone. Show me you're a real field scientist.",`Register three different alloys from this vault. You have ${vaultCaught()} so far.`]);return}
       talk(K.n,["Three vault alloys. Acceptable. Let me see the pages.","Tungsten. Hafnium. Tantalum. Rhenium. Osmium. Five of the most stubborn metals there are.","Cast together in the old crucible, they'd cut through anything he could have sealed.","The crucible is locked. Night Watchman Orrin at the reactor hall keeps the old Institute keys."],()=>{Q.s=5;Q.set("recipe");say0("The Sealbreaker recipe is in your JOURNAL.")});return}
-    if(s===9){talk(K.n,["That ring. Where did you get that ring?","...His desk. Of course. He always said someone would come.","He gave me something, the day he sealed the basement. Half a letter. He said, 'Give this to whoever comes with my ring, little V.'","Nobody has called me little V in sixty years.","Here. I never read it. I promised."],()=>{Q.s=10;Q.set("half2");say0("The second half of the letter is in your JOURNAL.")});return}
+    if(s===9){talk(K.n,["That ring. Where did you get that ring?","...His desk. Of course. He always said someone would come.","He gave me something, the day he sealed the basement. Half a letter. He said, 'Give this to whoever comes with my ring, little V.'","Nobody has called me little V in sixty years.","I didn't keep it here. The Syndicate have been through my shelves twice this year, looking for anything in his handwriting.","It's in the founder's deposit box, in the vault's west hall. Box 001. It only opens for his ring. I never read it. I promised."],()=>{Q.set("vellBox");say0("New objective in your JOURNAL: open deposit box 001 in the Gilded Vault's west hall.")});return}
     if(s===12){talk(K.n,["His diary. You found his diary.","Give it here. My hands are shaking, not my eyes.","'The recruit found the ring. I knew they would.'","'Every night I go down to tend the cell. I will go tonight as always. If they are clever, they will know where to find me.'","...This entry is dated yesterday.","Go. Go to the basement tonight, and see who comes down the stairs."],()=>{Q.s=13;Q.set("diary");say0("New objective in your JOURNAL.")});return}
     if(s>=9&&s<15&&!Q.flag("vellYoung")){talk(K.n,["He taught me his shorthand when I was a girl. He was a young man then. Always a notebook. A little star-shaped chip in his left lens that he never got round to fixing.","It's strange. I've grown old. But I'd swear I passed him in the Institute's hall last spring, looking exactly the same.","I told myself it was his grandson. I've been telling myself that for a year."],()=>{Q.set("vellYoung");say0("New evidence in your JOURNAL.")});return}
     return false};
@@ -4866,7 +4920,7 @@ function marlowNPC(inBasement){const m={n:"Dr. Marlow",look:{marlow:1,coat:"#FFF
             talk(m.n,["...Bold. Very bold.",`Anyone can say a name. Show me why. ${NEED_EVIDENCE} things. Things that prove it about me, not just about the founder.`],()=>evidencePick(picks=>{
               const good=picks.filter(f=>EVIDENCE.find(e=>e.f===f).good).length;
               if(good<NEED_EVIDENCE){talk(m.n,[good===0?"None of that says a thing about me, recruit.":`${good} of those hold up. ${NEED_EVIDENCE-good} ${NEED_EVIDENCE-good===1?"doesn't":"don't"}. Something that proves the founder existed isn't proof that he's me.`,"Find more. People who knew him long ago might remember things now they'd never have said before."]);return}
-              Q.s=15;talk(m.n,["...Yes.","Aldous Marlow. Founder of the Quillmoor Institute. Mixer of sample number one, and the only person who ever called it a mistake to its face.","I made it down there when I was younger than you. I wanted to make something that would last forever. It does. It keeps me going too, I think. That's why I haven't aged a day since.","I sealed the basement, scratched my name off every record, and started again as plain Dr. Marlow, head of the field team.","I couldn't cut my own seal. So I scattered the recipe, and I trained people like you, and I waited for somebody who would look.","You did it, recruit. Not the metal. The looking.","(Your JOURNAL is complete. The founder's secret is yours.)"],()=>{giveItem("charm");giveItem("survey");say0("The founder's quest is complete.")})},NEED_EVIDENCE))})})})})};return m}
+              Q.s=15;talk(m.n,["...Yes.","Aldous Marlow. Founder of the Quillmoor Institute. Mixer of sample number one, and the only person who ever called it a mistake to its face.","I made it down there when I was younger than you. I wanted to make something that would last forever. It does. It keeps me going too, I think. That's why I haven't aged a day since.","I sealed the basement, scratched my name off every record, and started again as plain Dr. Marlow, head of the field team.","I couldn't cut my own seal. So I scattered the recipe, and I trained people like you, and I waited for somebody who would look.","You did it, recruit. Not the metal. The looking.","...There's one more thing. Something I have never once managed on my own.","Quartermaster Hobbs keeps a crate of control rods signed out to 'nobody'. Fetch it for me, and meet me in the basement. Tonight."],()=>{store.set("wta_fin",1);store.set("wta_qf_seenJ",0);journalDot();say0("New objective in your JOURNAL: fetch the control rods from Quartermaster Hobbs, then meet Dr. Marlow in the basement.")})},NEED_EVIDENCE))})})})})};return m}
 function evidencePick(done,need=4){const have=EVIDENCE.filter(e=>Q.flag(e.f));const d=dlgEl();DLG.open=true;EXP.busy=true;d.hidden=false;$("#dlg-who").textContent="PRESENT EVIDENCE";$("#dlg-who").hidden=false;$("#dlg-more").hidden=true;
   const sel=new Set;$("#dlg-txt").innerHTML=`<span>Choose ${need} pieces of evidence, then press PRESENT.</span><span class="evlist">${have.map(e=>`<button class="ev" data-f="${e.f}" title="${e.x}">${e.t}</button>`).join("")}</span><button class="btn go evgo" disabled>PRESENT</button>`;
   d.querySelectorAll(".ev").forEach(b=>b.onclick=e=>{e.stopPropagation();const f=b.dataset.f;if(sel.has(f))sel.delete(f);else if(sel.size<need)sel.add(f);b.classList.toggle("on",sel.has(f));d.querySelector(".evgo").disabled=sel.size!==need;sfx("sel")});
@@ -4964,8 +5018,8 @@ function searchHere(){if(S.phase!=="explore"||EXP.busy)return;if(!gate("search",
 
 /* the people on each page's trail */
 function pageHooks(z){const N=n=>(EXP.npcs||[]).find(p=>p.n===n),K=(EXP.npcs||[]).find(p=>p.keeper),wrapK=f=>{if(!K)return;const old=K.quest;K.quest=()=>{const r=f();return r===false?(old?old():false):r}};
-  if(z==="z-mine"){const d=N("Foreman Dray");if(d)d.quest=()=>{const p=PQ("mine");if(p===0&&!pageTime())return false;
-      if(p===0){talk(d.n,["Looking for Nettie? Everybody's always looking for Nettie.","She goes up to the old lamp room every week to sit with the lamps. Went up three days ago and hasn't come back down. She does that.","Trouble is, the north tunnels haven't been lit in years, and I'm not sending anyone up there without a light. I lost my dad's brass lamp somewhere along the top tunnel. East end, I think.","Find it for me and I'll kit you out with a proper pit lamp. Then you can go and fetch her yourself."],()=>{setPQ("mine",1);questSeed();say0("Find Foreman Dray's brass lamp, out at the east end of the top tunnel. Watch the dowsing meter.")});return}
+  if(z==="z-mine"){const d=N("Foreman Dray");if(d)d.quest=()=>{const p=PQ("mine");
+      if(p===0){talk(d.n,["New face. Institute? You lot always want to go poking about in the north tunnels.","Nettie Crane's up there now, the old lamp keeper. She goes up to the old lamp room every week to sit with the lamps. Went up three days ago and hasn't come back down. She does that.","Trouble is, the north tunnels haven't been lit in years, and I'm not sending anyone up there without a light. I lost my dad's brass lamp somewhere along the top tunnel. East end, I think.","Find it for me and I'll kit you out with a proper pit lamp. Then you can go and fetch her yourself."],()=>{setPQ("mine",1);questSeed();say0("Find Foreman Dray's brass lamp, out at the east end of the top tunnel. Watch the dowsing meter.")});return}
       if(p===1){talk(d.n,["Top tunnel, east end. It'll be on the floor somewhere, sulking. The dowsing meter will twitch when you're close."]);return}
       if(p===2){talk(d.n,["That's it! That's my dad's lamp! Not a scratch. Well. Several scratches. All his.","Right. Fair's fair. Here's a pit lamp, full of oil. Brighter than the brass one. Don't tell my dad.","Nettie's up in the old lamp room. North of the top tunnel, past where the lights stop."],()=>{giveTool("lamp");setPQ("mine",3);say0("You got the MINER'S LAMP. Unlit tunnels are walkable now.")});return}
       talk(d.n,[p>=6?"Nettie came down for her tea. Says you lit her lamps. She's in a very good mood. It's unsettling.":"Nettie's up in the old lamp room, north of the top tunnel. Don't let her talk you into trimming wicks."])};
@@ -4985,8 +5039,8 @@ function pageHooks(z){const N=n=>(EXP.npcs||[]).find(p=>p.n===n),K=(EXP.npcs||[]
       if(p<=1){talk(K.n,["You broke my boulder to find me. That is the most effort anybody has made to see me in eleven years.","You have come for the young man's page. It is yours, if you will do one thing.","Bring me a light from the fire in the ring of stones, in your lamp. I have vowed not to leave this tube until the rivers go dim, and I would very much like to read something.","But understand: that flame is not like other flames. Carried away from the stones it lives only a short while, and the slightest disturbance in the rubble will put it out.","Choose your path before you light it."],()=>{setPQ("volcano",2);say0("Carry a flame from the eternal fire to Brother Ashlin. It lasts about 34 steps, and stepping on any rubble puts it out.")});return}
       if(p===2){talk(K.n,["A light from the fire, please. In something that will hold it. Your hands will not."]);return}
       talk(K.n,["Ah. The fire. You carried it all the way here without it going out. It never goes out. But still.","Thank you. Here is his page. He sat by the fire an hour to write it and gave it to me because he did not trust himself with it.","I have kept it and I have not read it. Both were difficult.",pageNote("volcano")],()=>{pageTake("volcano");say0("A founder's page was added to your JOURNAL.")})});
-  if(z==="z-glacier"){const o=N("Ole");if(o)o.quest=()=>{const p=PQ("glacier");if(p<=1&&!(pageTime()&&p>=1))return false;
-      if(p<=1){talk(o.n,["Dr. Holm? She went into the deep grotto yesterday to measure something. Then the ice shifted and sealed the way in behind her.","She's been knocking on it all night. Very politely. In what I think is Morse.","I'd dig her out, but I borrowed the Institute ice pick for my fishing holes and dropped it through the ice. It'll have gone down the melt stream into the meltwater pool on the west side.","The pool's too deep for boots. You'd want waders."],()=>{setPQ("glacier",2);questSeed();say0("Find the Institute ice pick in Frostbite Cavern's meltwater pool, on the west side.")});return}
+  if(z==="z-glacier"){const o=N("Ole");if(o)o.quest=()=>{const p=PQ("glacier");
+      if(p<=1){talk(o.n,["You're from the Institute? Then you'd better hear this. Dr. Holm? She went into the deep grotto yesterday to measure something. Then the ice shifted and sealed the way in behind her.","She's been knocking on it all night. Very politely. In what I think is Morse.","I'd dig her out, but I borrowed the Institute ice pick for my fishing holes and dropped it through the ice. It'll have gone down the melt stream into the meltwater pool on the west side.","The pool's too deep for boots. You'd want waders."],()=>{setPQ("glacier",2);questSeed();say0("Find the Institute ice pick in Frostbite Cavern's meltwater pool, on the west side.")});return}
       if(p===2){talk(o.n,["Meltwater pool, west side. The pick'll be at the bottom somewhere. Mind your toes. The water's colder than my ex-wife."]);return}
       talk(o.n,[p>=4?"The doctor's back in the hut, pretending none of it happened. Still no bites for me.":"Go on, then. Get her out. She'll be wanting her supper."])};
     wrapK(()=>{const p=PQ("glacier");if(p>=5)return false;
@@ -5095,8 +5149,8 @@ function placeTrail(){if(EXP.zone.special||(typeof TUT!=="undefined"&&TUT.on))re
   const w=document.createElement("button");w.className="btn";w.id="btn-wander";w.textContent="WANDER ON ▶";w.title="Head off to a different map.";w.onclick=()=>{if(gate("btn-wander",800))wander()};b.after(w)}}
 
 
-/* =============== THE FOUNDER'S BASEMENT: sixty years shut. Toppled benches, burst shelves, glass underfoot, a leak nobody fixed. =============== */
-MAPS["z-basement"]=["################################", "#T:.:x.:T#o.:y.:.:.o.:T#########", "#..:.::.:#..:.o..::.y.:#..:y:..#", "#:x:.:o..#:y..:.::.::..#..:..:.#", "#..:.y:.....:.o.y.:o::..:.....y#", "#T.:...:.#..:.:.::..:.:#.:.:..:#", "#..x.:..:#T.:y.:o.:..y.#y..:..:#", "#o::.x.:.#:..:.:..:.:..#..:.x..#", "#.:..:.:.#..o:.:.y.:o.:#########", "####.###########.###############", "#cx:.x.c.#..:..:..:.:..#.:.:..:#", "#x.:..:.x#.:o..:..:..y.#.x.:.:.#", "#..:.c...#..:.:..:..:..#:..:.S.#", "#x...:..~#T..:..:..:.:.#..:..:.#", "#..:...~~#:..:.:..:..:.K.:..:..#", "#c.:..~~~...:..:..:.:..#..c.:.:#", "#x:..:.~~#.:.y.:..:.:..#:.:..:.#", "#cx:..x.:#:..:..:..:.o:#..:.:.x#", "##########..:..:P:..:..#.:..:.:#", "################################"];
+/* =============== THE FOUNDER'S BASEMENT: sixty years shut. The founder's first lab, left exactly as it was the night he sealed it. =============== */
+MAPS["z-basement"]=["################################", "#HHH..HHH#jj.CCCCC..jjj#k.....k#", "#........#.............#.......#", "#........#.BBB....BBB..#.......#", "#a..............F..............#", "#........#.BBB....BBB..#.......#", "#........#.............#.......#", "#l.......#X...........X#k.....k#", "#H......H#XX.........XX#m.....m#", "####.###########.###############", "#cX..Xc.X#.............#NN...j.#", "#X......c#D...........D#.......#", "#........#.............#.....S.#", "#c..~~..X#..D.......D..#t......#", "#..~~~...#.............K.......#", "#X..~..................#......l#", "#c......X#j...........j#.......#", "#XX...cXX#.............#X.....X#", "#XXX..XXX#X.....P.....X#XX...XX#", "################################"];
 Object.assign(BASEMENT,{cls:"z-basement",sub:"The Institute's first lab. Sixty years of dust, and nobody has breathed this air since.",map:MAPS["z-basement"].slice()});
 if(TRACKS["explore_z-crater"]&&!TRACKS["explore_z-basement"])TRACKS["explore_z-basement"]=TRACKS["explore_z-crater"];
 SIGNS["z-basement"]={"29,12":["Scratched into the plaster, low down, as if by somebody sitting on the floor: rows and rows of tally marks.","Beside the last row, smaller: 'Day 212. It is still growing. I cannot stop it. I can only keep it in.'"]};
@@ -5148,7 +5202,7 @@ const FIELD_ORDERS=[
   brief:["Field Scientist. Look at you.","Here's the thing about the field: anybody gets lucky once. What I'd love to see is you getting it right, again and again.","Register three alloys in a row. If one slips away or you run, don't worry, just start the count again."],
   report:["Three in a row! That's not luck any more. That's you.","Sieves. For when you want to be sure."]},
  {id:"deep",title:"Behind the Gates",rank:2,goal:"Register an alloy from rubble behind a tool gate: unlit tunnels, deep shallows, crates or cracked rock.",need:1,count:r=>r.gated?1:0,reward:["stasis"],
-  brief:["The Syndicate have been picking over the open rubble all season. Anything easy to reach, they've had a go at.","So let's go where they can't. Unlit tunnels, flooded pools, split boulders, the places you need a proper tool for.","Register an alloy from behind one of those. Borrow what you need. The people out there are kinder than they look."],
+  brief:["The Syndicate have been picking over the open rubble all season. Anything easy to reach, they've had a go at.","So let's go where they can't. Unlit tunnels, flooded pools, split boulders, the places you need a proper tool for.","Register an alloy from behind one of those. Borrow what you need. The people out there are kinder than they look.","Bolt at the Scrapyard lends crowbars, if you do him a good turn. Foreman Dray at the mine keeps pit lamps. And the station at Frostbite Cavern had an ice pick once, if nobody's lost it."],
   report:["From behind a gate! That's the good rubble. That's why I keep sending people into dark holes.","A stasis pack. Things behind gates occasionally bite. Better safe.","Don't tell Hobbs I gave you that without a slip. He'll have us both filling in forms till spring."]},
  {id:"stones",title:"The Old Stones",rank:2,reward:["guide","glint"],
   steps:[{kind:"obj",zone:"z-reactor",what:"stone",goal:"Take a rubbing of the old survey stone at the Old Reactor Hall."},{kind:"obj",zone:"z-vault",what:"stone",goal:"Take a rubbing of the old survey stone at the Gilded Vault."},{kind:"obj",zone:"z-scrap",what:"stone",goal:"Take a rubbing of the last survey stone, at Tinker's Scrapyard."}],
@@ -5164,11 +5218,11 @@ const FIELD_ORDERS=[
   report:["'Still counting.' She always did count everything. Stones, steps, grudges.","And she wants me to come myself. Of course she does.","Before I go, I'd like to know what the Syndicate are carrying for her these days. Grunts carry notes."]},
  {id:"fence",title:"Messages in Orange",rank:3,season:2,goal:"Beat 2 Slag Syndicate grunts in duels. One of them will be carrying a message.",need:2,count:(r,st)=>st.duel?1:0,reward:["timer","decoy"],
   brief:["Beat a couple of grunts for me. One of them will have a note in a pocket. They always do. Nobody in the Syndicate can remember anything."],
-  report:["(He unfolds a scrap of paper taken from a grunt's pocket. The pencil is shaky, and very neat.)","'The grunts don't answer to me any more, Aldous. Grist runs them now, and Grist wants what's under your floor. Come to the crater at dusk. Both of you. O.'","Both of you. She means you too.","Well. I suppose I'd better find a clean collar."]},
+  report:["(He unfolds a scrap of paper taken from a grunt's pocket. The pencil is shaky, and very neat.)","'The grunts don't answer to me any more, Aldous. Varrow runs them now, and Varrow wants what's under your floor. Come to the crater at dusk. Both of you. O.'","Both of you. She means you too.","Well. I suppose I'd better find a clean collar."]},
  {id:"meet",title:"Dusk at Starfall",rank:3,rankUp:4,season:2,reward:["charm","guide","patch"],
   steps:[{kind:"enter",zone:"z-crater",scene:"meet",goal:"Go to Starfall Crater at dusk. Dr. Marlow will meet you there."}],
   brief:["Starfall Crater, then. I'll meet you on the rim. Don't wait for me. I'll be late. I'm always late for her."],
-  report:["I put her name back on the roster this morning. In ink. Wren cried, and then said it was the dust.","Grist is coming for the basement, sooner or later. When he does, I'd like you standing in the door with me.","Odile gave you her badge. That makes you a deputy of something, whether I like it or not. And I do like it."]}];
+  report:["I put her name back on the roster this morning. In ink. Wren cried, and then said it was the dust.","Varrow is coming for the basement, sooner or later. When he does, I'd like you standing in the door with me.","Odile gave you her badge. That makes you a deputy of something, whether I like it or not. And I do like it."]}];
 FIELD_ORDERS.forEach(o=>{if(o.steps)o.need=o.steps.length});
 function foDoneSet(){return new Set([...FIELD_ORDERS.slice(0,foIdx()).map(o=>o.id),...store.get("wta_fo_skip",[])])}
 function foDone(id){return foDoneSet().has(id)}
@@ -5241,13 +5295,27 @@ function foSummary(){const i=foIdx(),o=foCur(),on=store.get("wta_fo_on",0)===1;l
   else if(!on)h=i===0?"Report to Dr. Marlow, head of the field team. His office is on the east side of the Quillmoor Institute's hall.":"Dr. Marlow has your next field order. His office is on the east side of the Quillmoor Institute's hall"+(Q.s>=8&&Q.s<15?" (while he's away, check the tray on his desk).":".");
   else h=(foReady()?"":foGoal(o)+(o.steps?"":` (${foProg()}/${o.need})`))+(foReady()?"<b>Complete!</b> Report to Dr. Marlow.":"");
   return h}
+/* the journal lists EVERY live objective as its own entry: nothing gets squeezed into one slot */
+function journalObjectives(){const s=Q.s,o=foCur(),on=store.get("wta_fo_on",0)===1,J=[],card=(h,p,cls)=>J.push(`<div class="bag-item key obj${cls?" "+cls:""}"><b>${h}</b><p>${p}</p></div>`),ul=L=>L.length?`<span class="obj-list">${L.map(t=>`<span>${t}</span>`).join("")}</span>`:"";
+  const FQ="THE FOUNDER'S QUEST",fin=typeof FIN==="function"?FIN():0;
+  if(s===0&&foFounderOpen())card(FQ,"Archivist Wren at the Institute's reading room has asked to see you. She says it's about something the founder left behind.");
+  else if((s===1||s===2)&&typeof pageObjective==="function"){
+    if(!Q.flag("register"))card(FQ,pageObjective());
+    else{const L=[];Object.keys(PAGE_STEPS).forEach(id=>{const p=PQ(id);if(p>=PAGE_DONE[id])return;const t=PAGE_STEPS[id][Math.min(p,PAGE_STEPS[id].length-1)],z=ZONES.find(q=>q.cls===PAGE_ZONE[id]);L.push(`<b>${z?z.name:id.toUpperCase()}:</b> ${typeof t==="function"?t():t}`)});
+      if(Q.flag("needBar")&&!hasTool("crowbar")&&PQ("bolt")===0)L.push("<b>TOOL:</b> You need a crowbar. Tinker's Scrapyard will have one, if you ask nicely.");
+      if(Q.flag("needLamp")&&!hasTool("lamp")&&PQ("mine")<1)L.push("<b>TOOL:</b> You need a lamp. The foreman at Rustvein Mine will have lamps.");
+      if(Q.flag("needBoots")&&!hasTool("boots"))L.push("<b>TOOL:</b> You need waders. The harbour office at Sunken Galleon Cove keeps a spare pair.");
+      if(Q.flag("needPick")&&!hasTool("pick")&&PQ("glacier")<2)L.push("<b>TOOL:</b> You need an ice pick. The Institute's only one went out to the Frostbite Cavern station.");
+      card(FQ,`Recover the founder's five pages (${pagesGot().length}/5).`+ul(L))}}
+  else if(s===14){const leads=Object.keys(LEADS).filter(k=>!Q.flag(k)).map(k=>"<b>LEAD:</b> "+LEADS[k]);
+    card(FQ,`Dr. Marlow is waiting for you in the hidden study. Don't go in with a hunch. He'll want ${NEED_EVIDENCE} pieces of proof that point at him, not just at the founder. You have ${EVIDENCE.filter(e=>Q.flag(e.f)).length} things in your journal. Decide for yourself which ones hold up.`+ul(leads.length?leads:["You've followed every lead."]))}
+  else if(s>0&&!(s>=15&&fin>=4))card(FQ,questObjective());
+  if(o)card(on?"FIELD ORDER: "+o.title.toUpperCase():"FIELD ORDERS",foSummary()+`<small class="fo-rank">RANK: ${foRank().toUpperCase()}</small>`,"fo");
+  {const reg=S.caught.size,tot=ALLOYS.length,th=ALLOYS.filter(a=>a.threat),tc=th.filter(a=>S.caught.has(a.name)).length,nxt=typeof REQ_EVERY!=="undefined"?REQ_EVERY-reg%REQ_EVERY:0;
+   card("FIELD WORK",`Keep registering alloys out in the field. Every map has its own, and some only turn up behind tool gates or in the dark.`+ul([`<b>ALLOYDEX:</b> ${reg} of ${tot} registered.`,`<b>THREATS CONTAINED:</b> ${tc} of ${th.length}.`,...(nxt?[`<b>REQUISITION:</b> ${nxt} more new registration${nxt>1?"s":""} until Quartermaster Hobbs owes you another slip.`]:[])]),"fw")}
+  return J}
 {const _oj=openJournal;openJournal=function(){_oj();const m=$("#journal");if(!m)return;const list=m.querySelector(".bag-list"),first=list.querySelector(".bag-item.key");if(first)first.remove();
-  const s=Q.s,o=foCur(),on=store.get("wta_fo_on",0)===1,slots=[];
-  const main=s>0?questObjective():foFounderOpen()?"Archivist Wren at the Institute's reading room has asked to see you. She says it's about something the founder left behind.":null;
-  if(main)slots.push(`<div class="bag-item key"><b>${s>=15?"THE FOUNDER'S QUEST: COMPLETE":"THE FOUNDER'S QUEST"}</b><p>${main}</p></div>`);
-  if(o)slots.push(`<div class="bag-item key fo"><b>${on?"FIELD ORDER: "+o.title.toUpperCase():"FIELD ORDERS"}</b><p>${foSummary()}</p><small class="fo-rank">RANK: ${foRank().toUpperCase()}</small></div>`);
-  if(!slots.length)slots.push(`<div class="bag-item key"><b>NO ACTIVE QUEST</b><p>${foIdx()>0?"No orders waiting. Dr. Marlow says to go and find something nobody's named.":"Dr. Marlow, head of the field team, wants to see you. His office is at the Quillmoor Institute."}</p></div>`);
-  list.insertAdjacentHTML("afterbegin",slots.join(""))}}
+  const J=journalObjectives();list.insertAdjacentHTML("afterbegin",`<h5 class="bag-h obj-h">OBJECTIVES</h5>`+J.join(""))}}
 {const _qp=questPull;questPull=function(){if(Q.s===0&&(foReady()||store.get("wta_fo_on",0)!==1)&&Math.random()<.45)return ZONES.find(z=>z.cls==="z-quill");return _qp()}}
 
 
@@ -5609,7 +5677,7 @@ const SATCHEL_SVG=`<svg viewBox="0 0 40 40"><ellipse cx="20" cy="34" rx="10" ry=
 const STONES={"z-reactor":{at:[5,17],lines:["A squat stone post, knee high. The hall's floor has been laid carefully round it, as if the builders weren't allowed to move it.","You press the paper flat and rub the charcoal across. Letters come up white: 'Q.I. SURVEY. STONE 4 OF 9. THE HEAT RUNS NORTH.'","Underneath is a surveyor's mark: a small triangle with a dot in the middle, like an eye. Beside it, two initials. 'O.G.'"]},
  "z-vault":{at:[16,24],lines:["A marker stone by the vault's front steps, worn smooth where a century of hands have patted it for luck.","The rubbing comes up: 'Q.I. SURVEY. STONE 6 OF 9. THE GOLD IS NOT THE TREASURE.'","The same mark again. The triangle with the eye in it. 'O.G.'"]},
  "z-scrap":{at:[37,5],lines:["The last stone stands alone in the corner of the yard. The scrap has been heaped all round it for decades and never once on top of it.","The rubbing comes up: 'Q.I. SURVEY. STONE 9 OF 9. LAST STONE. WHAT THE MOOR COOKS, THE MOOR KEEPS.'","The triangle with the eye. 'O.G.'","Below it, cut much more recently, in shaky, careful letters: 'STILL COUNTING. O.'"],last:1}};
-function stepPlace(){if(S.phase!=="explore"||!EXP.zone||EXP.zone.special)return;EXP.objs=EXP.objs.filter(o=>{if(o.story){o.el.remove();return false}return true});
+function stepPlace(){if(S.phase!=="explore"||!EXP.zone||EXP.zone.special)return;EXP.objs=EXP.objs.filter(o=>{if(o.story==="satchel"||o.story==="stone"){o.el.remove();return false}return true});
   const st=foStep(),z=EXP.zone.cls,o=foCur();if(!st||st.kind!=="obj"||st.zone!==z){nearMarks();return}
   if(st.what==="satchel"){const at=store.get("wta_fo_drop",null)||nearWalk(20,12);
     storyObj(at,SATCHEL_SVG,()=>talk("",["A Syndicate satchel, dropped in a hurry. Half a sandwich, an orange badge, and a small black ledger.","Columns of dates and samples, in pencil. 'Rod, no name, Rustvein. Vial, green, off the cove.' Beside each one, a price. Far more than the Institute pays for anything.","Most entries end the same way: 'Sold on. For the Old Lady.'","One line is underlined twice. 'She says: anything that doesn't tarnish. Anything that doesn't age. Pays in gold.'","Pressed inside the front cover in faded ink: a small stamp. A triangle with a dot in the middle, like an eye.","(You pocket the ledger. Dr. Marlow will want to see this.)"],()=>{sfx("pickup");foStepDone()}),"satchel")}
@@ -5688,7 +5756,7 @@ SCENES.survey=async()=>{await csFade(1);await csCard("SIXTY YEARS AGO","Quillmoo
 
 /* 5. two in the morning, in the basement */
 SCENES.night=async()=>{const m=EXP.npcs.find(p=>p.n==="Dr. Marlow");if(!m)return;const a=csAdopt("m",m),tx=m.x,ty=m.y;
-  await csFade(1,10);csTint(1);csPos("player",20,5,0);csFace("player",1);csPos("m",16,18,0);csShow("m",0);csCamTo(20,9,true);
+  await csFade(1,10);csTint(1);csPos("player",21,6,0);csFace("player",1);csPos("m",16,18,0);csShow("m",0);csCamTo(20,9,true);
   await csCard("2:00 AM","The founder's basement");
   await csSay("",["(You wait in the dark between the shelves. Somewhere far above you, a clock strikes two.)","(Footsteps on the stairs. Slow and careful, like someone who has come down them every night for a very long time.)"]);
   await csFade(0);csCamTo(16,15);await csWait(700);csShow("m",1);await csWait(500);
@@ -5696,7 +5764,7 @@ SCENES.night=async()=>{const m=EXP.npcs.find(p=>p.n==="Dr. Marlow");if(!m)return
   await csSay("",["(He lays a hand flat against the cracked door of the cell, the way you'd settle a nervous horse.)"]);
   await csSay("Dr. Marlow",["Easy. Easy now. Not long.","You're growing again. I know. I can feel it through the door."]);
   await csSay("",["(The glow inside the cell slows until it matches his breathing. Then he goes very still.)"]);
-  await csEmote("m","...");csFace("m",-1);csCamTo((tx+20)/2,6);await csWait(600)};
+  await csEmote("m","...");csFace("m",-1);csCamTo((tx+21)/2,6);await csWait(600)};
 
 /* 6. promotions, in the Great Hall */
 const PROMO={
@@ -5764,7 +5832,7 @@ SCENES.meet=async()=>{const px=EXP.x,py=EXP.y,od=nearWalk(30,9);
   await csSay("Odile Grane",["Aldous."]);await csSay("Dr. Marlow",["Odile."]);await csWait(900);
   await csSay("Odile Grane",["You look dreadful. Exactly the same, and dreadful."]);await csSay("Dr. Marlow",["You look old."]);await csSay("Odile Grane",["I am old. It's allowed. You should try it some time."]);
   await csSay("Dr. Marlow",["The stones. You've been going back to them."]);await csSay("Odile Grane",["Every spring. Somebody has to keep count, and you never would."]);
-  await csSay("Odile Grane",["I didn't start the Syndicate, Aldous. I started paying people to bring me metal. Anything that wouldn't tarnish, anything that wouldn't age.","I thought that if I could make sample one again, properly, safely, I could finally carry it down the hill like I wanted to.","The people I paid told other people. Then they had foremen. Then they had badges. And I got old, and they stopped listening to old women.","Grist runs them now. Grist doesn't want to help anybody. He wants what's under your floor."]);
+  await csSay("Odile Grane",["I didn't start the Syndicate, Aldous. I started paying people to bring me metal. Anything that wouldn't tarnish, anything that wouldn't age.","I thought that if I could make sample one again, properly, safely, I could finally carry it down the hill like I wanted to.","The people I paid told other people. Then they had foremen. Then they had badges. And I got old, and they stopped listening to old women.","Varrow runs them now. Kilnmaster Varrow, out at the old works. Grist just does her shouting for her. She doesn't want to help anybody. She wants what's under your floor."]);
   await csSay("Dr. Marlow",["He won't get it."]);
   await csSay("Odile Grane",["He'll try. That's why I wanted the recruit here as well.","(She turns to you.) He can't cut his own seals, and he can't undo what he made. One day somebody who isn't him will have to stand in that door. It could be you."]);
   await csSay("",["(She presses something small and cold into your hand. A field badge, the enamel worn right through at the edges. The number on it is 002.)"]);
@@ -5802,6 +5870,464 @@ SCENES.rideBye=async()=>{const at=store.get("wta_fo_mpos",null)||nearWalk(EXP.x+
 const HOMEWARD={wreck:["Right. I'm off home to write my grandmother an apology. Harbour office, north-west corner of the cove, if you need me."],volcano:["I will carry my thanks back up to the fire now, and sit with it a while. You know where to find me."]};
 {const _pt=pageTake;pageTake=function(id){_pt(id);const L=HOMEWARD[id],z="z-"+id;if(!L||!EXP.zone||EXP.zone.cls!==z||EXP.zone.special)return;const K=EXP.npcs.find(p=>p.keeper),home=SPOTS[z]&&SPOTS[z].home;if(!K||!home||(K.x===home[0]&&K.y===home[1]))return;
   setTimeout(()=>{if(DLG.open||CS.on)return;talk(K.n,L,()=>npcTravel(K,home,false))},400)}}
+
+/* journal order: every objective first, then side quests, then evidence and notes */
+function journalTidy(){const m=$("#journal");if(!m||m.hidden)return;const list=m.querySelector(".bag-list"),kids=[...list.children];
+  const obj=kids.filter(e=>(e.classList.contains("obj")&&!e.classList.contains("fav"))||e.classList.contains("obj-h")),side=kids.filter(e=>e.classList.contains("side")||e.classList.contains("sq-h")),rest=kids.filter(e=>!obj.includes(e)&&!side.includes(e)&&!e.classList.contains("obj-none"));
+  const sd=side.filter(e=>!e.classList.contains("sq-h"));sd.forEach(e=>{e.classList.add("obj","fav");const b=e.querySelector("b");if(b)b.textContent=b.textContent.replace(/^Favour:\s*/,"")});
+  let keep=rest;if(typeof FIN==="function"&&FIN()>=4)keep=rest.filter(e=>!(e.classList.contains("clue")||(e.tagName==="H5"&&/EVIDENCE|NOTES/.test(e.textContent))));
+  const all=[...obj,...sd];if(all.length<=1){const n=document.createElement("div");n.className="bag-item key obj obj-none";n.innerHTML=`<b>NOTHING URGENT</b><p>No quests on the go. Dr. Marlow always has field orders, and people around the maps often need a hand.</p>`;all.push(n)}
+  list.replaceChildren(...all,...keep)}
+{const _oj=openJournal;openJournal=function(){_oj();journalTidy()}}
+
+
+/* =============== DR. MARLOW, REDRAWN: a young man of the 1920s who never got any older. Big dark wavy hair, thick round glasses (the left lens chipped), a grin that won't quit, and a tweed suit under an open lab coat. =============== */
+function marlowSVG(){const lc="#F5F2EA",ls="#D6CFBF",tw="#98938A",tw2="#7A766E",tw3="#6A665E",hair="#231812",hl="#443024",sk="#F0C8A4",sk2="#D9A884";
+ const hb=(x0,y0,w,h)=>{let o="";for(let yy=y0;yy<y0+h;yy+=1.2)for(let xx=x0;xx<x0+w;xx+=1.2)o+=`<path d="M${xx} ${yy} l.6 .6 l.6 -.6" stroke="${tw3}" stroke-width=".22" fill="none" opacity=".38"/>`;return o};
+ return `<svg viewBox="0 0 40 40" aria-hidden="true"><defs><clipPath id="mjk"><path d="M15.2 20.6 L24.8 20.6 L23.8 35 L16.2 35 Z"/></clipPath></defs><ellipse cx="20" cy="37.6" rx="10" ry="2.2" fill="#000" opacity=".3"/>
+<rect x="15.2" y="31" width="4.2" height="5" fill="${tw2}" stroke="${INK}" stroke-width=".6"/><rect x="20.6" y="31" width="4.2" height="5" fill="${tw2}" stroke="${INK}" stroke-width=".6"/>
+<path d="M13.8 35.4 H19.6 Q19.8 37.8 18.6 37.8 H14.2 Q13.2 37.8 13.8 35.4Z M20.4 35.4 H26.2 Q26.8 37.8 25.8 37.8 H21.4 Q20.2 37.8 20.4 35.4Z" fill="#2A1A10" stroke="${INK}" stroke-width=".6"/><path d="M15 36.2 H16.8 M21.6 36.2 H23.4" stroke="#7A5A3A" stroke-width=".5"/>
+<path d="M12 21.4 Q20 18.8 28 21.4 L30.4 35.2 L9.6 35.2 Z" fill="${lc}" stroke="${INK}" stroke-width="1.5" stroke-linejoin="round"/>
+<path d="M15.2 20.6 L24.8 20.6 L23.8 35 L16.2 35 Z" fill="${tw}" stroke="${INK}" stroke-width=".6"/>
+<g clip-path="url(#mjk)">${hb(15,20,10,15)}</g>
+<path d="M16.8 20.6 L20 29.4 L23.2 20.6 Z" fill="#FFFFFF" stroke="${INK}" stroke-width=".55"/>
+<path d="M17.4 20.4 L20 23 L16.6 23.6 Z M22.6 20.4 L20 23 L23.4 23.6 Z" fill="#FFFFFF" stroke="${INK}" stroke-width=".5" stroke-linejoin="round"/>
+<path d="M19.1 22.6 L20.9 22.6 L21.5 28.2 L20 29.6 L18.5 28.2 Z" fill="#241F28" stroke="${INK}" stroke-width=".45"/><path d="M18.8 21.8 H21.2 L20.8 23.2 H19.2 Z" fill="#241F28" stroke="${INK}" stroke-width=".4"/>${[[19.5,24.4],[20.5,25.5],[19.5,26.6],[20.5,27.6]].map(([x,y])=>`<path d="M${x-.3} ${y} h.6" stroke="#8A8298" stroke-width=".35"/>`).join("")}
+<path d="M16.8 20.6 L20 29.4 L17.2 28 L16 23.2 Z M23.2 20.6 L20 29.4 L22.8 28 L24 23.2 Z" fill="${tw2}" stroke="${INK}" stroke-width=".5" stroke-linejoin="round"/>
+${[30.6,32.8].map(y=>`<circle cx="20" cy="${y}" r=".45" fill="#3A3028" stroke="${INK}" stroke-width=".25"/>`).join("")}
+<path d="M15.2 20.6 L16.4 30.6 L13.4 27.2 L12.8 23 Z M24.8 20.6 L23.6 30.6 L26.6 27.2 L27.2 23 Z" fill="${lc}" stroke="${INK}" stroke-width=".75" stroke-linejoin="round"/><path d="M13.6 23.6 L14.8 24.6 M26.4 23.6 L25.2 24.6" stroke="${ls}" stroke-width=".55"/>
+<path d="M16.2 35 L16.4 30.6 M23.8 35 L23.6 30.6" stroke="${INK}" stroke-width=".7"/>
+<rect x="25.2" y="28.2" width="3.2" height="3" rx=".5" fill="${lc}" stroke="${ls}" stroke-width=".7"/><path d="M25.9 28.4 V26.8 M27 28.4 V26.5" stroke="#2E3548" stroke-width=".75" stroke-linecap="round"/><path d="M27.8 28.4 V27.1" stroke="#B8242A" stroke-width=".75" stroke-linecap="round"/>
+<path d="M11.6 31.6 H15.2" stroke="${ls}" stroke-width=".7"/>
+<path d="M12 23 Q9.4 27.6 10.4 32" stroke="${INK}" stroke-width="3.8" stroke-linecap="round" fill="none"/><path d="M12 23 Q9.4 27.6 10.4 32" stroke="${lc}" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M9.4 31.2 L11.6 31.6" stroke="${tw}" stroke-width=".9"/>
+<rect x="8.2" y="30.6" width="3.8" height="4.6" rx=".5" fill="#5A3420" stroke="${INK}" stroke-width=".6" transform="rotate(-8 10 33)"/><circle cx="10.6" cy="32.5" r="1.6" fill="${sk}" stroke="${INK}" stroke-width=".8"/>
+<path d="M28 23 Q30.6 27 29.8 31.2" stroke="${INK}" stroke-width="3.8" stroke-linecap="round" fill="none"/><path d="M28 23 Q30.6 27 29.8 31.2" stroke="${lc}" stroke-width="2.2" stroke-linecap="round" fill="none"/><path d="M28.8 30.8 L30.8 30.6" stroke="${tw}" stroke-width=".9"/><circle cx="29.8" cy="32" r="1.6" fill="${sk}" stroke="${INK}" stroke-width=".8"/>
+<rect x="18.3" y="18.4" width="3.4" height="2.8" fill="${sk2}" stroke="${INK}" stroke-width=".6"/>
+<ellipse cx="13.4" cy="14.6" rx="1.3" ry="1.9" fill="${sk}" stroke="${INK}" stroke-width=".7"/><ellipse cx="26.6" cy="14.6" rx="1.3" ry="1.9" fill="${sk}" stroke="${INK}" stroke-width=".7"/>
+<path d="M13.6 12 Q13.4 5.6 20 5.4 Q26.6 5.6 26.4 12 L26 16.6 Q25.2 20.6 20 21 Q14.8 20.6 14 16.6 Z" fill="${sk}" stroke="${INK}" stroke-width="1.4" stroke-linejoin="round"/>
+<path d="M13.4 13 Q12 8.6 13 6.4 Q12.6 3.6 15.4 3 Q16.2 1 18.6 1.4 Q20.2 .2 22.2 1 Q24.8 .8 25.6 2.8 Q28 3.6 27.4 6.4 Q28.2 9 26.6 13 Q26.4 10.2 25.2 9 Q24.4 7.4 22.4 7.6 Q21.8 6.4 19.6 6.8 Q17.6 6.6 16.8 8 Q14.8 8.4 14.4 10.2 Q13.8 11.4 13.4 13 Z" fill="${hair}" stroke="${INK}" stroke-width="1.1" stroke-linejoin="round"/>
+<path d="M14 6.4 Q15 3.8 17.6 3.6 Q18.6 5 17.4 6.2 M18.8 2.6 Q21.4 1.4 23.6 2.8 Q24.6 4.4 23.4 5.6 M24.4 3.6 Q26.8 4.4 26.6 7 M15 9 Q16.2 7.4 17.8 7.6 M20.6 6.8 Q22.4 5.8 24 7" stroke="${hl}" stroke-width=".75" fill="none" stroke-linecap="round"/>
+<path d="M14.8 11.3 Q16.6 10.2 18.6 11 M21.4 11 Q23.4 10.2 25.2 11.3" stroke="${hair}" stroke-width="1.05" fill="none" stroke-linecap="round"/>
+<path d="M14 13.6 L14.4 13.5 M26 13.6 L25.6 13.5 M19.4 13.4 Q20 12.9 20.6 13.4" stroke="#1A120C" stroke-width=".65" fill="none"/>
+<circle cx="17" cy="14" r="2.55" fill="#F2F8FC" fill-opacity=".45" stroke="#1A120C" stroke-width=".8"/><circle cx="23" cy="14" r="2.55" fill="#F2F8FC" fill-opacity=".45" stroke="#1A120C" stroke-width=".8"/>
+<path d="M16.1 14.3 Q17 13.4 17.9 14.3 Q17 14.8 16.1 14.3Z M22.1 14.3 Q23 13.4 23.9 14.3 Q23 14.8 22.1 14.3Z" fill="#2A1E14"/><path d="M15.9 15.3 Q17 15.9 18.1 15.3 M21.9 15.3 Q23 15.9 24.1 15.3" stroke="${sk2}" stroke-width=".45" fill="none"/>
+<path d="M15.6 12.8 L16.2 12.3 M21.6 12.8 L22.2 12.3" stroke="#FFFFFF" stroke-width=".45" stroke-linecap="round"/>
+<path d="M24 12.3 l.4 .5 .4-.5 -.15 .7 .6 .25 -.6 .25 .15 .7 -.4 -.5 -.4 .5 .15 -.7 -.6 -.25 .6 -.25z" fill="#FFFFFF"/><path d="M24.2 12.5 L25.2 11.7" stroke="#1A120C" stroke-width=".3"/>
+<path d="M20.1 14.6 Q19.4 16.4 19.6 16.8 Q20.2 17.2 20.8 16.8" stroke="${sk2}" stroke-width=".65" fill="none" stroke-linecap="round"/>
+<path d="M16.6 17.9 Q20 20.4 23.4 17.9" stroke="${INK}" stroke-width=".9" fill="none" stroke-linecap="round"/><path d="M18.6 19.8 Q20 20.3 21.4 19.8" stroke="${sk2}" stroke-width=".5" fill="none"/>
+<path d="M16 17.4 Q16.2 18.4 16.9 18 M24 17.4 Q23.8 18.4 23.1 18" stroke="${sk2}" stroke-width=".55" fill="none"/><circle cx="15.6" cy="16.8" r=".9" fill="#E0928A" opacity=".3"/><circle cx="24.4" cy="16.8" r=".9" fill="#E0928A" opacity=".3"/></svg>`}
+
+/* =============== THE BASEMENT, REBUILT: six rooms, each one with a job. His office, the first lab, the cell, a storeroom with a leak, the landing, and the corner where he slept. =============== */
+const bmRoom=(x,y)=>y<=8?(x<=8?"off":x<=22?"lab":"cel"):(x<=8?"sto":x<=22?"lan":"nok");
+function bmFloor(x,y,M){const r=bmRoom(x,y),h=(x*7+y*13)%11;
+  if(r==="off"){if(x>=3&&x<=6&&y>=5&&y<=7)return"bm-rug"+(y===5?" rt":"")+(y===7?" rb":"");return"bm-oak v"+(y%2)}
+  if(r==="lab")return"bm-chk"+(h===0?" crk":"");
+  if(r==="cel"){const ring=x>=25&&x<=29&&y>=2&&y<=7&&(x===25||x===29||y===2||y===7);return ring?"bm-haz":"bm-steel"}
+  if(r==="sto"){const n=[[1,0],[-1,0],[0,1],[0,-1]].some(([dx,dy])=>(M[y+dy]||"")[x+dx]==="~");return n?"bm-damp":"bm-earth v"+(h%3)}
+  if(r==="nok"){if(x>=26&&x<=28&&y>=13&&y<=15)return"bm-rag";return"bm-board"}
+  return"bm-flag v"+((x+y*3)%4)+(h===5?" stain":"")}
+const BM={
+ H:{tall:1,svg:(x,y,M,s)=>{const cols=[["#6A2A2A","#2E4A6A","#6A5A2A","#3A5A3A","#5A3A5A"],["#3A4A5A","#7A5A2A","#5A2A2A","#2A4A3A","#6A6A5A"]][s%2];let b="";
+   [[4,10],[12,18],[20,26]].forEach(([t,bt],r)=>{let xx=9;for(let i=0;i<6;i++){const w=2.2+((s+i*3+r)%3)*.6,gap=(s+i+r)%5===0;if(!gap)b+=`<rect x="${xx}" y="${bt-6+((i+r)%2)}" width="${w}" height="${6-((i+r)%2)}" fill="${cols[(i+r)%5]}" stroke="#1A1008" stroke-width=".4"/>`;xx+=w+.4;if(xx>29)break}});
+   if(s%3===0)b+=`<rect x="24" y="21" width="2.4" height="6" fill="#6A5A2A" stroke="#1A1008" stroke-width=".4" transform="rotate(24 25 26)"/>`;
+   return`<rect x="7" y="2" width="26" height="33" fill="#4E3420" stroke="#1E1208" stroke-width="1.3"/><rect x="8.4" y="3.4" width="23.2" height="30" fill="#2A1C10"/>${b}${[10,18,26,33].map(y=>`<rect x="8" y="${y}" width="24" height="1.6" fill="#5E4028"/>`).join("")}<path d="M8 3.6 H32" stroke="#B8B0A0" stroke-width=".6" opacity=".5"/>`}},
+ j:{tall:1,svg:(x,y,M,s)=>{const L=["#9AC89A","#D8B870","#C8D8E0","#B89AC8","#E0C0A0"];let b="";[[12,5],[24,17]].forEach(([bt,top],r)=>{for(let i=0;i<3;i++){const cx=12+i*8,h=5+((s+i+r)%3);b+=`<rect x="${cx-2.8}" y="${bt-h}" width="5.6" height="${h}" rx="1.2" fill="${L[(s+i*2+r)%5]}" fill-opacity=".7" stroke="#3A342C" stroke-width=".6"/><rect x="${cx-2.2}" y="${bt-h-1.2}" width="4.4" height="1.4" fill="#5A4A38"/><rect x="${cx-2}" y="${bt-h/2-.8}" width="4" height="1.8" fill="#EFE6D0" opacity=".85"/>`}});
+   return`<rect x="6" y="3" width="28" height="31" fill="#4A3624" stroke="#1E1208" stroke-width="1.2"/><rect x="7.4" y="4.4" width="25.2" height="28" fill="#261A10"/>${b}${[12.4,24.4,32.4].map(y=>`<rect x="7" y="${y}" width="26" height="1.6" fill="#5E4428"/>`).join("")}`}},
+ C:{tall:1,svg:(x,y,M)=>{const l=M[y][x-1]!=="C",r=M[y][x+1]!=="C",k=x%5;const scr=[`<path d="M6 12 H16 M8 15 L12 11 L14 15 M20 12 q2 -3 4 0 t4 0" />`,`<path d="M4 11 H14 M9 8 V14 M18 13 H30 M22 10 Q26 7 28 12" /><circle cx="33" cy="12" r="2.4"/>`,`<path d="M5 12 L10 12 L12 9 L14 16 L16 12 H22 M26 9 V16 M24 12.5 H28"/>`,`<path d="M4 10 Q10 5 16 10 T28 10 M6 16 H30"/><path d="M30 8 l3 2 l-3 2"/>`,`<path d="M6 11 H12 M6 14 H16 M20 9 L26 15 M26 9 L20 15 M30 10 V16"/>`][k];
+   return`<rect x="${l?2:0}" y="5" width="${40-(l?2:0)-(r?2:0)}" height="21" fill="#2F3B33"/><rect x="${l?1:0}" y="4" width="${40-(l?1:0)-(r?1:0)}" height="2" fill="#6B4A2E"/><rect x="${l?1:0}" y="25" width="${40-(l?1:0)-(r?1:0)}" height="2.4" fill="#6B4A2E"/>${l?`<rect x="1" y="4" width="2" height="23.4" fill="#6B4A2E"/>`:""}${r?`<rect x="37" y="4" width="2" height="23.4" fill="#6B4A2E"/>`:""}<g stroke="#D8DCD0" stroke-width=".8" fill="none" opacity=".55">${scr}</g><path d="M4 20 Q14 18 24 21 T38 19" stroke="#B8C0B4" stroke-width="3" opacity=".12" fill="none"/>${k===2?`<rect x="14" y="26" width="4" height="1.2" fill="#E8E8E0"/>`:""}`}},
+ B:{svg:(x,y,M)=>{const l=M[y][x-1]!=="B",r=M[y][x+1]!=="B",k=x%3;const glass=[`<path d="M11 18 L11 13 L9 9 H15 L13 13 L13 18 Z" fill="#CFE6E4" fill-opacity=".6" stroke="#4A5A5A" stroke-width=".7"/><path d="M22 18 V11 M26 18 V12 M30 18 V13" stroke="#A8C8C4" stroke-width="2.2"/><rect x="20" y="15" width="12" height="1.4" fill="#6B4A2E"/>`,`<circle cx="18" cy="14" r="3.6" fill="#D8C8A0" fill-opacity=".55" stroke="#5A4A3A" stroke-width=".7"/><path d="M21 12.6 L31 9" stroke="#5A4A3A" stroke-width="1.4"/><path d="M13 18 L16 16" stroke="#5A4A3A" stroke-width="1"/>`,`<path d="M10 18 L14 10 L18 18 Z" fill="#CFE0D8" fill-opacity=".5" stroke="#4A5A5A" stroke-width=".7"/><rect x="24" y="12" width="7" height="6" fill="#EFE6D0" stroke="#5A4A3A" stroke-width=".6"/><path d="M25 14 H30 M25 16 H29" stroke="#8A7A5A" stroke-width=".5"/>`][k];
+   return`${glass}<rect x="${l?3:0}" y="18" width="${40-(l?3:0)-(r?3:0)}" height="4" fill="#6E5236" stroke="#2A1C10" stroke-width="1"/><rect x="${l?3:0}" y="22" width="${40-(l?3:0)-(r?3:0)}" height="2" fill="#4A3622"/>${l?`<rect x="5" y="24" width="3" height="11" fill="#4A3622"/>`:""}${r?`<rect x="32" y="24" width="3" height="11" fill="#4A3622"/>`:""}<path d="M${l?3:0} 18.6 H${40-(r?3:0)}" stroke="#B8B0A0" stroke-width=".5" opacity=".5"/>`}},
+ F:{tall:1,svg:`<path d="M24 1 V9" stroke="#3A3430" stroke-width="4"/><rect x="6" y="9" width="28" height="26" rx="2" fill="#7A4A34" stroke="#2A1810" stroke-width="1.3"/>${[13,18,23,28].map((y,i)=>`<path d="M6 ${y} H34" stroke="#5A3424" stroke-width=".7"/>${[10,16,22,28].map(x=>`<path d="M${x+(i%2?3:0)} ${y-5} V${y}" stroke="#5A3424" stroke-width=".6"/>`).join("")}`).join("")}<path d="M13 34 V24 Q20 16 27 24 V34 Z" fill="#2A2624" stroke="#1A1614" stroke-width="1.2"/><path d="M15 32 H25 M15 29 H25" stroke="#3E3A36" stroke-width=".8"/><circle cx="24" cy="27" r=".9" fill="#8A8278"/><path d="M8 10 Q12 6 18 9" stroke="#1A1614" stroke-width="2" opacity=".4" fill="none"/>`},
+ X:{svg:(x,y,M,s)=>s%3===0?`<ellipse cx="14" cy="20" rx="7" ry="3" fill="#6A4A2E" stroke="#2A1C10"/><path d="M7 20 V32 Q14 35 21 32 V20" fill="#6A4A2E" stroke="#2A1C10"/><path d="M7 24 Q14 27 21 24 M7 29 Q14 32 21 29" stroke="#3A3430" stroke-width="1.2" fill="none"/><ellipse cx="27" cy="24" rx="6" ry="2.6" fill="#5E4228" stroke="#2A1C10"/><path d="M21 24 V33 Q27 35.6 33 33 V24" fill="#5E4228" stroke="#2A1C10"/><path d="M21 28 Q27 30.6 33 28" stroke="#3A3430" stroke-width="1.2" fill="none"/>`
+   :s%3===1?`<rect x="6" y="18" width="16" height="16" fill="#8A6A44" stroke="#2A1C10" stroke-width="1.1"/><path d="M6 18 L22 34 M22 18 L6 34" stroke="#6A4E30" stroke-width="1"/><rect x="20" y="22" width="14" height="12" fill="#7A5C3A" stroke="#2A1C10" stroke-width="1.1"/><path d="M20 28 H34" stroke="#5A4028"/><rect x="11" y="9" width="12" height="9" fill="#9A7A52" stroke="#2A1C10" stroke-width="1"/><text x="17" y="15.6" text-anchor="middle" font-size="4" font-family="Georgia,serif" fill="#3A2A1A">Q.I.</text>`
+   :`<path d="M6 34 Q5 24 11 22 Q17 21 18 28 Q19 34 12 35 Z" fill="#A89A7A" stroke="#4A4030" stroke-width="1"/><path d="M16 34 Q15 22 23 20 Q31 20 32 28 Q33 35 24 35 Z" fill="#B8AA88" stroke="#4A4030" stroke-width="1"/><path d="M21 22 Q23 19 26 21" stroke="#4A4030" stroke-width="1.4" fill="none"/><path d="M9 27 Q12 25 14 28" stroke="#8A7A5A" fill="none"/>`},
+ D:{svg:`<path d="M5 34 Q4 18 12 14 Q20 11 28 14 Q36 18 35 34 Z" fill="#D8D2C4" stroke="#6A6458" stroke-width="1.1"/><path d="M12 15 Q14 24 11 34 M20 12.6 Q21 24 19 34 M28 15 Q26 24 29 34" stroke="#B0A898" stroke-width=".9" fill="none"/><path d="M5 34 Q12 31 20 34 T35 34" stroke="#8A8478" fill="none"/><ellipse cx="20" cy="14" rx="7" ry="1.4" fill="#EFEAE0" opacity=".6"/>`},
+ N:{svg:(x,y,M)=>{const head=M[y][x+1]==="N";return head?`<rect x="4" y="12" width="4" height="23" fill="#3A3A40" stroke="#1A1A1E"/><rect x="6" y="19" width="34" height="9" fill="#6A6A62" stroke="#2A2A26" stroke-width="1"/><path d="M6 22 H40" stroke="#8A8A80"/><rect x="9" y="16" width="10" height="5" rx="2" fill="#E8E4DA" stroke="#6A6458"/><path d="M8 34 V28" stroke="#3A3A40" stroke-width="2"/>`
+   :`<rect x="0" y="19" width="32" height="9" fill="#6A6A62" stroke="#2A2A26" stroke-width="1"/><path d="M0 22 H32" stroke="#8A8A80"/><path d="M4 19 Q14 15 22 19 L22 28 L4 28 Z" fill="#5A6A7A" stroke="#2A3440" stroke-width=".8"/><rect x="32" y="15" width="4" height="20" fill="#3A3A40" stroke="#1A1A1E"/><path d="M31 34 V28" stroke="#3A3A40" stroke-width="2"/>`}},
+ t:{svg:`<rect x="8" y="18" width="24" height="4" fill="#6E5236" stroke="#2A1C10"/><path d="M11 22 V34 M29 22 V34" stroke="#4A3622" stroke-width="2.4"/><rect x="12" y="13" width="3" height="5" fill="#EFE6C8" stroke="#6A6458" stroke-width=".6"/><path d="M13.5 13 V11.6" stroke="#2A2420" stroke-width=".7"/><path d="M19 13.6 H24 V18 H19 Z" fill="#8A9098" stroke="#3A3E44" stroke-width=".7"/><path d="M24 14.6 Q26.4 15.8 24 17" stroke="#3A3E44" stroke-width=".7" fill="none"/><rect x="25" y="15.6" width="6" height="2.4" fill="#6A2A22" stroke="#2A1C10" stroke-width=".5"/>`},
+ l:{tall:1,svg:`<path d="M20 12 V34 M14 35 H26" stroke="#3A3430" stroke-width="2"/><path d="M16 12 H24 L23 4 H17 Z" fill="#D8D0B8" fill-opacity=".45" stroke="#3A3430" stroke-width="1"/><path d="M18 12 V8 H22 V12" stroke="#3A3430" stroke-width=".8" fill="none"/><rect x="18.5" y="7.4" width="3" height="1.6" fill="#1A1614"/>`},
+ k:{svg:`<rect x="17" y="16" width="6" height="19" fill="#4A4E54" stroke="#1E2024" stroke-width="1"/><rect x="15" y="14" width="10" height="3" fill="#5E646A" stroke="#1E2024" stroke-width=".8"/>${[20,24,28,32].map((y,i)=>`<ellipse cx="${26+i%2}" cy="${y}" rx="2.2" ry="1.4" fill="none" stroke="#7A7E84" stroke-width="1"/>`).join("")}<circle cx="20" cy="20" r="1" fill="#8A9098"/>`},
+ m:{svg:`<rect x="7" y="8" width="26" height="22" rx="1.5" fill="#4E555C" stroke="#1E2024" stroke-width="1.1"/>${[[14,16],[26,16]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="4.4" fill="#E8E4D8" stroke="#1E2024"/><path d="M${x} ${y} L${x+2.4} ${y-2}" stroke="#B8242A" stroke-width=".9"/>`).join("")}<rect x="11" y="23" width="18" height="3" fill="#2A2E32"/><path d="M13 30 V35 M27 30 V35" stroke="#3A3E44" stroke-width="2.4"/>`},
+ a:{svg:`<path d="M9 34 V17 Q9 10 20 10 Q31 10 31 17 V34 Z" fill="#6A3A2A" stroke="#2A140C" stroke-width="1.2"/><rect x="6" y="20" width="7" height="13" rx="3" fill="#7A4632" stroke="#2A140C"/><rect x="27" y="20" width="7" height="13" rx="3" fill="#7A4632" stroke="#2A140C"/><rect x="12" y="24" width="16" height="8" rx="2" fill="#7A4632" stroke="#2A140C"/><path d="M20 12 Q18 16 21 18" stroke="#4A2418" fill="none"/><path d="M14 27 q2 -2 3 0" stroke="#E8DCC0" stroke-width="1.4" fill="none"/>`}};
+/* what sixty years leaves behind, put down on purpose rather than sprinkled on every tile */
+const BM_WEB=`<path d="M0 0 L16 0 M0 0 L0 16 M0 0 L13 9 M0 0 L9 13" stroke="#D8D4C8" stroke-width=".5" opacity=".7"/><path d="M5 0 Q4 4 0 5 M10 0 Q8 8 0 10 M15 0 Q12 12 0 15" stroke="#D8D4C8" stroke-width=".45" fill="none" opacity=".6"/>`;
+const BM_DECAL={"2,3":"papers","4,3":"papers","3,4":"chair","5,2":"papers","14,6":"glass","19,2":"glass","12,7":"book","21,6":"chalk","5,15":"trail","6,16":"trail","27,6":"scorch","28,3":"scorch","26,2":"frost","26,14":"candles","28,11":"blanket","16,4":"ash"};
+const BM_STEPS=[[16,17],[16,16],[16,15],[16,14],[16,13],[16,12],[16,11],[16,10],[16,8],[17,7],[18,6],[19,6],[20,6],[21,5],[22,4],[24,4],[25,5]];
+function bmDecal(x,y,M){let d="";const k=x+","+y,n=(dx,dy)=>(M[y+dy]||"")[x+dx]==="#";
+  if(n(-1,0)&&n(0,-1))d+=BM_WEB;if(n(1,0)&&n(0,-1))d+=`<g transform="translate(40 0) scale(-1 1)">${BM_WEB}</g>`;
+  const t=BM_DECAL[k];
+  if(t==="papers")d+=`<rect x="8" y="16" width="10" height="13" fill="#E8E0CC" transform="rotate(-18 13 22)" opacity=".85"/><rect x="20" y="20" width="10" height="13" fill="#DCD2BA" transform="rotate(24 25 26)" opacity=".85"/><path d="M10 20 H16 M10 23 H15" stroke="#8A7A5A" stroke-width=".5" transform="rotate(-18 13 22)"/>`;
+  if(t==="chair")d+=`<g transform="rotate(80 20 26)"><rect x="12" y="18" width="16" height="3" fill="#5A3E26" stroke="#2A1C10"/><path d="M14 21 V32 M26 21 V32 M14 18 V8 M26 18 V8 M14 11 H26" stroke="#4A3220" stroke-width="2"/></g>`;
+  if(t==="glass")d+=`<path d="M12 28 l3 -3 l2 3 z M20 31 l4 -2 l1 3 z M26 26 l2 -1 l.6 2 z M16 33 l2 -1 l.5 1.5z" fill="#CFE6E4" opacity=".75"/>`;
+  if(t==="book")d+=`<rect x="13" y="22" width="12" height="9" fill="#6A2A22" stroke="#2A1C10" stroke-width=".6" transform="rotate(12 19 26)"/><path d="M19 22 V31" stroke="#EFE6D0" stroke-width=".6" transform="rotate(12 19 26)"/>`;
+  if(t==="chalk")d+=`<rect x="16" y="28" width="5" height="1.6" fill="#EDEDE6" transform="rotate(-20 18 29)"/><ellipse cx="22" cy="30" rx="5" ry="1.6" fill="#D8D8D0" opacity=".35"/>`;
+  if(t==="trail")d+=`<path d="M10 0 Q16 14 12 24 T18 40" stroke="#6A8484" stroke-width="5" fill="none" opacity=".35"/>`;
+  if(t==="scorch")d+=`<ellipse cx="20" cy="26" rx="12" ry="6" fill="#1A1A18" opacity=".45"/><ellipse cx="20" cy="26" rx="6" ry="3" fill="#0E0E0C" opacity=".4"/>`;
+  if(t==="frost")d+=`<path d="M20 20 l0 -8 M20 20 l7 -4 M20 20 l7 4 M20 20 l0 8 M20 20 l-7 4 M20 20 l-7 -4" stroke="#CFEAF4" stroke-width=".8" opacity=".6"/>`;
+  if(t==="candles")d+=`<rect x="12" y="26" width="2.4" height="5" fill="#EFE6C8"/><rect x="18" y="28" width="2.4" height="3.4" fill="#EFE6C8"/><rect x="24" y="25" width="2.4" height="6" fill="#EFE6C8"/><ellipse cx="19" cy="31.6" rx="9" ry="1.6" fill="#EFE6C8" opacity=".4"/>`;
+  if(t==="blanket")d+=`<path d="M6 30 Q14 22 24 28 T36 30 L34 36 L8 36 Z" fill="#5A6A7A" opacity=".85" stroke="#2A3440" stroke-width=".6"/>`;
+  if(t==="ash")d+=`<ellipse cx="20" cy="34" rx="10" ry="2.4" fill="#2A2624" opacity=".4"/>`;
+  const si=BM_STEPS.findIndex(([a,b])=>a===x&&b===y);if(si>=0)d+=`<g fill="#2A241C" opacity=".32"><ellipse cx="${si%2?15:25}" cy="14" rx="2.4" ry="3.6"/><ellipse cx="${si%2?25:15}" cy="30" rx="2.4" ry="3.6"/></g>`;
+  if(bmRoom(x,y)==="lab"&&!t&&si<0&&(x*5+y*3)%7===0)d+=`<ellipse cx="${14+(x%3)*6}" cy="${18+(y%3)*6}" rx="9" ry="5" fill="#4A463C" opacity=".22"/>`;
+  return d?`<svg viewBox="0 0 40 40" aria-hidden="true" style="position:absolute;inset:0;width:100%;height:100%">${d}</svg>`:""}
+{const _tl=tileLook;tileLook=function(c,x,y,seed,M){if(EXP.zone.cls!=="z-basement")return _tl(c,x,y,seed,M);
+  if(c==="#"||c==="~")return _tl(c,x,y,seed,M);const fl=bmFloor(x,y,M),P=BM[c];
+  if(P)return[`f ${P.tall?"tl":"pr"} ${fl}`,PS(typeof P.svg==="function"?P.svg(x,y,M,seed):P.svg)];
+  if(c==="c")return[`f pr ${fl}`,PS(CRATE+`<path d="M7 11 Q13 7 19 11" stroke="#E8E4D8" stroke-width=".5" fill="none" opacity=".6"/>`)];
+  if(c==="K"||c==="S")return[`f pr ${fl}`,PS(BPROPS[c])];
+  return[`f ${fl}`,bmDecal(x,y,M)]}}
+
+/* the basement gets its own remix: a slow music-box version of the theme over a heartbeat and a ticking clock, two in the morning */
+TRACKS["explore_z-basement"]={base:"explore",bpm:74,lead:{type:"sine",vol:.21,oct:1,stac:true,half:true},parts:[{k:"pad",type:"sine",vol:.05,oct:3},{k:"broken",type:"triangle",vol:.045,oct:5}],bass:{s:"half",type:"sine",vol:.2},drum:"k . k . h . . .",fill:"k . k . h . c .",chime:true};
+/* and the Slag Works gets its own: a swung, clanking foundry shuffle */
+TRACKS["explore_z-slag"]={base:"explore",bpm:118,swing:.18,lead:{type:"square",vol:.075,stac:true},parts:[{k:"chug",type:"sawtooth",vol:.032,oct:2},{k:"stab",type:"pulse",vol:.028,oct:4}],bass:{s:"walk",vol:.28},drum:"k . s k k . s .",fill:"k s k s c . c c"};
+
+
+/* =============== TOOLS CAN ALWAYS BE EARNED: each tool favour has its own state, so no page progress, old save or odd order can ever lock one out =============== */
+const TQ=k=>store.get("wta_tq_"+k,0),setTQ=(k,v)=>store.set("wta_tq_"+k,v);
+/* pick: Ole's favour runs whenever you haven't got it */
+QFIND.pick.when=()=>!hasTool("pick")&&(PQ("glacier")===2||TQ("pick")===1);
+QFIND.pick.done=()=>{giveTool("pick");if(PQ("glacier")===2)setPQ("glacier",3);setTQ("pick",2);say0("You found the INSTITUTE ICE PICK at the bottom of the pool. Cracked rock and ice blocks can be broken now.")};
+/* lamp: Dray's favour runs whenever you haven't got one */
+QFIND.draylamp.when=()=>!hasTool("lamp")&&(PQ("mine")===1||TQ("lamp")===1);
+QFIND.draylamp.done=()=>{if(PQ("mine")===1)setPQ("mine",2);else setTQ("lamp",2);say0("You found Foreman Dray's brass lamp! Take it back to him at the mine entrance.")};
+{const _ph=pageHooks;pageHooks=function(z){_ph(z);const N=n=>(EXP.npcs||[]).find(p=>p.n===n);
+  if(z==="z-mine"){const d=N("Foreman Dray");if(d){const old=d.quest;d.quest=()=>{const p=PQ("mine");
+    if(!hasTool("lamp")&&p>=3){const t=TQ("lamp");
+      if(t===0){talk(d.n,["You've lost your pit lamp? Don't look at me like that. Everyone loses a lamp once.","Tell you what. My dad's brass lamp went missing again along the top tunnel, east end. Some joker keeps moving it.","Fetch it back and I'll find you another pit lamp."],()=>{setTQ("lamp",1);questSeed();say0("Find Foreman Dray's brass lamp at the east end of the top tunnel.")});return}
+      if(t===1){talk(d.n,["Top tunnel, east end. Brass. Sulking."]);return}
+      talk(d.n,["That's the one. Here's a pit lamp, full of oil. Try to hang on to this one."],()=>{giveTool("lamp");setTQ("lamp",3);say0("You got the MINER'S LAMP. Unlit tunnels are walkable now.")});return}
+    return old?old():false}}}
+  if(z==="z-glacier"){const o=N("Ole");if(o){const old=o.quest;o.quest=()=>{const p=PQ("glacier");
+    if(!hasTool("pick")&&p>=3){const t=TQ("pick");
+      if(t===1){talk(o.n,["Meltwater pool, west side. It went in again. Don't ask how. Fish."]);return}
+      talk(o.n,["The ice pick? I borrowed it back for my fishing holes. And dropped it through the ice. Again.","It'll be in the meltwater pool on the west side, same as last time. You'll want waders."],()=>{setTQ("pick",1);questSeed();say0("Find the Institute ice pick in Frostbite Cavern's meltwater pool, on the west side.")});return}
+    return old?old():false}}}
+  if(z==="z-scrap"){const K=(EXP.npcs||[]).find(p=>p.keeper);if(K){const old=K.quest;K.quest=()=>{if(PQ("bolt")>=2&&!hasTool("crowbar")){talk(K.n,["You lost Maureen? Poor Maureen.","Fine. Here's her cousin. Don't tell Doreen.","(You got the CROWBAR. Nailed-shut crates can be opened now.)"],()=>{giveTool("crowbar");say0("You got the CROWBAR.")});return}return old?old():false}}}}}
+/* waders: if the harbour crate was ever opened without them landing in your bag, a spare pair hangs in the office */
+{const _wp=worldPlace;worldPlace=function(){_wp();const z=EXP.zone;if(!z||z.special||z.cls!=="z-wreck"||hasTool("boots")||tileAt(6,10)==="c")return;
+  storyObj([4,12],`<svg viewBox="0 0 40 40"><path d="M20 4 V9" stroke="#6A6254" stroke-width="1.6"/><path d="M13 9 H27" stroke="#4A3A28" stroke-width="2"/><path d="M14 10 V28 Q14 33 19 33 H21 V10 Z M22 10 V28 Q22 33 27 33 H29 V10 Z" fill="#3E5A3A" stroke="#1E2E1C" stroke-width="1"/><path d="M14 16 H21 M22 16 H29" stroke="#2E4A2A"/></svg>`,
+    ()=>talk("",["A spare pair of waders hangs on a peg by the door, with a label in capitals: 'SPARE. FOR WHOEVER BROKE MY CRATE. — Y.F.'","(You got the WADING BOOTS. Shallow water is walkable now.)"],()=>{giveTool("boots");EXP.objs=EXP.objs.filter(o=>{if(o.story&&o.x===4&&o.y===12){o.el.remove();return false}return true})}),"waders")}}
+/* the journal shows any tool favour that's running */
+{const _oj=openJournal;openJournal=function(){_oj();const m=$("#journal");if(!m||m.hidden)return;const list=m.querySelector(".bag-list"),L=[];
+  if(TQ("lamp")===1)L.push(["Favour: Foreman Dray","Find Foreman Dray's brass lamp at the east end of Rustvein Mine's top tunnel."]);if(TQ("lamp")===2)L.push(["Favour: Foreman Dray","Take the brass lamp back to Foreman Dray for a new pit lamp."]);
+  if(TQ("pick")===1)L.push(["Favour: Ole","Find the Institute ice pick in Frostbite Cavern's meltwater pool, on the west side. You'll need waders."]);
+  if(!L.length)return;const anchor=list.querySelector(".bag-item.side")||list.querySelector(".bag-h:not(.obj-h)");L.forEach(([t,x])=>{const d=document.createElement("div");d.className="bag-item clue side";d.innerHTML=`<b>${t}</b><p>${x}</p>`;list.insertBefore(d,anchor)});
+  if(!list.querySelector(".sq-h")){const h=document.createElement("h5");h.className="bag-h sq-h";h.textContent="SIDE QUESTS";list.insertBefore(h,list.querySelector(".bag-item.side"))}}}
+
+
+/* =============== THE FOUNDER'S QUEST, SLOWED DOWN: a deposit box at the vault, the control rods, registering sample one with him beside you, and handing everything back =============== */
+const FIN=()=>store.get("wta_fin",0),setFIN=v=>{store.set("wta_fin",v);store.set("wta_qf_seenJ",0);journalDot()};
+/* ---- story fights: a named alloy, forced, with a callback either way ---- */
+{const _pa=pickAlloy;pickAlloy=function(kind,used){if(EXP.storyAlloy){const a=ALLOYS.find(x=>x.name===EXP.storyAlloy.name);if(a)return a}return _pa(kind,used)}}
+{const _sr=startRound;startRound=function(){const SA=EXP.storyAlloy,m=S.mode;if(SA)S.mode="recipe";_sr();S.mode=m;if(SA&&S.r){S.r.story=SA;EXP.storyAlloy=null;if(SA.rods&&typeof TB!=="undefined"&&TB.on){TB.rods=SA.rods;bossHud()}if(SA.intro)setTimeout(()=>say(SA.intro),3400)}}}
+{const _w=win;win=function(){const r=S.r;_w();if(r&&r.story&&r.story.onWin){const f=r.story.onWin;r.story.onWin=null;f()}}}
+{const _l=lose;lose=function(ran){const r=S.r;_l(ran);if(r&&r.story&&r.story.onLose){const f=r.story.onLose;r.story.onLose=null;f()}}}
+{const _en=encounter;encounter=function(){if(EXP.storyAlloy&&S.phase==="explore"){EXP.busy=false;EXP.quiet=0;if(EXP.zone&&EXP.zone.special)EXP.stash={zone:EXP.zone,x:EXP.x,y:EXP.y,face:EXP.face,dir:EXP.dir,items:[],hidden:[],grunts:[]}}_en()}}
+function storyFight(name,o){EXP.storyAlloy={name,...o};encounter()}
+
+/* ---- stage 9: Vell sends you to the vault for the second half ---- */
+{const _qo=questObjective;questObjective=function(){const s=Q.s;
+  if(s===9&&Q.flag("vellBox"))return"Chronicler Vell hid the second half of the founder's letter in his deposit box: box 001, in the Gilded Vault's west hall. It only opens for his ring.";
+  if(s===15){const f=FIN(),tr=[1,2,3].filter(i=>Q.flag("ftrace"+i)).length;return f<=1?"Dr. Marlow needs the crate of control rods that Quartermaster Hobbs keeps signed out to 'nobody'. Fetch it, then meet him in the founder's basement.":f===2&&!Q.flag("follyHunt")?"Take the control rods down to the founder's basement. Dr. Marlow is waiting by the cell.":f===2&&tr<3?`The thing in the cell was a husk. The real sample one crept out years ago, and it's somewhere in the Institute. Follow its traces: your dowsing meter will twitch near them (${tr}/3).`:f===2?"Sample one has settled somewhere in the Institute's rubble. Walk the rubble with the rods ready, and register it when it shows itself.":f===3?"Sample one is registered at last. Bring everything you collected about the founder up to Dr. Marlow in the hidden study.":"You know who the founder is. Everything you found is back with its rightful owner."}
+  return _qo()}}
+{const _qh=questHooks;questHooks=function(z){_qh(z);if(z!=="z-vault")return;const K=(EXP.npcs||[]).find(p=>p.keeper);if(!K)return;const old=K.quest;
+  K.quest=()=>{if(Q.s===9&&Q.flag("vellBox")){talk(K.n,["Box 001, west hall. The ring opens it. Go on, before I lose my nerve and go and read it myself."]);return}return old?old():false}}}
+const DEPOSIT_SVG=`<svg viewBox="0 0 40 40"><rect x="3" y="2" width="34" height="33" fill="#8A6A2A" stroke="#3A2A10" stroke-width="1.3"/>${[0,1,2,3].map(r=>[0,1,2].map(c=>`<rect x="${5+c*11}" y="${4+r*8}" width="9" height="6.4" fill="#B8923A" stroke="#4A3612" stroke-width=".7"/><circle cx="${9.5+c*11}" cy="${7.2+r*8}" r=".9" fill="#3A2A10"/>`).join("")).join("")}<text x="9.5" y="9" text-anchor="middle" font-size="2.6" font-family="Georgia,serif" fill="#3A2A10">001</text>`;
+{const _wp=worldPlace;worldPlace=function(){_wp();const z=EXP.zone;if(!z||z.special||z.cls!=="z-vault")return;
+  storyObj([2,21],DEPOSIT_SVG+"</svg>",()=>{
+    if(Q.s===9&&Q.flag("vellBox")){talk("",["A wall of brass deposit boxes, green at the hinges. Box 001 is in the top corner, and it has no keyhole. Just a small round recess, the size of a signet ring.","You press the ring into it. Something inside turns over with a heavy, patient clunk, and the little door swings open.","Inside: half a letter, folded in four. And jammed in the hinge, a scrap of orange card in pencil:","'Box 001. Tried it. Couldn't. Will try again. K.V.'","(You took the second half of the founder's letter. The orange card, you keep as well.)"],()=>{Q.s=10;Q.set("half2");Q.set("kvCard");say0("The second half of the letter is in your JOURNAL.")});return}
+    talk("",["A wall of brass deposit boxes, green at the hinges. Box 001, in the top corner, has no keyhole at all. Just a small round recess."])},"deposit")}}
+
+/* ---- after the reveal: the rods, the cell, the handover ---- */
+const ROD_SVG=`<svg viewBox="0 0 40 40"><rect x="6" y="20" width="28" height="14" fill="#5A6A5A" stroke="#1E2A1E" stroke-width="1.2"/>${[10,16,22,28].map(x=>`<rect x="${x-1.4}" y="8" width="2.8" height="14" fill="#9AA6B0" stroke="#3A444C" stroke-width=".6"/><rect x="${x-1.4}" y="8" width="2.8" height="3" fill="#E0B820"/>`).join("")}<text x="20" y="30" text-anchor="middle" font-size="4" font-family="monospace" fill="#E8E4D8">NOBODY</text></svg>`;
+{const h=AMBIENT["z-quill"].find(p=>p.n==="Quartermaster Hobbs");if(h){const old=h.quest;h.quest=function(){
+  if(Q.s===15&&FIN()<=1){talk(this.n,["Control rods? The crate signed out to 'nobody'?","1964. Signed out to nobody, by nobody, in very neat brown ink. Nobody's been to collect them in sixty years.","I've polished them every Thursday. Just in case nobody turned up.","...It's him, isn't it. Nobody. Dr. Marlow.","Don't answer that. Here. Sign. Mind your back, they're heavy."],()=>{setFIN(2);say0("You got the crate of CONTROL RODS. Dr. Marlow is waiting in the founder's basement.")});return true}
+  return old?old.call(this):false}}}
+{const _ma=marlowAway;marlowAway=function(){return _ma()||(Q.s===15&&(FIN()===2||FIN()===3))}}
+function finMarlow(){return{n:"Dr. Marlow",look:MLOOK(),talks:[["..."]]}}
+{const _wp=worldPlace;worldPlace=function(){_wp();const z=EXP.zone;if(!z)return;const s=Q.s,f=FIN();
+  if(z.special==="study"&&s>=15){EXP.npcs.filter(p=>p.n==="Dr. Marlow").forEach(p=>{p.el&&p.el.remove()});EXP.npcs=EXP.npcs.filter(p=>p.n!=="Dr. Marlow");
+    if(f===3){const m=storyNPC(finMarlow(),[9,5]);m.quest=()=>playScene("handover",finishFounder)}}
+  if(z===BASEMENT&&s===15&&f===2&&!Q.flag("follyHunt")){const m=storyNPC(finMarlow(),[27,5]);m.quest=()=>playScene("cellbreak",startHunt)}
+  if(z.cls==="z-quill"&&!z.special&&s===15&&f===2&&Q.flag("follyHunt")){const all3=[1,2,3].every(i=>Q.flag("ftrace"+i)),m=storyNPC(finMarlow(),all3?behindPlayer():nearWalk(28,3));if(all3)EXP.follower=m;m.quest=()=>{const tr=[1,2,3].filter(i=>Q.flag("ftrace"+i)).length;
+      talk(m.n,tr<3?["I'll stay here by the seal with the rods. If it comes up into the hall, I want to be standing between it and the door.","Follow the dowsing meter. It leaves a trace wherever it settles: heat, a redacted page, a stain. "+(tr?`You've found ${tr}. Keep going.`:"Start in the old lab. It always liked the old lab.")]:["It's here. In the rubble, in this hall. I can feel it the way you feel weather coming.","Walk the rubble. When it shows itself, register it. I'm right behind you."]);return true}}
+  if(z.cls==="z-quill"&&!z.special&&s===15&&f===3&&!csSeen("follyAfter")){storyNPC(finMarlow(),nearWalk(28,3));setTimeout(()=>{if(EXP.zone===z&&S.phase==="explore"&&!CS.on&&!DLG.open)playScene("follyAfter")},800)}}}
+/* the office Marlow at the start of the finale (old saves that reached the end before this existed) */
+{const _mo=marlowOffice;marlowOffice=function(){const m=_mo(),old=m.quest;m.quest=()=>{if(Q.s===15&&FIN()===0){talk(m.n,["Hello again. Before we go back to field orders, there's one more thing. Something I have never once managed on my own.","Quartermaster Hobbs keeps a crate of control rods signed out to 'nobody'. Fetch it for me, and meet me in the basement. Tonight."],()=>{setFIN(1);say0("New objective in your JOURNAL: fetch the control rods from Quartermaster Hobbs.")});return}
+  if(Q.s===15&&FIN()===1){talk(m.n,["The control rods. Hobbs. 'Nobody'. Then the basement. I'll go down ahead of you."]);return}old()};return m}}
+/* the cell holds a husk: the real sample one crept out through the crack years ago, and is somewhere in the building */
+function startHunt(){Q.set("follyHunt");store.set("wta_qf_seenJ",0);journalDot();say0("New objective in your JOURNAL: find sample one somewhere in the Institute. Follow its traces.")}
+const FTRACE={1:["A ring scorched into the old lab's floorboards, right beside the crucible. It's the size of a saucer, and still warm.","The dust around it has been pushed outward in a perfect circle, as if something sat here a long time, breathing."],
+ 2:["The bottom drawer of a records cabinet has been eaten away from the inside, into a lacy shell of rust.","The files inside are dry and whole. But every line on every page has a thick black bar across it: ▇▇▇. Redacted."],
+ 3:["The staff lounge kettle is warm, though nobody has boiled it. The tea left in the pot has gone a faint, glowing blue.","A thin dark line runs from under the kettle, across the floor, and out under the door."]};
+function ftraceFound(i){const lines=FTRACE[i].slice();Q.set("ftrace"+i);const n=[1,2,3].filter(k=>Q.flag("ftrace"+k)).length;
+  if(n<3)lines.push(`It was here. (Trace ${n} of 3.)`);else lines.push("That's the last of them. Put together, every trace points the same way: out of the rooms and towards the hall.","It's gone to ground in the hall. Wherever there's rubble, it will be lying in it. (Trace 3 of 3.)");
+  talk("",lines,()=>say0(n<3?`Trace found (${n} of 3). Keep following the dowsing meter.`:"All three traces found. Sample one is hiding in the Institute hall's rubble. Walk it with the rods ready."))}
+[1,2,3].forEach(i=>{QFIND["folly"+i]={z:"z-quill",when:()=>Q.s===15&&FIN()===2&&Q.flag("follyHunt")&&!Q.flag("ftrace"+i),done:()=>ftraceFound(i)}});
+Object.assign(SPOTS["z-quill"],{folly1:[44,20],folly2:[10,12],folly3:[48,29]});
+function follyFight(){storyFight("Founder's Folly",{rods:5,intro:"There it is: sample one, out in the open for the first time in sixty years. You have five control rods from Hobbs's crate. Register it!",
+  onWin:()=>{setFIN(3);setTimeout(()=>say("Founder's Folly is REGISTERED. The real sample one, at last. Dr. Marlow is waiting in the hall."),5600)},
+  onLose:()=>setTimeout(()=>say("It slipped back into the rubble. It's still somewhere in the hall. Keep walking it."),3000)})}
+/* it's lying in the hall's rubble: the next thing that moves in there is sample one */
+{const _en=encounter;encounter=function(){if(!EXP.storyAlloy&&!EXP.duel&&!EXP.trial&&!EXP.questAlloy&&S.phase==="explore"&&EXP.zone&&EXP.zone.cls==="z-quill"&&!EXP.zone.special&&Q.s===15&&FIN()===2&&[1,2,3].every(i=>Q.flag("ftrace"+i))){follyFight();return}_en()}}
+SCENES.cellbreak=async()=>{const m=EXP.npcs.find(p=>p.n==="Dr. Marlow");if(!m)return;csAdopt("m",m);csCamTo(25,5);
+  await csSay("Dr. Marlow",["You brought them. Good. Hobbs polishes them, you know. Every Thursday.","Sixty years I've kept it in there. Kept it quiet. Talked it down at two in the morning, like a child with a fever.","But it has no number. No page in any book. And nothing without a name ever stays where you put it.","I can't register it. I tried, the very first night. It knew me. Every test I ran on it, it ran one straight back on me.","You can. Give it a number, and then it's ours to keep, and not the other way round."]);
+  await csSay("",["(He sets the crate of rods down at your feet and puts his hand on the latch of the cell.)"]);
+  await csSay("Dr. Marlow",["Ready?"]);csFace("m",1);await csWait(500);csTint(1);await csEmote("m","!");
+  await csSay("",["(The latch lifts. You both brace.)","(Nothing climbs out.)","(On the lead tray inside sits a small grey lump with a faint blue sheen to it. Your dowsing meter doesn't so much as twitch. The rods in the crate stay cold.)"]);
+  await csEmote("m","?");
+  await csSay("Dr. Marlow",["...That's not it.","(He picks it up bare-handed, which he would never do, and turns it over. A flake of blue comes away under his thumb.)","It's a husk. A shell. It's what's left when the thing inside has grown out of it and gone.","The crack in the door. I thought it was leaking. It wasn't leaking. It was leaving.","Sixty years. Every night at two. I've been sitting with an empty coat."]);
+  await csWait(700);
+  await csSay("Dr. Marlow",["Every stray reading anyone ever took in this building. Every redacted page in the records room. Every kettle that boiled itself in the lounge. We all thought the Institute was just old.","It's out. It's somewhere in the building. It has been for years.","Find it. It leaves traces wherever it settles: heat, ruined paper, stains. Your dowsing meter will know them.","I'll be up in the hall, by the seal, with the rods. When you find it, I want to be close."]);
+  csTint(0);await csWalk("m",[16,18],240,{follow:1});m.el.style.opacity=0;await csWait(600);m.el.remove();EXP.npcs=EXP.npcs.filter(p=>p!==m);CS.adopted=CS.adopted.filter(a=>a.p!==m)};
+SCENES.follyAfter=async()=>{const m=EXP.npcs.find(p=>p.n==="Dr. Marlow");if(!m)return;csAdopt("m",m);csCamTo((m.x+EXP.x)/2,(m.y+EXP.y)/2);
+  const beside=nearWalk(EXP.x,EXP.y,(x,y)=>Math.abs(x-EXP.x)+Math.abs(y-EXP.y)===1);await csWalk("m",beside,260,{follow:1});csFace("m",Math.sign(EXP.x-m.x)||1);
+  await csSay("Dr. Marlow",["Number one. In the book at last. The real one, this time.","Sixty years it's been living in my Institute, eating my filing and boiling my kettles, and it took a recruit and a crate of polished rods to give it a name.","Come up to the study when you're ready. Bring everything. Every scrap you collected about me."]);
+  await csWalk("m",[31,1],240,{follow:1});m.el.style.opacity=0;await csWait(600);m.el.remove();EXP.npcs=EXP.npcs.filter(p=>p!==m);CS.adopted=CS.adopted.filter(a=>a.p!==m)};
+SCENES.handover=async()=>{const m=EXP.npcs.find(p=>p.n==="Dr. Marlow");if(!m)return;csAdopt("m",m);csCamTo(8,4);csFace("m",Math.sign(EXP.x-m.x)||1);
+  const has=f=>Q.flag(f),pages=pagesGot().length;
+  await csSay("Dr. Marlow",["You brought it all? Lay it out on the desk, then. Let's see what sixty years looks like on one desk."]);
+  await csSay("",["(You set down the founder's signet ring, and the two halves of his letter, side by side. They still fit along the tear.)"]);
+  await csSay("Dr. Marlow",["I wrote that letter in one night and regretted it for sixty years. The second half especially."]);
+  if(has("kvCard"))await csSay("",["(The scrap of orange card from the deposit box. 'Tried it. Couldn't. Will try again. K.V.')"]),await csSay("Dr. Marlow",["...Keep an eye out for those initials. I will too."]);
+  await csSay("",[`(The ${pages>=5?"five":"loose"} notebook pages. The Sealbreaker recipe. The diary, with Vell's translation pinned to the front.)`]);
+  await csSay("Dr. Marlow",["My handwriting was terrible even then. Vell deserves a medal. I'll see that she gets one."]);
+  await csSay("",["(Then everything else. Nettie's lamp book. The salvage manifest from Fenn's sea chest. The night books. The opening-day reel. The staff file from the records room. The photograph of a young man and a girl with a book.)"]);
+  await csSay("Dr. Marlow",["You went everywhere. Nettie's lamp room. Fenn's grandmother's chest. You read my night book. Nobody reads the night book."]);
+  await csSay("",["(Last of all, the old lab coat from the basement, folded. Badge 001 is still in the pocket.)"]);
+  await csSay("",["(He holds it for a long moment without saying anything. Then he hangs it on the hook behind the door, beside the coat he wears now. They are the same cut, sixty years apart.)"]);
+  await csSay("Dr. Marlow",["I wondered where that had gone.","These are mine. They always were. Thank you for carrying them home."]);
+  await csSay("",["(He gathers everything into the desk drawer and turns the key. The study is very quiet.)"]);
+  await csSay("Dr. Marlow",["Right. The founder's business is finished, and the field's still out there.","Come and see me in the office tomorrow. I have a list. I always have a list."]);
+  await csFade(1);await csCard("THE FOUNDER'S QUEST","Complete");await csFade(0,600)};
+function finishFounder(){setFIN(4);if(Q.s!==15)store.set("wta_q",15);store.set("wta_fin_done",1);giveItem("charm");giveItem("survey");sfx("fanfare");say0("The founder's quest is complete. You got a LUCKY CHARM and a SURVEY MAP.");const m=EXP.npcs.find(p=>p.n==="Dr. Marlow");if(m){m.el.remove();EXP.npcs=EXP.npcs.filter(p=>p!==m)}}
+/* season two waits until everything has been handed back */
+{const _fc=foCur;foCur=function(){const o=_fc();if(o&&o.season===2&&FIN()<4)return null;return o}}
+{const _fn=foNext;foNext=function(){const o=_fn();if(o&&o.season===2&&FIN()<4)return null;return o}}
+
+/* when he says he's right behind you, he is: he walks one step behind you around the hall */
+{const _se=startExplore;startExplore=function(){EXP.follower=null;_se()}}
+{const _st=step;step=function(dx,dy){const px=EXP.x,py=EXP.y,r=_st(dx,dy),F=EXP.follower;
+  if(F&&EXP.npcs.includes(F)&&(EXP.x!==px||EXP.y!==py)&&S.phase==="explore"){const fx=F.x,fy=F.y;if(Math.abs(fx-EXP.x)+Math.abs(fy-EXP.y)>1){F.x=px;F.y=py;F.el.style.left=(px/EXP.W*100)+"%";F.el.style.top=(py/EXP.H*100)+"%";if(px!==fx)F.el.style.setProperty("--face",px>fx?1:-1)}nearMarks()}
+  return r}}
+/* and if a new trace finishes the set while you're in the hall, he comes over */
+{const _ft=ftraceFound;ftraceFound=function(i){_ft(i);if([1,2,3].every(k=>Q.flag("ftrace"+k))&&EXP.zone.cls==="z-quill"&&!EXP.zone.special){const m=EXP.npcs.find(p=>p.n==="Dr. Marlow");if(m){const to=behindPlayer();m.x=to[0];m.y=to[1];m.el.style.left=(to[0]/EXP.W*100)+"%";m.el.style.top=(to[1]/EXP.H*100)+"%";EXP.follower=m}}}}
+
+function behindPlayer(){const d=EXP.dir||[0,-1],c=[[-d[0],-d[1]],[0,1],[-1,0],[1,0],[0,-1]];for(const[dx,dy]of c){const x=EXP.x+dx,y=EXP.y+dy;if((dx||dy)&&canWalk(tileAt(x,y))&&!thingsAt(x,y).length)return[x,y]}return nearWalk(EXP.x,EXP.y)}
+
+/* someone walking at your heels doesn't need a speech bubble over their head the whole time */
+{const _nm=nearMarks;nearMarks=function(){_nm();const F=EXP.follower;if(F&&F.el){const t=F.el.querySelector(".talkmark");if(t)t.style.display="none"}}}
+
+/* the founder's things travel in your bag until the handover, then they're gone: they belong to him */
+{const _ki=keyItems;keyItems=function(){const L=_ki(),f=FIN();if(Q.s!==15||f>=4)return L;
+  const add=[];if(Q.flag("ring"))add.push(["FOUNDER'S SIGNET RING","Heavy, stamped with a Q. It isn't yours to keep."]);
+  if(Q.flag("half2"))add.push(["THE FOUNDER'S LETTER","Both halves, folded together along the tear."]);
+  if(Q.flag("diary"))add.push(["THE STUDY DIARY","With Chronicler Vell's translation pinned to the front."]);
+  if(Q.flag("kvCard"))add.push(["ORANGE CARD","'Box 001. Tried it. Couldn't. Will try again. K.V.'"]);
+  if(f>=2)add.push(["CRATE OF CONTROL RODS","Signed out to 'nobody', 1964. Polished every Thursday."]);
+  return[...L,...add]}}
+
+/* self-heal: if the handover ever played but the save didn't record it (closed mid-scene, an older version), finish it now */
+{if((csSeen("handover")||store.get("wta_fin_done",0))&&FIN()<4){store.set("wta_fin",4);if(!store.get("wta_fin_done",0)){store.set("wta_fin_done",1);giveItem("charm");giveItem("survey")}if(store.get("wta_q",0)<15)store.set("wta_q",15)}
+ if(FIN()>=4&&store.get("wta_q",0)!==15)store.set("wta_q",15)}
+/* the handover scene can never strand the save: whatever happens inside it, finishing still runs */
+{const _ps=playScene;playScene=async function(id,after){if(id!=="handover")return _ps(id,after);let done=false;const fin=()=>{if(!done){done=true;after&&after()}};try{await _ps(id,fin)}finally{fin()}}}
+
+
+/* =============== THE SLAG SYNDICATE, PROPERLY: people with names and habits, a home of their own (the Slag Works), a threat they poured themselves, and the night Dr. Marlow and the deputy go in after their Kilnmaster =============== */
+
+/* ---- every grunt is somebody ---- */
+const SLAG_PERSONA={
+ "Grunt Rikket":{intro:["Oh! Um. Halt! This rubble is Slag Syndicate territory. I think. It's my first week.","My mum thinks I work at a bakery. Please don't tell her."],defeat:"I'm going to have to tell my foreman. He's going to sigh at me. He's got a very long sigh.",win:"I did it! I actually fenced one! Wait till I tell... no. I can't tell my mum."},
+ "Smelter Vosk":{intro:["Hold it. Union rules: a challenge before tea, never after. And you're cutting into my tea.","Thirty years I've been pouring metal, Institute. Let's see what you've got."],defeat:"Fair's fair. Union rules. I'll still be lodging a complaint, mind.",win:"Right. Back to my tea. That one's going in the pour."},
+ "Grunt Pella":{intro:["Everything's prettier as a puddle. Did you know that?","You lot name things so you can keep them. We melt them so they can be anything at all."],defeat:"...That was a lovely name. Still. A puddle would have been lovelier.",win:"Into the kiln with you, little thing. You'll be a puddle by teatime."},
+ "Grunt Durn":{intro:["Seventeen. That's how many samples I've fenced this month. It's chalked on my cap. Look.","You're about to be eighteen."],defeat:"That doesn't count. I'm not rubbing it off. It does not count.",win:"EIGHTEEN! Who's got chalk? Somebody give me some chalk!"},
+ "Smelter Mabry":{intro:["Market's up on anything green this week, and that sample's looking very green to me.","Name it before I sell it. Nothing personal. Business is business."],defeat:"Bad for business, you are. Very bad for business.",win:"Sold. Pleasure doing business with you. Well. Pleasure for me."},
+ "Grunt Skoll":{intro:["HOT IRON!","...You're meant to say 'cold hands'. Oh. You're not one of us. Right then. Duel!"],defeat:"Nobody ever says 'cold hands' back. It's lonely, being the only one who says it.",win:"Hot iron! ...Cold hands. Fine. I'll say both."},
+ "Grunt Tamsk":{intro:["I sat the Institute entrance exam. Twice. They said I 'rushed my scans'.","So name THIS, Institute. Go on. Rush it."],defeat:"...They were right about the scans. Don't tell anyone.",win:"See? Who's rushing now? Write that in your little Alloydex."},
+ "Grunt Brack":{intro:["Sorry. Sorry about this. I've got to stop you. It's the job.","I'll go slow and you go fast. That's fair, isn't it?"],defeat:"Oh, well done! Sorry. I mean: curses. Well done, though.",win:"Sorry! Sorry. I'll look after it until it's melted. Promise."}};
+SLAG_NAMES.length=0;SLAG_NAMES.push(...Object.keys(SLAG_PERSONA));const SLAG_DEF0=[...SLAG_DEFEAT],SLAG_WIN0=[...SLAG_WIN];
+const GRIST_P={intro:["Foreman Grist. Moor Division. You've been embarrassing my grunts, and the Kilnmaster does not like being embarrassed.","She'll hear about this either way. Let's make it a story where I win."],defeat:"...She's going to make me sort the red crate for a month.",win:"Ha! Into the pour. She'll want to hear about this one."};
+{const _sc=slagChallenge;slagChallenge=function(g){if(g.done)return;const P=g.boss&&!g.page?GRIST_P:SLAG_PERSONA[g.n];
+  if(P){SLAG_DEFEAT.length=0;SLAG_DEFEAT.push(P.defeat);SLAG_WIN.length=0;SLAG_WIN.push(P.win);
+    if(!g.page){g.done=true;talk(g.n,[...P.intro,Math.random()<.5?SLAG_MOTTO:"I've got a sample. Name it and find what's in it before I fence it. Deal?"],()=>{EXP.duel={n:g.n,boss:g.boss,page:g.page,T:g.boss?75:95};encounter()});return}}
+  if(!P){SLAG_DEFEAT.length=0;SLAG_DEFEAT.push(...SLAG_DEF0);SLAG_WIN.length=0;SLAG_WIN.push(...SLAG_WIN0)}_sc(g)}}
+
+/* ---- the Slag Works ---- */
+MAPS["z-slag"]=["########################################", "#b.b.b.b.bn#p..f..GGGG..f..p#r:r:::::vr#", "#..........#......GGGG......#::::::::::#", "#..........#.m....GGGG....m.#:::::qq:::#", "#..tt.....u........~~........::::::::::#", "#..........#..,,...~~...,,..#H:::::::::#", "#b........X#.,,,...~~...,,,.#:::::::::t#", "#..........#..,....~~....,..#::::::::::#", "#b.b....XXX#X......~~......X#r:::::::XX#", "#####.##########.##~~##.#########.######", "#g........g...,,...~~...,,..#.........X#", "#..tt..tt....,,,,..~~..,,,,.#sssssss...#", "#...........================..........X#", "#..tt..tt....,,,...~~...,,.............#", "#.............,,,..~~..,,,..#XX.....XX.#", "#g........g....,...~~...,...#X.......X.#", "#..................~~.......#..........#", "######.#######..###~~####..#######.#####", "#..,,,..hh..,,,.........,,,..hh..,,,...#", "#.,,,,,.hh.,,,,...~~...,,,,..hh.,,,,,..#", "#.,,,,......,,....~~....,,......,,,,...#", "#..,,..l..........==........l....,,....#", "#.........X.......==....X..............#", "#.,,..............==.............,,,...#", "#.,,,.............=P............,,,,...#", "########################################"];
+SPOTS["z-slag"]={gate:[21,23],varrowOffice:[34,2],ledger:[36,3],kiln:[22,3],board:[10,1],sal:[9,4],ingrid:[5,12],pomeroy:[32,10],brack:[16,15]};
+HAB["z-slag"]={name:"The Slag Works",col:"#C8641E"};
+const SLAG_ZONE={name:"THE SLAG WORKS",sub:"An old smelting works sunk in a quarry pit under the moor. Something big is always cooking.",cls:"z-slag",map:MAPS["z-slag"].slice()};
+if(TRACKS["explore_z-volcano"]&&!TRACKS["explore_z-slag"])TRACKS["explore_z-slag"]=TRACKS["explore_z-volcano"];
+const slagOpen=()=>Q.flag("slagMap");
+function slagZoneOn(){if(slagOpen()&&!ZONES.includes(SLAG_ZONE))ZONES.push(SLAG_ZONE)}slagZoneOn();
+{const _rs=rubbleSVG;rubbleSVG=function(z,seed){return _rs(z==="z-slag"?"z-volcano":z,seed)}}
+const SLP={
+ b:`<rect x="4" y="12" width="32" height="4" fill="#4A4A50" stroke="#1A1A1E"/><rect x="4" y="24" width="32" height="4" fill="#4A4A50" stroke="#1A1A1E"/><path d="M5 10 V35 M35 10 V35" stroke="#2A2A30" stroke-width="2"/><rect x="6" y="20" width="28" height="4" fill="#C8641E" stroke="#5A2A0C" stroke-width=".7"/><rect x="7" y="9" width="8" height="3" rx="1" fill="#E8E4DA"/><rect x="6" y="32" width="28" height="3" fill="#8A4A1E"/>`,
+ n:`<rect x="5" y="4" width="30" height="24" fill="#6A4A2E" stroke="#2A1A0C" stroke-width="1.2"/><rect x="8" y="7" width="10" height="12" fill="#E8E0CC" transform="rotate(-4 13 13)"/><rect x="21" y="7" width="10" height="9" fill="#FFB070" transform="rotate(5 26 11)"/><rect x="20" y="18" width="11" height="7" fill="#E8E0CC"/><path d="M9 10 H16 M9 13 H15 M22 10 H29 M21 21 H29" stroke="#5A4A3A" stroke-width=".6"/><path d="M12 28 V36 M28 28 V36" stroke="#4A3220" stroke-width="2"/>`,
+ t:`<rect x="3" y="17" width="34" height="4" fill="#6E5236" stroke="#2A1C10"/><path d="M6 21 V34 M34 21 V34" stroke="#4A3622" stroke-width="2.4"/><rect x="8" y="12" width="3" height="6" fill="#B8C0C8" stroke="#3A444C" stroke-width=".5"/><rect x="14" y="13" width="5" height="5" rx="1" fill="rgba(160,210,170,.7)" stroke="#3A4A3A" stroke-width=".5"/><rect x="22" y="14" width="7" height="3" fill="#C8A060" stroke="#5A4012" stroke-width=".5"/><circle cx="32" cy="15" r="2" fill="none" stroke="#2A2A2A" stroke-width=".8"/>`,
+ u:`<rect x="12" y="8" width="16" height="22" rx="4" fill="#C87A3A" stroke="#5A2E10" stroke-width="1.2"/><path d="M14 12 H26" stroke="#E8A060" stroke-width="1.4"/><rect x="18" y="4" width="4" height="4" fill="#8A4A1E"/><path d="M28 20 H32 V23" stroke="#5A2E10" stroke-width="1.6" fill="none"/>${[6,32].map(x=>`<rect x="${x-2}" y="27" width="4" height="4" fill="#E8E4DA" stroke="#6A6458" stroke-width=".5"/>`).join("")}<rect x="8" y="30" width="24" height="3" fill="#4A3622"/>`,
+ X:`<rect x="5" y="17" width="16" height="17" fill="#7A5C3A" stroke="#2A1C10" stroke-width="1.1"/><path d="M5 25 H21" stroke="#5A4028"/><text x="13" y="24" text-anchor="middle" font-size="4.6" font-weight="900" font-family="monospace" fill="#FF7A1A">HOT</text><ellipse cx="28" cy="22" rx="6" ry="2.6" fill="#3A3A40" stroke="#1A1A1E"/><path d="M22 22 V33 Q28 35.6 34 33 V22" fill="#3A3A40" stroke="#1A1A1E"/><path d="M22 27 Q28 29.6 34 27" stroke="#FF7A1A" stroke-width="1.2" fill="none"/>`,
+ p:`<rect x="14" y="0" width="12" height="35" fill="#3A3634" stroke="#1A1614" stroke-width="1.2"/>${[6,14,22,30].map(y=>`<path d="M14 ${y} H26" stroke="#2A2624"/>`).join("")}<path d="M10 35 H30" stroke="#1A1614" stroke-width="3"/>`,
+ f:`<rect x="7" y="8" width="26" height="27" rx="2" fill="#5A3A2A" stroke="#1E120A" stroke-width="1.2"/><path d="M13 34 V24 Q20 16 27 24 V34 Z" fill="#FF8A2A" stroke="#1E120A"/><path d="M15 33 Q20 24 25 33" fill="#FFD25A"/><path d="M18 8 V2 H22 V8" fill="#3A2A20" stroke="#1E120A"/>`,
+ m:`<path d="M8 18 Q20 34 32 18 Z" fill="#4A4A50" stroke="#1A1A1E" stroke-width="1.2"/><ellipse cx="20" cy="18" rx="12" ry="3" fill="#FF8A2A"/><path d="M32 18 L38 12" stroke="#2A2A30" stroke-width="2"/><circle cx="12" cy="33" r="2.4" fill="#2A2A30"/><circle cx="28" cy="33" r="2.4" fill="#2A2A30"/>`,
+ H:`<rect x="6" y="3" width="28" height="32" fill="#4A3424" stroke="#1E1208" stroke-width="1.2"/>${[10,18,26].map(y=>`<rect x="7" y="${y}" width="26" height="1.6" fill="#5E4028"/>${[0,1,2,3,4].map(i=>`<rect x="${9+i*4.6}" y="${y-6}" width="3.6" height="6" fill="${["#2A2A30","#FF7A1A","#3A3A40","#5A3A22","#2A2A30"][i]}"/>`).join("")}`).join("")}`,
+ r:`<rect x="7" y="3" width="26" height="32" fill="#3A3A40" stroke="#1A1A1E" stroke-width="1.2"/>${[9,17,25].map(y=>`<rect x="9" y="${y}" width="22" height="6" fill="#4E4E56" stroke="#1A1A1E" stroke-width=".6"/><rect x="18" y="${y+2}" width="4" height="1.6" fill="#C8A060"/>`).join("")}`,
+ v:`<rect x="7" y="8" width="26" height="27" rx="2" fill="#4A5058" stroke="#1A1E22" stroke-width="1.4"/><circle cx="20" cy="21" r="6" fill="#6A7078" stroke="#1A1E22"/><path d="M20 15 V18 M20 24 V27 M14 21 H17 M23 21 H26" stroke="#C8C8C0" stroke-width="1"/><rect x="28" y="18" width="2" height="7" fill="#C8A060"/>`,
+ q:`<rect x="2" y="16" width="36" height="5" fill="#4A2E1C" stroke="#1E1008" stroke-width="1.2"/><path d="M5 21 V35 M35 21 V35" stroke="#3A2214" stroke-width="3"/><rect x="8" y="11" width="9" height="6" fill="#E8E0CC" transform="rotate(-6 12 14)"/><rect x="22" y="12" width="7" height="5" fill="#2A2A30"/><circle cx="32" cy="14" r="2" fill="#FF7A1A"/>`,
+ g:`<rect x="6" y="4" width="28" height="31" fill="#2A2A30" stroke="#121216" stroke-width="1.2"/><rect x="8" y="6" width="24" height="27" fill="#16161A"/><rect x="10" y="20" width="3" height="12" fill="#D9A92A"/><rect x="15" y="22" width="4" height="10" rx="1.5" fill="rgba(150,220,190,.8)"/><rect x="21" y="18" width="3" height="14" fill="#B8C0C8"/><rect x="26" y="24" width="4" height="8" rx="1.5" fill="rgba(220,150,200,.8)"/>${[10,14,18,22,26,30].map(x=>`<path d="M${x} 6 V33" stroke="#5A5A60" stroke-width="1"/>`).join("")}<rect x="16" y="8" width="8" height="5" fill="#FF7A1A"/><text x="20" y="12" text-anchor="middle" font-size="3" font-family="monospace" fill="#1A1A1E">RED</text>`,
+ s:`<rect x="0" y="16" width="40" height="7" fill="#5A4030" stroke="#1E120A" stroke-width="1"/><rect x="0" y="23" width="40" height="12" fill="#3A2A20"/><path d="M0 19 H40" stroke="#7A5A40" stroke-width=".6"/>`,
+ h:`<path d="M2 36 Q4 14 20 10 Q36 14 38 36 Z" fill="#2A2624" stroke="#121010" stroke-width="1.2"/><path d="M10 22 Q14 18 18 20 M22 16 Q27 15 30 20" stroke="#5A4E48" stroke-width="1" fill="none"/><circle cx="14" cy="28" r="1.4" fill="#FF7A1A" opacity=".7"/><circle cx="27" cy="30" r="1" fill="#FF7A1A" opacity=".6"/>`,
+ l:`<path d="M20 12 V35 M14 35 H26" stroke="#2A2A30" stroke-width="2"/><circle cx="20" cy="9" r="8" fill="#FF9A3A" opacity=".25"/><path d="M15 12 H25 L23 4 H17 Z" fill="#FFC060" stroke="#2A2A30"/>`,
+ G:(x,y)=>{const cx=x-18,cy=y-1;const mouth=cy===2&&(cx===1||cx===2);return`<rect x="0" y="0" width="40" height="40" fill="#5A3424"/>${[8,18,28].map(yy=>`<path d="M0 ${yy} H40" stroke="#3A2016" stroke-width="1"/>`).join("")}${[10,30].map(xx=>`<path d="M${xx+(cy%2?10:0)} 0 V40" stroke="#3A2016" stroke-width=".8"/>`).join("")}${cy===0?`<rect x="0" y="0" width="40" height="5" fill="#2A1A12"/>`:""}${mouth?(o=>`<path d="M${10+o} 40 V22 Q${40+o} 4 ${70+o} 22 V40 Z" fill="#FF6A1A" stroke="#2A1A12" stroke-width="2"/><path d="M${16+o} 40 Q${40+o} 16 ${64+o} 40" fill="#FFD25A" opacity=".85"/>`)(cx===1?0:-40):""}${cx===0?`<rect x="0" y="0" width="3" height="40" fill="#2A1A12"/>`:""}${cx===3?`<rect x="37" y="0" width="3" height="40" fill="#2A1A12"/>`:""}`}};
+{const _tl=tileLook;tileLook=function(c,x,y,seed,M){if(EXP.zone.cls!=="z-slag")return _tl(c,x,y,seed,M);
+  const P=SLP[c];if(c==="G")return["f sl-kiln",`<svg viewBox="0 0 40 40" preserveAspectRatio="none" aria-hidden="true" style="width:100%;height:100%;display:block">${P(x,y)}</svg>`];
+  const fl=c===":"||(P&&x>=29&&y<=8)?"sl-plank":"sl-cinder v"+((x*3+y*5)%3);
+  if(P)return[`f ${"pnHrgflv".includes(c)?"tl":"pr"} ${fl}`,PS(typeof P==="function"?P(x,y):P)];
+  if(c==="."||c==="P"||c===":")return[`f ${fl}`,""];return _tl(c,x,y,seed,M)}}
+
+/* ---- the Kiln Heart: the Syndicate's own threat ---- */
+{const t={name:"Kiln Heart",comp:[["Cu",38],["Zn",22],["Sn",18],["Ni",13],["Pb",9]],d:8.4,mp:910,mag:0,hard:2,cond:18,color:"#8A5A3A",tfill:"rod",fixedHab:"z-slag",hz:{pyro:1,selfheat:1},
+  lore:"The Slag Syndicate fed every sample they ever stole into one great pour. Something in the mix woke up. It won't cool, it won't set, and given half a chance it climbs back towards the fire.",tmade:"Poured by the Slag Syndicate from everything they ever stole",aliases:[],leak:false,finish:"p",real:false,threat:true,uses:"Nothing. Containment only."};
+  t.reactive=isReactive(frac(t));ALLOYS.push(t);t.no=ALLOYS.length;t.types=typesOf(t);t.hab="z-slag";t.rar="threat";t.form="rod";t.fill=null;t.made=t.tmade;THREAT_CAT["Kiln Heart"]="Fused Plunder";t.cat=categoryOf(t)}
+BOSS["Kiln Heart"]={act:"MELT BAND",tell:"A whole hoard of stolen metal fused into one pour, and it won't sit still. Keep its HEAT in the band. It keeps cooling, and as it cools a CRUST forms that will seize your scanner. STOKE it to keep it molten. QUENCH it when it runs too hot, but there are only 3 buckets and they refill slowly. Every test on the bench heats it.",drain:.3};
+{const _bs=bossStart;bossStart=function(){_bs();if(TB.on&&TB.a.name==="Kiln Heart"){Object.assign(TB,{heat:55,crust:0,buckets:3,bucketIn:20,stokeCd:0,seized:0,slag:{},khLast:performance.now()});bossControls();bossHud()}}}
+{const _bc=bossControls;bossControls=function(){_bc();if(TB.a.name!=="Kiln Heart")return;const c=$("#bb-ctrl");
+  c.innerHTML=`<div class="bb-gauge kh"><span>HEAT</span><div><b class="kh-band"></b><i id="bb-heat"></i></div></div><button class="bb-btn stoke" id="bb-stoke">STOKE</button><button class="bb-btn quench" id="bb-quench">QUENCH ×3</button><div class="bb-gauge"><span>CRUST</span><div><i id="bb-crust"></i></div></div><span class="bb-info" id="bb-info"></span>`;
+  $("#bb-stoke").onclick=()=>{if(TB.stokeCd>0)return;TB.stokeCd=.9;TB.heat=Math.min(100,TB.heat+16);if(gate("khstoke",500))sfx("whoomph");bossHud()};
+  $("#bb-quench").onclick=()=>{if(TB.buckets<=0)return;TB.buckets--;TB.heat=Math.max(0,TB.heat-30);sfx("hiss");stageFx("vapor");say(TB.buckets?`Hiss! The bucket knocks it back down. (${TB.buckets} left)`:"Last bucket. The next one takes 20 seconds to fill.");bossHud()}}}
+{const _bh=bossHud;bossHud=function(){_bh();if(!TB.on||TB.a.name!=="Kiln Heart"||!$("#bb-heat")||!TB.slag)return;const h=$("#bb-heat");h.style.width=TB.heat+"%";h.className=TB.heat>70?"hot":TB.heat<40?"cold":"ok";
+  const cr=$("#bb-crust");cr.style.width=TB.crust+"%";cr.className=TB.crust>70?"hot":TB.crust>40?"warm":"";const q=$("#bb-quench");q.disabled=TB.buckets<=0;q.textContent=TB.buckets>0?`QUENCH ×${TB.buckets}`:`QUENCH · ${Math.ceil(TB.bucketIn)}s`;$("#bb-stoke").disabled=TB.stokeCd>0;
+  const sl=Object.keys(TB.slag).length;$("#bb-info").textContent=(TB.seized>0?`SCANNER SEIZED ${Math.ceil(TB.seized)}s · `:"")+(TB.heat>70?"Too hot: it's spattering · ":TB.heat<40?"Too cold: crust forming · ":"Molten and steady · ")+(sl?`${sl} station${sl>1?"s":""} slagged`:"")}}
+{const _bt=bossTick;bossTick=function(){_bt();if(!TB.on||!bossActive()||TB.a.name!=="Kiln Heart"||!TB.slag){if(TB)TB.khLast=performance.now();return}
+  const now=performance.now(),dt=Math.min(.25,(now-(TB.khLast||now))/1000);TB.khLast=now;
+  if(document.hidden||S.r.stage!=="elements"||$("#stage").offsetParent===null||TB.grace>0)return;
+  TB.stokeCd=Math.max(0,TB.stokeCd-dt);TB.seized=Math.max(0,TB.seized-dt);if(TB.buckets<3&&(TB.bucketIn-=dt)<=0){TB.buckets++;TB.bucketIn=20;sfx("sel")}
+  TB.heat=Math.max(0,TB.heat-(3+TB.t*.02)*dt);let extra=0;
+  for(const k of Object.keys(TB.slag)){if((TB.slag[k]-=dt)<=0){delete TB.slag[k];const st=$("#st-"+k);if(st)st.classList.remove("slagged");say(`The ${STATION_NAMES[k]} has been chipped clean.`)}}
+  if(TB.heat<40){TB.crust=Math.min(100,TB.crust+(40-TB.heat)*.16*dt);extra+=.25}else TB.crust=Math.max(0,TB.crust-6*dt);
+  if(TB.crust>=100){TB.crust=25;TB.seized=7;TB.hp-=10;stageFx("shake");sfx("clunk");say("The crust SEIZED over! The scanner is jammed for 7 seconds. Stoke it before it sets again!")}
+  if(TB.heat>70)extra+=(TB.heat-70)/30*1.3;
+  if(TB.heat>=100){TB.heat=72;TB.hp-=15;stageFx("fire");sfx("breach");const free=STATION_KEYS.filter(s=>!TB.slag[s]);if(free.length){const s=free[Math.random()*free.length|0];TB.slag[s]=14;const el=$("#st-"+s);if(el)el.classList.add("slagged");say(`It boiled over and SPATTERED the ${STATION_NAMES[s]} with slag! (out of action for 14s)`)}}
+  TB.hp-=extra*dt*DRAIN_SCALE;if(TB.hp<=0){bossBreach("CONTAINMENT BREACH! The Kiln Heart slid off the bench and crawled back towards the fire!");return}bossHud()}}
+{const _dd=doDrop;doDrop=function(p,key){if(bossActive()&&TB.a.name==="Kiln Heart"&&p&&p.kind==="sample"&&STATION_NAMES[key]){
+    if(TB.slag[key]){say(`The ${STATION_NAMES[key]} is caked in slag. Give it a moment.`);setHeld(null);return}
+    if(gate("khheat",700)){TB.heat=Math.min(100,TB.heat+({furnace:24,flame:16}[key]||7));bossHud()}}_dd(p,key)}}
+{const _an=analyze;analyze=function(){if(bossActive()&&TB.a.name==="Kiln Heart"&&TB.seized>0){sfx("miss");say("The crust has seized the scanner. Stoke it and wait!");return}_an();if(bossActive()&&TB.a.name==="Kiln Heart"){TB.heat=Math.min(100,TB.heat+4);bossHud()}}}
+{const _be=bossEnd;bossEnd=function(){document.querySelectorAll(".station.slagged").forEach(e=>e.classList.remove("slagged"));_be()}}
+
+/* ---- Syndicate coat ---- */
+COATS.push({id:"slag",name:"Syndicate Coat (Confiscated)",desc:"A charcoal work coat with a scorched collar, an orange badge on the chest, and pockets that smell of smoke and somebody else's tea.",how:"Confiscated property. Quartermaster Hobbs will only sign it out if Dr. Marlow has a very good reason.",cut:"long",body:"#2E2E34",sleeve:"#2E2E34",cuff:"#FF7A1A",open:()=>Q.flag("slagCoat"),
+  detail:`<path d="M14.4 20.6 Q20 23.2 25.6 20.6 L25.2 23 Q20 25 14.8 23 Z" fill="#1E1E22" stroke="${INK}" stroke-width=".7"/><path d="M17.4 22.8 L20 33 L22.6 22.8" fill="none" stroke="#3E3E46" stroke-width=".9"/>${btns(20,[26,28.6,31.2],"#5A5A60",.6)}<circle cx="24.4" cy="25.8" r="1.5" fill="#FF7A1A" stroke="${INK}" stroke-width=".4"/><path d="M10.6 33 H29.4" stroke="#FF7A1A" stroke-width="1"/><path d="M13 24 Q14 23 15 24.4" stroke="#5A4A3A" stroke-width=".6" fill="none"/>`});
+
+/* ---- Dr. Marlow's operation: three more field orders ---- */
+FO_RANKS.push("Field Marshal");
+FIELD_ORDERS.push(
+ {id:"hotiron",title:"Hot Iron",rank:4,season:3,goal:"Beat 3 Slag Syndicate grunts in duels. They talk when they lose.",need:3,count:(r,st)=>st.duel?1:0,reward:["timer","cell"],
+  brief:["Sit down, deputy. Odile's note has been bothering me. Kilnmaster Varrow. Somebody runs the Syndicate on this moor, and it isn't Grist.","I want to know where she keeps her kiln. Beat a few grunts for me. They talk when they lose. Mostly about their feelings, but sometimes about addresses."],
+  report:["(He spreads three grunt-scrawled notes across the desk and taps each one in turn.)","'Back at the Works by four for tea.' 'The Works gate sticks.' 'If Varrow asks, I was at the Works all day.'","The Slag Works. The old smelter in the quarry pit, right underneath the east end of Bolt's yard. It closed before you were born. Apparently nobody told it.","And this one. 'HOT IRON. Answer: COLD HANDS.' Grunt Skoll wrote the password on the back of his hand and then lost a duel to you. I'm almost sorry for him.","Varrow. K.V. The same initials as the card in my deposit box. She's been trying to get at me for a long time."]},
+ {id:"cover",title:"Orange Is Your Colour",rank:4,season:3,reward:["decoy"],
+  steps:[{kind:"talk",n:"Quartermaster Hobbs",goal:"Get a Syndicate coat out of Quartermaster Hobbs's cage of confiscated property."},{kind:"talk",n:"Bolt",goal:"Ask Bolt about the back way into the Slag Works, through the east heaps of his scrapyard."}],
+  brief:["We can't walk up to the Works in Institute white. We'll go in as them.","Hobbs keeps a cage of confiscated Syndicate property. There'll be a coat in there that fits you. And Bolt's yard sits right on top of that quarry. He'll know a way down."],
+  report:["Look at you. Orange suits you. Don't let it go to your head.","Here's the plan. You go in through Bolt's back gate, in the coat, with the password. Find out what Varrow is pouring. Stop it if you can.","I'll be close. I'm always close. And if it goes wrong, run. I mean that. Run, and come and find me."]},
+ {id:"works",title:"The Big Pour",rank:4,rankUp:5,season:3,reward:["charm","guide","patch","stasis"],
+  steps:[{kind:"gate",goal:"Wear the Syndicate coat (change at the Institute wardrobe) and get into the Slag Works through the gate in the far corner of Bolt's east heaps. Remember the password."},{kind:"obj",zone:"z-slag",what:"vledger",goal:"Find out what Varrow is pouring tonight. Her office is somewhere in the Works."},{kind:"obj",zone:"z-slag",what:"kiln",goal:"Get to the Great Kiln's inspection hatch and stop the Big Pour."},{kind:"obj",zone:"z-slag",what:"varrow",goal:"Kilnmaster Varrow knows what you did. Face her."}],
+  brief:["Tonight, then. Coat on. Password ready. Find out what she's pouring, and stop it if you can."],
+  report:["Varrow's in a cell at the constabulary. She's asked to speak to her union representative eleven times.","Without her, the Moor Division is a lot of grunts and a tea urn. They'll still nick the odd rod. But nobody's coming for my basement any more.","You walked into the Syndicate's own house in their own coat and put their kiln out. I've been head of the field team for sixty years. Nobody has ever done that.","Field Marshal. It's a rank I invented this morning. Hobbs is going to hate it. Congratulations."]});
+FIELD_ORDERS.forEach(o=>{if(o.steps)o.need=o.steps.length});
+{const _fc=foCur;foCur=function(){const o=_fc();if(o&&o.season===3&&!foDone("meet"))return null;return o}}
+{const _fn=foNext;foNext=function(){const o=_fn();if(o&&o.season===3&&!foDone("meet"))return null;return o}}
+{const _ft=foTurnIn;foTurnIn=function(done){const o=foCur();_ft(done);if(o&&o.id==="hotiron"){Q.set("slagMap");slagZoneOn();setTimeout(()=>say0("THE SLAG WORKS is on your map now. The way in is a gate in the far corner of Bolt's east heaps."),1600)}}}
+PROMO[5]={rank:"FIELD MARSHAL",staff:["Archivist Wren","Dr. Ines Parr","Quartermaster Hobbs","Intern Toby","Mrs. Gale"],odile:1,lines:[
+  ["Dr. Marlow","Last night, one of us walked into the Slag Works in a Syndicate coat, with a Syndicate password, and put out the Syndicate's kiln."],["Intern Toby","Was it a good coat?"],["Quartermaster Hobbs","It was a confiscated coat. It's evidence. I want it back."],
+  ["Odile Grane","Sixty years I paid those people. One night, and the deputy shut them down. I'm told I should feel something about that. I feel fine."],
+  ["Dr. Marlow","There's no rank for this, so I made one up. Field Marshal."]],
+  coat:["Quartermaster Hobbs","There is no coat for Field Marshal. He made it up this morning. Here: a badge. I made it out of a bottle cap. Kez donated the bottle cap."],after:[["Archivist Wren","I'll put it in the records. In ink."]]};
+SCENES.promo5=promoScene(5);
+/* Odile names the Kilnmaster now */
+{const L=STEP_TALK;void L}
+/* the conversations along the way */
+STEP_TALK["cover:Bolt"]=["The Works? Under my east heaps? Course I know it. My granddad shovelled coke there till it shut.","There's a gate in the far corner of the east heaps. Rusted, painted KEEP OUT in letters a foot high. It goes down a ramp into the old quarry.","You'll need Maureen to get into the east heaps in the first place, mind.","And don't tell them I sent you. They still owe me for a wheelbarrow."];
+{const _tt=talkTo;talkTo=function(p){const st=foStep(),o=foCur();if(st&&o&&o.id==="cover"&&st.kind==="talk"&&p.n==="Quartermaster Hobbs"&&st.n===p.n){
+  talk(p.n,["Confiscated Syndicate property? It's in the cage marked DO NOT.","Dr. Marlow sent a note. A note! In brown ink. 'Give the deputy whatever they need.' Sixty years, and that man's never once filled in the proper form.","One coat. Charcoal. Orange badge. Size: 'grunt'. Smells of somebody else's tea.","Sign here. And here. And here, where it says 'I promise not to actually join the Syndicate.'","(You got a SYNDICATE COAT. Change into it at the wardrobe in the locker room.)"],()=>{Q.set("slagCoat");coatCheck();foStepDone()});return}_tt(p)}}
+
+/* ---- the way in: a gate in Bolt's east heaps ---- */
+const GATE_SVG=`<svg viewBox="0 0 40 40"><rect x="4" y="6" width="32" height="30" fill="#5A4A3A" stroke="#2A1E12" stroke-width="1.2"/>${[10,17,24,31].map(x=>`<path d="M${x} 6 V36" stroke="#3A2E22" stroke-width="2"/>`).join("")}<rect x="6" y="14" width="28" height="9" fill="#C8B070"/><text x="20" y="21" text-anchor="middle" font-size="5.4" font-weight="900" font-family="monospace" fill="#8A1E12">KEEP OUT</text><path d="M4 28 Q12 26 18 30" stroke="#8A4A1E" stroke-width="1.4" fill="none"/></svg>`;
+{const _wp=worldPlace;worldPlace=function(){_wp();const z=EXP.zone;if(!z||z.special)return;
+  if(z.cls==="z-scrap"&&slagOpen())storyObj([38,12],GATE_SVG,()=>talk("",["A rusted gate in the far corner of the heaps, painted KEEP OUT in letters a foot high. Behind it, a cinder ramp drops away into the dark of the old quarry.","Somewhere below, something big is breathing like a furnace."],()=>{goZone(SLAG_ZONE)},null),"slaggate");
+  if(z.cls==="z-slag")slagPlace()}}
+const worksDone=()=>foDone("works")||(foCur()&&foCur().id==="works"&&foReady());
+const VARROW={n:"Kilnmaster Varrow",look:{coat:"#2E1E18",hair:"#E8E4DA",hs:"bun",acc:["goggles","apron","badge"],apron:"#5A3A22",skin:"#D8A07A"}};
+const SLAGGER=(coat,hair,hs,skin,acc)=>({coat,hair,hs,skin,acc:["badge",...(acc||[])],hat:"#1A1A1E",apron:"#FF7A1A"});
+const WORKS_FOLK=[
+ {n:"Tea Urn Sal",at:"sal",look:SLAGGER("#3A3A40","#8A8A8A","curly","#E8B894",["apron"]),in:[["New face? You'll want to sign the tea rota. Everybody signs the tea rota.","Union rules: no duels before four, no pouring without a hat, and nobody touches the Kilnmaster's biscuits."],["Grunt Skoll keeps writing 'cold hands' on my urn. In chalk. Every morning.","Nobody's said 'cold hands' back to him in years. Don't tell him I said that."]],out:[["Union's suspended pending an inquiry. The inquiry is me. I've found us all very nice."]]},
+ {n:"Smelter Ingrid",at:"ingrid",look:SLAGGER("#2E2E34","#E8A060","long","#F2D2B8",["goggles"]),in:[["Sort by colour, then by weight, then by how cross the Institute will be when they find out. That's the system.","Anything that doesn't age goes in the red crate for the Kilnmaster. Do NOT put your sandwiches in the red crate. Again."],["You lot at the Institute name everything. I never saw the point. Then last week I caught myself naming a nice bit of bronze 'Gerald'."]],out:[["I'm sorting it all back out. Labelled. Properly. It feels strange. It feels a bit nice."]]},
+ {n:"Fence Pomeroy",at:"pomeroy",look:SLAGGER("#4A3A2A","#1A1A1A","short","#C88A64",["glasses","mustache"]),in:[["Buying or selling? Buying's dear and selling's cheap. That's what makes it a business.","The Institute pays in thank-yous. We pay in coin. Guess which one buys tea."]],out:[["Closed for stocktaking. Indefinitely. The constables took the till, and the stock, and my good pen."]]},
+ {n:"Grunt Brack",at:"brack",look:SLAGGER("#26262C","#3A2414","short","#8A5A3A",["cap"]),in:[["Sorry, do I know you? I'm bad with faces. Good with rocks.","They say the Kiln's hungry tonight. I don't like it when the Kiln's hungry. It makes a noise."]],out:[["Sorry about all the... everything. I'm going to try bakery work. Rikket says the bakery's lovely."]]}];
+function slagPlace(){const sp=SPOTS["z-slag"],done=worksDone();
+  if(!done&&EXP.disguised){(EXP.grunts||[]).forEach(g=>g.el&&g.el.remove());EXP.grunts=[]}
+  WORKS_FOLK.forEach(f=>storyNPC({n:f.n,look:f.look,talks:done?f.out:f.in},nearWalk(...sp[f.at])));
+  storyObj(sp.board,"",()=>talk("",["UNION NOTICES.","1. Tea is at four. Not five past. FOUR.","2. Anything that doesn't age goes straight to the Kilnmaster. NOT the fence. Pomeroy, that means you.","3. Whoever keeps writing 'cold hands' on the tea urn: we know it's you, Skoll.","4. THE BIG POUR: tonight. Hats on. Everything in the red crates goes in."]),"board");
+  const st=foStep(),o=foCur();
+  if(!done&&o&&o.id==="works"&&st){
+    if(st.what==="vledger")storyObj(sp.ledger,`<svg viewBox="0 0 40 40"><rect x="9" y="12" width="22" height="16" fill="#2A2A30" stroke="#121216"/><rect x="11" y="14" width="18" height="12" fill="#E8E0CC"/><path d="M13 17 H27 M13 20 H25 M13 23 H22" stroke="#5A4A3A" stroke-width=".6"/><circle cx="26" cy="23" r="2" fill="#FF7A1A"/></svg>`,()=>talk("",["Varrow's ledger, open on the side table. Neat columns, in pencil, in a very small, very tidy hand.","'THE BIG POUR. Tonight, five o'clock. Every red crate into the Great Kiln at once.'","'The Heart is hungry. Feed it everything that won't age, and it will learn not to age either.'","Underneath, underlined three times: 'Item one: sample one. From under the Institute floor. Grist says he can get the founder's basement open. K.V.'","(Whatever lives in that Kiln, she means to feed it Dr. Marlow's cell.)"],()=>foStepDone()),"vledger");
+    if(st.what==="kiln")storyObj(sp.kiln,`<svg viewBox="0 0 40 40"><rect x="8" y="8" width="24" height="22" rx="2" fill="#3A2A20" stroke="#1A120C" stroke-width="1.2"/><rect x="12" y="12" width="16" height="12" fill="#FF6A1A"/><path d="M12 18 H28" stroke="#3A2A20"/><circle cx="30" cy="27" r="2" fill="#C8A060"/></svg>`,()=>playScene("kiln",kilnFight),"kiln");
+    if(st.what==="varrow"){const v=storyNPC({...VARROW,talks:[["..."]]},nearWalk(23,5));v.quest=()=>{talk(v.n,csSeen("varrowCome")?["Again? I have all night, deputy. The kiln doesn't."]:["Name it before I pour it, deputy."],varrowDuel);return true};
+      if(!csSeen("varrowCome"))setTimeout(()=>{if(EXP.zone.cls==="z-slag"&&S.phase==="explore"&&!CS.on&&!DLG.open)playScene("varrowCome",varrowDuel)},900)}}
+  if(!done&&!(o&&o.id==="works"&&st&&st.what==="varrow"))storyNPC({...VARROW,talks:EXP.disguised?[["New hands. Show me them.","...Warm. Hm. They'll cool. Everybody's do, down here.","Go and help Ingrid sort. Anything that doesn't age, you bring straight to me."],["You lot at the Institute name things to keep them. I melt them so nobody has to keep anything ever again. Think about that while you sort."]]:[["..."]]},nearWalk(...sp.varrowOffice));
+  nearMarks()}
+/* at the gate */
+{const _se=startExplore;startExplore=function(){const wasSlag=EXP.zone&&EXP.zone.cls==="z-slag";_se();const z=EXP.zone;if(!z||z.cls!=="z-slag"){EXP.disguised=false;return}
+  if(worksDone()||(wasSlag&&EXP.disguised))return;EXP.disguised=false;setTimeout(()=>{if(EXP.zone===z&&S.phase==="explore"&&!CS.on)playScene("slagGate",slagGateAsk)},700)}}
+SCENES.slagGate=async()=>{csActor("w",SLAGGER("#26262C","#1A1A1A","short","#C88A64",["cap"]),EXP.x+2,EXP.y-1,-1);csCamTo(EXP.x,EXP.y-2);await csWait(400);
+  await csEmote("w","!");await csWalk("w",nearWalk(EXP.x,EXP.y,(x,y)=>Math.abs(x-EXP.x)+Math.abs(y-EXP.y)===1),260);csFace("w",Math.sign(EXP.x-csA("w").x)||-1)};
+function slagGateAsk(){const W="Gate Warden Dunk",out=msg=>talk(W,msg,()=>{EXP.disguised=false;EXP.forceZone=ZONES.find(q=>q.cls==="z-scrap");EXP.spawn=[37,12];startExplore();say0("You got thrown back out into Bolt's east heaps.")});
+  if(!foDone("hotiron")){out(["Who are you? Never mind. Out. Members only."]);return}
+  if(coatNow().id!=="slag"){out(["Oi. That's an Institute coat. I can see it from here. Hop it, before I call the Kilnmaster."]);return}
+  talk(W,["HOT IRON!"],null,v=>{if(/cold\s*hands?/i.test(v)){talk(W,["Cold hands. Good. In you go.","Tea's at four. The Big Pour's at five. Hats on."],()=>{EXP.disguised=true;(EXP.grunts||[]).forEach(g=>g.el&&g.el.remove());EXP.grunts=[];const st=foStep();if(st&&st.kind==="gate")foStepDone();else stepPlace();slagReplace()})}
+    else out([`'${v||"..."}'? That's not it. OUT.`])})}
+function slagReplace(){EXP.npcs.filter(p=>WORKS_FOLK.some(f=>f.n===p.n)||p.n==="Kilnmaster Varrow").forEach(p=>p.el&&p.el.remove());EXP.npcs=EXP.npcs.filter(p=>!(WORKS_FOLK.some(f=>f.n===p.n)||p.n==="Kilnmaster Varrow"));EXP.objs=EXP.objs.filter(o=>{if(o.story&&["board","vledger","kiln"].includes(o.story)){o.el.remove();return false}return true});slagPlace()}
+{const _sd=foStepDone;foStepDone=function(inRound){_sd(inRound);if(!inRound&&EXP.zone&&EXP.zone.cls==="z-slag")slagReplace()}}
+/* the Big Pour */
+SCENES.kiln=async()=>{csCamTo(20,4);
+  await csSay("",["(The inspection hatch is hot through your gloves. Inside, the Big Pour is turning over and over on itself, slow and orange, like something asleep.)","(Then it stops turning. And, very slowly, it starts to climb towards the open hatch. Towards you.)"]);
+  await csSay("Smelter Ingrid",["The Heart's up! THE HEART'S UP! Who opened the hatch?!"]);csTint(0)};
+function kilnFight(){storyFight("Kiln Heart",{intro:"It's the Big Pour: everything the Syndicate ever stole, fused into one heart. Register it before it gets back to the fire!",
+  onWin:()=>{const st=foStep();if(st&&st.what==="kiln")foStepDone(true);setTimeout(()=>say("KILN HEART registered and contained. The Big Pour is over. Somebody is shouting your name. Your real one."),5600)},
+  onLose:()=>setTimeout(()=>say("It slid back into the Kiln. The hatch is still open. Try again."),3000)})}
+SCENES.varrowCome=async()=>{const v=EXP.npcs.find(p=>p.n==="Kilnmaster Varrow");if(!v)return;csAdopt("v",v);csCamTo((v.x+EXP.x)/2,(v.y+EXP.y)/2);
+  await csSay("Kilnmaster Varrow",["Well. Ingrid said it was a new hand with warm hands. I should have listened.","You're Marlow's deputy. The one who opened his basement and then just... handed it all back to him.","Sixty years he's kept forever in a cupboard. I was going to give it to everyone. Melt it all down, pour it out, nobody ever has to lose anything again."]);
+  await csSay("Kilnmaster Varrow",["You put out my Heart. So here's a fair offer, since we're both so fond of fair offers.","I'll hand you a sample from my own red crate. No hints. Three scans. A short clock. Name it before I pour it, and I'll come quietly.","Lose, and you can explain to Marlow why there's a deputy-shaped hole in his roster."])};
+function varrowDuel(){EXP.trial={intro:"KILNMASTER VARROW'S RULES: a sample from her red crate. No hints, no items, three scans, and a short clock.",clock:60,scans:3,
+  onWin:()=>{setTimeout(()=>{const go=()=>{if(S.phase!=="explore"){setTimeout(go,500);return}playScene("raid",()=>{const st=foStep();if(st&&st.what==="varrow")foStepDone()})};go()},800)},
+  onLose:()=>setTimeout(()=>say("Kilnmaster Varrow: \"Close. Not close enough. Come back and try again, deputy. I'm not going anywhere.\""),2600)};
+  EXP.duel={n:"Kilnmaster Varrow",boss:true,T:60};SLAG_DEFEAT.length=0;SLAG_DEFEAT.push("...Fine. Fair's fair. Union rules. I'll come quietly. I'll come quietly and I'll complain the whole way.");SLAG_WIN.length=0;SLAG_WIN.push("Into the pour with it. Better luck next time, deputy.");encounter()}
+SCENES.raid=async()=>{const v=EXP.npcs.find(p=>p.n==="Kilnmaster Varrow");if(v)csAdopt("v",v);const gx=19,gy=23;
+  csActor("m",MLOOK(),gx,gy,1);csActor("o",lookOf("Ranger Okafor"),gx+1,gy,1);csCamTo(EXP.x,EXP.y);await csWait(300);
+  await csSay("",["(Footsteps on the cinder ramp. A lot of them.)"]);
+  const near=nearWalk(EXP.x,EXP.y,(x,y)=>Math.abs(x-EXP.x)+Math.abs(y-EXP.y)<=2);csCamTo((EXP.x+gx)/2,(EXP.y+gy)/2);await csWalk("m",near,240,{follow:1});
+  await csWalk("o",nearWalk(near[0],near[1],(x,y)=>!(x===near[0]&&y===near[1])),200);
+  await csSay("Dr. Marlow",["Hello, Varrow.","I said I'd be close."]);
+  if(v)await csSay("Kilnmaster Varrow",["Marlow. You haven't aged a day. It's disgusting."]);
+  await csSay("Ranger Okafor",["Kilnmaster Varrow, the moor constabulary would like a word. Several words. Mostly about stolen property."]);
+  if(v)await csSay("Kilnmaster Varrow",["I want my union representative."]),await csSay("Tea Urn Sal",["...Present."]);
+  await csSay("Dr. Marlow",["(He turns to you, and grins.) You walked into the Syndicate's own house in their own coat. Come on. Let's go home and write this up properly."]);
+  await csFade(1);await csCard("THE BIG POUR","The Slag Works fall quiet for the first time in forty years.");if(v){v.el.remove();EXP.npcs=EXP.npcs.filter(p=>p!==v);CS.adopted=CS.adopted.filter(a=>a.p!==v)}await csFade(0,700)};
+/* Odile's warnings now name the Kilnmaster */
+
+/* the journal is tidied last of all, after every module has added its entries */
+{const _oj=openJournal;openJournal=function(){_oj();journalTidy()}}
+
+/* the message under the map settles back to the default hint a few seconds after anything new is said */
+function idleMsg(){const z=EXP.zone;if(z&&z.special)return"Look around. Walk up to things and press A · INTERACT to examine them.";return"Walk through the glittering rubble to find a wild alloy."}
+{const _s0=say0;let tm=null;say0=function(t){_s0(t);clearTimeout(tm);if(t!==idleMsg())tm=setTimeout(()=>{if(S.phase==="explore"&&$("#expmsg").textContent===t)_s0(idleMsg())},7000)}}
+{const _se=startExplore;startExplore=function(){_se();const m=$("#expmsg"),t=m.textContent;if(t!==idleMsg())setTimeout(()=>{if(S.phase==="explore"&&m.textContent===t)m.textContent=idleMsg()},7000)}}
+
+/* the on-screen buttons were wired to the very first versions of these functions, before any later module improved them.
+   Point them at whatever the current versions are, so the JOURNAL button shows the same journal as the J key. */
+{const wire=(id,f)=>{const el=document.getElementById(id);if(el)el.onclick=e=>f(e)};
+ wire("jbtn",()=>openJournal());wire("bagbtn",()=>openBag());wire("btn-bag2",()=>openBag());wire("btn-act",()=>interact())}
 
 
 newRun();
