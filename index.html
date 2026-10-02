@@ -918,6 +918,32 @@ dl.props.dd dd{text-align:right}
 @media (max-width:520px){.tl-pv{flex-basis:100%;height:140px}.tl-row{grid-template-columns:70px 28px 1fr 28px}}
 #bossbar.b-KilnHeart .bb-ctrl{flex-wrap:wrap;row-gap:6px}
 #bossbar.b-KilnHeart .bb-info{flex-basis:100%;white-space:normal}
+/* tiles the camera is far away from are not drawn */
+#map .tile.cull{visibility:hidden}
+#map .tile.cull::before,#map .tile.cull::after{display:none}
+#map .tile.cull *{animation:none!important}
+/* Tinker's Scrapyard: the flooded sumps are black, oily water with a rainbow sheen and a muddy, rusty rim, so nobody mistakes them for floor */
+.z-scrap .tile.lq{background:radial-gradient(ellipse at 35% 30%,rgba(120,160,190,.22) 0 18%,transparent 40%),radial-gradient(ellipse at 70% 75%,rgba(0,0,0,.35) 0 25%,transparent 55%),#1F262C!important;overflow:hidden}
+.z-scrap .tile.lq::after{content:"";position:absolute;inset:-50%;animation:lqmove 9s linear infinite;background:radial-gradient(ellipse 22% 9% at 30% 35%,rgba(190,90,220,.32),rgba(80,200,190,.26) 45%,rgba(240,200,80,.18) 70%,transparent 72%),radial-gradient(ellipse 16% 7% at 72% 68%,rgba(80,200,190,.3),rgba(240,200,80,.22) 50%,rgba(190,90,220,.2) 68%,transparent 70%),repeating-linear-gradient(160deg,transparent 0 14px,rgba(255,255,255,.05) 14px 15px)}
+@media (prefers-reduced-motion:reduce){.z-scrap .tile.lq::after{animation:none}}
+.z-scrap .tile.lq[data-e="0000"]::before{box-shadow:inset 0 4px 0 #6A5A44,inset 0 7px 0 #3E3226,inset -4px 0 0 #6A5A44,inset -7px 0 0 #3E3226,inset 0 -4px 0 #6A5A44,inset 0 -7px 0 #3E3226,inset 4px 0 0 #6A5A44,inset 7px 0 0 #3E3226}
+.z-scrap .tile.lq[data-e="0001"]::before{box-shadow:inset 0 4px 0 #6A5A44,inset 0 7px 0 #3E3226,inset -4px 0 0 #6A5A44,inset -7px 0 0 #3E3226,inset 0 -4px 0 #6A5A44,inset 0 -7px 0 #3E3226}
+.z-scrap .tile.lq[data-e="0010"]::before{box-shadow:inset 0 4px 0 #6A5A44,inset 0 7px 0 #3E3226,inset -4px 0 0 #6A5A44,inset -7px 0 0 #3E3226,inset 4px 0 0 #6A5A44,inset 7px 0 0 #3E3226}
+.z-scrap .tile.lq[data-e="0011"]::before{box-shadow:inset 0 4px 0 #6A5A44,inset 0 7px 0 #3E3226,inset -4px 0 0 #6A5A44,inset -7px 0 0 #3E3226}
+.z-scrap .tile.lq[data-e="0100"]::before{box-shadow:inset 0 4px 0 #6A5A44,inset 0 7px 0 #3E3226,inset 0 -4px 0 #6A5A44,inset 0 -7px 0 #3E3226,inset 4px 0 0 #6A5A44,inset 7px 0 0 #3E3226}
+.z-scrap .tile.lq[data-e="0101"]::before{box-shadow:inset 0 4px 0 #6A5A44,inset 0 7px 0 #3E3226,inset 0 -4px 0 #6A5A44,inset 0 -7px 0 #3E3226}
+.z-scrap .tile.lq[data-e="0110"]::before{box-shadow:inset 0 4px 0 #6A5A44,inset 0 7px 0 #3E3226,inset 4px 0 0 #6A5A44,inset 7px 0 0 #3E3226}
+.z-scrap .tile.lq[data-e="0111"]::before{box-shadow:inset 0 4px 0 #6A5A44,inset 0 7px 0 #3E3226}
+.z-scrap .tile.lq[data-e="1000"]::before{box-shadow:inset -4px 0 0 #6A5A44,inset -7px 0 0 #3E3226,inset 0 -4px 0 #6A5A44,inset 0 -7px 0 #3E3226,inset 4px 0 0 #6A5A44,inset 7px 0 0 #3E3226}
+.z-scrap .tile.lq[data-e="1001"]::before{box-shadow:inset -4px 0 0 #6A5A44,inset -7px 0 0 #3E3226,inset 0 -4px 0 #6A5A44,inset 0 -7px 0 #3E3226}
+.z-scrap .tile.lq[data-e="1010"]::before{box-shadow:inset -4px 0 0 #6A5A44,inset -7px 0 0 #3E3226,inset 4px 0 0 #6A5A44,inset 7px 0 0 #3E3226}
+.z-scrap .tile.lq[data-e="1011"]::before{box-shadow:inset -4px 0 0 #6A5A44,inset -7px 0 0 #3E3226}
+.z-scrap .tile.lq[data-e="1100"]::before{box-shadow:inset 0 -4px 0 #6A5A44,inset 0 -7px 0 #3E3226,inset 4px 0 0 #6A5A44,inset 7px 0 0 #3E3226}
+.z-scrap .tile.lq[data-e="1101"]::before{box-shadow:inset 0 -4px 0 #6A5A44,inset 0 -7px 0 #3E3226}
+.z-scrap .tile.lq[data-e="1110"]::before{box-shadow:inset 4px 0 0 #6A5A44,inset 7px 0 0 #3E3226}
+.z-scrap .tile.lq[data-e="1111"]::before{box-shadow:none}
+.z-scrap .tile.lq::before{content:"";position:absolute;inset:0;z-index:2;pointer-events:none}
+.z-scrap .tile.lq svg{z-index:1}
 </style>
 
 <div class="app">
@@ -6693,6 +6719,36 @@ function openTailor(){const m=modal("tailor","TAILOR'S DUMMY");let C=MCFG();EXP.
 {const _ow=openWardrobe;openWardrobe=function(){_ow();const c=COATS.find(c=>c.id==="marshal"),m=$("#wardrobe");if(!c||!c.open()||!m)return;const b=m.querySelector('[data-coat="marshal"]'),row=b?b.closest(".bag-item"):[...m.querySelectorAll(".bag-item.coat")].find(r=>r.querySelector("b")&&r.querySelector("b").textContent===c.name);if(!row)return;
   const d=document.createElement("button");d.className="btn go tl-open";d.textContent="DESIGN";d.onclick=()=>{m.hidden=true;openTailor()};row.appendChild(d);
   if(!store.get("wta_marshal",null)){const p=document.createElement("p");p.className="bag-empty";p.textContent="There's a tailor's dummy in the corner now, wearing Hobbs's idea of a Field Marshal's coat. Press DESIGN to make it yours.";m.querySelector(".bag-list").prepend(p)}}}
+
+/* ---- Tinker's Scrapyard: the sumps get things floating in them ---- */
+const SUMP_JUNK=[
+ `<ellipse cx="20" cy="22" rx="9" ry="4.5" fill="#1A1A1E" stroke="#0A0A0C" stroke-width="1"/><ellipse cx="20" cy="21" rx="6" ry="2.6" fill="none" stroke="#3A3A40" stroke-width="1.6"/><path d="M11 23 Q20 27 29 23" stroke="#4A4A50" stroke-width=".8" fill="none"/>`,
+ `<rect x="13" y="15" width="12" height="9" rx="1.5" fill="#8A3A22" stroke="#2A1208" stroke-width="1" transform="rotate(-18 19 19)"/><path d="M14 18 H24 M14 21 H24" stroke="#5A2412" stroke-width=".9" transform="rotate(-18 19 19)"/><ellipse cx="19" cy="25" rx="9" ry="2" fill="#000" opacity=".35"/>`,
+ `<circle cx="15" cy="18" r="1.6" fill="none" stroke="rgba(220,230,240,.55)" stroke-width=".8"/><circle cx="23" cy="24" r="1.1" fill="none" stroke="rgba(220,230,240,.5)" stroke-width=".7"/><circle cx="26" cy="15" r=".8" fill="none" stroke="rgba(220,230,240,.45)" stroke-width=".6"/>`,
+ `<path d="M10 24 Q14 20 18 23 Q22 26 27 21" stroke="#B87A3A" stroke-width="1.6" fill="none" stroke-linecap="round"/><rect x="25" y="18.5" width="5" height="3" rx="1" fill="#C8C8C0" stroke="#3A3A40" stroke-width=".6" transform="rotate(-25 27 20)"/>`];
+{const _tl=tileLook;tileLook=function(c,x,y,seed,M){if(c==="~"&&EXP.zone&&EXP.zone.cls==="z-scrap"){const r=_tl(c,x,y,seed,M),k=(x*7+y*13)%9;return[r[0],k<SUMP_JUNK.length?`<svg viewBox="0 0 40 40" aria-hidden="true">${SUMP_JUNK[k]}</svg>`:(r[1]||"")]}return _tl(c,x,y,seed,M)}}
+
+/* =============== THE MAP IS DRAWN IN PIECES ===============
+   Every tile is still built from the same full-detail art, but a tile's drawing is only put into the page when the camera gets near it,
+   in 5 x 5 chunks. Chunks the camera has moved well away from are hidden (no painting, no animation) until it comes back. */
+const CH={b:0,inner:[],W:0,H:0,N:5,win:null,live:new Set,tm:null};
+{const _tl=tileLook;tileLook=function(c,x,y,seed,M){const r=_tl(c,x,y,seed,M);if(!CH.b)return r;CH.W=M[0].length;CH.H=M.length;CH.inner[y*CH.W+x]=r[1]||"";return[(r[0]||"")+" cull",""]}}
+{const _se=startExplore;startExplore=function(){CH.b++;if(CH.b===1){CH.inner=[];CH.live=new Set;CH.win=null}try{_se()}finally{CH.b--}if(!CH.b)chunkSync(true)}}
+function chunkView(){const w=$("#world");if(!w||!EXP.W)return null;const m=(w.style.transform||"").match(/translate\((-?[\d.]+)%\s*,\s*(-?[\d.]+)%\)/),cx=m?-parseFloat(m[1])/100*EXP.W:0,cy=m?-parseFloat(m[2])/100*EXP.H:0;
+  return[cx,cy,cx+VIEW.w,cy+VIEW.h]}
+function chunkTiles(){const m=$("#map");return m&&CH.W===EXP.W&&CH.H===EXP.H&&m.children.length===CH.W*CH.H?m.children:null}
+function chunkFill(T,x0,y0,x1,y1){const N=CH.N;for(let gy=Math.max(0,Math.floor(y0/N));gy<=Math.min(Math.ceil(CH.H/N)-1,Math.floor(y1/N));gy++)for(let gx=Math.max(0,Math.floor(x0/N));gx<=Math.min(Math.ceil(CH.W/N)-1,Math.floor(x1/N));gx++){const k=gx+","+gy;if(CH.live.has(k))continue;CH.live.add(k);
+    for(let y=gy*N;y<Math.min(CH.H,gy*N+N);y++)for(let x=gx*N;x<Math.min(CH.W,gx*N+N);x++){const i=y*CH.W+x,el=T[i];if(!el)continue;if(!el.dataset.f){el.dataset.f=1;const h=CH.inner[i];if(h)el.insertAdjacentHTML("afterbegin",h)}el.classList.remove("cull")}}}
+function chunkCull(T,x0,y0,x1,y1){const N=CH.N;for(const k of[...CH.live]){const[gx,gy]=k.split(",").map(Number);if(gx*N+N-1>=x0&&gx*N<=x1&&gy*N+N-1>=y0&&gy*N<=y1)continue;CH.live.delete(k);
+    for(let y=gy*N;y<Math.min(CH.H,gy*N+N);y++)for(let x=gx*N;x<Math.min(CH.W,gx*N+N);x++){const el=T[y*CH.W+x];if(el)el.classList.add("cull")}}}
+function chunkSync(){const T=chunkTiles(),v=chunkView();if(!T||!v)return;const p=CH.win||v,M=2;
+  /* everything between where the camera was and where it is going gets drawn, so a long cutscene pan never shows a hole */
+  chunkFill(T,Math.min(p[0],v[0])-M,Math.min(p[1],v[1])-M,Math.max(p[2],v[2])+M,Math.max(p[3],v[3])+M);CH.win=v;
+  clearTimeout(CH.tm);CH.tm=setTimeout(()=>{const T2=chunkTiles(),v2=chunkView();if(T2&&v2)chunkCull(T2,v2[0]-6,v2[1]-6,v2[2]+6,v2[3]+6)},1200)}
+{const _c=cam;cam=function(instant){_c(instant);if(!CH.b)chunkSync()}}
+{const _cs=camSetup;camSetup=function(){_cs();if(!CH.b)chunkSync()}}
+/* a crate or boulder that gets opened must stay opened when its chunk is drawn again */
+{const _mo=markOpened;markOpened=function(x,y){_mo(x,y);if(CH.W===EXP.W){const i=y*CH.W+x;CH.inner[i]="";const T=chunkTiles();if(T&&T[i])T[i].dataset.f=1}}}
 
 
 newRun();
