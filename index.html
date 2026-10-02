@@ -1,3 +1,4 @@
+
 <!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
 <meta charset="utf-8">
 <title>Who's That Alloy?</title>
@@ -6977,6 +6978,18 @@ function chunkSync(){const T=chunkTiles(),v=chunkView();if(!T||!v)return;const p
     const better=(o.recovered&&!o.quest&&!o.threat)&&(!a.recovered||a.quest||a.threat)?a:o.recovered&&a.recovered&&(a.quest||a.threat||a.lore)&&!o.lore?a:o;keep.set(k,better)});
   const out=ALLOYS.filter(a=>keep.get(a.name.toLowerCase())===a);if(out.length===ALLOYS.length)return;
   ALLOYS.length=0;out.forEach((a,i)=>{a.no=i+1;ALLOYS.push(a)})})();
+
+/* =============== DEPTH: things further down the screen are in front ===============
+   Every furniture tile and every person or object on the map is layered by its row, so somebody standing just above a bookshelf,
+   pillar or lamp is drawn BEHIND it (it hides their feet) instead of looking as if they're standing on top of it. */
+const DEPTH_SEL=".npc,.mapobj,.mapitem,#player";
+function depthRow(el){const t=parseFloat(el.style.top);return isNaN(t)||!EXP.H?null:Math.round(t/100*EXP.H)}
+function depthPeople(){const w=$("#world");if(!w||!EXP.H)return;w.querySelectorAll(DEPTH_SEL).forEach(el=>{const y=el.id==="player"?EXP.y:depthRow(el);if(y==null)return;const z=String(11+2*y);if(el.style.zIndex!==z)el.style.zIndex=z})}
+function depthTiles(){const m=$("#map");if(!m||!EXP.W)return;const T=m.children;for(let i=0;i<T.length;i++){const el=T[i];if(el.classList.contains("pr")||el.classList.contains("tl")){el.style.zIndex=String(10+2*Math.floor(i/EXP.W))}else if(el.style.zIndex)el.style.zIndex=""}}
+{const _se=startExplore;startExplore=function(){_se();depthTiles();depthPeople()}}
+{const _pp=placePlayer;placePlayer=function(instant){_pp(instant);depthPeople()}}
+{const _mo=markOpened;markOpened=function(x,y){_mo(x,y);depthTiles()}}
+setInterval(()=>{if(S.phase==="explore"&&!document.hidden)depthPeople()},120);
 
 
 newRun();
