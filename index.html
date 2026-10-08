@@ -1,4 +1,6 @@
-<!doctype html><html><head><meta charset=utf8><meta name=viewport content="width=device-width,initial-scale=1,viewport-fit=cover"><style>:root{color-scheme:light;box-sizing:border-box;padding-top:env(safe-area-inset-top,0px);padding-bottom:env(safe-area-inset-bottom,0px)}html{scroll-padding-top:env(safe-area-inset-top,0px)}body{margin:0;padding:0;font:14px -apple-system,BlinkMacSystemFont,sans-serif;background:#faf9f5;color:#141413}img{max-width:100%}[hidden]:not([hidden=until-found i]){display:none!important}</style></head><body>
+<!doctype html>
+<html lang="en">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <meta charset="utf-8">
 <title>Who's That Alloy?</title>
 <link rel="preconnect" href="https://fonts.googleapis.com">
@@ -7757,8 +7759,149 @@ SFX.promote=()=>melody("C5 E5 G5 C6 - G5 C6 E6 - - G6 - - E6 F6 G6 A6 - - G6 - -
 /* a skipped or broken scene can never leave the music stuck at silence */
 {const _ce=csEnd;csEnd=function(){_ce();if(!CS.on&&MUS_HOLD.has("promo")&&!CS.promo)musRelease("promo")}}
 
+/* =============== THE EAST WING: Dr. A.'s acoustics lab ===============
+   The Institute grows a new wing off the old lab: the lab where Dr. A. works, the quiet room she listens in, and her sample store.
+   Everything is added to the east, so nothing already on the map moves. */
+const EWING={x0:56,w:14,
+ rows:{
+  1:"VVVVVVVVVVVVV#",
+  2:"VZ.........ZV#",
+  3:"V...........V#",
+  4:"V...........V#",
+  5:"V.....U.....V#",
+  6:"V.....C.....V#",
+  7:"V...........V#",
+  8:"V...........V#",
+  9:"V...........V#",
+  10:"VZ.........ZV#",
+  11:"VVVVV.VVVVVVV#",
+  12:"#####.########",
+  13:"xxxZ..Q..Zxxx#",
+  14:"S............#",
+  15:".HH.......HH.#",
+  16:".............#",
+  17:"y...........y#",
+  18:".....J.......#",
+  19:".............#",
+  20:".HH.......HH.#",
+  21:".............#",
+  22:"y....x.x....y#",
+  23:"######.#######",
+  24:"xx.c.....c.xx#",
+  25:".............#",
+  26:".,,,.....,,,.#",
+  27:".,,,.....,,,.#",
+  28:".............#",
+  29:"..c.......c..#",
+  30:".,,,.....,,,.#",
+  31:"S............#",
+  32:"y...........y#"}};
+function eastWing(map){if(!map||map[0].length!==56)return map;
+  return map.map((r,y)=>{let add=EWING.rows[y]||"#".repeat(EWING.w);
+    /* a door from the old lab into the new one */
+    if(y===18)r=r.slice(0,55)+".";
+    return r+add})}
+if(typeof MAPS!=="undefined"&&MAPS["z-quill"])MAPS["z-quill"]=eastWing(MAPS["z-quill"]);
+{const Z=ZONES.find(z=>z.cls==="z-quill");if(Z&&Z.map)Z.map=eastWing(Z.map)}
+const inAcoustic=(x,y)=>x>=56&&x<=68&&y>=1&&y<=22,inAStore=(x,y)=>x>=56&&x<=68&&y>=24&&y<=32;
+
+/* ---- her furniture ---- */
+const APROPS={
+ /* foam wedges: the quiet room is lined with them, floor to ceiling */
+ V:{tall:1,svg:`<rect x="0" y="0" width="40" height="40" fill="#3A3E48"/>${[0,10,20,30].map((x,i)=>[0,10,20,30].map((y,j)=>(i+j)%2?`<path d="M${x} ${y} L${x+5} ${y+5} L${x+10} ${y} M${x} ${y+10} L${x+5} ${y+5} L${x+10} ${y+10}" fill="#2C2F37" stroke="#4E5360" stroke-width=".7"/>`:`<path d="M${x} ${y} L${x+5} ${y+5} L${x} ${y+10} M${x+10} ${y} L${x+5} ${y+5} L${x+10} ${y+10}" fill="#2C2F37" stroke="#4E5360" stroke-width=".7"/>`).join("")).join("")}`},
+ /* one chair */
+ C:{svg:`<rect x="13" y="8" width="14" height="13" rx="2" fill="#5A4A44" stroke="#2A2220" stroke-width="1.1"/><rect x="12" y="20" width="16" height="5" rx="1.5" fill="#6A5850" stroke="#2A2220" stroke-width="1.1"/><path d="M14 25 V35 M26 25 V35" stroke="#2A2220" stroke-width="1.6"/>`},
+ /* a microphone on a stand, pointed at the chair */
+ U:{svg:`<path d="M20 34 V14" stroke="#4A4E58" stroke-width="1.4"/><path d="M14 35 L20 33 L26 35" stroke="#4A4E58" stroke-width="1.4" fill="none"/><rect x="17.6" y="5" width="4.8" height="10" rx="2.4" fill="#C9CED4" stroke="#2A2E34" stroke-width="1"/><path d="M17.8 8 H22.2 M17.8 10 H22.2 M17.8 12 H22.2" stroke="#8E949B" stroke-width=".5"/>`},
+ /* a tall cabinet speaker with a cloth front */
+ Z:{tall:1,svg:`<rect x="9" y="2" width="22" height="33" rx="1.5" fill="#2E3038" stroke="#15161A" stroke-width="1.3"/><rect x="11" y="4" width="18" height="29" rx="1" fill="#4A4C56"/>${[6,9,12,15,18,21,24,27,30].map(y=>`<path d="M11.5 ${y} H28.5" stroke="#3A3C44" stroke-width=".6"/>`).join("")}<circle cx="20" cy="11" r="5" fill="#3A3C44" stroke="#1E1F24" stroke-width=".8"/><circle cx="20" cy="11" r="1.8" fill="#24252B"/><circle cx="20" cy="24.5" r="6.4" fill="#3A3C44" stroke="#1E1F24" stroke-width=".8"/><circle cx="20" cy="24.5" r="2.4" fill="#24252B"/><rect x="18" y="33" width="4" height="1.4" fill="#C8CDD4"/>`},
+ /* an oscilloscope trolley: a little green screen with one flat line on it */
+ Q:{svg:`<rect x="5" y="22" width="30" height="4" fill="#9AA2AC" stroke="#3A4048" stroke-width="1.1"/><rect x="7" y="26" width="2.6" height="8" fill="#6A7280"/><rect x="30.4" y="26" width="2.6" height="8" fill="#6A7280"/><circle cx="8.3" cy="34.6" r="1.2" fill="#2A2E34"/><circle cx="31.7" cy="34.6" r="1.2" fill="#2A2E34"/><rect x="8" y="7" width="24" height="15" rx="1.5" fill="#C8CCD2" stroke="#3A4048" stroke-width="1.2"/><rect x="10" y="9" width="14" height="11" rx="1" fill="#14261C" stroke="#3A4048" stroke-width=".7"/><path d="M10.6 14.5 H23.4" stroke="#6CF0A0" stroke-width=".7"/><path d="M14 9 V20 M17.5 9 V20 M21 9 V20 M10 12 H24 M10 17 H24" stroke="#2A4A36" stroke-width=".35"/>${[[27.5,11],[27.5,15],[27.5,19]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="1.3" fill="#3A4048"/><path d="M${x} ${y} l.8 -.8" stroke="#E8ECF0" stroke-width=".4"/>`).join("")}`},
+ /* a bench with a rack of sealed sample vials */
+ H:{svg:`<rect x="2" y="18" width="36" height="5" fill="#D8DCE2" stroke="#4A5058" stroke-width="1.1"/><rect x="4" y="23" width="3" height="12" fill="#8A929C"/><rect x="33" y="23" width="3" height="12" fill="#8A929C"/><rect x="6" y="15" width="18" height="3" rx=".6" fill="#6A7280" stroke="#3A4048" stroke-width=".6"/>${[8,11.5,15,18.5].map((x,i)=>`<rect x="${x}" y="8" width="2.4" height="8" rx="1" fill="rgba(215,230,240,.75)" stroke="#5A6A7A" stroke-width=".5"/><rect x="${x}" y="${12+i%2}" width="2.4" height="${3.6-i%2}" fill="${["#B8B6A8","#9EA6A2","#C2BAA4","#A8AEB0"][i]}"/><rect x="${x-.2}" y="7" width="2.8" height="1.4" fill="#2E3440"/>`).join("")}<rect x="27" y="11" width="8" height="7" rx="1" fill="#F4F0E4" stroke="#8A8272" stroke-width=".6"/><path d="M28.4 13.2 H33.6 M28.4 15 H32" stroke="#8A8272" stroke-width=".5"/>`},
+ /* a glovebox: a sealed glass case with two black gloves reaching in */
+ J:{svg:`<rect x="3" y="24" width="34" height="3" fill="#8A929C" stroke="#3A4048" stroke-width="1"/><rect x="5" y="27" width="3" height="8" fill="#6A7280"/><rect x="32" y="27" width="3" height="8" fill="#6A7280"/><path d="M4 24 V10 Q4 7 7 7 H33 Q36 7 36 10 V24 Z" fill="rgba(200,220,232,.55)" stroke="#3A4048" stroke-width="1.2"/><circle cx="13" cy="18" r="3.4" fill="#1E2024" stroke="#3A4048" stroke-width=".8"/><circle cx="27" cy="18" r="3.4" fill="#1E2024" stroke="#3A4048" stroke-width=".8"/><path d="M13 18 Q15 13 18 13 M27 18 Q25 13 22 13" stroke="#1E2024" stroke-width="2.4" fill="none" stroke-linecap="round"/><rect x="18" y="11" width="4" height="5" rx="1" fill="rgba(230,236,240,.85)" stroke="#5A6A7A" stroke-width=".5"/><path d="M8 9 L12 9" stroke="#FFFFFF" stroke-width=".8" opacity=".6"/><rect x="30" y="8.4" width="4" height="2" rx=".5" fill="#E0B820" stroke="#6A5410" stroke-width=".4"/>`}};
+{const _tl=tileLook;tileLook=function(c,x,y,seed,M){const z=EXP.zone;if(z.cls!=="z-quill"||z.special||!(inAcoustic(x,y)||inAStore(x,y)))return _tl(c,x,y,seed,M);
+  const src=APROPS[c];if(src)return[(src.tall?"f tl":"f pr")+" alab",PS(src.svg)];
+  const r=_tl(c,x,y,seed,M);if(r&&/^f\b/.test(r[0])&&inAcoustic(x,y))r[0]+=" alab";return r}}
+
+/* ---- the signs ---- */
+Object.assign(SIGNS["z-quill"],{
+ "56,14":["ACOUSTICS. Dr. A.","Quiet, please. This is not a request."],
+ "56,31":["SAMPLE STORE. Dr. A.","Everything on these shelves is sealed. Everything that fell off the shelves is your problem now."]});
+
+{const _wp=worldPlace;worldPlace=function(){_wp();const z=EXP.zone;if(!z||z.cls!=="z-quill"||z.special)return;
+  EXP.objs.push({x:62,y:6,tile:1,use:()=>talk("",["One chair, in a room lined with foam. The microphone in front of it is pointed at whoever sits down.","You sit. After a while you can hear your own heartbeat, and then something like a hum that might be your own ears.","You get up again rather quickly."])})}}
+
+/* ---- Dr. A. ---- */
+function drASVG(){
+  const ink=PI_K,hair="#3E2619",hl="#7A5038",hd="#22140C",skin="#E2B38C",sk2="#C58E68",cardi="#BE8B95",cd="#9A6672",tee="#F2EBDD";
+  /* a soft outline made of little bulges, so the curls read as one cloud and not a pile of balls */
+  const cloud=(pts,b)=>{let d=`M${pts[0][0]} ${pts[0][1]}`;for(let i=0;i<pts.length;i++){const [x1,y1]=pts[i],[x2,y2]=pts[(i+1)%pts.length],mx=(x1+x2)/2,my=(y1+y2)/2,dx=x2-x1,dy=y2-y1,l=Math.hypot(dx,dy)||1,k=b*l;
+      d+=` Q${(mx+dy/l*k).toFixed(2)} ${(my-dx/l*k).toFixed(2)} ${x2} ${y2}`}return d+"Z"};
+  /* the whole mass of hair, wide at the cheeks and stopping at the shoulders */
+  const mass=cloud([[20,2.2],[23.6,2.6],[26.8,4.2],[29.4,7],[30.8,10.4],[31.6,14],[31.8,17.4],[30.8,20.6],[28.6,22.6],[25.8,22.2],[24,20.4],[16,20.4],[14.2,22.2],[11.4,22.6],[9.2,20.6],[8.2,17.4],[8.4,14],[9.2,10.4],[10.6,7],[13.2,4.2],[16.4,2.6]],.42);
+  const curl=(x,y,s,c,w)=>`<path d="M${x} ${y} a${1*s} ${1*s} 0 1 1 ${1.4*s} ${.9*s}" stroke="${c}" stroke-width="${w||.4}" fill="none" stroke-linecap="round" opacity=".75"/>`;
+  let o=`<path d="${mass}" fill="${hair}" stroke="${ink}" stroke-width="1.2" stroke-linejoin="round"/>`;
+  o+=[[10.4,9],[9.6,13.4],[9.8,17.6],[11.6,20.4],[28.2,9.4],[29.4,13.2],[29.2,17.4],[27.4,20.6],[12.6,5.6],[26,5.2]].map(([x,y],i)=>curl(x,y,1,i%2?hd:hl,.5)).join("");
+  /* the body, from the shared figure: a pink knit cardigan over a cream tee */
+  let body=personInner({skin,hair,hs:"bald",acc:[],coat:cardi,style:"cardigan",shirt:tee,legs:"#3A4258",shoes:"#2A2420",mouth:"flat",noblush:1});
+  o+=body;
+  /* the tee shows between the open fronts, with the word across it */
+  o+=`<path d="M16.2 20.6 Q20 22 23.8 20.6 L23.6 31.9 L16.4 31.9 Z" fill="${tee}" stroke="${ink}" stroke-width=".5"/>`
+    +`<text x="20" y="25.4" text-anchor="middle" font-family="Arial Black,Arial,sans-serif" font-weight="900" font-size="1.5" fill="#141414" textLength="5.8" lengthAdjust="spacingAndGlyphs">DREAMER</text>`
+    +`<path d="M16 20.7 L16.3 31.9 M24 20.7 L23.7 31.9" stroke="${cd}" stroke-width="1.2"/>`
+    +[22.4,24,25.6,27.2,28.8,30.4].map(y=>`<path d="M15.4 ${y} h1.2 M23.4 ${y} h1.2" stroke="${shade(cardi,.2)}" stroke-width=".35"/>`).join("")
+    +[12.6,13.8,26.2,27.4].map(x=>`<path d="M${x} 22.4 V31.2" stroke="${cd}" stroke-width=".3" opacity=".55"/>`).join("")
+    +`<path d="M11.2 30.6 H16 M24 30.6 H28.8" stroke="${cd}" stroke-width=".6" opacity=".7"/>`;
+  /* her own face, drawn over the stock one */
+  o+=`<ellipse cx="13.1" cy="13.8" rx="1" ry="1.4" fill="${skin}" stroke="${ink}" stroke-width=".7"/><ellipse cx="26.9" cy="13.8" rx="1" ry="1.4" fill="${skin}" stroke="${ink}" stroke-width=".7"/>`
+    +`<path d="M13 12.6 Q13 6 20 6 Q27 6 27 12.6 Q27 20 20 20.2 Q13 20 13 12.6 Z" fill="${skin}" stroke="${ink}" stroke-width="1.4"/>`
+    
+    /* eyes: dark, steady, lids a little low. Not tired, not cross. Just looking. */
+    +[17.5,22.5].map(x=>`<ellipse cx="${x}" cy="13.75" rx=".85" ry=".95" fill="#24170F"/><circle cx="${x+.3}" cy="13.45" r=".27" fill="#FFFFFF"/><path d="M${x-1.05} 13.05 Q${x} 12.75 ${x+1.05} 13.05" stroke="${ink}" stroke-width=".55" fill="none" stroke-linecap="round"/>`).join("")
+    /* straight, level brows */
+    +`<path d="M15.8 11.15 L18.9 11.25 M24.2 11.15 L21.1 11.25" stroke="${hd}" stroke-width=".8" stroke-linecap="round"/>`
+    /* black rectangular frames */
+    +`<rect x="15.3" y="11.95" width="4.3" height="3.45" rx=".45" fill="#FFFFFF" fill-opacity=".14" stroke="#121212" stroke-width=".8"/><rect x="20.4" y="11.95" width="4.3" height="3.45" rx=".45" fill="#FFFFFF" fill-opacity=".14" stroke="#121212" stroke-width=".8"/><path d="M19.6 12.9 Q20 12.6 20.4 12.9 M15.3 12.6 L13.6 12.4 M24.7 12.6 L26.4 12.4" stroke="#121212" stroke-width=".7" fill="none"/><path d="M15.9 12.6 l.7 -.01" stroke="#FFFFFF" stroke-width=".35" opacity=".8"/>`
+    /* nose and a flat, closed mouth */
+    +`<path d="M20.1 14.6 Q19.5 16 20 16.4 Q20.5 16.6 21 16.3" stroke="${sk2}" stroke-width=".6" fill="none" stroke-linecap="round"/>`
+    +`<path d="M18.9 17.85 Q20 17.7 21.1 17.85" stroke="${ink}" stroke-width=".75" fill="none" stroke-linecap="round"/>`;
+  /* curls falling in front: a fringe over the forehead and loose ringlets down each cheek */
+  const fringe=cloud([[13,10.2],[13.2,7.2],[15.4,4.8],[18.4,3.8],[21.6,3.8],[24.6,4.8],[26.8,7.2],[27,10.2],[25.6,9],[24,9.8],[22.4,8.6],[20.6,9.6],[19,8.4],[17.2,9.6],[15.8,8.6],[14.4,9.6]],.32);
+  o+=`<path d="${fringe}" fill="${hair}" stroke="${ink}" stroke-width="1" stroke-linejoin="round"/>`;
+  const side=(s)=>{const X=x=>20+s*(x-20);return cloud([[X(12.6),8.6],[X(14.4),10],[X(14.6),13],[X(14.2),16],[X(14.6),18.8],[X(13.6),21],[X(11.8),20.8],[X(11.4),17.4],[X(11.2),13.4],[X(11.4),10.4]].map(([x,y])=>[+x.toFixed(2),y]),.34)};
+  o+=[-1,1].map(s=>`<path d="${side(s)}" fill="${hair}" stroke="${ink}" stroke-width=".9" stroke-linejoin="round"/>`).join("");
+  o+=[[15,7],[18.2,5.6],[21.4,5.4],[24.2,6.6],[12.2,12],[12.4,16.4],[27,12.2],[26.8,16.6],[16.6,8],[22.6,7.6]].map(([x,y],i)=>curl(x,y,.85,i%3?hl:hd)).join("");
+  /* pale grey over-ear headphones, band over the curls, cups over the ears */
+  o+=`<path d="M10.2 13.4 Q9.6 2.8 20 2.6 Q30.4 2.8 29.8 13.4" stroke="${ink}" stroke-width="2.3" fill="none" stroke-linecap="round"/><path d="M10.2 13.4 Q9.6 2.8 20 2.6 Q30.4 2.8 29.8 13.4" stroke="#CDD2D8" stroke-width="1.3" fill="none" stroke-linecap="round"/><path d="M14.6 4.6 Q20 2.9 25.4 4.6" stroke="#F4F6F8" stroke-width=".4" fill="none"/>`
+    +[[10.1,-1],[29.9,1]].map(([x,s])=>`<ellipse cx="${x}" cy="15.2" rx="2.1" ry="2.9" fill="#C3C8CF" stroke="${ink}" stroke-width=".8"/><ellipse cx="${x-s*.35}" cy="15.2" rx="1.1" ry="2" fill="#9AA0A8"/><path d="M${x+s*.9} 13.6 Q${x+s*1.5} 15.2 ${x+s*.9} 16.8" stroke="#EEF0F3" stroke-width=".45" fill="none"/>`).join("");
+  return `<svg viewBox="0 0 40 40" aria-hidden="true"><ellipse cx="20" cy="37.5" rx="10.5" ry="2.2" fill="#000" opacity=".3"/>${o}</svg>`}
+{const _n=npcSVG;npcSVG=function(L){if(L&&L.drA)return drASVG();return _n(L)}}
+const DR_A={n:"Dr. A.",look:{drA:1,coat:"#B88590",hair:"#3B2418",hs:"curly",skin:"#E3B48E"},talks:[
+ ["Dr. A. Acoustics.","The headphones aren't playing anything. They keep the hall out."],
+ ["I made Jestiphonatacicis. One batch, in the glovebox, with the lights off.","The register says the vial is not to be opened. The register is correct."],
+ ["You're standing where I measure from.","...","Thank you."],
+ ["People ask what the A stands for.","It stands for A."],
+ ["The shirt was a gift. I didn't choose the word.","I wear it because it's clean."],
+ ["Marlow brings me tea when he wants a favour. He has brought me tea four times this week.","I haven't decided yet."]]};
+{const _wp=worldPlace;worldPlace=function(){_wp();const z=EXP.zone;if(!z||z.cls!=="z-quill"||z.special||(typeof TUT!=="undefined"&&TUT.on))return;
+  if((EXP.npcs||[]).some(p=>p.n===DR_A.n))return;const x=62,y=16,W=EXP.W,H=EXP.H;
+  const d=document.createElement("div");d.className="npc";d.style.width=(100/W)+"%";d.style.height=(100/H)+"%";d.style.left=(x/W*100)+"%";d.style.top=(y/H*100)+"%";
+  d.innerHTML=`<span class="talkmark">...</span>`+npcSVG(DR_A.look);$("#world").insertBefore(d,$("#player"));
+  EXP.npcs.push({...DR_A,x,y,el:d,said:0});nearMarks()}}
+if(typeof lookOf==="function"){const _lo=lookOf;lookOf=function(n){return n===DR_A.n?DR_A.look:_lo(n)}}
+
+/* ---- her alloy ---- */
+slagAlloy({name:"Jestiphonatacicis",cat:"Sealed Sample",rar:"rare",comp:[["Na",41.9],["U",28.4],["I",16],["Fr",13.7]],origin:"Dr. A.",kind:"person",fill:"granules",
+  uses:"None. It stays in its vial",made:"Mixed in Dr. A.'s glovebox, in the dark, in one batch",
+  lore:"Dr. A. made exactly one batch, sealed it, and wrote a single line in the register beside it: 'Do not open. Do not shake. Do not ask.' Nobody has asked. A few grains of it got loose when a shelf in her sample store came down."});
+{const a=ALLOYS.find(a=>a.name==="Jestiphonatacicis");if(a){a.slagWild=false;
+  /* francium has no measured density, so the mix is worked out with the usual estimate for it */
+  const est={Fr:2.48};a.d=+(1/a.comp.reduce((t,[s,p])=>t+p/100/(BY[s].d||est[s]),0)).toFixed(2);a.types=typesOf(a);a.fixedHab="z-quill";a.hab="z-quill"}}
+
 
 newRun();
 </script>
 
-</body></html>
+</html>
