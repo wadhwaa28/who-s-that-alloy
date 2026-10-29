@@ -2427,6 +2427,42 @@ dl.props.dd dd{text-align:right}
 @keyframes hmWinA{0%{opacity:0}45%{opacity:1}55%{opacity:1}55.01%{opacity:0}100%{opacity:0}}
 @keyframes hmWinB{0%,45%{opacity:0}55%{opacity:1}100%{opacity:0}}
 .lnt-shade{transition:opacity 1s,filter 1s,transform 1s,translate 1.1s ease-in-out}
+/* while an Assay is on screen the map behind it is completely covered: don't draw it, and hold its animations exactly where they are */
+body.as-open #mapwrap{visibility:hidden}
+body.as-open #mapwrap *,body.as-open #mapwrap *::before,body.as-open #mapwrap *::after{animation-play-state:paused!important}
+/* garland bulbs: the glow is drawn once and the bulb's pulse is a plain fade, instead of re-blurring every bulb every frame */
+.dr-bulb{filter:drop-shadow(0 0 2px currentColor);animation-name:drTwO!important}
+@keyframes drTwO{0%,100%{opacity:1}50%{opacity:.55}}
+/* lit neeps' faces and the cauldrons: the same colours, cross-faded by the graphics card instead of repainted */
+.lnt-face.fxd,.lnt-brew.fxd{animation:none!important}
+.lnt-faceA{opacity:0;animation:lntFaceA 1.1s ease-in-out infinite}
+.lnt-faceB{opacity:0;animation:lntFaceB 1.1s ease-in-out infinite}
+@keyframes lntFaceA{0%{opacity:0}50%{opacity:1}75%{opacity:1}75.01%{opacity:0}100%{opacity:0}}
+@keyframes lntFaceB{0%,50%{opacity:0}75%{opacity:1}100%{opacity:0}}
+.lnt-brewG{opacity:0;animation:lntBrewO 2s ease-in-out infinite}
+@keyframes lntBrewO{50%{opacity:1}}
+.lnt.neep:not(.lit) .lnt-faceA,.lnt.neep:not(.lit) .lnt-faceB{display:none}
+/* the map of Drossmarch */
+#wmap .bag-card{width:min(1080px,100%);max-height:94vh}
+.wm-frame{container-type:inline-size;position:relative;width:100%;aspect-ratio:1200/840;border:3px solid var(--line);border-radius:10px;overflow:hidden;background:#173A80}
+.wm-img{position:absolute;inset:0;width:100%;height:100%;display:block}
+.wm-wait{position:absolute;inset:0;display:flex;align-items:center;justify-content:center;font-family:var(--pix);font-size:11px;color:#E8F0FF}
+.wm-pins{position:absolute;inset:0}
+.wm-pin{position:absolute;transform:translate(-50%,-50%);border:0;border-radius:50%;background:transparent;cursor:pointer;padding:0}
+.wm-pin:hover,.wm-pin.on{background:radial-gradient(circle,rgba(255,240,190,.0) 55%,rgba(255,240,190,.55) 68%,rgba(255,240,190,0) 72%)}
+.wm-pin:focus-visible{outline:3px solid #FFE08A;outline-offset:2px}
+.wm-lab{position:absolute;transform:translate(-50%,-100%);pointer-events:none;white-space:nowrap;font-family:var(--pix);font-size:clamp(6px,1.05vw,10px);line-height:1.3;color:#1A2550;background:rgba(255,250,236,.92);border:2px solid #1A2550;border-radius:6px;padding:2px 5px}
+.wm-lab.here{background:#FFE08A}
+.wm-you{position:absolute;width:3.2%;aspect-ratio:1;transform:translate(-50%,-50%);border-radius:50%;border:3px solid #FFE08A;box-shadow:0 0 0 2px #1A2550;pointer-events:none;animation:wmYou 1.6s ease-out infinite}
+@keyframes wmYou{0%{transform:translate(-50%,-50%) scale(.6);opacity:1}100%{transform:translate(-50%,-50%) scale(1.9);opacity:0}}
+.wm-card{display:flex;flex-direction:column;gap:4px;font-size:14px;line-height:1.4;min-height:4.2em}
+.wm-card b{font-family:var(--pix);font-size:11px}
+.wm-card em{font-style:normal;font-family:var(--pix);font-size:9px;background:#FFE08A;border:2px solid var(--line);border-radius:5px;padding:1px 4px;margin-left:6px}
+.wm-card u{text-decoration:none;font-weight:800}
+@media (prefers-reduced-motion:reduce){.wm-you{animation:none}}
+/* on a small screen the names would pile up: show where you are and what you've tapped, the rest on tap */
+@container (max-width:620px){.wm-lab{font-size:8px;padding:1px 4px}.wm-lab:not(.here):not(.on){display:none}}
+.mapobj.hallx svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;display:block}
 </style>
 
 <div class="app">
@@ -9756,18 +9792,40 @@ const GYMS={
    win:["Came through the atmosphere in one piece. Well done.","The Starfall Seal. The last of the eight halls, or one of them."],lose:["Burned up on the way in. Come back."],again:["Clear skies tonight. Assay?"]},
   hands:[{n:"Hall Hand Quill",look:{coat:"#2A2436",hair:"#1A1A1A",hs:"mohawk",acc:["goggles"],skin:"#F2D2B8",mouth:"grin"},hi:["I've got a sample from a meteorite. Probably. Allegedly."],beat:["Allegedly beaten."]},
          {n:"Hall Hand Neve",look:{coat:"#3A3448",hair:"#E8A060",hs:"pigtails",acc:["freckles"],skin:"#F2D2B8"},hi:["I count shooting stars. You're number one thousand and four."],beat:["One thousand and five."]}]}};
-const GYM_POS={leader:[48,3,[0,1]],hands:[[47,20,[0,1]],[48,12,[0,1]]],bench:[41,2],spawn:[42,3]};const GYMST={inG:false};
-/* ---- building the halls into the maps ---- */
-function gymWing(z,map){const G=GYMS[z];if(!G||!map||map[0].length!==40)return map;const sea=!!G.pier,fill=sea?"~":"#";
-  return map.map((r,y)=>{let add;if(y===0||y===map.length-1)add=fill.repeat(GYM_W);else{add=GYM_T[y-1]||fill.repeat(GYM_W);if(G.door.includes(y))add="."+add.slice(1);if(y===G.door[0]-1)add=add.slice(0,2)+"S"+add.slice(3)}
-    if(G.door.includes(y))r=sea?r.slice(0,36)+"====":r.slice(0,39)+".";
-    return r+add})}
-Object.keys(GYMS).forEach(z=>{if(MAPS[z])MAPS[z]=gymWing(z,MAPS[z]);const Z=ZONES.find(q=>q.cls===z);if(Z&&Z.map)Z.map=gymWing(z,Z.map)});
-const inGym=(x,y)=>!!(EXP.zone&&!EXP.zone.special&&GYMS[EXP.zone.cls]&&x>=GYM_X&&x<GYM_X+GYM_W&&y>=1&&y<=24);
-Object.keys(GYMS).forEach(z=>{const G=GYMS[z];SIGNS[z]=SIGNS[z]||{};SIGNS[z][`${GYM_X+2},${G.door[0]-1}`]=[G.hall+".",`Assayer: ${G.leader.n}.`,"Bring a Sample Case. Rest racks by the door. Hall hands first, the Assayer last."]});
+
+/* ---- the halls are buildings now ----
+   East of each area, where the hall used to be built straight into the map, there's an open forecourt with the hall standing in it:
+   a proper building with a front door. Walk in through the door and you're inside the hall, its own room; walk out and you're
+   back on its step. Nothing already on a map moves. */
+const HB={x:43,y:3,w:9,h:5,door:[47,7],step:[47,8]};
+/* the forecourt: a paved way from the gap in the old east wall round to the hall's front step */
+function gymYard(z,map){const G=GYMS[z];if(!G||!map||map[0].length!==40)return map;const sea=!!G.pier,H=map.length,dy=G.door,last=Math.max(12,Math.max(...dy)+1);
+  const g=[];for(let y=0;y<H;y++){const r=[];for(let x=0;x<14;x++){const X=40+x;let c;
+      if(y===0||y===H-1||X===53)c=sea?"~":"#";else if(y>last)c=sea?"~":"#";else c=sea?"~":".";r.push(c)}g.push(r)}
+  const put=(X,y,c)=>{if(y>0&&y<H-1&&X>=40&&X<53)g[y][X-40]=c};
+  if(sea){/* the Cove's hall stands on its own rock out in the water, reached by the pier */
+    for(let y=2;y<=10;y++)for(let X=42;X<=52;X++)if(!((y===2||y===10)&&(X===42||X===52)))put(X,y,".");
+    for(let y=Math.min(...dy);y>=10;y--){put(40,y,"=");put(41,y,"=")}dy.forEach(y=>{put(40,y,"=");put(41,y,"=")});
+    put(42,10,"=");put(43,9,".");}
+  else{const top=Math.min(...dy);dy.forEach(y=>put(40,y,":"));for(let y=Math.min(top,9);y<=Math.max(top,9);y++)put(41,y,":");for(let X=41;X<=47;X++)put(X,9,":");
+    /* everything else in the forecourt is placed on purpose: lamps either side of the step, the area's own furniture round the edges */
+    [[42,1],[52,1],[52,last],[42,last]].forEach(([X,y])=>put(X,y,"T"));put(52,5,"x");put(42,5,"o");put(52,9,"y");put(44,last-1,"o");put(50,last-1,"o");}
+  for(let y=HB.y;y<HB.y+HB.h;y++)for(let X=HB.x;X<HB.x+HB.w;X++)put(X,y,"H");
+  for(let X=45;X<=49;X++)put(X,8,":");put(44,8,"S");put(50,8,sea?".":"o");
+  return map.map((r,y)=>{if(dy.includes(y))r=sea?r.slice(0,36)+"====":r.slice(0,39)+":";return r+g[y].join("")})}
+Object.keys(GYMS).forEach(z=>{if(MAPS[z])MAPS[z]=gymYard(z,MAPS[z]);const Z=ZONES.find(q=>q.cls===z);if(Z&&Z.map)Z.map=gymYard(z,Z.map)});
+/* the inside of each hall: the same three rooms as ever. You come in at the bottom of the long hall-way; the rest rack is right by the door. */
+const HALL_IN=["##############","#S.#y.......y#","#..#...:::...#","#..#x..:::..x#","#..#...:::...#","#..#.T.....T.#","#..#.........#","#..#y.......y#","#..##.########","#..#.........#","#..#.o...o...#","#..#.........#","#..#..x...x..#","#..#.........#","#..#.........#","#..#######.###","#..#.........#","#..#..T...T..#","#..#.........#","#B.#.........#","#..#y.......y#","#..#.........#","#............#","#D############"];
+const HALLZ={};Object.keys(GYMS).forEach(z=>{const G=GYMS[z],t=G.hall.toLowerCase().replace(/(^|\s)\S/g,m=>m.toUpperCase());HALLZ[z]={name:G.hall,sub:`Assayer: ${G.leader.n}. Hall hands first, the Assayer last.`,cls:z,special:"hall",hallOf:z,map:HALL_IN.slice()}});
+const inHallZone=()=>!!(EXP.zone&&EXP.zone.special==="hall");
+const inGym=(x,y)=>inHallZone();
+const GYM_POS={leader:[8,2,[0,1]],hands:[[7,19,[0,1]],[8,11,[0,1]]],bench:[1,19],spawn:[2,20],door:[1,22]};const GYMST={inG:false};
+function hallEnter(z){const H=HALLZ[z];if(!H)return;sfx("clunk");EXP.path=null;EXP.forceZone=H;EXP.spawn=GYM_POS.door.slice();EXP.stash=null;EXP.resume=null;startExplore()}
+function hallLeave(){const z=EXP.zone&&EXP.zone.hallOf;if(!z)return;sfx("clunk");EXP.path=null;EXP.forceZone=ZONES.find(q=>q.cls===z);EXP.spawn=HB.step.slice();EXP.stash=null;EXP.resume=null;startExplore()}
+Object.keys(GYMS).forEach(z=>{const G=GYMS[z];SIGNS[z]=SIGNS[z]||{};SIGNS[z]["44,8"]=[G.hall+".",`Assayer: ${G.leader.n}.`,"Bring a Sample Case. There's a rest rack just inside the door. Hall hands first, the Assayer last."]});
 /* the rest rack */
 const RACK_SVG=`<rect x="5" y="14" width="30" height="20" rx="2" fill="#6A7280" stroke="#2A2E34" stroke-width="1.3"/><rect x="8" y="17" width="24" height="9" rx="1" fill="#2A2E34"/>${[10.5,15,19.5,24,28.5].map(x=>`<rect x="${x}" y="18" width="2" height="7" rx=".8" fill="#C9CED4"/>`).join("")}<path d="M10 9 H30 L27 14 H13 Z" fill="#E8A040" stroke="#6A3A10" stroke-width="1"/><path d="M14 12 H26" stroke="#FFE0A0" stroke-width="1.2"/><rect x="8" y="28" width="24" height="3" fill="#4A5058"/>`;
-{const _tl=tileLook;tileLook=function(c,x,y,seed,M){if(c==="B"&&inGym(x,y))return["f pr",PS(RACK_SVG)];return _tl(c,x,y,seed,M)}}
+{const _tl=tileLook;tileLook=function(c,x,y,seed,M){if(inHallZone()){if(c==="B")return["f pr",PS(RACK_SVG)];if(c==="S")return["f pr",PS(SIGNPOST)];if(c==="D")return["f hdoor",HALL_MAT]}return _tl(c,x,y,seed,M)}}
 /* ---- who's in the hall, and what they carry ---- */
 function gymTeam(z,who,s){const G=GYMS[z],seed=[...(z+who)].reduce((a,ch)=>a*31+ch.charCodeAt(0)|0,7),R=mulberry(seed);
   let pool=ALLOYS.filter(a=>!a.threat&&!a.event&&a.hab===z&&G.theme(a));if(pool.length<8)pool=pool.concat(ALLOYS.filter(a=>!a.threat&&!a.event&&G.theme(a)&&!pool.includes(a)&&a.rar!=="legendary"));
@@ -9778,10 +9836,12 @@ function gymTeam(z,who,s){const G=GYMS[z],seed=[...(z+who)].reduce((a,ch)=>a*31+
 function gymKey(z,n){return z+":"+n}
 function gymPerson(p,x,y,face){const W=EXP.W,H=EXP.H,d=document.createElement("div");d.className="npc";d.style.width=(100/W)+"%";d.style.height=(100/H)+"%";d.style.left=(x/W*100)+"%";d.style.top=(y/H*100)+"%";
   d.innerHTML=`<span class="talkmark">...</span>`+npcSVG(p.look);$("#world").insertBefore(d,$("#player"));const o={...p,x,y,el:d,said:0,face,talks:[[""]]};EXP.npcs.push(o);return o}
-{const _wp=worldPlace;worldPlace=function(){_wp();const z=EXP.zone;if(!z||z.special||!GYMS[z.cls]||(typeof TUT!=="undefined"&&TUT.on))return;const G=GYMS[z.cls];
-  /* nothing wanders into a hall by accident */
-  ["items","grunts"].forEach(k=>{EXP[k]=(EXP[k]||[]).filter(t=>{if(inGym(t.x,t.y)){t.el&&t.el.remove();return false}return true})});EXP.hidden=(EXP.hidden||[]).filter(h=>!inGym(h.x,h.y));
+{const _wp=worldPlace;worldPlace=function(){_wp();const z=EXP.zone;if(!z||(typeof TUT!=="undefined"&&TUT.on))return;
+  if(GYMS[z.cls]&&!z.special){hallOutside(z.cls);return}
+  if(z.special!=="hall")return;const G=GYMS[z.cls];
   const[bx,by]=GYM_POS.bench;EXP.objs.push({x:bx,y:by,tile:1,use:()=>{asHealAll();sfx("pickup");talk("",["You set your samples on the rest rack. Warm air from the annealing lamp works the stress out of them.","Your Sample Case is fully rested."])}});
+  EXP.objs.push({x:1,y:1,tile:1,use:()=>talk("",[G.hall+".",`Assayer: ${G.leader.n}. Seal of this hall: the ${G.seal}.`,"Hall hands first, the Assayer last. Rest your samples at the rack by the door whenever you like."])});
+  EXP.objs.push({x:1,y:23,tile:1,use:()=>hallLeave()});
   G.hands.forEach((h,i)=>{const[x,y,f]=GYM_POS.hands[i];const o=gymPerson(h,x,y,f);o.gymHand=1;o.quest=function(){gymChallenge(z.cls,o,false);return true}});
   {const[x,y,f]=GYM_POS.leader;const o=gymPerson({n:G.leader.n,look:G.leader.look},x,y,f);o.gymLeader=1;o.quest=function(){gymLeaderTalk(z.cls,o);return true}}
   nearMarks()}}
@@ -9795,9 +9855,13 @@ function gymLeaderTalk(z,o){const G=GYMS[z],L=G.leader,d=asData(),won=d.seals.in
   talk(L.n,won?L.again:L.hi,()=>asStart({n:L.n,title:L.title,leader:1,smart:1,team:gymTeam(z,"leader",won?Math.max(6,d.seals.length):d.seals.length)},res=>{if(res==null)return;
     if(res){const D=asData();if(!D.seals.includes(z)){D.seals.push(z);asSave(D);sfx("fanfare");talk(L.n,L.win,()=>talk("",[`You received the ${G.seal.toUpperCase()}.`,`Seals: ${D.seals.length} of ${Object.keys(GYMS).length}. Your Sample Case holds ${caseSlots()} samples, and samples up to ${GRADES[obeyGrade()]} will take your orders.`]))}else talk(L.n,["Good. Again some time."])}
     else{talk(L.n,L.lose,()=>gymLost(z))}}))}
-function gymLost(z){const[x,y]=GYM_POS.spawn;EXP.x=x;EXP.y=y;placePlayer(true);asHealAll();say0("You were helped back to the rest rack by the door. Your samples are rested.")}
+function gymLost(z){asHealAll();if(!inHallZone()){say0("Your samples are rested.");return}const[x,y]=GYM_POS.spawn;EXP.x=x;EXP.y=y;placePlayer(true);if(typeof cam==="function")cam(true);say0("You were helped back to the rest rack by the door. Your samples are rested.")}
 /* hall hands spot you if you walk into their line of sight */
-{const _st=step;step=function(dx,dy){const r=_st(dx,dy);if(AS.on||DLG.open||!EXP.zone||!GYMS[EXP.zone.cls])return r;
+/* walking into a hall's front door takes you in; walking down onto the mat inside takes you out */
+{const _st=step;step=function(dx,dy){if(!EXP.busy&&S.phase==="explore"&&EXP.zone&&!AS.on&&!DLG.open){const nx=EXP.x+dx,ny=EXP.y+dy;
+    if(GYMS[EXP.zone.cls]&&!EXP.zone.special&&nx===HB.door[0]&&ny===HB.door[1]){hallEnter(EXP.zone.cls);return false}
+    if(inHallZone()&&nx===1&&ny===23){hallLeave();return false}}
+  const r=_st(dx,dy);if(AS.on||DLG.open||!EXP.zone||!GYMS[EXP.zone.cls])return r;
   const was=GYMST.inG,now=inGym(EXP.x,EXP.y);GYMST.inG=now;if(was!==now&&AU.want!==zoneTrack())startTrack(zoneTrack());
   if(!now||EXP.busy)return r;const d=asData();
   for(const o of EXP.npcs||[]){if(!o.gymHand||d.beat[gymKey(EXP.zone.cls,o.n)])continue;const[fx,fy]=o.face;
@@ -9818,7 +9882,7 @@ Object.assign(TRACKS,{
 /* ---- the journal ---- */
 {const _jo=journalObjectives;journalObjectives=function(){const J=_jo(),d=asData(),Z=Object.keys(GYMS),left=Z.filter(z=>!d.seals.includes(z));
   const nm=z=>(ZONES.find(q=>q.cls===z)||{}).name||z;
-  J.push(`<div class="bag-item key obj"><b>ASSAY SEALS: ${d.seals.length} OF ${Z.length}</b><p>${d.case.length?`Carry your Sample Case into the Assay Halls on the east side of each map and earn their Seals.`:`Open the CASE and choose which registered samples to carry, then take them to the Assay Halls on the east side of each map.`}<span class="obj-list">${left.map(z=>`<span><b>${GYMS[z].hall}:</b> ${nm(z)}.</span>`).join("")}${d.seals.length?`<span><b>EARNED:</b> ${d.seals.map(z=>GYMS[z].seal).join(", ")}.</span>`:""}</span></p></div>`);return J}}
+  J.push(`<div class="bag-item key obj"><b>ASSAY SEALS: ${d.seals.length} OF ${Z.length}</b><p>${d.case.length?`Carry your Sample Case into the Assay Halls, one in every area but Quillmoor, and earn their Seals.`:`Open the CASE and choose which registered samples to carry, then take them to the Assay Halls, one in every area but Quillmoor.`}<span class="obj-list">${left.map(z=>`<span><b>${GYMS[z].hall}:</b> ${nm(z)}.</span>`).join("")}${d.seals.length?`<span><b>EARNED:</b> ${d.seals.map(z=>GYMS[z].seal).join(", ")}.</span>`:""}</span></p></div>`);return J}}
 
 /* =============== BATTLE FORMS (third pass: rigged) ===============
    Each form is a creature built from what its alloy IS: its metals, its types, and what it is used for, with its story only as an
@@ -18414,7 +18478,7 @@ function ocCheckWear(){if(OC.st===6&&ocWorn())ocAdvance(7)}
 /* Dr. Marlow: the offer, and the report */
 function ocMarlow(m){const s=OC.st;
   if(s===0&&foIdx()>=1&&!foReady()){const a=alloyByName("Brass");
-    talk(m.n,["Come in, come in. Shut the door, would you? I want to show you something, and Hobbs gets twitchy when things glow.","You'll have seen the Assay halls on the east side of the maps. Samples knocking chunks off each other. Sturdy little things.","This is the brass rod from your very first morning. I kept it. Sentimental old fool. Watch."],
+    talk(m.n,["Come in, come in. Shut the door, would you? I want to show you something, and Hobbs gets twitchy when things glow.","You'll have seen the Assay halls, one out in every area. Samples knocking chunks off each other. Sturdy little things.","This is the brass rod from your very first morning. I kept it. Sentimental old fool. Watch."],
       ()=>ocDemo(a,()=>{Q.set("ocKnown");
         talk(m.n,["That's what the hall leaders call Overclocked. Push a sample hard enough, with the right thing on your finger, and it stops pretending to be a rod.","It shows you what it would have been, if the moor had finished cooking it. Don't ask me how. I've been asking the rubble for sixty years.","The ring is a governor. Engines have them so they don't run away with themselves. So should samples. Every hall leader wears one.","You'll want your own. I can't make one, but I know who'll know how. Start with Wren. She keeps the first survey's notebooks."],
           ()=>{OC.st=1;sfx("pickup");say0(`New questline: OVERCLOCKED. It's in your JOURNAL. ${ocGoal()}`)})}));return true}
@@ -19925,6 +19989,410 @@ if(typeof shdMove==="function"){shdMove=function(s,x,y,inst){const d=s.el,w=$("#
   d.style.width=(100/EXP.W)+"%";d.style.height=(250/EXP.H)+"%";d.style.left=(x/EXP.W*100)+"%";d.style.top=((y-1.5)/EXP.H*100)+"%";d.style.zIndex=String(11+2*y);
   d.style.transition="opacity 1s,filter 1s,transform 1s,translate 0s";d.style.translate=inst?"0px 0px":`${cx.toFixed(1)}px ${cy.toFixed(1)}px`;void d.offsetWidth;
   d.style.transition="";if(!inst)d.style.translate="0px 0px"}}
+/* the sparkle-and-water canvas rests while an Assay covers the map */
+{const _sd=spkDraw;spkDraw=function(now){if(typeof AS!=="undefined"&&AS.on&&S.phase==="explore"){requestAnimationFrame(spkDraw);return}return _sd(now)}}
+/* lit neep faces flickered by changing their fill colour (a repaint every frame). The same three colours are now stacked and faded
+   into each other on the same timing; the cauldron's brew brightening is the same trick with a pre-brightened copy. */
+function fxBright(hex,k){const n=parseInt(hex.slice(1),16),c=[(n>>16)&255,(n>>8)&255,n&255].map(v=>Math.min(255,Math.round(v*k)));return"#"+c.map(v=>v.toString(16).padStart(2,"0")).join("")}
+function fxPass(root){if(!root)return;
+  root.querySelectorAll(".lnt.neep.lit .lnt-face:not([data-fx])").forEach(g=>{g.dataset.fx=1;g.classList.add("fxd");
+    [["#FFA62A","lnt-faceA"],["#FFD86A","lnt-faceB"]].forEach(([c,k])=>{const q=g.cloneNode(true);q.removeAttribute("data-fx");q.setAttribute("class",k);q.setAttribute("fill",c);if(q.hasAttribute("stroke"))q.setAttribute("stroke",c);
+      q.querySelectorAll("[fill]").forEach(e=>{if(e.getAttribute("fill")!=="none")e.setAttribute("fill",c)});g.parentNode.insertBefore(q,(k==="lnt-faceA"?g:g.nextSibling).nextSibling)})});
+  root.querySelectorAll(".lnt.pot .lnt-brew:not([data-fx])").forEach(e=>{e.dataset.fx=1;e.classList.add("fxd");const c=e.getAttribute("fill")||"";if(!/^#[0-9a-f]{6}$/i.test(c))return;
+    const q=e.cloneNode(true);q.removeAttribute("data-fx");q.setAttribute("class","lnt-brewG");q.setAttribute("fill",fxBright(c,1.35));e.after(q)})}
+/* run when the map is laid out, and whenever a neep is lit or a cauldron changes (both go through lntFlash) */
+{const _wp=worldPlace;worldPlace=function(){_wp();fxPass($("#world"))}}
+if(typeof lntFlash==="function"){const _lf=lntFlash;lntFlash=function(el,cls,ms){_lf(el,cls,ms);fxPass(el&&el.parentNode||$("#world"))}}
+/* the page knows an Assay is up by a class set when it opens and cleared the moment its screen is hidden again */
+{const _as=asStart;asStart=function(foe,done){const r=_as(foe,done);const el=$("#assay");if(el&&!el.hidden&&!AS.sim){document.body.classList.add("as-open");
+  if(!el.__obs){el.__obs=new MutationObserver(()=>{document.body.classList.toggle("as-open",!el.hidden)});el.__obs.observe(el,{attributes:true,attributeFilter:["hidden"]})}}return r}}
+/* ---- the void hole's stars and spiral, without the clipping ----
+   They used to spin freely and be cut off at the hole's ragged edge, which makes the browser redraw the whole hole every frame.
+   Now they orbit inside the hole's own oval (a circle squashed to the hole's shape), so nothing ever needs cutting off: the same
+   stars, the same spiral arms, the same speeds, and the graphics card turns them on its own. */
+voidSVG=function(w,h,id,edge){const cx=w/2,cy=h/2+2,rx=w/2-10,ry=h/2-9;let st="";const R=mulberry(id.length*31+7);
+  for(let i=0;i<34;i++){const a=R()*6.283,r=Math.sqrt(R());st+=`<circle cx="${(Math.cos(a)*.8*r).toFixed(3)}" cy="${(Math.sin(a)*.8*r).toFixed(3)}" r="${((.4+R()*1.1)/rx).toFixed(4)}" fill="#E8E0FF" opacity="${(.3+R()*.7).toFixed(2)}"/>`}
+  const lip=Array.from({length:22},(_,i)=>{const a=i/22*6.283,k=.86+R()*.28;return`${(cx+Math.cos(a)*rx*k).toFixed(1)},${(cy+Math.sin(a)*ry*k).toFixed(1)}`}).join(" ");
+  return`<defs><radialGradient id="${id}g" cx=".5" cy=".55" r=".55"><stop offset="0" stop-color="#000"/><stop offset=".55" stop-color="#0A0618"/><stop offset=".85" stop-color="#241640"/><stop offset="1" stop-color="#3A2660"/></radialGradient></defs>
+   <polygon points="${lip}" fill="url(#${id}g)"/>
+   <g transform="translate(${cx} ${cy}) scale(${rx} ${ry})"><g class="hole-stars" style="transform-origin:0 0">${st}</g>
+    <g class="hole-spiral" style="transform-origin:0 0">${[0,1,2].map(i=>`<path d="M0 0 q.3 -.5 .7 -.2" transform="rotate(${i*120})" stroke="#8A6AE8" stroke-width="1.4" vector-effect="non-scaling-stroke" fill="none" opacity=".35"/>`).join("")}</g></g>
+   <circle class="hole-deep" cx="${cx}" cy="${cy+2}" r="3" fill="#FFB43A" opacity=".6"/>
+   <polygon points="${lip}" fill="none" stroke="${edge}" stroke-width="2.4" stroke-linejoin="round"/>`};
+
+/* =============== THE MAP OF DROSSMARCH ===============
+   A painted map of the whole land, laid out the way it would be if you walked between places instead of being sent: Quillmoor on the
+   moor in the middle, roads out to every site, the bay in the south with the Caldera smoking on its island.
+   Only buildings you can actually go into are drawn as buildings. Anything you haven't found yet isn't on the map at all.
+   The picture is painted once (when the map is first opened, or when something new has been found) and then just shown. */
+const WM={W:1200,H:840,img:null,key:"",sel:null};
+
+/* ---- the land ---- */
+const WM_LAND=[[118,168],[210,112],[330,96],[450,118],[560,92],[690,80],[820,92],[930,104],[1040,140],[1104,226],[1098,330],[1112,428],[1088,520],[1108,600],[1060,668],[960,700],[860,686],[806,640],[782,566],[730,522],[660,500],[590,498],[530,520],[492,576],[478,650],[440,700],[352,716],[262,706],[188,668],[134,594],[100,506],[92,410],[100,312],[98,232]];
+const WM_ISLE=[[550,698],[584,660],[634,650],[684,666],[706,704],[690,752],[644,774],[590,768],[556,742]];
+/* the Cove's Assay Hall stands on its own rock, joined to the island by a causeway (as it is when you're there) */
+const WM_ISLET=[[722,728],[748,716],[772,726],[776,750],[754,764],[728,758]];
+const WM_ROCKS=[[372,782,9],[402,800,6],[1000,760,8],[1028,744,5],[150,760,7],[860,770,6],[520,640,6]];
+/* where things are */
+const WM_P={
+ "z-quill":{x:380,y:360,nm:"Quillmoor",r:58},
+ "z-mine":{x:240,y:190,nm:"Rustvein Mine",r:50},
+ "z-glacier":{x:630,y:168,nm:"Frostbite Cavern",r:48},
+ "z-vault":{x:880,y:240,nm:"Gilded Vault",r:54},
+ "z-reactor":{x:1036,y:368,nm:"Old Reactor Hall",r:50},
+ "z-volcano":{x:716,y:420,nm:"Emberforge Caldera",r:56},
+ "z-crater":{x:938,y:590,nm:"Starfall Crater",r:56},
+ "z-scrap":{x:206,y:500,nm:"Tinker's Scrapyard",r:52},
+ "z-slag":{x:262,y:626,nm:"The Slag Works",r:46},
+ "z-wreck":{x:628,y:706,nm:"Sunken Galleon Cove",r:52},
+ "z-hollow":{x:390,y:556,nm:"Hollowmere",r:40}};
+/* each Assay Hall stands just off its site, by a road in */
+const WM_HALL={"z-mine":[300,268],"z-glacier":[700,196],"z-vault":[944,286],"z-reactor":[1020,438],"z-scrap":[278,462],"z-wreck":[750,740],"z-volcano":[812,488],"z-crater":[862,628]};
+/* the roads make a ring round the land, like any proper region: no one place is the middle of everything */
+const WM_ROADS=[
+ {k:"quillMine",p:[[372,322],[330,296],[300,268],[262,224]]},
+ {k:"mineFrost",p:[[262,170],[340,136],[440,122],[540,136],[606,162]]},
+ {k:"frostVault",p:[[656,178],[700,196],[780,212],[852,234]]},
+ {k:"vaultReact",p:[[910,258],[944,286],[990,322],[1028,352]]},
+ {k:"reactCrater",p:[[1034,400],[1020,438],[996,500],[958,560]]},
+ {k:"craterEmber",p:[[904,582],[862,560],[812,488],[760,450]]},
+ {k:"emberQuill",p:[[672,416],[600,404],[520,388],[426,368]]},
+ {k:"quillScrap",p:[[350,392],[278,462],[236,488]]},
+ {k:"pier",p:[[884,616],[862,628],[818,644],[800,650]]},
+ {k:"slag",p:[[214,532],[232,580],[252,604]],secret:"slag"}];
+/* the only way to the Cove: the ferry from the pier on the Starfall shore */
+const WM_FERRY=[[796,652],[752,668],[704,682],[676,690]];
+const WM_RIVER=[[590,150],[566,212],[528,282],[496,340],[476,420],[486,486],[506,540],[530,578]];
+/* ---- little geometry kit ---- */
+function wmIn(pt,poly){let c=false;for(let i=0,j=poly.length-1;i<poly.length;j=i++){const[a,b]=poly[i],[d,e]=poly[j];if((b>pt[1])!==(e>pt[1])&&pt[0]<(d-a)*(pt[1]-b)/(e-b)+a)c=!c}return c}
+function wmSegD(p,a,b){const dx=b[0]-a[0],dy=b[1]-a[1],L=dx*dx+dy*dy||1;let t=((p[0]-a[0])*dx+(p[1]-a[1])*dy)/L;t=Math.max(0,Math.min(1,t));return Math.hypot(p[0]-a[0]-t*dx,p[1]-a[1]-t*dy)}
+function wmLineD(p,L){let m=1e9;for(let i=1;i<L.length;i++)m=Math.min(m,wmSegD(p,L[i-1],L[i]));return m}
+function wmPolyD(p,poly){let m=1e9;for(let i=0;i<poly.length;i++)m=Math.min(m,wmSegD(p,poly[i],poly[(i+1)%poly.length]));return m}
+/* smooth closed / open curves through the points */
+function wmCurve(P,closed){const n=P.length,g=i=>closed?P[(i+n)%n]:P[Math.max(0,Math.min(n-1,i))];let d=`M${P[0][0]} ${P[0][1]}`;const m=closed?n:n-1;
+  for(let i=0;i<m;i++){const p0=g(i-1),p1=g(i),p2=g(i+1),p3=g(i+2);d+=` C${(p1[0]+(p2[0]-p0[0])/6).toFixed(1)} ${(p1[1]+(p2[1]-p0[1])/6).toFixed(1)} ${(p2[0]-(p3[0]-p1[0])/6).toFixed(1)} ${(p2[1]-(p3[1]-p1[1])/6).toFixed(1)} ${p2[0]} ${p2[1]}`}return d+(closed?" Z":"")}
+/* a wobbly blob, for painted patches */
+function wmBlob(cx,cy,rx,ry,R,n){n=n||11;const P=[];for(let i=0;i<n;i++){const a=i/n*6.283,k=.78+R()*.4;P.push([+(cx+Math.cos(a)*rx*k).toFixed(1),+(cy+Math.sin(a)*ry*k).toFixed(1)])}return wmCurve(P,true)}
+
+/* ---- what the map should show right now ---- */
+function wmState(){const st={slag:typeof slagOpen==="function"&&slagOpen(),hollow:typeof lntOn==="function"&&lntOn()&&typeof lntF==="function"&&!!lntF("hm"),
+  base:typeof Q!=="undefined"&&Q.s>=8,study:typeof Q!=="undefined"&&Q.s>=11};
+  let seals=[];try{seals=(asData().seals||[]).slice()}catch(e){}st.seals=seals;return st}
+function wmHere(){if(typeof EXP==="undefined"||!EXP.zone)return null;if(typeof inHollow==="function"&&inHollow())return"z-hollow";const c=EXP.zone.cls;return c==="z-basement"?"z-quill":c}
+
+/* ================= THE PAINTING ================= */
+function wmPaint(st){const R=mulberry(20261029),W=WM.W,H=WM.H,L=WM_LAND;
+  const roads=WM_ROADS.filter(r=>!r.secret||st[r.secret]);
+  const sites=Object.keys(WM_P).filter(k=>(k!=="z-slag"||st.slag)&&(k!=="z-hollow"||st.hollow));
+  const land=wmCurve(L,true),isle=wmCurve(WM_ISLE,true),islet=wmCurve(WM_ISLET,true);
+  let s=`<svg xmlns="http://www.w3.org/2000/svg" viewBox="0 0 ${W} ${H}" width="${W*2}" height="${H*2}">
+  <defs>
+   <filter id="paint" x="-2%" y="-2%" width="104%" height="104%"><feTurbulence type="fractalNoise" baseFrequency=".035" numOctaves="3" seed="4" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="5" xChannelSelector="R" yChannelSelector="G"/></filter>
+   <filter id="brush" x="-5%" y="-5%" width="110%" height="110%"><feTurbulence type="fractalNoise" baseFrequency=".9" numOctaves="2" seed="9" result="n"/><feDisplacementMap in="SourceGraphic" in2="n" scale="1.6" xChannelSelector="R" yChannelSelector="G"/></filter>
+   <filter id="soft"><feGaussianBlur stdDeviation="7"/></filter><filter id="soft2"><feGaussianBlur stdDeviation="16"/></filter><filter id="soft1"><feGaussianBlur stdDeviation="2.2"/></filter>
+   <filter id="grain" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".75" numOctaves="2" seed="2"/><feColorMatrix values="0 0 0 0 .5  0 0 0 0 .45  0 0 0 0 .38  0 0 0 .55 -.18"/></filter>
+   <radialGradient id="sea" cx=".5" cy=".55" r=".75"><stop offset="0" stop-color="#3E86D0"/><stop offset=".6" stop-color="#2A62B0"/><stop offset="1" stop-color="#173A80"/></radialGradient>
+   <radialGradient id="lava" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFE7A0"/><stop offset=".45" stop-color="#FF9A2E"/><stop offset="1" stop-color="#C8321E"/></radialGradient>
+   <radialGradient id="glow" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFD890" stop-opacity=".85"/><stop offset="1" stop-color="#FFD890" stop-opacity="0"/></radialGradient>
+   <radialGradient id="cloud" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#FFFFFF" stop-opacity=".95"/><stop offset=".6" stop-color="#EEF2FA" stop-opacity=".8"/><stop offset="1" stop-color="#E4EAF6" stop-opacity="0"/></radialGradient>
+   <linearGradient id="snow" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="#FFFFFF"/><stop offset="1" stop-color="#C8DCEE"/></linearGradient>
+   <clipPath id="landC"><path d="${land}"/><path d="${isle}"/><path d="${islet}"/></clipPath>
+  </defs>
+  <rect width="${W}" height="${H}" fill="url(#sea)"/>`;
+  /* the sea: long brushed swells, lighter shallows hugging every shore */
+  let sw="";for(let i=0;i<260;i++){const x=R()*W,y=R()*H;if(wmIn([x,y],L)||wmIn([x,y],WM_ISLE)||wmIn([x,y],WM_ISLET))continue;const l=8+R()*22;sw+=`<path d="M${x.toFixed(0)} ${y.toFixed(0)} q${(l/2).toFixed(0)} -${(2+R()*3).toFixed(1)} ${l.toFixed(0)} 0" stroke="#9CD0F4" stroke-width="${(1+R()*1.4).toFixed(1)}" fill="none" opacity="${(.18+R()*.3).toFixed(2)}" stroke-linecap="round"/>`}
+  s+=`<g>${sw}</g>`;
+  s+=`<g filter="url(#soft)" opacity=".9"><path d="${land}" fill="none" stroke="#7CC8EE" stroke-width="58"/><path d="${isle}" fill="none" stroke="#7CC8EE" stroke-width="50"/><path d="${islet}" fill="none" stroke="#7CC8EE" stroke-width="36"/>${WM_ROCKS.map(([x,y,r])=>`<circle cx="${x}" cy="${y}" r="${r*2.4}" fill="#7CC8EE"/>`).join("")}</g>
+   <g filter="url(#soft1)"><path d="${land}" fill="none" stroke="#B4E2F6" stroke-width="20" opacity=".8"/><path d="${isle}" fill="none" stroke="#B4E2F6" stroke-width="18" opacity=".8"/><path d="${islet}" fill="none" stroke="#B4E2F6" stroke-width="14" opacity=".8"/></g>`;
+  /* little rocks out at sea */
+  s+=WM_ROCKS.map(([x,y,r])=>`<ellipse cx="${x}" cy="${y+r*.3}" rx="${r*1.2}" ry="${r*.5}" fill="#DDF2FC" opacity=".7"/><path d="M${x-r} ${y+r*.3} Q${x-r*.6} ${y-r} ${x} ${y-r*.9} Q${x+r*.8} ${y-r*.7} ${x+r} ${y+r*.3} Z" fill="#8A8478" stroke="#4A463E" stroke-width="1.2"/><path d="M${x-r*.5} ${y-r*.3} Q${x} ${y-r*.8} ${x+r*.4} ${y-r*.4}" stroke="#C8C0B0" stroke-width="1.4" fill="none"/>`).join("");
+
+  /* ---------- the land itself ---------- */
+  let g=`<path d="${land}" fill="#E6D49A"/><path d="${isle}" fill="#E8D8A0"/><path d="${islet}" fill="#B8AE98"/>`;
+  const inner=L.map(([x,y])=>{const cx=600,cy=400,dx=x-cx,dy=y-cy,d=Math.hypot(dx,dy);return[x-dx/d*9,y-dy/d*9]});
+  g+=`<path d="${wmCurve(inner,true)}" fill="#5C9C3A"/><path d="${wmBlob(628,702,58,36,mulberry(31),10)}" fill="#6AA846"/>`;
+  /* painted ground: each area has its own ground under the trees */
+  const patch=(cx,cy,rx,ry,c,o,blur)=>`<path d="${wmBlob(cx,cy,rx,ry,R,13)}" fill="${c}" opacity="${o}" filter="url(#${blur||"soft2"})"/>`;
+  g+=`<g clip-path="url(#landC)">
+   ${patch(600,420,520,300,"#6AAA44",.6)}${patch(330,560,180,120,"#4E8A34",.5)}${patch(820,460,200,140,"#5A9A3A",.5)}
+   ${patch(380,360,160,104,"#A0A468",.9)}${patch(380,360,104,66,"#B4AE7A",.7,"soft")}
+   ${patch(240,180,170,100,"#8E7E66",.95)}${patch(610,150,170,82,"#C8D8E8",.95)}${patch(610,140,110,56,"#F2F6FA",.9,"soft")}${patch(716,420,120,84,"#5A4A42",.95)}${patch(716,420,64,44,"#6E5A4E",.9,"soft")}
+   ${patch(206,500,118,84,"#B8A07A",.9)}${patch(206,500,70,50,"#C6AE84",.8,"soft")}
+   ${patch(880,240,130,84,"#86B85A",.85)}${patch(1036,368,92,96,"#A8C27A",.85)}
+   ${patch(938,590,140,92,"#C2B676",.85)}${patch(938,590,90,56,"#D0C48A",.7,"soft")}
+   ${st.slag?patch(262,626,90,64,"#8A8580",.95):""}${st.hollow?patch(390,556,74,56,"#3A4A3A",.85):""}
+  </g>`;
+  /* the coast: a thin sandy beach where land meets sea, a bright sand bar at the Cove */
+  g+=`<path d="${land}" fill="none" stroke="#F0E2B0" stroke-width="7" opacity=".9"/><path d="${isle}" fill="none" stroke="#F4E8BC" stroke-width="6"/><path d="${islet}" fill="none" stroke="#6A6252" stroke-width="2"/>`;
+  
+  /* the river, from the snow down through the moor to the bay */
+  const rv=wmCurve(WM_RIVER,false);g+=`<path d="${rv}" stroke="#2E66B0" stroke-width="12" fill="none" stroke-linecap="round"/><path d="${rv}" stroke="#5EA4E4" stroke-width="7" fill="none" stroke-linecap="round"/><path d="${rv}" stroke="#A8D8F8" stroke-width="2" fill="none" stroke-dasharray="6 10" stroke-linecap="round"/>`;
+  /* the mere in the hollow, if you've been there */
+  if(st.hollow)g+=`<ellipse cx="356" cy="576" rx="20" ry="9" fill="#24364A"/><ellipse cx="352" cy="574" rx="10" ry="3" fill="#5A7A9A" opacity=".6"/>`;
+
+  /* ---------- mountains ---------- */
+  const peaks=[];const range=(cx,cy,rx,ry,n,snow,avoid)=>{for(let i=0;i<n;i++){const a=R()*6.283,k=Math.sqrt(R());const x=cx+Math.cos(a)*rx*k,y=cy+Math.sin(a)*ry*k;if(!wmIn([x,y+10],L))continue;if(avoid&&Math.hypot(x-avoid[0],y-avoid[1])<avoid[2])continue;
+    if(roads.some(r=>wmLineD([x,y+8],r.p)<22))continue;peaks.push({x,y,w:26+R()*24,h:24+R()*22,snow})}};
+  range(222,166,160,80,46,false,[240,190,34]);range(610,146,180,66,44,true,[630,168,30]);range(1060,214,40,60,8,false);range(150,330,40,60,8,false);range(716,420,104,72,40,"ash",[716,420,60]);
+  peaks.sort((a,b)=>a.y-b.y);
+  g+=peaks.map(p=>{const{x,y,w,h}=p,ash=p.snow==="ash",snow=p.snow===true,t=y-h,lc=snow?"#E8F0F8":ash?"#6A5A52":"#B8A88A",dc=snow?"#A8BCD4":ash?"#3E3230":"#7A6A52",ol=snow?"#5A6A84":ash?"#1E1614":"#4A3E30";
+    let m=`<path d="M${(x-w/2).toFixed(1)} ${y.toFixed(1)} L${(x-w*.06).toFixed(1)} ${t.toFixed(1)} L${x.toFixed(1)} ${(y-h*.25).toFixed(1)} Z" fill="${lc}"/><path d="M${(x-w*.06).toFixed(1)} ${t.toFixed(1)} L${(x+w/2).toFixed(1)} ${y.toFixed(1)} L${x.toFixed(1)} ${(y-h*.25).toFixed(1)} Z" fill="${dc}"/>`;
+    if(ash&&R()<.5)m+=`<path d="M${(x-w*.06).toFixed(1)} ${t.toFixed(1)} Q${(x-w*.1).toFixed(1)} ${(t+h*.4).toFixed(1)} ${(x-w*.2).toFixed(1)} ${(y-2).toFixed(1)}" stroke="#E8642A" stroke-width="1.6" fill="none" opacity=".8"/>`;if(!snow&&!ash&&R()<.7)m+=`<path d="M${(x-w*.06).toFixed(1)} ${t.toFixed(1)} L${(x-w*.2).toFixed(1)} ${(t+h*.3).toFixed(1)} L${(x-w*.05).toFixed(1)} ${(t+h*.24).toFixed(1)} L${(x+w*.1).toFixed(1)} ${(t+h*.32).toFixed(1)} Z" fill="#E8E0D0" opacity=".9"/>`;
+    if(snow)m+=`<path d="M${(x-w*.06).toFixed(1)} ${t.toFixed(1)} L${(x-w*.28).toFixed(1)} ${(t+h*.42).toFixed(1)} L${(x-w*.1).toFixed(1)} ${(t+h*.34).toFixed(1)} L${(x+w*.04).toFixed(1)} ${(t+h*.46).toFixed(1)} L${(x+w*.22).toFixed(1)} ${(t+h*.36).toFixed(1)} Z" fill="#FFFFFF"/>`;
+    return m+`<path d="M${(x-w/2).toFixed(1)} ${y.toFixed(1)} L${(x-w*.06).toFixed(1)} ${t.toFixed(1)} L${(x+w/2).toFixed(1)} ${y.toFixed(1)}" fill="none" stroke="${ol}" stroke-width="1.6" stroke-linejoin="round"/>`}).join("");
+
+  /* ---------- roads ---------- */
+  const rd=roads.map(r=>wmCurve(r.p,false));
+  g+=`<g fill="none" stroke-linecap="round" stroke-linejoin="round">${rd.map(d=>`<path d="${d}" stroke="#4E6A2E" stroke-width="19" opacity=".55"/>`).join("")}${rd.map(d=>`<path d="${d}" stroke="#7A5E36" stroke-width="13"/>`).join("")}${rd.map(d=>`<path d="${d}" stroke="#E8D49A" stroke-width="9.5"/>`).join("")}${rd.map(d=>`<path d="${d}" stroke="#F6E8BE" stroke-width="2" stroke-dasharray="2 9" opacity=".9"/>`).join("")}</g>`;
+  /* bridges where roads cross the river */
+  const bridge=(x,y,a)=>`<g transform="translate(${x} ${y}) rotate(${a})"><rect x="-13" y="-7" width="26" height="14" rx="2" fill="#9A6A3A" stroke="#4A2E16" stroke-width="1.6"/>${[-9,-3,3,9].map(o=>`<path d="M${o} -7 V7" stroke="#6A4420" stroke-width="1"/>`).join("")}<path d="M-13 -7 H13 M-13 7 H13" stroke="#3A2410" stroke-width="2.2"/></g>`;
+  /* bridges go wherever a road actually crosses the river (checked on the drawn curves, sampled finely) */
+  const samp=(P,n)=>{const d=wmCurve(P,false),pts=[];const ns="http://www.w3.org/2000/svg",pe=document.createElementNS(ns,"path");pe.setAttribute("d",d);const Lh=pe.getTotalLength();for(let i=0;i<=n;i++){const q=pe.getPointAtLength(Lh*i/n);pts.push([q.x,q.y])}return pts};
+  const rvS=samp(WM_RIVER,160);roads.forEach(r=>{const rs=samp(r.p,120);for(let i=1;i<rs.length;i++){for(let j=1;j<rvS.length;j++){const[a,b]=[rs[i-1],rs[i]],[c,d]=[rvS[j-1],rvS[j]];
+    const den=(b[0]-a[0])*(d[1]-c[1])-(b[1]-a[1])*(d[0]-c[0]);if(!den)continue;const t=((c[0]-a[0])*(d[1]-c[1])-(c[1]-a[1])*(d[0]-c[0]))/den,u=((c[0]-a[0])*(b[1]-a[1])-(c[1]-a[1])*(b[0]-a[0]))/den;
+    if(t>=0&&t<=1&&u>=0&&u<=1){g+=bridge((a[0]+t*(b[0]-a[0])).toFixed(1),(a[1]+t*(b[1]-a[1])).toFixed(1),(Math.atan2(b[1]-a[1],b[0]-a[0])*57.3).toFixed(0))}}}});
+  /* the ferry across the bay (drawn on the sea, later) */
+
+  /* ---------- tall grass along the roads, the way you'd find it on any route ---------- */
+  const grass=[];roads.forEach(r=>{for(let i=1;i<r.p.length;i++){const[a,b]=[r.p[i-1],r.p[i]];if(R()<.55){const t=.3+R()*.4,nx=-(b[1]-a[1]),ny=b[0]-a[0],nl=Math.hypot(nx,ny)||1,sd=R()<.5?-1:1,
+    cx=a[0]+(b[0]-a[0])*t+nx/nl*sd*22,cy=a[1]+(b[1]-a[1])*t+ny/nl*sd*22;if(wmIn([cx,cy],L)&&!Object.values(WM_P).some(p=>Math.hypot(p.x-cx,p.y-cy)<p.r*.9))grass.push([cx,cy,14+R()*10,8+R()*5])}}});
+  g+=grass.map(([cx,cy,rx,ry])=>{let t=`<ellipse cx="${cx.toFixed(0)}" cy="${cy.toFixed(0)}" rx="${rx.toFixed(0)}" ry="${ry.toFixed(0)}" fill="#4E9A34" stroke="#2E6A22" stroke-width="1.2"/>`;
+    for(let i=0;i<14;i++){const x=cx+(R()-.5)*rx*1.6,y=cy+(R()-.5)*ry*1.4;t+=`<path d="M${(x-2).toFixed(1)} ${(y+2).toFixed(1)} L${x.toFixed(1)} ${(y-3).toFixed(1)} L${(x+2).toFixed(1)} ${(y+2).toFixed(1)}" stroke="#9AD86A" stroke-width="1.3" fill="none"/>`}return t}).join("");
+  /* the moor round Quillmoor flowers; the coast has dune grass */
+  for(let i=0;i<60;i++){const a=R()*6.283,k=.45+R()*.5,x=560+Math.cos(a)*150*k,y=350+Math.sin(a)*96*k;if(roads.some(r=>wmLineD([x,y],r.p)<10)||Math.hypot(x-560,(y-350)*1.6)<70)continue;g+=`<circle cx="${x.toFixed(1)}" cy="${y.toFixed(1)}" r="${(1.3+R()*1.2).toFixed(1)}" fill="${["#B88AC8","#F2E2A0","#E8A0B8"][i%3]}"/>`}
+  /* ---------- trees: everywhere that isn't road, water, rock, sand or a site ---------- */
+  const T=[],sp=15,bare=[[240,176,150,86],[610,146,160,70],[206,500,108,78],[938,590,122,78],[380,360,108,72],[1036,368,64,64],[880,240,80,56],[716,420,108,78]];
+  if(st.slag)bare.push([262,626,86,60]);if(st.hollow)bare.push([390,556,40,30]);
+  for(let y=96;y<H;y+=sp*.82)for(let x=80;x<W;x+=sp){const px=x+(R()-.5)*sp*.9,py=y+(R()-.5)*sp*.7;
+    if(!wmIn([px,py+6],L))continue;if(wmPolyD([px,py],L)<16)continue;
+    if(roads.some(r=>wmLineD([px,py+4],r.p)<15))continue;if(wmLineD([px,py+4],WM_RIVER)<12)continue;
+    let skip=false,edge=0;for(const[cx,cy,rx,ry]of bare){const e=((px-cx)/rx)**2+((py-cy)/ry)**2;if(e<1){skip=true;break}if(e<1.6)edge=Math.max(edge,1.6-e)}
+    if(skip&&R()>.06)continue;if(edge&&R()<edge*.8)continue;
+    if(peaks.some(p=>Math.abs(px-p.x)<p.w*.45&&py<p.y+4&&py>p.y-p.h))continue;
+    const north=py<220,k=north&&R()<.75?"pine":R()<.12?"dark":"round";T.push({x:px,y:py,k,s:.85+R()*.4})}
+  /* the Cove's island: palms and scrub round a sandy middle */
+  for(let i=0;i<30;i++){const a=R()*6.283,x=628+Math.cos(a)*(40+R()*20),y=704+Math.sin(a)*(24+R()*14);if(wmIn([x,y+4],WM_ISLE)&&wmPolyD([x,y],WM_ISLE)>9&&Math.hypot(x-628,(y-706)*1.5)>34)T.push({x,y,k:"round",s:.7+R()*.3})}
+  T.sort((a,b)=>a.y-b.y);
+  g+=T.map(t=>{const{x,y,s}=t,X=x.toFixed(1),Y=y.toFixed(1);
+    if(t.k==="pine")return`<ellipse cx="${X}" cy="${(y+5*s).toFixed(1)}" rx="${(6*s).toFixed(1)}" ry="${(2.2*s).toFixed(1)}" fill="#1E3A1A" opacity=".45"/><path d="M${X} ${(y-13*s).toFixed(1)} L${(x+7*s).toFixed(1)} ${(y+4*s).toFixed(1)} L${(x-7*s).toFixed(1)} ${(y+4*s).toFixed(1)} Z" fill="#2E5A34" stroke="#173020" stroke-width="1"/><path d="M${X} ${(y-13*s).toFixed(1)} L${(x-7*s).toFixed(1)} ${(y+4*s).toFixed(1)} L${(x-1*s).toFixed(1)} ${(y+4*s).toFixed(1)} Z" fill="#4A7E4A"/>`;
+    const c=t.k==="dark"?["#2E5E26","#244A1E","#4A8A3A"]:["#3E7E2E","#2A5A22","#7AB84A"];
+    return`<ellipse cx="${X}" cy="${(y+6*s).toFixed(1)}" rx="${(8*s).toFixed(1)}" ry="${(2.6*s).toFixed(1)}" fill="#1E3A14" opacity=".45"/><circle cx="${X}" cy="${Y}" r="${(8.2*s).toFixed(1)}" fill="${c[0]}" stroke="${c[1]}" stroke-width="1.2"/><circle cx="${(x-2.6*s).toFixed(1)}" cy="${(y-2.8*s).toFixed(1)}" r="${(3.6*s).toFixed(1)}" fill="${c[2]}" opacity=".85"/>`}).join("");
+  s+=`<g filter="url(#paint)">${g}</g>`;
+
+  /* ---------- the ferry line across the bay ---------- */
+  s+=`<path d="${wmCurve(WM_FERRY,false)}" stroke="#FFFFFF" stroke-width="3" fill="none" stroke-dasharray="7 9" stroke-linecap="round" opacity=".85"/>
+   <g transform="translate(744 670)"><path d="M-12 0 L12 0 L8 6 L-8 6 Z" fill="#8A4A2A" stroke="#3A1E10" stroke-width="1.4"/><path d="M0 0 V-14 L9 -3 Z" fill="#F4ECD8" stroke="#3A1E10" stroke-width="1"/></g>`;
+
+  /* the causeway out to the Cove's hall */
+  s+=`<path d="M690 722 L732 734" stroke="#6A5A44" stroke-width="9" stroke-linecap="round"/><path d="M690 722 L732 734" stroke="#C8B48A" stroke-width="6" stroke-linecap="round"/>${[0,1,2,3,4].map(i=>`<path d="M${694+i*8} ${719+i*2.4} l-1.4 6" stroke="#6A5A44" stroke-width="1"/>`).join("")}`;
+  /* ---------- the places ---------- */
+  s+=`<g filter="url(#brush)">`;
+  const hall=(z,x,y)=>{const roof={"z-mine":"#8A5A3A","z-glacier":"#5A7AA0","z-vault":"#8A6A2A","z-reactor":"#4A6A5A","z-scrap":"#6A5A4A","z-wreck":"#3A5A7A","z-volcano":"#7A3A2A","z-crater":"#5A4A7A"}[z],sealed=st.seals.includes(z);
+    return`<g transform="translate(${x} ${y})"><ellipse cx="0" cy="12" rx="30" ry="7" fill="#1E2A14" opacity=".35"/>
+     <rect x="-24" y="-6" width="48" height="18" fill="#E4DCC8" stroke="#3A3226" stroke-width="1.6"/>
+     ${[-18,-10,10,18].map(o=>`<rect x="${o-2}" y="-4" width="4" height="16" fill="#F6F0E2" stroke="#8A8270" stroke-width=".8"/>`).join("")}
+     <path d="M-28 -6 L0 -22 L28 -6 Z" fill="${roof}" stroke="#2A2218" stroke-width="1.6" stroke-linejoin="round"/>
+     <circle cx="0" cy="-11" r="4.4" fill="${sealed?"#F2C94C":"#D8D0BC"}" stroke="#2A2218" stroke-width="1.2"/>${sealed?`<path d="M-2 -11 L-.4 -9.4 L2.4 -12.6" stroke="#5A3A10" stroke-width="1.2" fill="none"/>`:""}
+     <rect x="-5" y="1" width="10" height="11" rx="4" fill="#4A3020" stroke="#2A1A10" stroke-width="1"/><rect x="-26" y="10" width="52" height="3" fill="#B8B0A0" stroke="#3A3226" stroke-width="1"/></g>`};
+  const P={};
+  P["z-quill"]=(x,y)=>`<ellipse cx="${x}" cy="${y+8}" rx="66" ry="32" fill="#D8C898" stroke="#8A7A52" stroke-width="2"/><ellipse cx="${x}" cy="${y+8}" rx="54" ry="24" fill="#E4D6A8"/>
+    <g transform="translate(${x} ${y-6})"><ellipse cx="0" cy="22" rx="58" ry="9" fill="#2A2A14" opacity=".3"/>
+     <rect x="-56" y="-2" width="26" height="24" fill="#CFC4AE" stroke="#3A3226" stroke-width="1.8"/><rect x="30" y="-2" width="26" height="24" fill="#CFC4AE" stroke="#3A3226" stroke-width="1.8"/>
+     <path d="M-59 -2 L-43 -14 L-27 -2 Z M27 -2 L43 -14 L59 -2 Z" fill="#5A4A6A" stroke="#2A2218" stroke-width="1.6" stroke-linejoin="round"/>
+     <rect x="-32" y="-10" width="64" height="32" fill="#E2D8C2" stroke="#3A3226" stroke-width="1.8"/><path d="M-36 -10 L0 -30 L36 -10 Z" fill="#6A5A7A" stroke="#2A2218" stroke-width="1.8" stroke-linejoin="round"/>
+     <rect x="-9" y="-50" width="18" height="30" fill="#E8DEC8" stroke="#3A3226" stroke-width="1.6"/><path d="M-12 -50 L0 -64 L12 -50 Z" fill="#6A5A7A" stroke="#2A2218" stroke-width="1.6"/><circle cx="0" cy="-40" r="5.4" fill="#FFF8E4" stroke="#2A2218" stroke-width="1.2"/><path d="M0 -40 V-43.6 M0 -40 H2.6" stroke="#2A2218" stroke-width="1"/>
+     ${[-52,-44,-38,34,40,48].map(o=>`<rect x="${o}" y="4" width="5" height="7" fill="#8AB4D8" stroke="#3A3226" stroke-width=".8"/>`).join("")}${[-24,-14,10,20].map(o=>`<rect x="${o}" y="-4" width="5" height="9" fill="#8AB4D8" stroke="#3A3226" stroke-width=".8"/>`).join("")}
+     <path d="M-7 22 V10 Q0 3 7 10 V22 Z" fill="#5A3A24" stroke="#2A1A10" stroke-width="1.2"/><rect x="-14" y="22" width="28" height="3" fill="#B8B0A0"/></g>
+     ${st.hollow?"":""}`;
+  P["z-mine"]=(x,y)=>`<g transform="translate(${x} ${y})"><path d="M-40 18 Q-20 -30 6 -34 Q30 -26 42 18 Z" fill="#7A6A52" stroke="#3A2E22" stroke-width="2"/><path d="M-20 18 Q-14 -18 6 -22 Q-4 -2 -2 18 Z" fill="#9A8A6E" opacity=".7"/>
+    <path d="M-12 18 V-2 Q0 -12 12 -2 V18 Z" fill="#1A120C"/><path d="M-14 18 V-4 H14 V18 M-16 -4 H16" stroke="#8A5A2A" stroke-width="4" fill="none"/>
+    <path d="M-6 18 L-14 40 M6 18 L14 40" stroke="#5A4A3A" stroke-width="2"/>${[22,28,34].map(o=>`<path d="M${-6-o*.36} ${o} H${6+o*.36}" stroke="#7A5A3A" stroke-width="2"/>`).join("")}
+    <path d="M24 26 Q34 14 46 26 Z" fill="#6A5A4A" stroke="#3A2E22" stroke-width="1.4"/><rect x="18" y="26" width="16" height="9" fill="#8A6A3A" stroke="#3A2410" stroke-width="1.2"/><circle cx="21" cy="36" r="2.2" fill="#2A2018"/><circle cx="31" cy="36" r="2.2" fill="#2A2018"/></g>`;
+  P["z-glacier"]=(x,y)=>`<g transform="translate(${x} ${y})"><path d="M-42 20 Q-34 -26 0 -32 Q36 -26 44 20 Z" fill="#DCEAF6" stroke="#5A7090" stroke-width="2"/><path d="M-30 20 Q-24 -14 0 -20 Q-18 0 -16 20 Z" fill="#FFFFFF" opacity=".8"/>
+    <path d="M-14 20 Q-14 -4 0 -8 Q14 -4 14 20 Z" fill="#2A4A6E"/><path d="M-14 20 Q-14 -4 0 -8 Q14 -4 14 20" fill="none" stroke="#A8D0F0" stroke-width="2.4"/>
+    ${[-10,-5,0,5,10].map((o,i)=>`<path d="M${o-2} ${-6+Math.abs(o)*.3} L${o} ${2+(i%2)*4} L${o+2} ${-6+Math.abs(o)*.3} Z" fill="#E8F6FF"/>`).join("")}<path d="M-30 6 L-24 -4 M28 4 L22 -6" stroke="#FFFFFF" stroke-width="2"/></g>`;
+  P["z-vault"]=(x,y)=>`<g transform="translate(${x} ${y})"><path d="${wmBlob(0,6,62,38,mulberry(77),12)}" fill="none" stroke="#8A7A5E" stroke-width="7"/><path d="${wmBlob(0,6,62,38,mulberry(77),12)}" fill="none" stroke="#C8B894" stroke-width="3.4" stroke-dasharray="6 3"/>
+    ${[[-44,-10],[44,-6],[-30,34],[36,32]].map(([a,b])=>`<rect x="${a-5}" y="${b-8}" width="10" height="12" fill="#B8A882" stroke="#3A3226" stroke-width="1.2"/><path d="M${a-6} ${b-8} L${a} ${b-14} L${a+6} ${b-8} Z" fill="#6A5A3A" stroke="#2A2218" stroke-width="1"/>`).join("")}
+    <rect x="-26" y="14" width="52" height="5" fill="#C8BEA4" stroke="#3A3226" stroke-width="1"/><rect x="-22" y="10" width="44" height="5" fill="#D8CEB4" stroke="#3A3226" stroke-width="1"/>
+    <rect x="-20" y="-10" width="40" height="20" fill="#EDE4CC" stroke="#3A3226" stroke-width="1.6"/>${[-15,-7,7,15].map(o=>`<rect x="${o-2}" y="-8" width="4" height="18" fill="#FFFAEC" stroke="#9A9078" stroke-width=".8"/>`).join("")}
+    <path d="M-24 -10 L0 -26 L24 -10 Z" fill="#E2D6B8" stroke="#3A3226" stroke-width="1.6"/><path d="M-10 -14 Q0 -30 10 -14" fill="#C8A848" stroke="#5A4418" stroke-width="1.4"/><rect x="-4" y="0" width="8" height="10" fill="#5A4426" stroke="#2A1A10" stroke-width="1"/></g>`;
+  P["z-reactor"]=(x,y)=>`<g transform="translate(${x} ${y})"><rect x="-46" y="-30" width="92" height="64" rx="6" fill="none" stroke="#6A7A6A" stroke-width="2" stroke-dasharray="3 3"/>
+    ${[[-24,-2,15,26],[26,-6,13,24]].map(([a,b,w,h])=>`<path d="M${a-w} ${b+h} Q${a-w*.55} ${b} ${a-w*.75} ${b-h*.4} H${a+w*.75} Q${a+w*.55} ${b} ${a+w} ${b+h} Z" fill="#C8CCC4" stroke="#3A403A" stroke-width="1.6"/><ellipse cx="${a}" cy="${b-h*.4}" rx="${w*.75}" ry="3" fill="#8A908A" stroke="#3A403A" stroke-width="1"/><path d="M${a-4} ${b-h*.5} q-6 -10 2 -16 q8 -6 0 -14" stroke="#F4F6F8" stroke-width="6" fill="none" stroke-linecap="round" opacity=".85"/>`).join("")}
+    <path d="M-10 26 V8 Q2 -10 14 8 V26 Z" fill="#B8C4B0" stroke="#3A403A" stroke-width="1.6"/><rect x="-14" y="18" width="34" height="10" fill="#9AA894" stroke="#3A403A" stroke-width="1.4"/><rect x="0" y="20" width="6" height="8" fill="#3A403A"/><circle cx="2" cy="6" r="2.4" fill="#B8F07A"/></g>`;
+  P["z-scrap"]=(x,y)=>{const r=mulberry(55);let h=`<path d="${wmBlob(0,6,58,34,mulberry(9),12)}" fill="#A88E66" stroke="#6A5A40" stroke-width="2"/>`;
+    [[-30,4,26,20],[8,-8,32,26],[34,14,22,16],[-8,22,26,14]].forEach(([a,b,w,hh])=>{h+=`<path d="M${a-w} ${b+hh*.5} L${a-w*.55} ${b-hh*.55} L${a-w*.1} ${b-hh} L${a+w*.45} ${b-hh*.5} L${a+w} ${b+hh*.5} Z" fill="#8A7A6A" stroke="#3A3026" stroke-width="1.6"/><path d="M${a-w*.55} ${b-hh*.55} L${a-w*.1} ${b-hh} L${a+w*.1} ${b-hh*.2} Z" fill="#A89A88" opacity=".8"/>`;
+      for(let i=0;i<9;i++){const px=a+(r()-.5)*w*1.3,py=b+(r()-.55)*hh*.9,ww=3+r()*7,hh2=2+r()*5,c=["#B8B0A0","#6A7A8A","#C8783A","#5A6A4A","#D8C890","#8A4A3A"][i%6];
+        h+=i%3===0?`<circle cx="${px.toFixed(1)}" cy="${py.toFixed(1)}" r="${(ww*.45).toFixed(1)}" fill="none" stroke="${c}" stroke-width="1.6"/>`:`<rect x="${px.toFixed(1)}" y="${py.toFixed(1)}" width="${ww.toFixed(1)}" height="${hh2.toFixed(1)}" transform="rotate(${(r()*70-35).toFixed(0)} ${px.toFixed(1)} ${py.toFixed(1)})" fill="${c}" stroke="#2A2218" stroke-width=".7"/>`}});
+    return`<g transform="translate(${x} ${y})">${h}<rect x="-58" y="-24" width="12" height="8" fill="#B84A2A" stroke="#2A1A10" stroke-width="1.2" transform="rotate(-8 -52 -20)"/><circle cx="-55" cy="-14" r="2.4" fill="#2A2018"/><circle cx="-48" cy="-15" r="2.4" fill="#2A2018"/>
+     <path d="M44 -40 V22 M38 22 H50 M44 -40 L10 -32 M44 -30 L54 -40 M44 -40 L52 -32" stroke="#C8A040" stroke-width="3" fill="none" stroke-linejoin="round"/><path d="M44 -40 V22" stroke="#3A2A10" stroke-width="1" stroke-dasharray="3 3"/><path d="M10 -32 V-16" stroke="#2A2218" stroke-width="1.2"/><path d="M5 -16 H15 L12 -10 H8 Z" fill="#6A6A6A" stroke="#2A2218" stroke-width="1"/>
+     <path d="M-60 36 H60" stroke="#5A4A3A" stroke-width="2.4" stroke-dasharray="1 4"/>${[-56,-36,-16,4,24,44].map(o=>`<path d="M${o} 30 V40" stroke="#5A4A3A" stroke-width="2"/>`).join("")}</g>`};
+  P["z-slag"]=(x,y)=>`<g transform="translate(${x} ${y})">${[[56,34,"#9A948C"],[44,26,"#86807A"],[32,18,"#726C66"],[20,11,"#5E5852"]].map(([a,b,c])=>`<ellipse cx="0" cy="4" rx="${a}" ry="${b}" fill="${c}" stroke="#3A3632" stroke-width="1.4"/>`).join("")}
+    <path d="M-10 10 Q-10 -6 0 -8 Q10 -6 10 10 Z" fill="#A8826A" stroke="#3A2A20" stroke-width="1.4"/><path d="M-3 10 V4 Q0 1 3 4 V10 Z" fill="#FFB43A"/><circle cx="0" cy="6" r="14" fill="url(#glow)" opacity=".7"/>
+    <path d="M0 -8 q-6 -10 2 -16 q8 -8 -2 -18" stroke="#B8B4AE" stroke-width="5" fill="none" stroke-linecap="round" opacity=".8"/>
+    <g transform="translate(-6 -48)"><rect x="-10" y="-2" width="20" height="10" fill="none" stroke="#3A3226" stroke-width="2"/>${[-6,-2,2,6].map(o=>`<path d="M${o} -2 V8" stroke="#3A3226" stroke-width="1.4"/>`).join("")}</g></g>`;
+  P["z-wreck"]=(x,y)=>`<g transform="translate(${x} ${y})"><path d="${wmBlob(-4,6,30,15,mulberry(12),9)}" fill="#3A86C8" stroke="#E8D8A0" stroke-width="3"/><path d="${wmBlob(-4,6,20,9,mulberry(13),8)}" fill="#5AA8E0" opacity=".8"/>
+    <g transform="translate(-2 6) rotate(-14)"><path d="M-22 0 Q-19 9 0 9 Q18 9 24 -2 Z" fill="#6A4426" stroke="#2A180C" stroke-width="1.6"/><path d="M-4 0 V-26 M8 -2 V-18" stroke="#3A2414" stroke-width="2.2"/><path d="M-4 -23 L7 -18 L-4 -13 Z" fill="#E8DCC0" opacity=".85"/></g>
+    <g transform="translate(-34 -16)"><path d="M0 0 L4 -6 L8 0 Z" fill="#6A4A2A"/><circle cx="14" cy="2" r="2" fill="#F2C94C"/><circle cx="18" cy="4" r="1.6" fill="#F2C94C"/></g>
+    ${[[-40,10],[30,-10],[34,18]].map(([a,b])=>`<path d="M${a} ${b} q2 -12 0 -18" stroke="#7A5A34" stroke-width="2" fill="none"/><path d="M${a} ${b-18} q-9 -2 -12 4 M${a} ${b-18} q9 -2 12 4 M${a} ${b-18} q-4 -8 -10 -8 M${a} ${b-18} q4 -8 10 -8" stroke="#3E8A2E" stroke-width="2.4" fill="none" stroke-linecap="round"/>`).join("")}</g>`;
+  P["z-volcano"]=(x,y)=>`<g transform="translate(${x} ${y})"><ellipse cx="0" cy="10" rx="58" ry="30" fill="#3A2C28" stroke="#1E1612" stroke-width="2"/><ellipse cx="0" cy="10" rx="46" ry="22" fill="none" stroke="url(#lava)" stroke-width="7"/><ellipse cx="0" cy="10" rx="46" ry="22" fill="none" stroke="#FFD27A" stroke-width="1.4" stroke-dasharray="4 7" opacity=".8"/>
+    <ellipse cx="0" cy="10" rx="36" ry="15" fill="#5A4A42"/>${[[-46,10],[46,10]].map(([a,b])=>`<rect x="${a-7}" y="${b-3}" width="14" height="6" fill="#8A6A4A" stroke="#2A1A10" stroke-width="1"/>`).join("")}
+    <path d="M-22 14 Q-14 -18 0 -22 Q14 -18 22 14 Z" fill="#4A3A34" stroke="#1E1612" stroke-width="1.8"/><ellipse cx="0" cy="-20" rx="9" ry="3.6" fill="url(#lava)" stroke="#1E1612" stroke-width="1.2"/><path d="M-2 -17 Q-6 -4 -2 6" stroke="#FF8A2A" stroke-width="2.6" fill="none" stroke-linecap="round"/>
+    <circle cx="0" cy="-20" r="20" fill="url(#glow)" opacity=".6"/><path d="M-4 -26 q-8 -10 2 -16 q10 -6 0 -18" stroke="#8A8480" stroke-width="6" fill="none" stroke-linecap="round" opacity=".7"/></g>`;
+  P["z-crater"]=(x,y)=>`<g transform="translate(${x} ${y})"><ellipse cx="0" cy="0" rx="50" ry="26" fill="#A89A62" stroke="#6A5A34" stroke-width="2"/><ellipse cx="2" cy="3" rx="38" ry="18" fill="#7A6E4A"/><ellipse cx="-4" cy="-3" rx="34" ry="14" fill="#5E5438"/>
+    <path d="M-48 -4 Q-30 -26 0 -26 Q30 -26 48 -4" stroke="#D8CC98" stroke-width="3" fill="none"/><path d="M-4 -3 l2 -7 l2 7 l7 2 l-7 2 l-2 7 l-2 -7 l-7 -2 Z" fill="#E8F0FF"/><circle cx="-2" cy="-1" r="9" fill="url(#glow)" opacity=".6"/>
+    ${[[-60,10],[58,8],[-40,24],[44,22]].map(([a,b])=>`<ellipse cx="${a}" cy="${b}" rx="6" ry="3" fill="#8A7E52"/>`).join("")}</g>`;
+  P["z-hollow"]=(x,y)=>`<g transform="translate(${x} ${y})"><ellipse cx="0" cy="6" rx="56" ry="30" fill="#2A3428" opacity=".9"/>
+    ${[[-44,-8],[-34,-22],[-14,-28],[10,-28],[32,-22],[46,-6],[44,14],[-46,14]].map(([a,b])=>`<path d="M${a} ${b-12} L${a+7} ${b+4} L${a-7} ${b+4} Z" fill="#1E2A1E" stroke="#0E160E" stroke-width="1"/>`).join("")}
+    <circle cx="4" cy="8" r="26" fill="url(#glow)"/><path d="M-4 16 L4 -4 L12 16 Z" fill="#FF8A2A" stroke="#7A2A10" stroke-width="1"/><path d="M0 16 L4 4 L8 16 Z" fill="#FFE7A0"/><path d="M-6 17 L14 13 M-6 13 L14 17" stroke="#4A2A14" stroke-width="2.4"/>
+    ${[[-28,-4],[24,-10],[-18,20],[32,16],[-34,10],[12,24]].map(([a,b])=>`<circle cx="${a}" cy="${b}" r="9" fill="url(#glow)" opacity=".8"/><circle cx="${a}" cy="${b}" r="3" fill="#FF9A2E" stroke="#5A2A10" stroke-width=".8"/><path d="M${a-1.2} ${b-.6} h.9 M${a+.4} ${b-.6} h.9 M${a-1.4} ${b+1} q1.4 1 2.8 0" stroke="#5A2A10" stroke-width=".6" fill="none"/>`).join("")}
+    ${[[-20,-14,60],[16,4,70]].map(([a,b,w])=>`<path d="M${a-w/2} ${b} q${w/4} -6 ${w/2} 0 t${w/2} 0" stroke="#D8D4E8" stroke-width="5" fill="none" opacity=".35" stroke-linecap="round"/>`).join("")}</g>`;
+  sites.forEach(k=>{const p=WM_P[k];s+=P[k](p.x,p.y);if(WM_HALL[k])s+=hall(k,...WM_HALL[k])});
+  s+=`</g>`;
+
+  /* ---------- clouds round the edges, a little paper grain over everything ---------- */
+  let cl="";const cloud=(x,y,w)=>{for(let i=0;i<7;i++){const cx=x+(R()-.5)*w,cy=y+(R()-.5)*w*.45,r=w*(.22+R()*.22);cl+=`<circle cx="${cx.toFixed(0)}" cy="${cy.toFixed(0)}" r="${r.toFixed(0)}" fill="url(#cloud)"/>`}};
+  [[40,40,170],[1160,40,180],[30,800,160],[1170,810,170],[600,-10,150],[-10,420,120],[1210,450,120],[300,850,120],[880,850,120]].forEach(c=>cloud(...c));
+  s+=`<g opacity=".92">${cl}</g><rect width="${W}" height="${H}" filter="url(#grain)" opacity=".45"/>
+   <rect width="${W}" height="${H}" fill="none" stroke="#0E2250" stroke-width="22" opacity=".25" filter="url(#soft)"/></svg>`;
+  return s}
+
+/* ================= THE MAP WINDOW ================= */
+function wmPlaces(st){const nm=z=>(typeof GYMS!=="undefined"&&GYMS[z])?GYMS[z].hall:null,zs=c=>(ZONES.find(z=>z.cls===c)||{}).sub||"";
+  const t=s=>s.toLowerCase().replace(/(^|[\s'-])([a-z])/g,(m,a,b)=>a+b.toUpperCase()).replace(/'S\b/g,"'s");
+  const L={
+   "z-quill":{sub:zs("z-quill"),in:["The Institute and its specimen hall"].concat(st.base?["The Founder's Basement, under the Institute"]:[],st.study?["The hidden study, behind the portrait"]:[])},
+   "z-mine":{sub:zs("z-mine"),in:["The mine tunnels"]},"z-glacier":{sub:zs("z-glacier"),in:["The ice cave"]},
+   "z-vault":{sub:zs("z-vault"),in:["The Gilded Vault"]},"z-reactor":{sub:zs("z-reactor"),in:["The old reactor hall"]},
+   "z-scrap":{sub:zs("z-scrap"),in:[]},"z-wreck":{sub:zs("z-wreck")+" An island out in the bay; the ferry crosses from the pier on the Starfall shore.",in:[]},"z-volcano":{sub:zs("z-volcano"),in:[]},"z-crater":{sub:zs("z-crater"),in:[]},
+   "z-slag":{sub:"A worked-out quarry behind the Scrapyard, with a kiln at the bottom that nobody lets go out. The only way in is through the Scrapyard's gate.",in:["The quarry and its kiln"]},
+   "z-hollow":{sub:"A village in a hollow, lit for Lantern Night. No road leads there.",in:[]}};
+  Object.keys(L).forEach(z=>{const h=nm(z);if(h)L[z].in.push(t(h)+(st.seals.includes(z)?" (seal earned)":""))});return L}
+function openWorldMap(){const m=modal("wmap","MAP OF DROSSMARCH"),list=m.querySelector(".bag-list"),st=wmState(),key=JSON.stringify(st);
+  if(!list.querySelector(".wm-frame")){list.innerHTML=`<div class="wm-frame"><img class="wm-img" alt="A painted map of Drossmarch" decoding="async"><div class="wm-wait">Unrolling the map…</div><div class="wm-pins"></div></div><div class="wm-card" aria-live="polite"></div>`}
+  const img=list.querySelector(".wm-img"),wait=list.querySelector(".wm-wait");
+  if(WM.key!==key){WM.key=key;img.style.visibility="hidden";wait.hidden=false;
+    setTimeout(()=>{const svg=wmPaint(st);img.onload=()=>{img.style.visibility="";wait.hidden=true};img.src="data:image/svg+xml;charset=utf-8,"+encodeURIComponent(svg)},30)}
+  const here=wmHere(),PL=wmPlaces(st),pins=list.querySelector(".wm-pins");
+  const show=Object.keys(WM_P).filter(k=>(k!=="z-slag"||st.slag)&&(k!=="z-hollow"||st.hollow));
+  pins.innerHTML=show.map(k=>{const p=WM_P[k],LO={"z-wreck":[628,664],"z-quill":[380,278],"z-volcano":[716,356],"z-reactor":[1044,320],"z-scrap":[190,452],"z-glacier":[630,118]}[k]||[p.x,p.y-p.r*.95],lx=(LO[0]/WM.W*100).toFixed(2),ly=(LO[1]/WM.H*100).toFixed(2);
+    return`<button class="wm-pin${k===here?" here":""}" data-z="${k}" style="left:${(p.x/WM.W*100).toFixed(2)}%;top:${(p.y/WM.H*100).toFixed(2)}%;width:${(p.r*2/WM.W*100).toFixed(2)}%;height:${(p.r*2/WM.H*100).toFixed(2)}%" aria-label="${p.nm}"></button><span class="wm-lab${k===here?" here":""}" data-z="${k}" style="left:${lx}%;top:${ly}%">${p.nm}</span>`}).join("")
+    +(here&&WM_P[here]?`<i class="wm-you" style="left:${(WM_P[here].x/WM.W*100).toFixed(2)}%;top:${(WM_P[here].y/WM.H*100).toFixed(2)}%"></i>`:"");
+  const card=list.querySelector(".wm-card");
+  const pick=k=>{WM.sel=k;pins.querySelectorAll(".wm-pin,.wm-lab").forEach(b=>b.classList.toggle("on",b.dataset.z===k));const p=WM_P[k],d=PL[k];
+    card.innerHTML=`<b>${p.nm}${k===here?' <em>You are here</em>':""}</b><span>${d.sub}</span>${d.in.length?`<span class="wm-in"><u>You can go inside:</u> ${d.in.join(" · ")}</span>`:""}`;sfx("sel")};
+  pins.querySelectorAll(".wm-pin").forEach(b=>b.onclick=()=>pick(b.dataset.z));
+  const first=WM.sel&&show.includes(WM.sel)?WM.sel:here&&show.includes(here)?here:"z-quill";WM.sel=first;
+  {const p=WM_P[first],d=PL[first];pins.querySelectorAll(".wm-pin,.wm-lab").forEach(b=>b.classList.toggle("on",b.dataset.z===first));
+   card.innerHTML=`<b>${p.nm}${first===here?' <em>You are here</em>':""}</b><span>${d.sub}</span>${d.in.length?`<span class="wm-in"><u>You can go inside:</u> ${d.in.join(" · ")}</span>`:""}`}}
+/* a MAP button beside the Journal */
+(function(){const a=$(".audio");if(!a||$("#wmbtn"))return;const b=document.createElement("button");b.className="aubtn";b.id="wmbtn";b.textContent="MAP";b.onclick=openWorldMap;const j=$("#jbtn");if(j)j.after(b);else a.prepend(b)})();
+
+/* =============== THE ASSAY HALLS, FROM OUTSIDE ===============
+   Each hall is built the way its own area would build it: a brick pithead hall with a winding tower, a patched tin shed,
+   a boathouse on its rock, a stone foundry, a marble hallmark office, a hazard-striped bunker, a snowed-in timber lodge
+   and a domed observatory. All of them face south with the front door in the middle, and the hall's seal over the door
+   (it turns gold once you've earned it). Drawn 9 squares wide; the roof rises above the footprint. */
+const HALL_MAT=PS(`<rect x="0" y="0" width="40" height="40" fill="#2A2A30"/><path d="M6 0 H34 V40 H6 Z" fill="#E8D8A8"/><path d="M6 0 H34 V8 H6 Z" fill="#FFF4D0"/><rect x="9" y="22" width="22" height="13" rx="2" fill="#8A3A2A" stroke="${FI}" stroke-width="1.4"/><path d="M12 26 H28 M12 30 H28" stroke="#C86A4A" stroke-width="1.2"/><path d="M6 0 V40 M34 0 V40" stroke="${FI}" stroke-width="2.4"/>`);
+const HX={};
+const hxK=(c,w)=>`stroke="${FI}" stroke-width="${w||2.6}" stroke-linejoin="round"`;
+function hxSeal(x,y,on,r){r=r||13;return`<circle cx="${x}" cy="${y}" r="${r+3}" fill="${FI}"/><circle cx="${x}" cy="${y}" r="${r}" fill="${on?"#F2C94C":"#D8D0BC"}" stroke="${on?"#8A6418":"#8A8270"}" stroke-width="2"/>
+  <circle cx="${x}" cy="${y}" r="${r*.62}" fill="none" stroke="${on?"#B8861E":"#A8A090"}" stroke-width="1.6"/>${on?`<path d="M${x-5} ${y} L${x-1.4} ${y+4} L${x+5.6} ${y-4.4}" stroke="#6A4410" stroke-width="2.6" fill="none" stroke-linecap="round"/>`:`<circle cx="${x}" cy="${y}" r="2.4" fill="#A8A090"/>`}`}
+function hxDoor(c,arch,frame){const f=frame||FI;return`<path d="M162 240 V${arch?208:200} ${arch?"Q180 190 198 208":"H198"} V240 Z" fill="${c}" ${hxK()}/><path d="M180 ${arch?199:200} V240" stroke="${f}" stroke-width="1.6"/><circle cx="174" cy="224" r="2" fill="#F2C94C"/><circle cx="186" cy="224" r="2" fill="#F2C94C"/>`}
+function hxWin(x,y,w,h,glass,frame){return`<rect x="${x}" y="${y}" width="${w}" height="${h}" fill="${glass}" ${hxK(0,2.2)}/><path d="M${x+w/2} ${y} V${y+h} M${x} ${y+h/2} H${x+w}" stroke="${frame||FI}" stroke-width="1.6"/><path d="M${x+3} ${y+3} L${x+w*.35} ${y+3}" stroke="#FFFFFF" stroke-width="1.6" opacity=".6"/>`}
+const hxShadow=`<ellipse cx="180" cy="241" rx="172" ry="8" fill="#000" opacity=".22"/>`;
+const hxSteps=(c)=>`<rect x="148" y="234" width="64" height="6" fill="${c}" ${hxK(0,1.8)}/>`;
+
+/* PITHEAD (the Mine): soot-dark brick, slate roof, a timber winding tower with its wheel over one end */
+HX["z-mine"]=on=>`${hxShadow}
+  <g transform="translate(276 0)"><path d="M10 120 L30 16 L50 120 M18 78 H42 M14 100 H46 M22 52 H38" stroke="#6A4420" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M10 120 L30 16 L50 120" stroke="${FI}" stroke-width="2" fill="none"/>
+   <circle cx="30" cy="22" r="17" fill="none" stroke="#3A3A40" stroke-width="5"/><circle cx="30" cy="22" r="17" fill="none" stroke="${FI}" stroke-width="1.4"/>${[0,45,90,135].map(a=>`<path d="M30 22 l${(17*Math.cos(a*Math.PI/180)).toFixed(1)} ${(17*Math.sin(a*Math.PI/180)).toFixed(1)} M30 22 l${(-17*Math.cos(a*Math.PI/180)).toFixed(1)} ${(-17*Math.sin(a*Math.PI/180)).toFixed(1)}" stroke="#3A3A40" stroke-width="2"/>`).join("")}<circle cx="30" cy="22" r="4" fill="#E0B820" stroke="${FI}" stroke-width="1.4"/></g>
+  <rect x="16" y="110" width="328" height="130" fill="#8A4A36" ${hxK()}/>
+  ${Array.from({length:12},(_,r)=>`<path d="M18 ${118+r*10} H342" stroke="#6A3426" stroke-width="1.2" opacity=".7"/>`).join("")}${Array.from({length:60},(_,i)=>{const r=i%12,c=(i*7)%16;return`<path d="M${24+c*20+(r%2)*10} ${110+r*10} v10" stroke="#6A3426" stroke-width="1" opacity=".6"/>`}).join("")}
+  <path d="M4 114 L54 64 H306 L356 114 Z" fill="#4A4E5A" ${hxK()}/>${[76,88,100].map(y=>`<path d="M${4+(114-y)} ${y} H${356-(114-y)}" stroke="#3A3E48" stroke-width="1.4"/>`).join("")}
+  <rect x="226" y="40" width="22" height="34" fill="#7A3A2A" ${hxK(0,2.2)}/><rect x="222" y="36" width="30" height="8" fill="#5A2A1E" ${hxK(0,2)}/>
+  ${hxWin(40,140,40,44,"#F6D27A")}${hxWin(98,140,40,44,"#F6D27A")}${hxWin(222,140,40,44,"#F6D27A")}${hxWin(280,140,40,44,"#F6D27A")}
+  <rect x="150" y="190" width="60" height="8" fill="#5A3A20" ${hxK(0,1.8)}/>${hxDoor("#5A3A20",false)}${hxSteps("#8A8270")}${hxSeal(180,150,on)}
+  <rect x="16" y="226" width="328" height="14" fill="#5A4A3E" ${hxK(0,2)}/>
+  ${[60,300].map(x=>`<path d="M${x} 240 V206" stroke="${FI}" stroke-width="2.4"/><rect x="${x-6}" y="196" width="12" height="12" rx="2" fill="#FFE07A" ${hxK(0,1.8)}/>`).join("")}`;
+
+/* SCRAPHEAP (the Scrapyard): a tin shed patched with whatever was to hand, rivets, a gantry hook over the door */
+HX["z-scrap"]=on=>`${hxShadow}
+  <path d="M14 240 V100 L180 54 L346 100 V240 Z" fill="#8A929A" ${hxK()}/>
+  ${Array.from({length:21},(_,i)=>`<path d="M${22+i*16} ${i<10?100-(i*16+8)*.278+10:54+((i*16+22)-180)*.278+10} V240" stroke="#6A727A" stroke-width="2"/>`).join("")}
+  <path d="M40 120 h70 v52 h-70 Z" fill="#B87A4A" ${hxK(0,2)} opacity=".95"/><path d="M250 112 h64 v44 h-64 Z" fill="#6A7A5A" ${hxK(0,2)}/><path d="M232 178 h50 v40 h-50 Z" fill="#C8A04A" ${hxK(0,2)}/>
+  ${[[44,124],[106,124],[44,168],[106,168],[254,116],[310,116],[254,152],[310,152],[236,182],[278,182],[236,214],[278,214]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.2" fill="${FI}"/>`).join("")}
+  <path d="M6 104 L180 56 L354 104" stroke="#5A6068" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M6 104 L180 56 L354 104" stroke="${FI}" stroke-width="2" fill="none"/>
+  <path d="M140 74 V30 H260 V44" stroke="#C8A040" stroke-width="6" fill="none"/><path d="M140 74 V30 H260 V44" stroke="${FI}" stroke-width="1.6" fill="none"/><path d="M240 30 V60" stroke="${FI}" stroke-width="1.6"/><path d="M234 60 q6 10 12 0" stroke="#6A6A6A" stroke-width="3" fill="none"/>
+  ${hxWin(56,180,34,26,"#BFE0F0")}${hxWin(296,170,34,26,"#BFE0F0")}
+  <rect x="150" y="186" width="60" height="54" fill="#4A5258" ${hxK()}/>${hxDoor("#6A5A4A",false)}<path d="M162 210 H198 M162 224 H198" stroke="#4A3E30" stroke-width="1.6"/>${hxSteps("#7A7268")}${hxSeal(180,124,on)}
+  <path d="M14 240 h20 l-4 -12 h-12 Z M320 240 h26 l-6 -10 h-14 Z" fill="#6A5A4A" ${hxK(0,1.6)}/>`;
+
+/* TIDELINE (the Cove): a boathouse on its rock, blue weatherboard, round windows, a bell and a coil of rope by the door */
+HX["z-wreck"]=on=>`${hxShadow}
+  <rect x="18" y="104" width="324" height="136" fill="#4A7AA8" ${hxK()}/>${Array.from({length:13},(_,i)=>`<path d="M20 ${114+i*10} H340" stroke="#3A6088" stroke-width="1.6"/>`).join("")}
+  <path d="M2 110 L180 40 L358 110 Z" fill="#7A5A3A" ${hxK()}/>${[60,80,96].map(y=>`<path d="M${2+(110-y)*2.54} ${y} H${358-(110-y)*2.54}" stroke="#5A4026" stroke-width="1.4"/>`).join("")}
+  <path d="M180 40 V14 M168 20 h24 M172 14 l16 0" stroke="${FI}" stroke-width="2.4"/><path d="M168 8 q12 -8 24 0 q-12 8 -24 0 Z" fill="#C8A040" ${hxK(0,1.6)}/>
+  ${[70,290].map(x=>`<circle cx="${x}" cy="160" r="22" fill="#BFE0F0" ${hxK(0,3)}/><circle cx="${x}" cy="160" r="22" fill="none" stroke="#C8A040" stroke-width="3"/><path d="M${x-10} ${152} q6 -4 12 0" stroke="#FFFFFF" stroke-width="2" fill="none" opacity=".7"/>`).join("")}
+  <rect x="150" y="186" width="60" height="54" fill="#E8E0D0" ${hxK(0,2)}/>${hxDoor("#2E4A6A",true)}${hxSteps("#9A8A6A")}${hxSeal(180,140,on)}
+  <path d="M232 120 V140" stroke="${FI}" stroke-width="2"/><path d="M222 140 q10 -16 20 0 v6 h-20 Z" fill="#C8A040" ${hxK(0,1.8)}/>
+  <ellipse cx="236" cy="230" rx="16" ry="7" fill="none" stroke="#C8B080" stroke-width="5"/><ellipse cx="236" cy="230" rx="9" ry="4" fill="none" stroke="#C8B080" stroke-width="4"/>
+  <rect x="18" y="226" width="324" height="14" fill="#6A5A44" ${hxK(0,2)}/>`;
+
+/* FORGE (the Caldera): black basalt foundry, two stacks breathing heat, arched windows lit from the furnaces inside */
+HX["z-volcano"]=on=>`${hxShadow}
+  ${[[48,28],[290,38]].map(([x,t])=>`<rect x="${x}" y="${t}" width="26" height="90" fill="#3A302C" ${hxK()}/><rect x="${x-4}" y="${t-6}" width="34" height="10" fill="#2A2220" ${hxK(0,2)}/><ellipse cx="${x+13}" cy="${t-6}" rx="10" ry="3" fill="#FF8A2A"/>`).join("")}
+  <rect x="14" y="100" width="332" height="140" fill="#4A3E3A" ${hxK()}/>${Array.from({length:40},(_,i)=>{const r=i%6,c=(i*5)%14;return`<path d="M${22+c*24+(r%2)*12} ${108+r*22} h20 v18 h-20 Z" fill="none" stroke="#2E2624" stroke-width="1.4"/>`}).join("")}
+  <path d="M4 104 L40 70 H320 L356 104 Z" fill="#2A2220" ${hxK()}/>
+  ${[44,106,236,298].map(x=>`<path d="M${x} 196 V146 Q${x+9} 128 ${x+18} 128 Q${x+27} 128 ${x+36} 146 V196 Z" fill="#FF9A3A" ${hxK(0,2.4)}/><path d="M${x+18} 128 V196 M${x} 166 H${x+36}" stroke="#7A2A10" stroke-width="2"/><path d="M${x+4} 192 V170 Q${x+18} 160 ${x+32} 170 V192" fill="#FFD27A" opacity=".55"/>`).join("")}
+  <rect x="146" y="180" width="68" height="60" fill="#2A2220" ${hxK()}/>${hxDoor("#5A5A62",true,"#2A2A30")}${[170,190].map(x=>`<path d="M${x} 200 V238" stroke="#3A3A42" stroke-width="2"/>`).join("")}${hxSteps("#3A302C")}${hxSeal(180,150,on)}
+  <rect x="14" y="228" width="332" height="12" fill="#2A2220" ${hxK(0,2)}/>`;
+
+/* HALLMARK (the Vault): pale marble, six columns, a pediment with the seal set in it, gilt edging */
+HX["z-vault"]=on=>`${hxShadow}
+  <rect x="24" y="96" width="312" height="144" fill="#E8E0CC" ${hxK()}/>
+  <path d="M10 98 L180 30 L350 98 Z" fill="#F2ECDA" ${hxK()}/><path d="M38 90 L180 42 L322 90 Z" fill="#E2D8C0" stroke="#C8A848" stroke-width="2"/>
+  <rect x="10" y="96" width="340" height="12" fill="#F6F0E0" ${hxK(0,2.2)}/><path d="M12 104 H348" stroke="#C8A848" stroke-width="2"/>
+  ${[44,94,144,206,256,306].map(x=>`<rect x="${x}" y="108" width="14" height="114" fill="#FFFAEE" ${hxK(0,2)}/><rect x="${x-4}" y="108" width="22" height="7" fill="#F2ECDA" ${hxK(0,1.6)}/><rect x="${x-4}" y="216" width="22" height="7" fill="#F2ECDA" ${hxK(0,1.6)}/><path d="M${x+5} 116 V214 M${x+9} 116 V214" stroke="#D8D0BC" stroke-width="1.2"/>`).join("")}
+  ${hxWin(70,140,18,40,"#3A4A6A","#C8A848")}${hxWin(272,140,18,40,"#3A4A6A","#C8A848")}
+  <rect x="10" y="222" width="340" height="18" fill="#D8D0BC" ${hxK(0,2)}/><rect x="0" y="232" width="360" height="8" fill="#C8BEA4" ${hxK(0,1.8)}/>
+  ${hxDoor("#6A4A1E",true,"#C8A848")}<path d="M162 210 H198" stroke="#C8A848" stroke-width="1.6"/>${hxSeal(180,72,on,14)}`;
+
+/* CONTAINMENT (the Reactor): a poured concrete bunker, yellow-and-black band, vents, a warning lamp over a round-shouldered door */
+HX["z-reactor"]=on=>`${hxShadow}
+  <path d="M12 240 V96 Q12 78 30 78 H330 Q348 78 348 96 V240 Z" fill="#B8BCB4" ${hxK()}/>
+  ${Array.from({length:6},(_,i)=>`<path d="M14 ${110+i*22} H346" stroke="#9EA29A" stroke-width="1.4"/>`).join("")}
+  <rect x="12" y="92" width="336" height="16" fill="#F2C230" ${hxK(0,2)}/>${Array.from({length:22},(_,i)=>`<path d="M${16+i*16} 108 l12 -16 h7 l-12 16 Z" fill="#1E1E22"/>`).join("")}
+  ${[44,284].map(x=>`<rect x="${x}" y="132" width="40" height="40" rx="4" fill="#6A706A" ${hxK(0,2.2)}/><circle cx="${x+20}" cy="152" r="15" fill="#4A504A"/>${[0,60,120,180,240,300].map(a=>`<path d="M${x+20} 152 l${(13*Math.cos(a*Math.PI/180)).toFixed(1)} ${(13*Math.sin(a*Math.PI/180)).toFixed(1)}" stroke="#9AA09A" stroke-width="3"/>`).join("")}`).join("")}
+  <rect x="104" y="44" width="40" height="36" fill="#9EA29A" ${hxK(0,2.2)}/>${[54,62,70].map(y=>`<path d="M108 ${y} H140" stroke="#6A706A" stroke-width="2"/>`).join("")}
+  <rect x="144" y="176" width="72" height="64" fill="#F2C230" ${hxK()}/>${Array.from({length:5},(_,i)=>`<path d="M${146+i*15} 178 l10 0 l-10 14 Z" fill="#1E1E22"/>`).join("")}
+  <path d="M158 240 V206 Q158 192 172 192 H188 Q202 192 202 206 V240 Z" fill="#7A8478" ${hxK()}/><circle cx="180" cy="214" r="8" fill="none" stroke="#4A504A" stroke-width="2.4"/><path d="M180 206 V222 M172 214 H188" stroke="#4A504A" stroke-width="2"/>
+  <circle cx="180" cy="166" r="7" fill="#B8F07A" ${hxK(0,2)}/>${hxSteps("#8A8E86")}${hxSeal(180,128,on,12)}`;
+
+/* FROSTLINE (the Cavern): a timber lodge under a steep roof heavy with snow, icicles off the eaves, frost on the panes */
+HX["z-glacier"]=on=>`${hxShadow}
+  <rect x="26" y="122" width="308" height="118" fill="#8A5A3A" ${hxK()}/>${Array.from({length:11},(_,i)=>`<path d="M28 ${132+i*10} H332" stroke="#6A4226" stroke-width="2"/>`).join("")}
+  <path d="M0 130 L180 6 L360 130 Z" fill="#5A3A26" ${hxK()}/><path d="M4 124 L180 12 L356 124 L340 132 Q300 120 260 134 Q220 120 180 134 Q140 120 100 134 Q60 120 20 132 Z" fill="#F4F8FC" ${hxK(0,2.2)}/>
+  ${Array.from({length:16},(_,i)=>{const x=24+i*20,l=8+((i*7)%4)*5;return`<path d="M${x-3} 130 L${x} ${130+l} L${x+3} 130 Z" fill="#DDF2FF" stroke="#8AB0CC" stroke-width="1"/>`}).join("")}
+  <rect x="160" y="40" width="40" height="44" fill="#E2EEF8" ${hxK(0,2)}/><path d="M164 44 H196 V80 H164 Z" fill="#FFE0A0"/><path d="M180 44 V80 M164 62 H196" stroke="${FI}" stroke-width="1.6"/>
+  ${[52,108,234,290].map(x=>`${hxWin(x,152,22,32,"#FFE0A0")}<path d="M${x+2} ${180} q8 -6 18 0" stroke="#FFFFFF" stroke-width="3" fill="none" opacity=".8"/>`).join("")}
+  ${hxDoor("#4A2E1A",true)}${hxSeal(180,166,on,11)}<path d="M140 240 q40 -14 80 0 Z M10 240 q40 -16 70 0 Z M290 240 q36 -14 64 0 Z" fill="#F4F8FC" ${hxK(0,1.6)}/>`;
+
+/* STARFALL (the Crater): an observatory: a squat round-cornered hall with a big slatted dome and its telescope poking out */
+HX["z-crater"]=on=>`${hxShadow}
+  <rect x="20" y="118" width="320" height="122" rx="10" fill="#6A5A8A" ${hxK()}/>${Array.from({length:7},(_,i)=>`<path d="M22 ${134+i*15} H338" stroke="#5A4A78" stroke-width="1.4"/>`).join("")}
+  <path d="M84 122 Q84 24 180 20 Q276 24 276 122 Z" fill="#C8CCD8" ${hxK()}/>${[-60,-30,0,30,60].map(o=>`<path d="M${180+o*1.5} 122 Q${180+o*1.1} 40 180 20" stroke="#9AA0B0" stroke-width="2" fill="none"/>`).join("")}
+  <path d="M168 122 V30 Q180 22 192 30 V122 Z" fill="#2A2440" ${hxK(0,2)}/><path d="M184 54 L238 18" stroke="#B8A8D8" stroke-width="12" stroke-linecap="round"/><path d="M184 54 L238 18" stroke="${FI}" stroke-width="2" fill="none"/><circle cx="240" cy="17" r="7" fill="#2A2440" ${hxK(0,2)}/>
+  <rect x="14" y="112" width="332" height="12" rx="4" fill="#4A3E66" ${hxK(0,2)}/>
+  ${[50,104,236,290].map(x=>`<circle cx="${x+10}" cy="160" r="16" fill="#2A2440" ${hxK(0,2.4)}/><path d="M${x+10} ${150} l2.4 7.6 l7.6 2.4 l-7.6 2.4 l-2.4 7.6 l-2.4 -7.6 l-7.6 -2.4 l7.6 -2.4 Z" fill="#E8F0FF"/>`).join("")}
+  ${hxDoor("#3A2E5A",true,"#B8A8D8")}${hxSteps("#8A7EA8")}${hxSeal(180,162,on,11)}`;
+
+/* ---- putting the hall in its forecourt ---- */
+function hallOutside(z){const W=EXP.W,H=EXP.H,on=asData().seals.includes(z),d=document.createElement("div");
+  d.className="mapobj hallx hx-"+z;d.style.width=(HB.w*100/W)+"%";d.style.height=((HB.h+1)*100/H)+"%";d.style.left=(HB.x/W*100)+"%";d.style.top=((HB.y-1)/H*100)+"%";d.dataset.base=HB.y+HB.h-1;
+  d.innerHTML=`<svg viewBox="0 0 360 240" preserveAspectRatio="none" aria-hidden="true">${HX[z](on)}</svg>`;$("#world").insertBefore(d,$("#player"));
+  const[dx,dy]=HB.door;EXP.objs.push({x:dx,y:dy,tile:1,use:()=>hallEnter(z)})}
+/* the hall is layered by its front wall, not its roof: walk behind it and it hides you, walk in front and you're in front */
+{const _dr=depthRow;depthRow=function(el){if(el.dataset&&el.dataset.base)return+el.dataset.base;return _dr(el)}}
 
 
 newRun();
