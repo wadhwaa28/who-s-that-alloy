@@ -2503,15 +2503,34 @@ body.as-open #mapwrap *,body.as-open #mapwrap *::before,body.as-open #mapwrap *:
 @container (max-width:620px){.wm-lab{font-size:8px;padding:1px 4px}.wm-lab:not(.here):not(.on){display:none}}
 .mapobj.hallx svg{position:absolute;inset:0;width:100%;height:100%;overflow:visible;display:block}
 /* Hollowmere's encounter opener: lit pumpkin bars, and the face */
-.wipe.lnt i{background:linear-gradient(90deg,#A8400E,#E8862A 22%,#FFC25A 50%,#E8862A 78%,#A8400E)}
+/* not gold: the bars stay dark like the night, and the face is cut out and lit from inside, the way a carved pumpkin is */
+.wipe.lnt i{background:linear-gradient(90deg,#0A0604,#1E0E06 50%,#0A0604)}
+.wipe.lnt:not(.gold) .wface path{fill:#FF8A1E}
+.wipe.lnt:not(.gold) .wface{filter:drop-shadow(0 0 6px #FFB43A) drop-shadow(0 0 18px #E8641A)}
 .wipe.lnt.gold i{background:linear-gradient(90deg,#C98E00,#FFE27A,#FFF6CC,#FFE27A,#C98E00)}
 .wipe .wface{position:absolute;left:50%;top:50%;width:min(62%,420px);aspect-ratio:240/260;translate:-50% -50%;opacity:0;scale:.6;pointer-events:none;z-index:1}
 .wipe .wface svg{width:100%;height:100%;display:block}
 .wipe.go .wface{animation:wFace .5s .78s cubic-bezier(.3,1.4,.5,1) forwards}
 @keyframes wFace{0%{opacity:0;scale:.6}100%{opacity:1;scale:1}}
 .wipe.lnt.go:not(.gold){animation:blinkPump .45s steps(1)}
-@keyframes blinkPump{0%,34%,68%{background:rgba(255,178,74,.85)}17%,51%,85%{background:transparent}}
+@keyframes blinkPump{0%,34%,68%{background:rgba(232,100,26,.55)}17%,51%,85%{background:transparent}}
 @media (prefers-reduced-motion:reduce){.wipe.go .wface{animation:none;opacity:1;scale:1}}
+/* a possessed sample */
+.posfx .pos-wisp{animation:posWisp 3.4s ease-out infinite;opacity:0}
+@keyframes posWisp{0%{opacity:0;translate:0 6px}30%{opacity:.7}100%{opacity:0;translate:4px -26px}}
+.posfx .pos-seyes{animation:posBlink 4.4s steps(1) infinite}
+@keyframes posBlink{0%,86%{opacity:1}88%,90%{opacity:0}92%{opacity:1}}
+.posfx .pos-grin{transform-box:fill-box;transform-origin:50% 30%;animation:posGrin 5s ease-in-out infinite}
+@keyframes posGrin{0%,70%,100%{scale:1 1}80%,90%{scale:1.15 1.4}}
+/* the shadows that follow the Gutterwick in, during LIGHTS OUT */
+#gw-eyes .gw-fol{position:fixed;left:0;top:0;width:96px;height:240px;pointer-events:none;will-change:transform,opacity}
+#gw-eyes .gw-fol .fol-body{position:absolute;inset:0;transition:opacity .2s}
+#gw-eyes .gw-fol .fol-eyes{position:absolute;left:50%;top:9%;translate:-50% 0;display:flex;gap:9px}
+#gw-eyes .gw-fol .fol-eyes b{width:7px;height:5px;border-radius:50%;background:#F6F2FF;box-shadow:0 0 8px 3px rgba(230,220,255,.85)}
+#gw-eyes .gw-fol.rise .fol-body{animation:folRise 1.2s ease-out}
+@keyframes folRise{0%{clip-path:inset(100% -40% -10% -40%)}100%{clip-path:inset(-20% -40% -10% -40%)}}
+#gw-eyes .gw-fol.go{opacity:0;transition:opacity 1.2s}
+@media (prefers-reduced-motion:reduce){.posfx *{animation:none!important}}
 </style>
 
 <div class="app">
@@ -5675,8 +5694,7 @@ document.querySelectorAll(".tut-offer,#tut").forEach(e=>e.remove());
    Steps with `wait` advance on their own when the player does the thing. Radiants are deliberately never mentioned. */
 const TUT={on:false,i:0,raf:0};
 /* The tutorial's practice alloy. */
-/* swapped while Gutterwick's Overclock form is being worked on; put back to "Brass" afterwards */
-const TUT_ALLOY="Gutterwick";
+const TUT_ALLOY="Brass";
 const TUT_STEPS=[
  {t:"WELCOME, RECRUIT!",x:"I'm Dr. Marlow, head of the Quillmoor field team. Out there, wild alloys hide in the rubble. Your job: find them, test them in the lab, and work out what they're made of. Let's do your first one together.<br><br><b>Heads up: the tutorial round earns NO points.</b> It's just practice, so your score only starts counting on real encounters."},
  {sel:".modes",t:"GAME MODES",x:"<b>Name → Elements</b>: you're told the alloy's name; you find its elements.<br><b>Mystery</b>: no name given. Type it yourself (no multiple choice!), then find its elements.<br><b>Mixed</b>: a bit of both. Your practice alloy will be a Name → Elements one."},
@@ -19030,7 +19048,7 @@ const gwOn=()=>TB.on&&TB.a&&TB.a.name===GW_NAME&&TB.gw;
 function gwPt(e){if(!TB.gw)return;const p=e.touches?e.touches[0]:e;if(!p)return;TB.gw.lx=p.clientX;TB.gw.ly=p.clientY}
 {const _bs=bossStart;bossStart=function(){_bs();if(!(TB.on&&TB.a.name===GW_NAME))return;const W=innerWidth,H=innerHeight;
   TB.gw={oil:100,flasks:2,flaskIn:GW.flaskIn,wick:"hi",shut:false,out:0,dry:false,woke:false,lx:W/2,ly:H/2,last:performance.now(),hud:0,
-    eyes:[{x:W*.15,y:H*.2,real:true,drink:0,wx:W*.2,wy:H*.3,wt:0}]};
+    eyes:[{x:W*.15,y:H*.2,real:true,drink:0,wx:W*.2,wy:H*.3,wt:0,jt:2}],fol:[],folT:(typeof TUT!=="undefined"&&TUT.on)?22:13,shutFor:0};
   let d=$("#gw-dark");if(!d){d=document.createElement("div");d.id="gw-dark";document.body.appendChild(d)}
   let e=$("#gw-eyes");if(!e){e=document.createElement("div");e.id="gw-eyes";document.body.appendChild(e)}
   e.innerHTML=TB.gw.eyes.map((q,i)=>`<i class="gw-eye${q.real?" real":""}" data-i="${i}">${gwEyeSVG()}</i>`).join("");
@@ -19047,7 +19065,7 @@ function gwCleanup(){const g=TB.gw;if(g&&g.mv){removeEventListener("pointermove"
 {const _bh=bossHud;bossHud=function(){_bh();if(!gwOn()||!$("#gw-oil"))return;const g=TB.gw,o=$("#gw-oil");o.style.width=g.oil+"%";o.className=g.oil<20?"hot":g.oil<45?"warm":"";
   const s=$("#gw-shut");s.textContent=g.shut?"OPEN LANTERN":"SHUTTER";s.classList.toggle("on",g.shut);$("#gw-wick").textContent=g.wick==="hi"?"WICK: HIGH":"WICK: LOW";
   const f=$("#gw-oilb");f.disabled=g.flasks<=0;f.textContent=g.flasks?`OIL ×${g.flasks}`:`OIL · ${Math.ceil(g.flaskIn)}s`;
-  const close=g.eyes.some(q=>q.real&&q.drink>0);$("#bb-info").textContent=(g.out>0?`LANTERN OUT ${Math.ceil(g.out)}s · `:g.dry?"OUT OF OIL · ":g.shut?"Shuttered: you're hidden, and blind · ":close?"IT'S AT YOUR LIGHT! SHUTTER! · ":"")+(g.woke?"Two pairs of eyes. Only one is real.":"Watch the eyes.")}}
+  const close=g.eyes.some(q=>q.real&&q.drink>0);$("#bb-info").textContent=(g.out>0?`LANTERN OUT ${Math.ceil(g.out)}s · `:g.dry?"OUT OF OIL · ":g.shut?"Shuttered: you're hidden, and blind · ":close?"IT'S AT YOUR LIGHT! SHUTTER! · ":"")+(g.fol&&g.fol.length?`${g.fol.length===1?"Another shadow has":g.fol.length+" shadows have"} followed it in.`:"Watch the eyes.")}}
 function gwLoop(t){gwLoop.raf=requestAnimationFrame(gwLoop);const g=TB.gw;if(!g||!TB.on||!TB.a||TB.a.name!==GW_NAME){gwCleanup();return}
   const dt=Math.min(.05,(t-g.last)/1000);g.last=t;const dk=$("#gw-dark"),ey=$("#gw-eyes");if(!dk||!ey)return;
   const live=bossActive()&&S.r.stage==="elements"&&!document.hidden&&$("#stage").offsetParent!==null;
@@ -19058,17 +19076,43 @@ function gwLoop(t){gwLoop.raf=requestAnimationFrame(gwLoop);const g=TB.gw;if(!g|
   if(!g.shut&&g.out<=0&&g.oil>0){g.oil=Math.max(0,g.oil-(g.wick==="hi"?GW.oilHi:GW.oilLo)*dt);if(g.oil<=0&&!g.dry){g.dry=true;sfx("miss");say("Your lantern has burned dry! Top it up with OIL.")}}
   const r=g.shut?0:g.out>0?24:g.dry?30:g.wick==="hi"?GW.rHi:GW.rLo,lit=r>40;
   dk.style.setProperty("--x",g.lx+"px");dk.style.setProperty("--y",g.ly+"px");dk.style.setProperty("--r",Math.max(1,r)+"px");
-  if(!g.woke&&TB.hp<55){g.woke=true;g.eyes.push({x:W-60,y:60,real:false,drink:0,wx:W/2,wy:H/2,wt:0});ey.insertAdjacentHTML("beforeend",`<i class="gw-eye" data-i="1">${gwEyeSVG()}</i>`);sfx("siren");stageFx("fumes");say("IT WAKES! It's faster now, and there are TWO pairs of eyes in the dark. Only one of them is real.")}
+  if(!g.woke&&TB.hp<55){g.woke=true;sfx("siren");stageFx("fumes");gwFollow(g,true);say("IT WAKES! It's faster now, and the other shadows in the room have started doing whatever it does.")}
+  /* the others follow its lead: every so often another shadow comes up out of the dark at the edge of the room */
+  if((g.folT-=dt)<=0){g.folT=(typeof TUT!=="undefined"&&TUT.on)?26:15;gwFollow(g)}
   const els=ey.querySelectorAll(".gw-eye");
   g.eyes.forEach((q,i)=>{const sp=(g.woke?150:105)*(q.real?1:1.15);let tx,ty;
     if(lit){tx=g.lx;ty=g.ly}else{if((q.wt-=dt)<=0){q.wt=2+Math.random()*1.5;q.wx=40+Math.random()*(W-80);q.wy=40+Math.random()*(H-80)}tx=q.wx;ty=q.wy}
     const dx=tx-q.x,dy=ty-q.y,d=Math.hypot(dx,dy)||1,step=Math.min(d,(lit?sp:60)*dt);q.x+=dx/d*step;q.y+=dy/d*step;
+    /* it's an erratic one: every so often it jinks sideways, all at once, without crossing the space between */
+    if(q.real&&lit&&(q.jt-=dt)<=0){q.jt=1.2+Math.random()*2.2;const a=Math.atan2(dy,dx)+(Math.random()<.5?1:-1)*Math.PI/2,j=60+Math.random()*80;q.x=Math.max(20,Math.min(W-20,q.x+Math.cos(a)*j));q.y=Math.max(20,Math.min(H-20,q.y+Math.sin(a)*j))}
     const near=lit&&q.real&&Math.hypot(g.lx-q.x,g.ly-q.y)<r*.55;q.drink=near?q.drink+dt:Math.max(0,q.drink-dt*2);
     const el=els[i];if(el){el.style.transform=`translate(${q.x.toFixed(0)}px,${q.y.toFixed(0)}px) scale(${(1+q.drink*.6).toFixed(2)})`;el.classList.toggle("lit",lit&&Math.hypot(g.lx-q.x,g.ly-q.y)<r*1.6);el.classList.toggle("drink",q.drink>0)}
-    if(q.real&&q.drink>=GW.drink){q.drink=0;g.out=GW.outFor;g.oil=Math.max(0,g.oil-18);hurt(9);sfx("hiss");stageFx("shake");say("It reached your light and DRANK it. Your lantern's out, and it's spilled your oil!");
+    if(q.real&&q.drink>=GW.drink){q.drink=0;g.out=GW.outFor;gwFollow(g);g.oil=Math.max(0,g.oil-18);hurt(9);sfx("hiss");stageFx("shake");say("It reached your light and DRANK it. Your lantern's out, and it's spilled your oil!");
       const s=Math.random()*4|0;q.x=s===0?20:s===1?W-20:Math.random()*W;q.y=s===2?20:s===3?H-20:Math.random()*H}});
+  gwFollowers(g,dt,lit,r,W,H);
   if(g.out>0||g.dry){TB.hp-=.22*dt*DRAIN_SCALE*(typeof TUT!=="undefined"&&TUT.on?.5:1);if(TB.hp<=0){bossBreach("CONTAINMENT BREACH! In the dark, the Gutterwick slipped out of the vial and away up the chimney!");return}}
   if((g.hud+=dt)>.25){g.hud=0;bossHud()}}
+/* ---- the shadows that follow its lead ----
+   They come up out of the dark at the edge of the room, one at a time, never more than three. They don't hunt your light on their own:
+   they go where the Gutterwick goes, a little behind it, fanned out around it. When it's at your light, so are they, and every one of
+   them in your light drinks your oil and wears at containment. Shutter the lantern and they lose you, and the ones that lose you for
+   long enough go back down into the dark. */
+function gwFollow(g,force){const max=(typeof TUT!=="undefined"&&TUT.on)?1:3;if(!g.fol||g.fol.length>=max)return;const ey=$("#gw-eyes");if(!ey)return;const W=innerWidth,H=innerHeight;
+  const side=Math.random()*4|0,x=side===0?30:side===1?W-30:60+Math.random()*(W-120),y=side===2?60:side===3?H-60:100+Math.random()*(H-200);
+  const k=(g.fol.length+(Math.random()*3|0))%SHADE_KINDS.length,el=document.createElement("i");el.className="gw-fol rise";
+  el.innerHTML=`<span class="fol-body">${shadeSVG(SHADE_KINDS[k])}</span><span class="fol-eyes"><b></b><b></b></span>`;ey.appendChild(el);setTimeout(()=>el.classList.remove("rise"),1300);
+  g.fol.push({x,y,el,ang:Math.random()*6.283,lag:.55+Math.random()*.3,gone:false});if(!force&&!g.folSaid){g.folSaid=1;say("Another shadow has come up out of the dark, and it's doing exactly what the Gutterwick does.")}}
+function gwFollowers(g,dt,lit,r,W,H){if(!g.fol||!g.fol.length)return;const L=g.eyes.find(q=>q.real);if(!L)return;
+  g.shutFor=g.shut||g.out>0?g.shutFor+dt:0;
+  g.fol=g.fol.filter(f=>{if(f.gone)return false;
+    /* lost you for long enough: it goes back down into the dark */
+    if(g.shutFor>3&&Math.random()<dt*.25){f.gone=true;f.el.classList.add("go");setTimeout(()=>f.el.remove(),1300);return false}
+    f.ang+=dt*.6;const ox=Math.cos(f.ang)*90,oy=Math.sin(f.ang)*55,tx=L.x+ox,ty=L.y+oy,dx=tx-f.x,dy=ty-f.y,d=Math.hypot(dx,dy)||1,sp=(g.woke?130:95)*f.lag;
+    const st=Math.min(d,sp*dt);f.x+=dx/d*st;f.y+=dy/d*st;
+    const dl=Math.hypot(g.lx-f.x,g.ly-f.y);
+    if(lit&&dl<r*.55){g.oil=Math.max(0,g.oil-5*dt);TB.hp-=.06*dt*DRAIN_SCALE*(typeof TUT!=="undefined"&&TUT.on?.5:1)}
+    const vis=lit?Math.max(.1,Math.min(1,1.25-dl/(r*1.6))):.1;
+    f.el.style.transform=`translate(${(f.x-48).toFixed(0)}px,${(f.y-24).toFixed(0)}px)`;const b=f.el.firstElementChild;if(b)b.style.opacity=vis.toFixed(2);return true})}
 /* the specimen: the vial stood in a carved neep on a dyke on the moor, at night, with a flame that burns backwards coming out of its mouth */
 {const _tf=threatFx;threatFx=function(host,a,mini){if(!a||a.name!==GW_NAME)return _tf(host,a,mini);const svg=host&&host.querySelector("svg");if(!svg||svg.querySelector(".tfx"))return;
   const U="gw"+(threatFx.n=(threatFx.n||0)+1),R=mulberry(41+(threatFx.n||0)),rn=(x,y)=>(x+R()*(y-x)).toFixed(1);svg.style.overflow="visible";
@@ -20720,6 +20764,84 @@ function lntEncounterKind(){const isH=n=>LNT_NAMES.has(n)||n===GW_NAME,sa=EXP.st
   return typeof inHollow==="function"&&inHollow()}
 {const _en=encounter;encounter=function(){const w=$("#wipe"),lnt=lntEncounterKind();_en();if(!w)return;w.classList.toggle("lnt",!!lnt);
   let f=w.querySelector(".wface");if(lnt){if(!f){f=document.createElement("b");f.className="wface";f.innerHTML=JACK_FACE;w.appendChild(f)}}else if(f)f.remove()}}
+
+/* =============== POSSESSED SAMPLES ===============
+   The Gutterwick was an unidentified sample that one especially erratic shadow person got into. It wasn't the last. While Lantern Night
+   is on, the shadows that come up out of every shadow in the country have started getting into samples too: one encounter in twelve in
+   Hollowmere (where a shadow has always dragged it in from somewhere else, since Hollowmere's own alloys can't be got into), one in
+   twenty-four anywhere else. A possessed sample is dark, smoking, and looks back at you. Identify it and the shadow lets go: you register
+   the ordinary alloy, and a trace of the shadow is left on your fingers. Gather a hundred traces, and register the one they all followed,
+   and you'll have earned something to wear. */
+const POS={next:false};
+const posTraces=()=>store.get("wta_shd_trace",0);
+const POS_CAN=a=>a&&!a.event&&!a.threat&&!a.quest;
+{const _en=encounter;encounter=function(){POS.next=false;
+  if(typeof lntOn==="function"&&lntOn()&&S.phase==="explore"&&!EXP.storyAlloy&&!EXP.duel&&!EXP.trial&&!EXP.questAlloy&&!(typeof TUT!=="undefined"&&TUT.on)&&EXP.zone&&!EXP.zone.special)
+    POS.next=window.__posForce||Math.random()<(inHollow()?1/12:1/24);
+  _en()}}
+/* in Hollowmere, the possessed one is always something from outside */
+{const _pa=pickAlloy;pickAlloy=function(kind,used){if(POS.next&&!EXP.storyAlloy&&typeof inHollow==="function"&&inHollow()){
+    const pool=ALLOYS.filter(a=>POS_CAN(a)&&a.rar!=="legendary"&&!used.has(a.name));let tot=pool.reduce((t,a)=>t+((RARITY[a.rar]||{}).w||1),0),r=Math.random()*tot;
+    for(const a of pool){r-=((RARITY[a.rar]||{}).w||1);if(r<=0)return a}if(pool.length)return pool[pool.length-1]}
+  return _pa(kind,used)}}
+{const _sr=startRound;startRound=function(){const was=POS.next;try{_sr()}finally{POS.next=false}
+  if(was&&S.r&&POS_CAN(S.r.a)){S.r.possessed=1;{const sp=$("#specimen");if(sp)posFx(sp)}setTimeout(()=>{const sp=$("#specimen");if(sp&&S.r&&S.r.possessed)posFx(sp)},120);setTimeout(()=>{if(S.r&&S.r.possessed&&S.r.stage!=="done")say(inHollow()?"A shadow has dragged this one in from somewhere else, and it's still inside it. It's looking at you.":"Something else is in this sample. It's looking at you.")},3500)}}}
+/* what a possessed sample looks like: the dark has got into it, it smokes, and two pinprick eyes and a grin look out of it */
+function posFx(host){const svg=host&&host.querySelector("svg");if(!svg||svg.querySelector(".posfx"))return;const U="ps"+(posFx.n=(posFx.n||0)+1);
+  svg.style.overflow="visible";
+  svg.insertAdjacentHTML("beforeend",`<g class="posfx" pointer-events="none"><defs><radialGradient id="${U}" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="#05040A" stop-opacity=".82"/><stop offset=".6" stop-color="#0A0814" stop-opacity=".55"/><stop offset="1" stop-color="#0A0814" stop-opacity="0"/></radialGradient></defs>
+   <ellipse cx="150" cy="150" rx="78" ry="70" fill="url(#${U})"/>
+   ${[[124,96,0],[150,88,1.2],[176,98,2.3],[140,92,3.1]].map(([x,y,d])=>`<path class="pos-wisp" style="animation-delay:-${d}s" d="M${x} ${y} q-6 -10 0 -20 q6 -9 0 -18" stroke="#0E0A1A" stroke-width="6" fill="none" stroke-linecap="round"/>`).join("")}
+   <g filter="url(#shdG)" class="pos-seyes"><circle cx="139" cy="140" r="2.6" fill="#FFFFFF"/><circle cx="161" cy="140" r="2.6" fill="#FFFFFF"/></g>
+   <g class="pos-grin"><path d="M131 152 Q150 168 169 152 Q150 176 131 152 Z" fill="#05040A"/><path d="M133 153 Q150 166 167 153 Q150 172 133 153 Z" fill="#EEEAF2"/>${Array.from({length:7},(_,k)=>`<path d="M${136+k*4.6} ${155+Math.sin((k+.5)/7*Math.PI)*5} V${158+Math.sin((k+.5)/7*Math.PI)*8}" stroke="#05040A" stroke-width="1"/>`).join("")}</g></g>`)}
+{const _rs=renderStage;renderStage=function(){_rs.apply(this,arguments);if(S.r&&S.r.possessed&&S.r.stage!=="done"){const sp=$("#specimen");if(sp)posFx(sp)}else{document.querySelectorAll("#specimen .posfx").forEach(e=>e.remove())}}}
+/* identified: the shadow lets go, and leaves a trace */
+{const _w=win;win=function(){const r=S.r,pos=r&&r.possessed;_w();if(pos&&r){r.possessed=0;document.querySelectorAll("#specimen .posfx").forEach(e=>e.remove());
+    const n=posTraces()+1;store.set("wta_shd_trace",n);setTimeout(()=>say(`The shadow lets go of it and slides off into the nearest shadow. A trace of it stays on your fingers. (Traces of shadow: ${n})`),900)}
+  shdCoatCheck()}}
+{const _l=lose;lose=function(ran){const r=S.r,pos=r&&r.possessed;_l(ran);if(pos&&r){r.possessed=0;setTimeout(()=>say("The shadow takes the sample with it, down into the dark."),900)}}}
+/* ---- the coat: somebody trying very, very hard to be a shadow person ---- */
+function shdCoatCheck(){if(store.get("wta_coat_shd",0)||posTraces()<100||!S.caught.has(typeof GW_NAME!=="undefined"?GW_NAME:"Gutterwick"))return;store.set("wta_coat_shd",1);if(typeof coatCheck==="function")coatCheck()}
+COATS.push({id:"shadowkid",name:"Shadow Getup",desc:"Black from head to foot: a smooth hood with no face, two painted eyes that catch the light, a thin white grin, sleeves so long they drag along the floor behind you, and a ragged hem that trails off like a shadow's does. In a dark room you'd walk right past it. The flask gives you away.",
+  how:"Earned by gathering a hundred traces of shadow, and registering the one they all followed.",cut:"jacket",body:"#0A090E",sleeve:"#0A090E",cuff:"#0A090E",open:()=>!!store.get("wta_coat_shd",0),
+  /* a haze of dark round the whole figure, and the ragged hem running down like a shadow's legs do */
+  back:`<ellipse cx="20" cy="22" rx="14" ry="17" fill="#0A090E" opacity=".16"/><ellipse cx="20" cy="22" rx="11" ry="14.6" fill="#0A090E" opacity=".14"/>
+`,
+  detail:`<path d="M13 23 Q20 25.4 27 23 M12.6 27 Q20 29.4 27.4 27 M12.4 31 Q20 33.2 27.6 31" stroke="#1A1820" stroke-width=".55" fill="none"/>`,
+  /* long gloved fingers on the free hand, and round the flask */
+  /* the hood: smooth, faceless, and a grin and two eyes that really are quite good */
+  hat:`<path d="M12.2 14.4 Q11.6 4.8 20 4.4 Q28.4 4.8 27.8 14.4 Q27.6 20 24.6 21.8 L15.4 21.8 Q12.4 20 12.2 14.4 Z" fill="#0A090E" stroke="#121B40" stroke-width="1"/>
+   <path d="M14 7.6 Q16 5.6 19 5.2" stroke="#2A2832" stroke-width=".6" fill="none" stroke-linecap="round"/>
+   <circle cx="18.6" cy="12.6" r="1.35" fill="#F6F2FF" opacity=".2"/><circle cx="24" cy="12.6" r="1.35" fill="#F6F2FF" opacity=".2"/>
+   <circle cx="18.6" cy="12.6" r=".85" fill="#FFFFFF"/><circle cx="24" cy="12.6" r=".85" fill="#FFFFFF"/>
+   <path d="M15.2 14.6 Q21.2 20.4 27.2 14.4 Q21.2 18.4 15.2 14.6 Z" fill="#F6F2FF" opacity=".22"/>
+   <path d="M15.8 14.9 Q16.4 15.9 16.8 15.6 Q21.2 19.4 25.6 15.4 Q26 15.8 26.6 14.7 Q21.2 18.2 15.8 14.9 Z" fill="#FFFFFF"/>`});
+/* the sleeves, far too long: the left one runs down past where your hand should be and crumples on the floor behind you; the right
+   one's cuff has swallowed the neck of your flask, and the rest of it hangs down to the floor and drags along behind */
+const SHD_BACKSLEEVE=`<path d="M34 27.6 Q36.6 31 36 33.4 Q35.4 34.6 32.6 34.9 Q24 35.2 14 35.1 Q8 35 4.4 34.6" stroke="#121B40" stroke-width="3.4" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+   <path d="M34 27.6 Q36.6 31 36 33.4 Q35.4 34.6 32.6 34.9 Q24 35.2 14 35.1 Q8 35 4.4 34.6" stroke="#0A090E" stroke-width="2" fill="none" stroke-linecap="round" stroke-linejoin="round"/>
+   <path d="M5.4 33.8 Q3.2 33.6 2.8 34.8 Q3.8 35.8 5.6 35.4" fill="#0A090E" stroke="#121B40" stroke-width=".55" stroke-linejoin="round"/>
+   <path d="M9 35.2 Q10 35.9 11 35.3 M28 35.4 Q29 36 30 35.4" stroke="#2A2832" stroke-width=".35" fill="none"/>`;
+const SHD_SLEEVES=(()=>{const sl=(d,w)=>`<path d="${d}" stroke="#121B40" stroke-width="${w+1.6}" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="${d}" stroke="#0A090E" stroke-width="${w}" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+  return`<g class="shd-sleeves">${sl("M11.6 22.8 Q8.6 28 8.6 33 Q8.4 36.8 6.6 38.4 Q4.6 39.4 1.8 39.2",2.4)}
+   <path d="M3 38.2 Q.6 38.2 .2 39.6 Q1.4 40.8 3.4 40.2" fill="#0A090E" stroke="#121B40" stroke-width=".6" stroke-linejoin="round"/>
+   <path d="M9.6 26.4 Q8.6 27.4 9.2 28.4 M8.6 30.6 Q9.6 31.6 8.8 32.8 M5.8 38 Q5 39.2 6.2 39.6" stroke="#2A2832" stroke-width=".4" fill="none"/>
+   ${sl("M28.4 22.8 Q31.6 24.2 32.6 26.6",2.4)}
+   <path d="M30.6 25.6 Q32.4 24 34.4 25.4 L34.6 27.4 Q32.6 28.4 30.6 27.6 Z" fill="#0A090E" stroke="#121B40" stroke-width=".7" stroke-linejoin="round"/>
+</g>`})();
+/* the getup covers the whole of you: no face, no glasses, black hands and feet (only the flask is still yours) */
+{const _ps=playerSVG;playerSVG=function(c){const coat=c||coatNow(),out=_ps(c);if(!coat||coat.id!=="shadowkid")return out;const L=out.split("\n");
+  return L.map(l=>{if(/<circle cx="20" cy="13\.5" r="7\.2"/.test(l))return l.replace(/fill="#[0-9A-Fa-f]{6}"/,'fill="#0A090E"');
+    if(/M12\.8 13 L27\.4 13|cx="19\.6" cy="13\.4" r="2\.6"|cx="18\.9" cy="12\.6" r="\.7"|M21\.5 17\.6 Q23 18\.6 24\.4 17\.6/.test(l))return l.includes("</svg>")?"</svg>":"";
+    /* the arms are the sleeves now: drawn by the getup itself (below), so the ordinary arm strokes go */
+    if(/d="M11\.5 23 Q9 28 10 32"|d="M28\.5 23 Q31\.5 25 32 28"|M10\.05 30\.6 L10\.05 31\.8|M31\.5 26\.6 L31\.9 27\.7/.test(l))return"";
+    /* hands are lost somewhere inside the sleeves */
+    if(/<circle cx="10\.2" cy="32\.4"|<circle cx="32" cy="28" r="1\.8"/.test(l))return"";
+    /* the legs: black, with a thin outline so you can see the trailing sleeve go behind them */
+    if(/<rect x="1[34]\.5" y="3[15](\.5)?"|<rect x="2[01](\.5)?" y="3[15](\.5)?"/.test(l))return l.replace(/fill="#[0-9A-Fa-f]{6}"/g,'fill="#0A090E" stroke="#3A3848" stroke-width=".5"');
+    return l}).map((l,i)=>i===0?l+"\n"+SHD_BACKSLEEVE:l).join("\n").replace("</svg>",SHD_SLEEVES+"</svg>")}}
+/* the journal keeps count while Lantern Night is on */
+{const _jo=journalObjectives;journalObjectives=function(){const J=_jo(),n=posTraces();if(n>0||(typeof lntOn==="function"&&lntOn()&&lntF("hm")))J.push(`<div class="bag-item key obj"><b>TRACES OF SHADOW: ${n}</b><p>${n?"Left on your fingers each time a shadow let go of a sample you identified.":"Shadows have started getting into samples. Identify a possessed one and the shadow has to let go."}</p></div>`);return J}}
 
 
 newRun();
