@@ -18468,7 +18468,7 @@ moltenAll();
 
 /* ---- the register shows the battle form too. One button flips specimen <-> battle form; the ✦ RADIANT button colours
    whichever of the two is showing, so the radiant battle form needs no button of its own. ---- */
-{const _od=openDex;openDex=function(no){_od(no);const a=ALLOYS[no-1];if(!a||a.threat||statusOf(a)!=="caught"||!ocKnown())return;const bt=document.querySelector("#dexdetail .ddbtns"),spec=document.querySelector("#dexdetail .ddspec"),sc=document.querySelector("#ddscreen");if(!bt||!spec||!sc)return;
+{const _od=openDex;openDex=function(no){_od(no);const a=ALLOYS[no-1];if(!a||(a.threat&&!hasForm(a))||statusOf(a)!=="caught"||!ocKnown())return;const bt=document.querySelector("#dexdetail .ddbtns"),spec=document.querySelector("#dexdetail .ddspec"),sc=document.querySelector("#ddscreen");if(!bt||!spec||!sc)return;
   const b=document.createElement("button");b.className="btn";b.id="dd-form";const rb=document.querySelector("#dd-rad");bt.insertBefore(b,rb||null);let on=false,saved=null,busy=false;const g=bestGradeOf(a.name);
   const isRad=()=>radOwned(a)&&sc.classList.contains("radiant");
   const lab=()=>{b.textContent=on?"SPECIMEN":"OVERCLOCK";b.setAttribute("aria-pressed",on?"true":"false")};lab();
