@@ -2531,6 +2531,118 @@ body.as-open #mapwrap *,body.as-open #mapwrap *::before,body.as-open #mapwrap *:
 @keyframes folRise{0%{clip-path:inset(100% -40% -10% -40%)}100%{clip-path:inset(-20% -40% -10% -40%)}}
 #gw-eyes .gw-fol.go{opacity:0;transition:opacity 1.2s}
 @media (prefers-reduced-motion:reduce){.posfx *{animation:none!important}}
+/* your room: wallpaper, floors */
+#mapwrap .tile.rmw{background-size:20px 100%!important}
+#mapwrap .tile.rmw.rmw-cream,#mapwrap .tile.rmw-cream.cull,.rm-sw.rmw-cream{background:repeating-linear-gradient(90deg,#E8DCC0 0 9px,#DED0B2 9px 10px)!important}
+#mapwrap .tile.rmw.rmw-sage,#mapwrap .tile.rmw-sage.cull,.rm-sw.rmw-sage{background:repeating-linear-gradient(90deg,#B8C8A8 0 7px,#A4B694 7px 12px)!important}
+#mapwrap .tile.rmw.rmw-navy,#mapwrap .tile.rmw-navy.cull,.rm-sw.rmw-navy{background:radial-gradient(circle at 50% 30%,#5A6A8A 0 3px,transparent 4px) 0 0/14px 14px,#3A4A6A!important}
+#mapwrap .tile.rmw.rmw-rose,#mapwrap .tile.rmw-rose.cull,.rm-sw.rmw-rose{background:radial-gradient(circle,#B88080 0 2px,transparent 3px) 0 0/12px 12px,#D8A8A8!important}
+#mapwrap .tile.rmw.rmw-panel,#mapwrap .tile.rmw-panel.cull,.rm-sw.rmw-panel{background:linear-gradient(#6A4422 0 8%,transparent 8%),repeating-linear-gradient(90deg,#8A5A2E 0 18px,#6A4422 18px 20px)!important}
+#mapwrap .tile.rmw.rmw-moor,#mapwrap .tile.rmw-moor.cull,.rm-sw.rmw-moor{background:linear-gradient(#8AA8C8 0 45%,#7A8A6A 45% 70%,#6A5A7A 70%)!important}
+.tile.rmw::after{content:"";position:absolute;left:0;right:0;bottom:0;height:16%;background:#5A3A1E;box-shadow:inset 0 2px 0 rgba(255,255,255,.18)}
+#mapwrap .tile.rmside.rmside{background:#3A2A22!important}
+#mapwrap .tile.rmf.rmf-boards,#mapwrap .tile.rmf-boards.cull,.rm-sw.rmf-boards{background:repeating-linear-gradient(0deg,#A8784A 0 11px,#8A5E36 11px 12px)!important}
+#mapwrap .tile.rmf.rmf-oak,#mapwrap .tile.rmf-oak.cull,.rm-sw.rmf-oak{background:repeating-linear-gradient(0deg,#8A5A2E 0 11px,#6A4422 11px 12px)!important}
+#mapwrap .tile.rmf.rmf-tiles,#mapwrap .tile.rmf-tiles.cull,.rm-sw.rmf-tiles{background:linear-gradient(90deg,#B8BCC4 1px,transparent 1px) 0 0/20px 20px,linear-gradient(#B8BCC4 1px,transparent 1px) 0 0/20px 20px,#D8DCE0!important}
+#mapwrap .tile.rmf.rmf-carpet,#mapwrap .tile.rmf-carpet.cull,.rm-sw.rmf-carpet{background:radial-gradient(circle,#3E6A3E 1px,transparent 1.5px) 0 0/6px 6px,#4A7A4A!important}
+#mapwrap .tile.rmf.rmf-slate,#mapwrap .tile.rmf-slate.cull,.rm-sw.rmf-slate{background:linear-gradient(90deg,#4E525C 1px,transparent 1px) 0 0/26px 26px,linear-gradient(#4E525C 1px,transparent 1px) 0 0/26px 26px,#6A6E78!important}
+.rm-sw{width:56px;height:40px;border:2px solid var(--line);border-radius:6px;flex:none}
+/* pieces of furniture */
+.mapobj.rmi svg{width:100%;height:100%;display:block;overflow:visible}
+.mapobj.rmflat{z-index:2!important}
+.rmi .lnt-flame{transform-box:fill-box;transform-origin:50% 100%;animation:lntFl .7s ease-in-out infinite alternate}
+.rmi .rm-gweye{animation:rmBlink 5s steps(1) infinite}@keyframes rmBlink{0%,90%{opacity:1}92%,95%{opacity:0}}
+.rmi .rm-fish{animation:rmFish 6s ease-in-out infinite}.rmi .rm-fish2{animation:rmFish 7.4s ease-in-out infinite reverse}
+@keyframes rmFish{0%,100%{translate:0 0}50%{translate:12px 2px}}
+.rmi .rm-jar{transform-box:fill-box;transform-origin:50% 100%;animation:rmJar 4s ease-in-out infinite}@keyframes rmJar{50%{scale:1.1 .9}}
+.mapwrap.rm-editing .mapobj.rmi{outline:1px dashed rgba(255,226,122,.7);outline-offset:-2px;cursor:pointer}
+.mapwrap.rm-carry{cursor:crosshair}
+.mapwrap.rm-carry .tile.rmf{box-shadow:inset 0 0 0 1px rgba(255,226,122,.35)}
+.mapwrap.rm-carry-wall .tile.rmw{box-shadow:inset 0 0 0 2px rgba(255,226,122,.55)}.mapwrap.rm-carry-wall .tile.rmf{box-shadow:none}
+.rmdoor svg{width:100%;height:100%;display:block}
+#rm-bar{position:absolute;left:50%;bottom:10px;translate:-50% 0;z-index:30;display:flex;gap:8px;align-items:center;flex-wrap:wrap;justify-content:center;background:rgba(18,27,64,.86);border:2px solid #FFE27A;border-radius:10px;padding:6px 10px;color:#fff;font-size:13px;max-width:94%}
+#rm-bar .btn{font-size:10px;padding:6px 10px}
+.rm-tabs{display:flex;gap:6px;align-items:center;flex-wrap:wrap;margin-bottom:6px}
+.rm-tabs .btn{font-size:10px}
+.rm-pts{margin-left:auto;font-family:var(--pix);font-size:11px;background:#FFE27A;border:2px solid var(--line);border-radius:6px;padding:3px 7px}
+.rm-it{display:flex;gap:10px;align-items:center}
+.rm-it.locked{opacity:.55}
+.rm-pv{width:64px;height:64px;flex:none;background:#E8DCC0;border:2px solid var(--line);border-radius:8px;display:flex;align-items:center;justify-content:center}
+.rm-pv svg{width:90%;height:90%;overflow:visible}
+.rm-grid{display:grid;grid-template-columns:repeat(auto-fill,minmax(110px,1fr));gap:8px}
+.rm-al{position:relative;display:flex;flex-direction:column;align-items:center;gap:4px;background:#F4F0E6;border:2px solid var(--line);border-radius:8px;padding:6px;font-size:11px;cursor:pointer}
+.rm-al.on{background:#FFE27A}
+.rm-als{width:60px;height:48px;display:block}.rm-als svg{width:100%;height:100%}
+.rm-al i{position:absolute;top:4px;right:6px;font-style:normal;color:#C89A10;font-size:16px;cursor:pointer}
+#rmpanel .bag-card,#rmcase .bag-card{width:min(640px,100%)}
+@media (prefers-reduced-motion:reduce){.rmi *{animation:none!important}}
+.look-pick{display:flex;gap:10px;justify-content:center;margin:8px 0 2px}
+.look-opt{display:flex;flex-direction:column;align-items:center;gap:4px;padding:8px 14px 6px;border:2px solid var(--ink,#121B40);border-radius:10px;background:#F4F6FC;cursor:pointer;font:inherit;color:inherit}
+.look-opt .coatpv,.look-opt .coatpv svg{width:64px;height:64px}
+.look-opt b{font-size:11px;letter-spacing:.08em}
+.look-opt:hover:not([disabled]){background:#E4ECFF;transform:translateY(-1px)}
+.look-opt.on{background:#FFE9A8;cursor:default}
+.look-row{border-bottom:2px dashed rgba(18,27,64,.2);padding-bottom:8px;margin-bottom:8px}
+/* ===== Hollowmere: more to do ===== */
+.mapobj.hmx svg{overflow:visible}
+.mapobj.hmx-gate{z-index:2}
+.mapobj.hmx-watch{pointer-events:none;opacity:.92}
+.mapobj.hmx-bell .hmx-bell{transform-origin:20px 0;animation:hmxBell 4.2s ease-in-out infinite}
+@keyframes hmxBell{0%,100%{transform:rotate(-4deg)}50%{transform:rotate(4deg)}}
+.hmg .lnt-mg-play{user-select:none;-webkit-user-select:none;touch-action:none}
+/* rubbing */
+.rb-stone{position:relative;width:100%;max-width:420px;margin:0 auto;aspect-ratio:320/200;border-radius:14px 14px 4px 4px;background:#3A3A40;border:3px solid #121216;overflow:hidden}
+.rb-words{position:absolute;inset:0;display:flex;flex-direction:column;align-items:center;justify-content:center;gap:6px;color:#F2EEE0;font-family:Georgia,serif;letter-spacing:.12em;
+  background:repeating-linear-gradient(17deg,#2E2E34 0 3px,#3A3A42 3px 6px)}
+.rb-words b{font-size:26px}.rb-words span{font-size:14px}.rb-words i{font-size:9px;font-style:normal;margin-top:6px;opacity:.85}
+.rb-paper{position:absolute;inset:0;width:100%;height:100%;cursor:crosshair;touch-action:none}
+/* chestnuts */
+.cn-shovel{display:grid;grid-template-columns:repeat(4,1fr);gap:10px;padding:16px;background:radial-gradient(ellipse at 50% 130%,rgba(255,138,42,.55),transparent 70%),#3A3A42;border:3px solid #121216;border-radius:10px 10px 40px 40px}
+.cn-nut{height:56px;border:0;background:none;cursor:pointer;position:relative;padding:0}
+.cn-nut i{position:absolute;left:50%;top:50%;width:40px;height:34px;margin:-17px 0 0 -20px;border-radius:50% 50% 46% 46%/60% 60% 40% 40%;background:#8A4A22;border:3px solid #1A0E06;transition:background .5s,transform .2s}
+.cn-nut i::after{content:"";position:absolute;left:12px;top:4px;width:10px;height:5px;border-radius:50%;background:rgba(255,255,255,.25)}
+.cn-nut.heat i{background:#6A3818}
+.cn-nut.ready i{background:#5A2E12;box-shadow:0 0 12px 3px rgba(255,170,60,.7)}
+.cn-nut.ready i::before{content:"";position:absolute;left:10px;right:10px;top:12px;height:5px;background:#F4E0B0;border-radius:3px;transform:rotate(-8deg)}
+.cn-nut.burnt i{background:#141418}
+.cn-nut.off i,.cn-nut.raw-off i{transform:translateY(-60px) scale(.6);opacity:0;transition:transform .4s,opacity .4s}
+.cn-nut:disabled,.cn-nut.off,.cn-nut.raw-off,.cn-nut.burnt{cursor:default}
+/* well */
+.wl-shaft{position:relative;height:220px;width:150px;margin:0 auto;background:linear-gradient(90deg,#3A3A40,#4E4E56 20%,#2A2A30 80%,#3A3A40);border:3px solid #121216;border-radius:6px;overflow:hidden}
+.wl-water{position:absolute;left:0;right:0;top:22%;bottom:0;background:linear-gradient(#1E3A50,#0A1620)}
+.wl-glint{position:absolute;left:50%;width:22px;height:8px;margin:-4px 0 0 -11px;border-radius:50%;background:#FFF2C0;box-shadow:0 0 10px 4px rgba(255,230,160,.8)}
+.wl-chain{position:absolute;left:50%;top:0;width:3px;margin-left:-1.5px;background:repeating-linear-gradient(#9A9AA0 0 4px,#5A5A60 4px 6px)}
+.wl-bucket{position:absolute;left:50%;width:34px;height:24px;margin:-2px 0 0 -17px;background:#8A6A44;border:3px solid #2A1A0E;border-radius:2px 2px 8px 8px}
+/* bell */
+.bl-frame{position:relative;height:160px;width:220px;margin:0 auto;border-top:10px solid #4A3422;border-left:8px solid #4A3422;border-right:8px solid #4A3422}
+.bl-bell{position:absolute;left:50%;top:0;width:110px;height:110px;margin-left:-55px;transform-origin:50% 0}
+.bl-bell svg{width:100%;height:100%}
+.bl-zone{position:absolute;top:2px;width:30px;height:60px;border:2px dashed #FFC870;border-radius:8px;opacity:.6}
+.bl-zone.l{left:4px;transform:rotate(-30deg)}.bl-zone.r{right:4px;transform:rotate(30deg)}
+/* peel */
+.pl-wrap{display:flex;flex-direction:column;align-items:center;gap:10px}
+.pl-apple{width:140px;height:140px}
+.pl-gauge{position:relative;width:260px;height:22px;border-radius:11px;background:linear-gradient(90deg,#3A2A2A,#3A2A2A 86%,#8A1A1A 86%);border:3px solid #121216}
+.pl-band{position:absolute;top:0;bottom:0;width:26%;background:rgba(107,224,138,.45);border-radius:6px}
+.pl-needle{position:absolute;top:-6px;width:4px;height:30px;margin-left:-2px;background:#F4ECD8;border-radius:2px}
+.pl-needle.ok{background:#6BE08A}
+#pl-go{margin-top:10px}
+/* float */
+.fl-burn{position:relative;height:240px;width:240px;margin:0 auto;background:repeating-linear-gradient(180deg,#2A4A6A 0 18px,#2E5272 18px 36px);border:3px solid #121216;border-radius:8px;overflow:hidden}
+.fl-bank{position:absolute;top:0;bottom:0;width:10px;background:#3A5A2A}.fl-bank.l{left:0}.fl-bank.r{right:0}
+.fl-lan{position:absolute;top:80%;width:30px;height:30px;margin:-15px 0 0 -15px;border-radius:6px 6px 10px 10px;background:#F4E8C8;border:2px solid #2A1A0A;box-shadow:0 0 14px 6px rgba(255,214,107,.55);transition:left .14s}
+.fl-lan::after{content:"";position:absolute;left:10px;top:7px;width:6px;height:12px;border-radius:50%;background:#FF8A2A}
+.fl-lan.bump{animation:flBump .4s}
+@keyframes flBump{30%{transform:rotate(-20deg);box-shadow:0 0 4px 1px rgba(255,214,107,.3)}}
+.fl-rock{position:absolute;width:40px;height:26px;margin:-13px 0 0 -20px;border-radius:50% 46% 40% 50%;background:#6A6A70;border:3px solid #1A1A1E}
+.fl-btns{display:flex;gap:16px;justify-content:center;margin-top:10px}.fl-btns .btn{min-width:70px;font-size:18px}
+/* bog lights */
+.bg-bog{position:relative;height:220px;border-radius:10px;border:3px solid #121216;background:radial-gradient(ellipse at 50% 120%,#1E2A1A,#0A0E0A 70%);overflow:hidden}
+.bg-l{position:absolute;width:26px;height:26px;margin:-13px 0 0 -13px;border:0;padding:0;border-radius:50%;cursor:pointer;background:radial-gradient(circle,#F4FFE0 0,#B8FFB0 30%,rgba(184,255,176,0) 70%);transition:opacity .4s}
+.bg-l.fake{animation:bgFl var(--fd) steps(2,jump-none) infinite alternate}
+@keyframes bgFl{to{opacity:var(--fo)}}
+.bg-bog.dark .bg-l{opacity:0!important;animation:none}
+.bg-l.show{box-shadow:0 0 0 3px #FFC870}
 </style>
 
 <div class="app">
@@ -6082,7 +6194,9 @@ function questObjs(){const z=EXP.zone,W=EXP.W,H=EXP.H;EXP.objs=[];
     const[cx,cy]=HALL.crucible;add(cx,cy,"crucible",`<svg viewBox="0 0 40 40"><ellipse cx="20" cy="35" rx="15" ry="3.5" fill="#000" opacity=".3"/><path d="M8 14 L32 14 L29 33 L11 33 Z" fill="#5A4A3A" stroke="#2A2018" stroke-width="1.6"/><ellipse cx="20" cy="14" rx="12" ry="3.5" fill="#3A2E24" stroke="#2A2018" stroke-width="1.4"/><rect x="17" y="21" width="6" height="6" rx="1" fill="#C8A060" stroke="#2A2018"/><circle cx="20" cy="24" r="1.2" fill="#2A2018"/></svg>`,
       ()=>{const s=Q.s;if(s<6){talk("",["The Institute's old crucible. Blackened with use, and padlocked shut.",Q.flag("recipe")?"Night Watchman Orrin has the key.":"Whoever used it last left a long time ago."]);return}
         if(s===6){talk("",["The crucible key turns stiffly in the lock.","You load it with the five metals from the founder's recipe and light the burner underneath.","Something is taking shape in there. It has to be identified before it will set. Get ready!"],()=>{EXP.questAlloy="Sealbreaker";encounter()});return}
-        talk("",["The old crucible, cold now. You've already cast the Sealbreaker."])});
+        /* the recipe still works: you can cast it again (every casting has the usual chance of coming out Radiant) */
+        if(!EXP.recastReady){EXP.recastReady=1;talk("",["The old crucible, cold now. You've cast the Sealbreaker before, and the recipe still works.","Every casting comes out a little different. If you want to cast another, use the crucible again."]);return}
+        EXP.recastReady=0;talk("",["You load the crucible with the five metals from the founder's recipe and light the burner again.","Something is taking shape in there. Identify it before it sets!"],()=>{EXP.questAlloy="Sealbreaker";encounter()})});
     const[mx,my]=HALL.motto;add(mx,my,"motto",`<svg viewBox="0 0 40 40"><rect x="3" y="10" width="34" height="20" rx="2" fill="#C8A060" stroke="#6A4A12" stroke-width="2"/><path d="M8 17 H32 M10 23 H30" stroke="#6A4A12" stroke-width="2"/></svg>`,
       ()=>{Q.set("motto");talk("",["A brass plaque over the front doors, so old most people have stopped seeing it.","QVAERE POST MVRVM.","Someone has scratched a translation underneath, very small: 'seek behind the wall'."])});
     const[px,py]=HALL.portrait;add(px,py,"portrait",`<svg viewBox="0 0 40 40"><rect x="4" y="3" width="32" height="34" fill="#6B4A2E" stroke="#3A2414" stroke-width="2"/><rect x="8" y="7" width="24" height="26" fill="#2A2420"/><circle cx="20" cy="17" r="5" fill="#8A7A6A"/><path d="M12 33 Q20 22 28 33 Z" fill="#6A5A4A"/><circle cx="18.2" cy="16.8" r="1.6" fill="none" stroke="#EEE" stroke-width=".6"/><circle cx="21.8" cy="16.8" r="1.6" fill="none" stroke="#EEE" stroke-width=".6"/><rect x="11" y="29" width="18" height="3" fill="#C8A060"/></svg>`,
@@ -6282,7 +6396,7 @@ function duelTick(){const r=S.r,D=r&&r.duel;if(!D||r.stage==="done"){duelEnd();r
   if(document.hidden||$("#stage").offsetParent===null)return;D.t+=dt;duelHud();if(D.t>=D.T){D.lost=true;lose(false)}}
 function duelEnd(){const b=$("#duelbar");if(b)b.hidden=true;const D=S.r&&S.r.duel;if(D)clearInterval(D.iv)}
 {const _w=win;win=function(){const r=S.r,D=r&&r.duel,charm=S.charm;_w();
-  if(r.quest&&r.a.quest){Q.s=7;setTimeout(()=>say("The SEALBREAKER has set! It went into your BAG. Now for that sealed wall..."),2400)}
+  if(r.quest&&r.a.quest){if(Q.s===6){Q.s=7;setTimeout(()=>say("The SEALBREAKER has set! It went into your BAG. Now for that sealed wall..."),2400)}else setTimeout(()=>say(r.radiant?"Another SEALBREAKER sets, and this one SHINES.":"Another SEALBREAKER sets. The crucible will take another load whenever you like."),2400)}
   if(charm){S.charm=false;const x=Math.round(r.pts*.2);r.pts+=x;S.run.score+=x;renderHud();setTimeout(()=>say(`Your lucky charm paid off: +${x} points.`),D?4200:2400)}
   if(!D){if(S.run.score>S.best){S.best=S.run.score;store.set("wta_best2",S.best)}return}
   clearInterval(D.iv);duelEnd();const extra=r.pts;r.pts+=extra;S.run.score+=extra;if(S.run.score>S.best){S.best=S.run.score;store.set("wta_best2",S.best)}
@@ -17826,6 +17940,252 @@ addForm("Gutterwick",{n:"#6A6480",a:"#FFB43A",rn:"#4A5A7A",rb:"#2A3450",ra:"#7AE
  fG(g,1,`<circle cx="40" cy="60" r="1.6" fill="#FFFFFF" opacity=".6"/><circle cx="160" cy="40" r="1.2" fill="#FFFFFF" opacity=".5"/>`)+fG(g,2,`<path d="M58 140 Q70 136 82 140" stroke="#000000" stroke-width="3" fill="none" opacity=".5"/>`)+fG(g,3,star(166,130,6))});
 FORM_TITLE["Gutterwick"]="Lamp-Bearing Shade";
 
+/* =============== LANTERN NIGHT AT HOLLOWMERE: thirteen more ===============
+   Ten of them come from new things to do in the village (a grave rubbing, chestnuts at the bonfire, the well, the bell, the costume
+   judging, an apple peel, a story by the fire, a paper lantern on the burn, the lights on the bog, and the bog gate itself), and three
+   more hide in the leaf piles. Several of them have been close to something that happened in Hollowmere a long time ago. */
+const LNT_MORE=[
+ {name:"Lychmark",how:"rub",comp:[["Pb",55],["Sn",30],["Sb",10],["Cu",5]],d:9.6,mp:240,mag:0,hard:1.8,cond:9,color:"#8E8C88",finish:"m",rar:"uncommon",
+  lore:"Rub a stick of charcoal over paper laid on an old gravestone and the words come up out of the stone. On one Hollowmere stone, years ago, they came up as a different set of words from the ones carved on it. The paper was burnt. The charcoal wasn't.",
+  uses:"Lettering punches and the soft cames in kirk windows",tmade:"Rubbed off an old stone in the Hollowmere kirkyard"},
+ {name:"Roastling",how:"chest",comp:[["Cu",62],["Zn",26],["Fe",6],["Al",6]],d:8.0,mp:900,mag:0,hard:3.8,cond:20,color:"#B87A48",finish:"p",rar:"uncommon",
+  lore:"Hollowmere roasts its chestnuts on a long shovel at the edge of the bonfire. Count them on, count them off. One year the count came off one higher than it went on, and the extra one didn't crack when it popped.",
+  uses:"Long-handled pans and fire shovels",tmade:"Popped off the chestnut shovel at the Hollowmere bonfire"},
+ {name:"Wellwisher",how:"well",comp:[["Cu",75],["Ni",20],["Mn",5]],d:8.9,mp:1170,mag:0,hard:3.6,cond:6,color:"#C8C4BA",finish:"p",rar:"uncommon",
+  lore:"Everybody in Hollowmere has dropped a coin in the well and wished. The bucket brings the odd one back up. The village has an unspoken rule about wishes that come back up, which is that you don't make the same one twice.",
+  uses:"Bucket hoops, chain links and coins that have to last",tmade:"Hauled up in the Hollowmere well bucket"},
+ {name:"Changeringer",how:"bell",comp:[["Cu",76],["Sn",20],["Zn",2],["Pb",2]],d:8.7,mp:900,mag:0,hard:4.5,cond:10,color:"#C8A060",finish:"p",rar:"rare",
+  lore:"The kirkyard bell is rung on Lantern Night at dusk, and once more at three in the morning, which nobody asks for and nobody admits to. The rope is worn smooth at a height that suits a tall man. The sexton is not a tall man.",
+  uses:"Bells, gongs and anything that ought to ring true",tmade:"Shaken out of the Hollowmere kirkyard bell after a good peal"},
+ {name:"Rosettine",how:"contest",comp:[["Al",70],["Zn",18],["Mg",8],["Cu",4]],d:3.2,mp:560,mag:0,hard:3.2,cond:28,color:"#C8CCD4",finish:"p",rar:"uncommon",
+  lore:"Best costume on the green gets the rosette. The judging rules were written in 1890 and only one of them has never been broken: no costume may be a lamplighter. Nobody on the council can tell you why, and every one of them will vote to keep it.",
+  uses:"Badge pins, prize cups and the clasps on sashes",tmade:"Pinned to the winner at the Hollowmere costume judging"},
+ {name:"Longpeel",how:"peel",comp:[["Ni",52],["Ti",45],["Cu",3]],d:6.5,mp:1300,mag:0,hard:4.2,cond:2,color:"#A8A8A4",finish:"m",rar:"uncommon",
+  lore:"Peel an apple in one long strip and throw it over your shoulder, and it lands in the shape of a letter. Straighten this one out as much as you like. It always curls back into the same letter.",
+  uses:"Springs and wires that have to remember their shape",tmade:"Curled up on the floor of the Hollowmere cider yard, behind somebody's shoulder"},
+ {name:"Hearthtale",how:"story",comp:[["Fe",82],["Cr",9],["Ni",5],["Mn",4]],d:7.8,mp:1450,mag:1,hard:5,cond:4,color:"#8A8680",finish:"m",rar:"rare",
+  lore:"Every story Hollowmere tells by the fire ends the same way: and he's out there still. Ask whose story it is and you get a different name every time. Ask how it ends and you never do.",
+  uses:"Firedogs, hearth plates and grate bars",tmade:"Raked out of the storytelling fire on Hollowmere green"},
+ {name:"Driftlight",how:"float",comp:[["Mg",90],["Al",6],["Zn",3],["Mn",1]],d:1.8,mp:620,mag:0,hard:2,cond:20,color:"#CCD0CC",finish:"p",rar:"uncommon",
+  lore:"Hollowmere floats paper lanterns down the burn on Lantern Night, all the way out to the bog, for whoever is still out there. Most of them sink. One year one of them came back up the burn, against the current, still lit.",
+  uses:"Lightweight floats and lantern frames",tmade:"Fished out of the Hollowmere burn at the end of the lantern float"},
+ {name:"Steadyflame",how:"bog",comp:[["Ga",60],["In",25],["Sn",10],["Zn",5]],d:6.4,mp:15,mag:0,hard:0,cond:3.4,color:"#B4B8C0",finish:"p",rar:"rare",
+  lore:"Lights dance over Hollowmere bog every Lantern Night, and the old advice is never to follow one. The older advice, the one only the oldest people know, is that one of them is safe to follow: the one that doesn't dance.",
+  uses:"Liquid seals and contacts that must never flicker",tmade:"Caught in a jar at the edge of Hollowmere bog, from the light that didn't move"},
+ {name:"Homeward",how:"gate",comp:[["Ag",50],["Cu",25],["Sn",15],["Pd",6],["In",4]],d:9.9,mp:780,mag:0,hard:2.8,cond:40,color:"#D8D2C6",finish:"p",rar:"legendary",
+  lore:"There is a hook on the bog gate above Hollowmere that has had a lamp on it every Lantern Night for longer than anyone can remember. Under the hook the wood is worn into a hollow, about the size of a hand that rested there a very long time.",
+  uses:"Lamp hooks, gate latches and anything meant to see someone home",tmade:"Found hanging on the hook of the bog gate above Hollowmere, the morning after"},
+ {name:"Hollowpenny",how:"leaf",comp:[["Cu",93],["Sn",3],["Zn",3],["Fe",1]],d:8.9,mp:1050,mag:0,hard:3,cond:45,color:"#B07048",finish:"p",rar:"uncommon",
+  lore:"Hollowmere children used to leave a penny on the bog gatepost on Lantern Night, 'for the lamp oil'. Nobody ever saw who took them, but they were always gone by morning. The leaf piles have been turning up the pennies ever since the children stopped.",
+  uses:"Small coin blanks and tokens",tmade:"Turned up in a Hollowmere leaf pile"},
+ {name:"Flueling",how:"leaf",comp:[["Fe",74],["Ni",20],["C",3.5],["Si",2.5]],d:7.4,mp:1250,mag:0,hard:4.5,cond:4,color:"#6A6A6E",finish:"m",rar:"uncommon",
+  lore:"Hollowmere sweeps its chimneys the week before Lantern Night, so nothing comes down them that oughtn't. One sweep's brush came out of a cold chimney with this caught in the bristles, and a handful of soot shaped like somebody's fingers.",
+  uses:"Flue liners and grate parts that live in the heat",tmade:"Swept out of a Hollowmere chimney, then lost in a leaf pile"},
+ {name:"Handshadow",how:"leaf",comp:[["Bi",44],["Pb",22],["Sn",18],["In",16]],d:9.3,mp:60,mag:0,hard:1,cond:5,color:"#9A9CA4",finish:"m",rar:"rare",
+  lore:"Children make hares on the wall with their hands by candlelight. In one Hollowmere cottage there was one hare too many on the wall, and nobody's hands were making it. It went out with the candle, and this was on the floor where its shadow had been.",
+  uses:"Low-melt castings that soften in a warm hand",tmade:"Found on a cottage floor in Hollowmere where a shadow had been"}];
+LNT_ALLOYS.push(...LNT_MORE);LNT_MORE.forEach(o=>LNT_NAMES.add(o.name));
+{const names=new Set(LNT_MORE.map(o=>o.name)),out=ALLOYS.filter(a=>!(names.has(a.name)&&a.recovered));
+  if(out.length!==ALLOYS.length){ALLOYS.length=0;out.forEach((a,i)=>{a.no=i+1;ALLOYS.push(a)})}
+  LNT_MORE.forEach(o=>{if(ALLOYS.some(a=>a.name===o.name))return;
+    const a={name:o.name,comp:o.comp,d:o.d,mp:o.mp,mag:o.mag,hard:o.hard,cond:o.cond,color:o.color,finish:o.finish,aliases:[],leak:false,real:false,quest:true,event:"lantern",
+      fixedHab:"z-hollow",lore:o.lore,uses:o.uses,tmade:o.tmade,made:o.tmade,origin:LNT_ORIGIN,creditKind:"event",lntHow:o.how};
+    a.reactive=isReactive(frac(a));ALLOYS.push(a);a.no=ALLOYS.length;a.types=typesOf(a);a.hab="z-hollow";a.rar=o.rar;
+    if(a.mp<25){a.form="vial";a.fill="liquid"}else{a.form="rod";a.fill=null}a.cat=categoryOf(a)})}
+
+/* ---- their battle forms, each drawn by hand ---- */
+const LIMB=(d,c,w)=>`<path d="${d}" stroke="${FI}" stroke-width="${(w||4)+3}" fill="none" stroke-linecap="round" stroke-linejoin="round"/><path d="${d}" stroke="${c}" stroke-width="${w||4}" fill="none" stroke-linecap="round" stroke-linejoin="round"/>`;
+
+/* Lychmark: a moth settled on a headstone with a sheet of rubbing paper taped over it, a stick of charcoal in its feet. The words
+   have come up on its own wings instead of the paper. */
+addForm("Lychmark",{n:"#8A8478",a:"#E8E2D0",rn:"#E8E4F4",rb:"#4A5AA8",ra:"#F2C94C"},"perch",(P,g)=>fShadow(40,118)+
+ `<path d="M94 148 V112 Q94 92 118 92 Q142 92 142 112 V148 Z" fill="#8A8A90" ${SW}/><path d="M98 146 V114 Q98 98 118 98 Q138 98 138 114 V146 Z" fill="#F4F0E2" ${SW2}/>`+
+ `<path d="M98 112 l6 -4 M132 108 l6 4" stroke="#D8C890" stroke-width="5" stroke-linecap="round" opacity=".8"/>${[118,126,134].map((y,i)=>`<path d="M${104+i*2} ${y} H${132-i*2}" stroke="#6A6A70" stroke-width="2.4" stroke-dasharray="${3+i} 2" opacity=".55"/>`).join("")}`+
+ pt("wingB",112,76,`<path d="M110 80 Q130 40 168 42 Q178 62 150 82 Q132 92 112 86 Z" fill="${P.nd}" ${SW}/><path d="M124 66 Q144 52 162 50" stroke="${P.ac}" stroke-width="2" fill="none" opacity=".7"/>`,.15)+
+ pt("legF",96,92,`<path d="M92 86 L84 98 M100 88 L96 100" stroke="${FI}" stroke-width="2.4" stroke-linecap="round"/><g transform="rotate(-30 88 102)"><rect x="80" y="99" width="16" height="5" rx="1.5" fill="#2A2A2E" ${SW2}/></g>`)+
+ `<path d="M76 84 Q78 70 98 70 Q116 72 118 84 Q112 96 96 96 Q80 96 76 84 Z" fill="${P.n}" ${SW}/>${[84,92,100,108].map(x=>`<path d="M${x} 74 Q${x+2} 84 ${x} 94" stroke="${P.nd}" stroke-width="1.6" fill="none"/>`).join("")}`+
+ pt("wingF",104,74,`<path d="M100 78 Q96 30 136 22 Q156 30 150 54 Q138 78 104 84 Z" fill="${P.n}" ${SW}/><path d="M108 74 Q108 44 134 34 Q146 40 142 54 Q132 70 108 76 Z" fill="${P.ac}" ${SW2}/>`+
+  `<path d="M116 48 h6 v6 h-6 Z M126 44 l4 8 l4 -8 M118 62 h14" stroke="#4A4A50" stroke-width="2.2" fill="none" opacity=".75"/><circle cx="134" cy="62" r="5" fill="${P.nd}" ${SW2}/>`)+
+ pt("head",74,80,`<circle cx="70" cy="80" r="14" fill="${P.n}" ${SW}/><path d="M60 72 Q66 68 72 70" stroke="${P.nl}" stroke-width="3" fill="none"/>${E2(64,78,4.4,"#1A1A1A",[-.4,0])}${E2(76,77,3.8,"#1A1A1A",[-.4,0])}`+
+  pt("ant",70,66,`<path d="M66 68 Q56 50 46 46" stroke="${FI}" stroke-width="2" fill="none"/>${[0,1,2,3].map(i=>`<path d="M${60-i*4} ${60-i*3.4} l-4 4 M${60-i*4} ${60-i*3.4} l2 -5" stroke="${FI}" stroke-width="1.4"/>`).join("")}<path d="M74 68 Q78 50 88 42" stroke="${FI}" stroke-width="2" fill="none"/>`)+
+  pt("jaw",64,90,`<path d="M58 88 Q64 96 70 88 Z" fill="${FMOUTH}"/>`))+
+ fG(g,1,`<path d="M40 120 q3 -6 6 0 q3 6 6 0" stroke="#8A8A90" stroke-width="2" fill="none"/>`)+fG(g,2,`<circle cx="100" cy="86" r="3" fill="${P.ll}" ${SW2}/>`)+fG(g,3,star(170,110,6)));
+FORM_TITLE["Lychmark"]="Grave-Rubbing Moth";SM("Lychmark","Raise The Letters","SCR","s",0,100,"tacc-1,def+1","Charcoal over paper, and the words come up out of the stone. Not always the words that were carved.");
+
+/* Roastling: a hedgehog stood up on its hind legs at the fire, its spines gone to chestnut burrs, holding out the long roasting shovel. */
+addForm("Roastling",{n:"#8A5A34",a:"#E8C890",rn:"#E8E4F0",rb:"#3A5AA8",ra:"#FF8A2A"},"stand",(P,g)=>fShadow(46,96)+
+ [[84,"legB",.25],[106,"legF",0]].map(([x,c,d])=>pt(c,x,132,`<path d="M${x} 128 Q${x-2} 140 ${x-8} 144" stroke="${FI}" stroke-width="7" fill="none" stroke-linecap="round"/><path d="M${x} 128 Q${x-2} 140 ${x-8} 144" stroke="#C8A080" stroke-width="4" fill="none" stroke-linecap="round"/>`,d)).join("")+
+ /* the spines: a cloak of chestnut burrs, every one a point */
+ `<path d="M68.3 118.0 L75.8 108.6 L66.0 102.1 L76.4 96.6 L69.7 86.5 L81.2 85.7 L78.7 73.6 L89.6 77.6 L91.6 65.4 L100.2 73.7 L106.4 63.3 L111.4 74.4 L120.9 67.4 L121.4 79.8 L132.7 77.3 L128.8 88.9 L140.1 91.3 L132.3 100.4 L141.9 107.2 L131.4 112.4 L137.8 122.7 L126.3 123.1 L128.4 135.3 Q104 146 74 132 Z" fill="${P.nd}" ${SW}/><path d="M80 96 L74 88 M92 80 L88 70 M108 74 L108 64 M122 80 L128 72 M132 96 L140 92 M134 114 L142 116" stroke="${P.nl}" stroke-width="2" stroke-linecap="round" opacity=".7"/>`+
+ `<path d="M84 128 Q80 104 94 90 Q110 92 112 118 Q108 134 94 134 Q86 134 84 128 Z" fill="${P.ac}" ${SW2}/>`+
+ /* the shovel, with chestnuts popping on it */
+ pt("armF",88,104,`<path d="M90 106 L46 96" stroke="#5A3A20" stroke-width="5" stroke-linecap="round"/><path d="M90 106 L46 96" stroke="#8A6A44" stroke-width="2.4" stroke-linecap="round"/>`+
+  `<path d="M48 88 L16 82 Q10 94 18 104 L48 104 Z" fill="#4A4A50" ${SW2}/>${[[24,92],[34,94],[28,98],[40,96]].map(([x,y],i)=>`<g class="pt p-spin" style="transform-origin:${x}px ${y}px;--dl:${i*.3}s"><path d="M${x-4} ${y+2} Q${x} ${y-6} ${x+4} ${y+2} Q${x} ${y+4} ${x-4} ${y+2} Z" fill="#7A4220" stroke="${FI}" stroke-width="1.2"/><path d="M${x-1} ${y-2} l2 -2" stroke="#F4E0B0" stroke-width="1.4"/></g>`).join("")}`+
+  LIMB("M92 106 Q86 100 84 98","#C8A080",4))+
+ pt("head",90,74,`<path d="M100 66 Q86 56 70 64 Q58 70 54 78 Q66 86 86 84 Q100 80 100 66 Z" fill="#C8A080" ${SW}/><circle cx="54" cy="78" r="3.6" fill="#2A1A10" ${SW2}/>${E2(74,70,4,"#1A1A1A",[-.3,0])}`+
+  pt("ear",88,58,`<circle cx="88" cy="58" r="5" fill="#C8A080" ${SW2}/><circle cx="88" cy="58" r="2.2" fill="#8A5A44"/>`)+pt("jaw",64,82,`<path d="M58 80 Q64 90 72 82 Z" fill="${FMOUTH}"/>`))+
+ fG(g,1,`<path d="M20 60 q2 -6 4 0 M36 54 q2 -6 4 0" stroke="#FF8A2A" stroke-width="2" fill="none"/>`)+fG(g,2,`<circle cx="98" cy="118" r="3" fill="${P.ll}" ${SW2}/>`)+fG(g,3,star(166,40,6)));
+FORM_TITLE["Roastling"]="Chestnut-Roasting Hedgehog";SM("Roastling","Count Them Off","HEA","a",60,95,"multi:2-3","Shake the shovel and they pop off the heat one after another. Count them. Count them again.");
+
+/* Wellwisher: a toad sitting in the well bucket, arms folded over the rim, with a wished-on coin balanced on its head. */
+addForm("Wellwisher",{n:"#7A8A4A",a:"#E8E0A0",rn:"#E8E4F0",rb:"#3A5AA8",ra:"#F2C94C"},"stand",(P,g)=>fShadow(50,100)+
+ `<path d="M100 22 V54" stroke="#6A6A70" stroke-width="3" stroke-dasharray="4 2"/><path d="M70 66 Q100 34 130 66" stroke="#4A4A50" stroke-width="3.4" fill="none"/>`+
+ `<path d="M60 92 L68 146 H132 L140 92 Z" fill="#8A6A44" ${SW}/>${[74,88,100,112,126].map(x=>`<path d="M${x} 94 L${x+(x-100)*.12} 146" stroke="#5A4228" stroke-width="2"/>`).join("")}<path d="M62 106 H138 M66 134 H134" stroke="#4A4A50" stroke-width="4"/>`+
+ pt("sway",100,92,`<path d="M66 92 Q66 62 100 60 Q134 62 134 92 Z" fill="${P.n}" ${SW}/><path d="M78 84 Q82 72 92 74 M112 74 Q122 72 124 84" stroke="${P.nd}" stroke-width="2" fill="none"/>${[[84,80],[118,78],[100,70]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.6" fill="${P.nd}"/>`).join("")}`+
+  pt("head",100,66,`<path d="M74 70 Q72 44 100 42 Q128 44 126 70 Z" fill="${P.n}" ${SW}/><path d="M84 66 Q100 72 116 66" stroke="${P.ac}" stroke-width="4" fill="none" stroke-linecap="round"/>`+
+   `<circle cx="84" cy="46" r="9" fill="${P.n}" ${SW2}/><circle cx="116" cy="46" r="9" fill="${P.n}" ${SW2}/>${E2(84,45,5.4,"#C88A2A",[0,.2])}${E2(116,45,5.4,"#C88A2A",[0,.2])}`+
+   pt("jaw",100,64,`<path d="M82 62 Q100 74 118 62 Q100 66 82 62 Z" fill="${FMOUTH}"/>`)+
+   pt("slow",100,30,`<ellipse cx="100" cy="34" rx="9" ry="4" fill="#C8C4BA" ${SW2}/><ellipse cx="100" cy="33" rx="5" ry="2" fill="none" stroke="#8A867C" stroke-width="1"/>`))+
+  pt("armF",76,92,`<path d="M70 86 Q62 96 72 100 L88 98" fill="${P.n}" ${SW2}/><path d="M80 98 l2 4 M86 98 l2 4" stroke="${FI}" stroke-width="1.6"/>`)+pt("armB",124,92,`<path d="M130 86 Q138 96 128 100 L112 98" fill="${P.n}" ${SW2}/>`,.3))+
+ fG(g,1,`<path d="M30 120 q4 -4 8 0 M162 120 q4 -4 8 0" stroke="#8AB8D8" stroke-width="2" fill="none"/>`)+fG(g,2,`<circle cx="100" cy="122" r="3" fill="${P.ll}" ${SW2}/>`)+fG(g,3,star(166,40,6)));
+FORM_TITLE["Wellwisher"]="Well-Bucket Toad";SM("Wellwisher","Wish Again","CUR","s",0,100,"tacc-1@60","It's wishing. You can tell, because its eyes are shut and the coin is balanced exactly.");
+
+/* Changeringer: a bat hanging upside down from the bell rope's woolly sally, the bell itself up in the frame above. */
+addForm("Changeringer",{n:"#5A4A40",a:"#D84A3A",rn:"#E8E4F0",rb:"#3A5AA8",ra:"#F2C94C"},"perch",(P,g)=>
+ `<path d="M60 6 H144" stroke="#4A3422" stroke-width="7" stroke-linecap="round"/><path d="M66 6 V2 M138 6 V2" stroke="#4A3422" stroke-width="5"/>`+
+ pt("slow",102,10,`<path d="M84 10 Q82 36 76 44 H128 Q122 36 120 10 Z" fill="#C8A060" ${SW}/><path d="M76 44 Q102 52 128 44" stroke="${FI}" stroke-width="3" fill="none"/><path d="M90 16 Q88 32 86 40" stroke="#F4E0A8" stroke-width="2.4" fill="none"/>`+
+  `<path d="M102 44 V96" stroke="#8A7A5A" stroke-width="3.4"/><path d="M96 70 h12 v18 h-12 Z" fill="${P.ac}" ${SW2}/><path d="M96 76 h12 M96 82 h12" stroke="#F4ECD8" stroke-width="2"/>`+
+  /* the bat, hanging from the sally by its feet */
+  `<path d="M98 92 L96 100 M106 92 L108 100" stroke="${FI}" stroke-width="2.4" stroke-linecap="round"/>`+
+  pt("wingB",118,112,`<path d="M108 100 Q140 92 158 104 Q150 112 152 124 Q140 118 136 128 Q126 118 110 124 Z" fill="${P.nd}" ${SW}/><path d="M118 108 L150 108 M118 114 L138 124" stroke="${P.ndd}" stroke-width="1.6"/>`,.25)+
+  `<path d="M90 100 Q86 118 92 128 Q102 136 112 128 Q118 118 114 100 Q102 96 90 100 Z" fill="${P.n}" ${SW}/>`+
+  pt("wingF",88,112,`<path d="M96 100 Q64 92 46 104 Q54 112 52 124 Q64 118 68 128 Q78 118 94 124 Z" fill="${P.n}" ${SW}/><path d="M86 108 L54 108 M86 114 L66 124" stroke="${P.nd}" stroke-width="1.6"/>`)+
+  pt("head",102,132,`<path d="M88 128 Q88 148 102 148 Q116 148 116 128 Z" fill="${P.n}" ${SW}/>`+pt("ear",92,148,`<path d="M92 146 L86 158 L98 150 Z" fill="${P.n}" ${SW2}/>`)+pt("ear",112,148,`<path d="M112 146 L118 158 L106 150 Z" fill="${P.n}" ${SW2}/>`,.3)+
+   `${E2(96,138,3.4,"#1A1A1A",[0,-.3])}${E2(108,138,3.4,"#1A1A1A",[0,-.3])}<path d="M100 130 l2 -3 l2 3" fill="#E8A8A8" stroke="${FI}" stroke-width="1"/>`+pt("jaw",102,132,`<path d="M96 132 Q102 124 108 132 Z" fill="${FMOUTH}"/><path d="M98 131 l1 -2 M106 131 l-1 -2" stroke="#FFF" stroke-width="1"/>`)))+
+ fG(g,1,`<path d="M40 30 q6 -6 12 0 M150 30 q6 -6 12 0" stroke="#C8A060" stroke-width="2.4" fill="none"/>`)+fG(g,2,`<circle cx="102" cy="116" r="3" fill="${P.ll}" ${SW2}/>`)+fG(g,3,star(30,80,6)));
+FORM_TITLE["Changeringer"]="Bell-Rope Bat";SM("Changeringer","Rounds And Changes","STR","a",70,95,"tacc-1@40","Pull, catch the sally, let it fly, and the whole frame sings. Somebody is still ringing at three in the morning.");
+
+/* Rosettine: a barn owl in a bedsheet with two holes cut for its eyes, a prize rosette pinned to the front. */
+addForm("Rosettine",{n:"#F4F0E6",a:"#C83A2A",rn:"#3A3A5A",rb:"#C8B8F0",ra:"#F2C94C"},"stand",(P,g)=>fShadow(44,100)+
+ pt("legB",112,140,`<path d="M110 136 v8 M106 146 h10" stroke="#C8A060" stroke-width="3" stroke-linecap="round"/>`,.3)+
+ /* the sheet: a ghost shape, with hem and folds */
+ `<path d="M70 140 Q64 110 68 84 Q72 44 100 42 Q128 44 132 84 Q136 110 130 140 Q124 134 118 142 Q112 134 106 142 Q100 134 94 142 Q88 134 82 142 Q76 134 70 140 Z" fill="${P.n}" ${SW}/>`+
+ `<path d="M80 96 Q84 120 80 136 M118 100 Q114 120 120 136" stroke="${P.nd}" stroke-width="2" fill="none"/>`+
+ pt("legF",92,140,`<path d="M92 136 v8 M86 146 h12" stroke="#C8A060" stroke-width="3" stroke-linecap="round"/>`)+
+ pt("wingF",74,98,`<path d="M72 86 Q56 100 62 120 Q72 112 78 100 Z" fill="${P.n}" ${SW}/>`)+pt("wingB",128,98,`<path d="M128 86 Q144 100 138 120 Q128 112 122 100 Z" fill="${P.n}" ${SW}/>`,.3)+
+ /* the rosette */
+ `<g transform="translate(112 104)">${[0,1,2,3,4,5,6,7].map(i=>`<ellipse cx="0" cy="-8" rx="4" ry="7" fill="${P.ac}" stroke="${FI}" stroke-width="1.2" transform="rotate(${i*45})"/>`).join("")}<circle r="6" fill="#F2C94C" stroke="${FI}" stroke-width="1.4"/><text x="0" y="2.6" font-size="7" text-anchor="middle" font-weight="bold" fill="${FI}">1</text><path d="M-4 8 L-8 24 L-3 20 L0 26 M4 8 L8 24 L3 20" fill="${P.ac}" stroke="${FI}" stroke-width="1.2"/></g>`+
+ pt("head",100,62,`<path d="M74 70 Q72 40 100 38 Q128 40 126 70 Q114 80 100 80 Q86 80 74 70 Z" fill="${P.n}" ${SW}/><path d="M80 52 Q100 44 120 52" stroke="${P.nd}" stroke-width="1.6" fill="none"/>`+
+  `<ellipse cx="88" cy="62" rx="8" ry="9" fill="#1A1610" ${SW2}/><ellipse cx="112" cy="62" rx="8" ry="9" fill="#1A1610" ${SW2}/>${E2(88,62,4.4,"#1A1A1A",[0,0])}${E2(112,62,4.4,"#1A1A1A",[0,0])}`+
+  `<path d="M96 70 L100 78 L104 70 Z" fill="#E8C090" ${SW2}/>`+pt("beak",100,76,`<path d="M97 76 L100 82 L103 76 Z" fill="#C8A060" stroke="${FI}" stroke-width="1"/>`))+
+ fG(g,1,`<path d="M36 50 q4 -6 8 0 M158 50 q4 -6 8 0" stroke="#C8CCD4" stroke-width="2" fill="none"/>`)+fG(g,2,`<circle cx="100" cy="124" r="3" fill="${P.ll}" ${SW2}/>`)+fG(g,3,star(170,120,6)));
+FORM_TITLE["Rosettine"]="Bedsheet-Ghost Barn Owl";SM("Rosettine","Best On The Green","RES","s",0,100,"spd+1,tacc-1","Two eyeholes, a lot of flapping, and a rosette. It knows it's won. It wants you to know it's won.");
+
+/* Longpeel: a grass snake that is one long unbroken apple peel, coiled round the bare apple it came off. */
+addForm("Longpeel",{n:"#C83A2A",a:"#F4ECC0",rn:"#E8E4F0",rb:"#3A5AA8",ra:"#6BE08A"},"slink",(P,g)=>fShadow(56,100)+
+ `<circle cx="104" cy="118" r="26" fill="#F4ECC0" ${SW}/><path d="M104 92 Q102 84 106 80" stroke="#5A3A1A" stroke-width="3" fill="none"/><path d="M92 106 Q96 100 102 102" stroke="#FFF" stroke-width="3" fill="none" opacity=".8"/><circle cx="114" cy="126" r="2" fill="#C8B880"/>`+
+ /* the peel: two tones, skin outside and white flesh showing on the edge, wound round and round */
+ pt("tail",150,132,`<path d="M134 138 Q160 146 176 132 Q186 120 176 112" stroke="${FI}" stroke-width="12" fill="none" stroke-linecap="round"/><path d="M134 138 Q160 146 176 132 Q186 120 176 112" stroke="${P.n}" stroke-width="8" fill="none" stroke-linecap="round"/><path d="M136 141 Q160 148 177 135" stroke="${P.ac}" stroke-width="2" fill="none"/>`)+
+ `<path d="M76 136 Q100 150 134 138" stroke="${FI}" stroke-width="14" fill="none" stroke-linecap="round"/><path d="M76 136 Q100 150 134 138" stroke="${P.n}" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M78 140 Q100 152 132 142" stroke="${P.ac}" stroke-width="2.4" fill="none"/>`+
+ `<path d="M76 136 Q70 112 84 100 Q100 90 120 98" stroke="${FI}" stroke-width="14" fill="none" stroke-linecap="round"/><path d="M76 136 Q70 112 84 100 Q100 90 120 98" stroke="${P.n}" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M72 128 Q68 110 82 98" stroke="${P.ac}" stroke-width="2.4" fill="none"/>`+
+ pt("sway",120,98,`<path d="M120 98 Q138 106 134 82 Q128 62 104 60" stroke="${FI}" stroke-width="14" fill="none" stroke-linecap="round"/><path d="M120 98 Q138 106 134 82 Q128 62 104 60" stroke="${P.n}" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M138 90 Q136 70 116 62" stroke="${P.ac}" stroke-width="2.4" fill="none"/>`+
+  pt("head",92,60,`<path d="M106 54 Q90 48 74 54 Q62 60 66 68 Q80 72 104 68 Z" fill="${P.n}" ${SW}/><path d="M72 64 Q88 68 104 64" stroke="${P.ac}" stroke-width="2.4" fill="none"/>${E2(80,58,4,"#1A1A1A",[-.4,0])}`+
+   pt("tongue",64,64,`<path d="M66 64 L52 64 L46 60 M52 64 L46 68" stroke="#C8243A" stroke-width="1.8" fill="none" stroke-linecap="round"/>`)+pt("jaw",72,66,`<path d="M66 66 Q74 74 86 68 Z" fill="${FMOUTH}"/>`)))+
+ fG(g,1,`<path d="M30 70 q4 -6 8 0" stroke="#C83A2A" stroke-width="2.4" fill="none"/>`)+fG(g,2,`<circle cx="104" cy="118" r="3" fill="${P.ll}" ${SW2}/>`)+fG(g,3,star(170,50,6)));
+FORM_TITLE["Longpeel"]="Apple-Peel Grass Snake";SM("Longpeel","Over Your Shoulder","CUR","s",0,100,"tacc-1,tspd-1@40","Throw it over your shoulder and see what letter it makes. It always makes the same one.");
+
+/* Hearthtale: a nightjar perched on a three-legged stool by a little fire, one wing flung up mid-story, its huge gape open. */
+addForm("Hearthtale",{n:"#7A6450",a:"#E8D8B8",rn:"#E8E4F0",rb:"#3A5AA8",ra:"#F2C94C"},"perch",(P,g)=>fShadow(54,106)+
+ `<path d="M140 146 L148 128 M160 146 L156 128 M172 146 L164 128" stroke="#4A3020" stroke-width="3" stroke-linecap="round"/><ellipse cx="156" cy="146" rx="20" ry="4" fill="#3A2A20"/>`+
+ pt("spin",156,128,`<path d="M146 140 Q144 126 152 118 Q150 128 156 130 Q156 116 164 110 Q162 124 168 128 Q170 136 164 142 Z" fill="#FF8A2A" stroke="#8A2A0A" stroke-width="1.4"/><path d="M152 140 Q152 132 156 128 Q160 134 160 140 Z" fill="#FFD23F"/>`)+
+ `<path d="M70 120 H124 V128 H70 Z" fill="#8A6A44" ${SW2}/><path d="M76 128 L70 148 M118 128 L124 148 M97 128 V148" stroke="#5A3A20" stroke-width="4" stroke-linecap="round"/>`+
+ pt("tail",128,108,`<path d="M124 106 L156 116 L150 104 L156 96 L122 98 Z" fill="${P.nd}" ${SW2}/>`)+
+ pt("legF",96,118,`<path d="M92 112 v8 M102 112 v8" stroke="${FI}" stroke-width="2.4"/>`)+
+ `<path d="M74 100 Q74 80 98 78 Q124 80 128 102 Q116 116 98 116 Q80 116 74 100 Z" fill="${P.n}" ${SW}/>${[[86,90],[100,96],[112,90],[94,106],[114,104]].map(([x,y])=>`<path d="M${x-4} ${y} q4 -3 8 0" stroke="${P.ac}" stroke-width="1.8" fill="none"/>`).join("")}`+
+ pt("wingF",112,90,`<path d="M108 92 Q118 60 150 48 Q154 58 146 64 Q152 68 142 76 Q144 84 116 98 Z" fill="${P.nd}" ${SW}/><path d="M120 84 L144 62 M118 90 L140 76" stroke="${P.ac}" stroke-width="1.6"/>`)+
+ pt("head",84,78,`<path d="M66 82 Q62 60 82 56 Q102 56 102 76 Q96 86 82 86 Q70 86 66 82 Z" fill="${P.n}" ${SW}/><path d="M70 70 Q78 66 88 70" stroke="${P.ac}" stroke-width="2.4" fill="none"/>${E2(80,66,4.6,"#1A1A1A",[-.3,-.1])}`+
+  `<path d="M66 76 Q58 76 56 78 Q62 80 68 80" fill="${P.nd}" ${SW2}/>`+pt("jaw",66,80,`<path d="M68 78 Q54 84 58 92 Q70 92 76 82 Z" fill="${FMOUTH}" ${SW2}/><path d="M58 88 q6 -2 12 -6" stroke="#E87A8A" stroke-width="2.4" fill="none"/>`))+
+ fG(g,1,`<path d="M30 40 q8 -10 16 0 q8 10 16 0" stroke="#B8B0A0" stroke-width="2" fill="none" opacity=".7"/>`)+fG(g,2,`<circle cx="98" cy="100" r="3" fill="${P.ll}" ${SW2}/>`)+fG(g,3,star(40,120,6)));
+FORM_TITLE["Hearthtale"]="Fireside Storytelling Nightjar";SM("Hearthtale","And He's Out There Still","CUR","s",0,100,"tatk-1,tacc-1@30","It leans in close to the fire and drops its voice for the end. Everybody leans in. Nobody likes the end.");
+
+/* Driftlight: an otter floating on its back down the burn, a lit paper lantern held up on its chest. */
+addForm("Driftlight",{n:"#7A5A3E",a:"#E8D8C0",rn:"#E8E4F0",rb:"#3A5AA8",ra:"#FF8A2A"},"swim",(P,g)=>
+ `<ellipse cx="102" cy="132" rx="92" ry="16" fill="#4A7A9A" opacity=".8"/><ellipse cx="102" cy="130" rx="70" ry="9" fill="#5A8AAA" opacity=".6"/>`+`<path d="M20 128 q10 -4 20 0 M80 126 q10 -4 20 0 M140 130 q10 -4 20 0" stroke="#BFE2F4" stroke-width="2" fill="none"/>`+
+ pt("tail",150,122,`<path d="M140 120 Q166 116 184 126 Q166 130 140 128 Z" fill="${P.nd}" ${SW2}/>`)+
+ pt("legF",136,112,`<path d="M134 114 Q146 104 152 108 Q148 116 138 118" fill="${P.nd}" ${SW2}/>`)+
+ `<path d="M56 124 Q60 104 96 102 Q134 102 144 120 Q132 132 96 132 Q66 132 56 124 Z" fill="${P.n}" ${SW}/><path d="M74 112 Q96 106 124 112 Q112 122 92 122 Q78 120 74 112 Z" fill="${P.ac}"/>`+
+ /* the lantern on its chest */
+ pt("sway",100,100,`<path d="M100 104 V96" stroke="${FI}" stroke-width="1.6"/><path d="M86 70 Q84 86 90 96 H110 Q116 86 114 70 Z" fill="#F4E8C8" ${SW2}/><path d="M86 70 H114 M88 80 H112 M88 90 H112" stroke="#C8A878" stroke-width="1.4"/><ellipse cx="100" cy="84" rx="6" ry="9" fill="#FFD66B" opacity=".9"/><path d="M100 80 Q103 84 100 88 Q97 84 100 80 Z" fill="#FF8A2A"/><circle cx="100" cy="84" r="20" fill="#FFD66B" opacity=".18"/><path d="M92 66 H108 L106 70 H94 Z" fill="#5A3A20"/>`)+
+ pt("armF",86,104,`<path d="M84 106 Q84 98 90 96" stroke="${FI}" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M84 106 Q84 98 90 96" stroke="${P.n}" stroke-width="3" fill="none" stroke-linecap="round"/>`)+pt("armB",116,104,`<path d="M116 106 Q116 98 110 96" stroke="${FI}" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M116 106 Q116 98 110 96" stroke="${P.n}" stroke-width="3" fill="none" stroke-linecap="round"/>`,.3)+
+ pt("head",58,110,`<path d="M66 120 Q60 98 44 100 Q28 104 30 116 Q36 126 58 124 Z" fill="${P.n}" ${SW}/><path d="M34 112 Q42 118 52 116" fill="${P.ac}"/><circle cx="31" cy="110" r="3" fill="#1A1A1A"/>${E2(44,106,3.6,"#1A1A1A",[-.2,-.4])}`+
+  `<path d="M36 114 l-10 -2 M36 116 l-10 2" stroke="${FI}" stroke-width="1"/>`+pt("ear",54,100,`<circle cx="54" cy="100" r="4" fill="${P.n}" ${SW2}/>`)+pt("jaw",40,118,`<path d="M36 116 Q42 124 50 118 Z" fill="${FMOUTH}"/>`))+
+ fG(g,1,`<circle cx="160" cy="60" r="3" fill="#FFD66B" opacity=".7"/><circle cx="40" cy="60" r="2" fill="#FFD66B" opacity=".6"/>`)+fG(g,2,`<circle cx="100" cy="120" r="3" fill="${P.ll}" ${SW2}/>`)+fG(g,3,star(170,40,6)));
+FORM_TITLE["Driftlight"]="Lantern-Floating Otter";SM("Driftlight","Down To The Bog","HEA","a",55,100,"heal:15","It drifts off with the current, light held up, all the way out to whoever's waiting.");
+
+/* Steadyflame: a glow-worm larva with a little lamp for a tail end, which burns perfectly still while everything else about it wiggles. */
+addForm("Steadyflame",{n:"#5A5040",a:"#E8E0C0",rn:"#E8E4F0",rb:"#3A5AA8",ra:"#7AE8FF"},"crawl",(P,g)=>fShadow(60,104)+
+ `<path d="M20 146 Q40 132 60 146 M150 146 Q166 134 184 146" stroke="#4A6A3A" stroke-width="3" fill="none"/><path d="M28 146 v-12 M34 146 v-16 M170 146 v-14" stroke="#5A7A4A" stroke-width="2.4"/>`+
+ [70,88,106,124].map((x,i)=>pt(i%2?"legB":"legF",x,136,`<path d="M${x} 132 l-4 10" stroke="${FI}" stroke-width="2.4" stroke-linecap="round"/>`,i*.12)).join("")+
+ [[66,120,14],[84,118,15],[102,118,15],[120,120,14]].map(([x,y,r],i)=>`<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${r*.92}" fill="${i%2?P.nd:P.n}" ${SW}/><path d="M${x-r*.6} ${y-r*.5} Q${x} ${y-r*.9} ${x+r*.6} ${y-r*.5}" stroke="${P.ac}" stroke-width="2" fill="none"/>`).join("")+
+ /* the lamp end: a glass chimney, a still flame, and steady light */
+ `<circle cx="150" cy="112" r="30" fill="#FFE6A0" opacity=".2"/><circle cx="150" cy="112" r="20" fill="#FFE6A0" opacity=".25"/>`+
+ `<path d="M134 124 Q134 104 150 102 Q166 104 166 124 Q160 134 150 134 Q140 134 134 124 Z" fill="#F4ECC8" ${SW}/><path d="M140 104 Q138 90 144 82 H156 Q162 90 160 104" fill="#E6F6FF" fill-opacity=".7" ${SW2}/><path d="M150 86 Q155 94 150 102 Q145 94 150 86 Z" fill="#FFB43A" stroke="#C86A1A" stroke-width="1"/><path d="M142 80 H158" stroke="${FI}" stroke-width="2.4"/>`+
+ pt("head",50,116,`<path d="M58 104 Q42 98 32 108 Q26 120 36 128 Q50 132 60 124 Z" fill="${P.n}" ${SW}/>${E2(40,112,4,"#1A1A1A",[-.4,0])}`+
+  pt("ant",40,102,`<path d="M40 104 Q34 88 26 84 M46 102 Q46 86 40 78" stroke="${FI}" stroke-width="2" fill="none" stroke-linecap="round"/>`)+pt("jaw",34,124,`<path d="M30 122 Q34 130 42 126 Z" fill="${FMOUTH}"/>`))+
+ fG(g,1,`<circle cx="30" cy="60" r="2" fill="#9AFF9A" opacity=".5"/><circle cx="180" cy="50" r="2" fill="#9AFF9A" opacity=".5"/>`)+fG(g,2,`<circle cx="94" cy="118" r="3" fill="${P.ll}" ${SW2}/>`)+fG(g,3,star(30,40,6)));
+FORM_TITLE["Steadyflame"]="Lamp-Tailed Glow-Worm";SM("Steadyflame","The One That Doesn't Dance","RAD","s",0,100,"tacc-2@50","Every other light on the bog wanders off. This one stays exactly where it is, and waits.");
+
+/* Homeward: an old sheepdog sitting by the post of a field gate, an oil lamp hung on the hook above it, its head turned out towards
+   the dark, waiting for somebody to come up the path. */
+addForm("Homeward",{n:"#4A4040",a:"#F4F0E6",rn:"#F4F0E6",rb:"#3A4A8A",ra:"#FFD66B"},"stand",(P,g)=>fShadow(50,110)+
+ `<path d="M150 148 V30" stroke="#4A3422" stroke-width="12" stroke-linecap="round"/><path d="M150 148 V30" stroke="#6A4A30" stroke-width="7" stroke-linecap="round"/><path d="M156 60 H196 M156 96 H196 M156 128 H196 M166 60 L192 128" stroke="#6A4A30" stroke-width="6" stroke-linecap="round"/>`+
+ `<path d="M146 44 Q138 44 138 52" stroke="#3A3430" stroke-width="2.6" fill="none"/><path d="M150 38 h6" stroke="#3A3430" stroke-width="3"/>`+
+ pt("slow",138,52,`<circle cx="138" cy="72" r="26" fill="#FFD66B" opacity=".16"/><path d="M138 52 V56" stroke="#3A3430" stroke-width="1.6"/><path d="M130 56 H146 L148 60 V80 H128 V60 Z" fill="#FFE6A0" ${SW2}/><path d="M128 60 H148 M128 80 H148" stroke="${FI}" stroke-width="2.4"/><path d="M138 64 Q142 70 138 76 Q134 70 138 64 Z" fill="#FF8A2A"/>`)+
+ pt("tail",128,132,`<path d="M126 134 Q150 140 156 124 Q160 112 150 108" stroke="${FI}" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M126 134 Q150 140 156 124 Q160 112 150 108" stroke="${P.n}" stroke-width="6" fill="none" stroke-linecap="round"/><path d="M152 112 Q158 116 154 122" stroke="${P.ac}" stroke-width="3" fill="none" stroke-linecap="round"/>`)+
+ pt("legB",120,136,`<path d="M110 130 Q124 128 130 140 L114 146 Z" fill="${P.n}" ${SW}/>`,.2)+
+ `<path d="M84 146 Q78 112 88 92 Q100 78 116 86 Q132 100 130 134 Q122 146 104 146 Z" fill="${P.n}" ${SW}/><path d="M88 92 Q96 104 94 122 Q90 136 92 146 L84 146 Q78 112 88 92 Z" fill="${P.ac}"/>`+
+ pt("legF",90,128,`<path d="M88 112 V144 M98 112 V144" stroke="${FI}" stroke-width="7" stroke-linecap="round"/><path d="M88 112 V144 M98 112 V144" stroke="${P.ac}" stroke-width="4" stroke-linecap="round"/>`)+
+ pt("head",88,80,`<path d="M100 82 Q100 58 84 56 Q66 56 60 66 Q50 70 50 78 Q56 86 72 86 Q88 92 100 82 Z" fill="${P.n}" ${SW}/><path d="M60 68 Q70 64 76 70 Q74 80 62 82 Q52 80 50 78 Q52 70 60 68 Z" fill="${P.ac}"/><circle cx="50" cy="76" r="3.4" fill="#1A1A1A"/>${E2(78,68,4,"#4A2A10",[-.6,0])}`+
+  `<path d="M74 64 Q78 62 82 64" stroke="${P.nl}" stroke-width="1.6" fill="none"/>`+pt("ear",88,58,`<path d="M86 60 Q90 46 98 52 Q100 60 94 66 Z" fill="${P.nd}" ${SW2}/>`)+pt("jaw",62,84,`<path d="M54 82 Q62 92 74 86 Z" fill="${FMOUTH}"/>`))+
+ fG(g,1,`<circle cx="30" cy="40" r="1.6" fill="#FFF"/><circle cx="56" cy="22" r="1.2" fill="#FFF"/><circle cx="20" cy="70" r="1.2" fill="#FFF"/>`)+fG(g,2,`<circle cx="108" cy="116" r="3" fill="${P.ll}" ${SW2}/>`)+fG(g,3,star(30,110,6)));
+FORM_TITLE["Homeward"]="Gate-Waiting Lamp Hound";SM("Homeward","Light Them Home","HEA","s",0,100,"heal:50,cure,ward+1","The lamp stays lit on the gate, and the dog stays by the post, until whoever it's waiting for comes up the path.");
+
+/* Hollowpenny: a magpie on a gatepost with a penny wedged over one eye like a monocle, very pleased with itself. */
+addForm("Hollowpenny",{n:"#1E1E28",a:"#F4F4F8",rn:"#F4F0F8",rb:"#3A5AA8",ra:"#F2C94C"},"perch",(P,g)=>fShadow(30,106)+
+ `<path d="M96 148 V112 H118 V148 Z" fill="#6A4A30" ${SW}/><path d="M94 112 H120" stroke="${FI}" stroke-width="3"/><circle cx="104" cy="120" r="1.6" fill="#3A2A1A"/>`+
+ pt("tail",128,96,`<path d="M124 96 L180 78 L182 86 L128 104 Z" fill="${P.n}" ${SW2}/><path d="M136 94 L178 80" stroke="#3A5AA8" stroke-width="2" opacity=".7"/>`)+
+ pt("legF",104,108,`<path d="M100 102 v10 M110 102 v10" stroke="${FI}" stroke-width="2.4"/>`)+
+ `<path d="M84 96 Q84 74 104 72 Q126 74 130 96 Q118 108 104 108 Q90 108 84 96 Z" fill="${P.n}" ${SW}/><path d="M86 94 Q90 80 102 82 Q100 98 90 104 Q86 100 86 94 Z" fill="${P.ac}"/>`+
+ pt("wingF",112,86,`<path d="M100 82 Q122 76 134 92 Q120 100 104 96 Z" fill="${P.n}" ${SW2}/><path d="M106 86 Q118 84 126 90" stroke="${P.ac}" stroke-width="3" fill="none"/>`)+
+ pt("head",92,62,`<circle cx="92" cy="60" r="15" fill="${P.n}" ${SW}/>`+
+  `<circle cx="86" cy="58" r="7.6" fill="#B07048" ${SW2}/><circle cx="86" cy="58" r="5.4" fill="none" stroke="#E8A878" stroke-width="1.2"/><path d="M93 58 Q100 64 98 76" stroke="#C8A060" stroke-width="1" fill="none"/>`+
+  `${E2(98,56,2.8,"#1A1A1A",[-.4,0])}<path d="M78 64 L62 66 L78 68 Z" fill="${FMOUTH}"/>`+pt("beak",78,68,`<path d="M78 68 L62 68 L76 72 Z" fill="#2A2A30" ${SW2}/>`)+`<path d="M78 62 L60 66 L78 66 Z" fill="#2A2A30" ${SW2}/>`)+
+ fG(g,1,`<circle cx="40" cy="50" r="5" fill="#B07048" ${SW2}/><circle cx="160" cy="40" r="4" fill="#B07048" ${SW2}/>`)+fG(g,2,`<circle cx="104" cy="96" r="3" fill="${P.ll}" ${SW2}/>`)+fG(g,3,star(40,120,6)));
+FORM_TITLE["Hollowpenny"]="Penny-Monocled Magpie";SM("Hollowpenny","For The Lamp Oil","QUE","a",60,100,"tacc-1@30","A penny left on the gatepost, and a magpie that thinks it's for it. It isn't. It took it anyway.");
+
+/* Flueling: a swift bursting out of a chimney pot in a cloud of soot, clutching a sweep's brush. */
+addForm("Flueling",{n:"#3A3A44",a:"#E8E4DA",rn:"#E8E4F0",rb:"#3A5AA8",ra:"#F2C94C"},"hover",(P,g)=>
+ `<path d="M78 148 L84 104 H124 L130 148 Z" fill="#A85A3A" ${SW}/><path d="M80 120 H128 M82 134 H126 M96 104 V120 M112 120 V134 M98 134 V148" stroke="#6A3420" stroke-width="2"/><path d="M80 96 H128 V106 H80 Z" fill="#B86A44" ${SW}/>`+
+ `${[[90,90,10],[112,84,12],[100,72,9],[122,70,7]].map(([x,y,r],i)=>`<circle class="pt p-slow" style="transform-origin:${x}px ${y}px;--dl:${i*.4}s" cx="${x}" cy="${y}" r="${r}" fill="#2A2A30" opacity=".55"/>`).join("")}`+
+ pt("tail",126,54,`<path d="M122 56 L160 70 L150 58 L164 50 Z" fill="${P.n}" ${SW2}/>`)+
+ pt("wingB",112,52,`<path d="M108 54 Q140 18 180 10 Q160 34 116 62 Z" fill="${P.nd}" ${SW}/>`,.2)+
+ `<path d="M84 60 Q86 46 104 44 Q124 46 128 58 Q118 70 102 70 Q88 70 84 60 Z" fill="${P.n}" ${SW}/><path d="M90 60 Q96 66 110 66" stroke="${P.ac}" stroke-width="3" fill="none"/>`+
+ pt("wingF",100,56,`<path d="M100 58 Q70 26 28 22 Q48 46 92 66 Z" fill="${P.n}" ${SW}/><path d="M90 56 Q66 38 40 30" stroke="${P.nl}" stroke-width="1.6" fill="none"/>`)+
+ /* the sweep's brush, in its feet */
+ pt("legF",106,70,`<path d="M100 68 L88 92" stroke="#6A4A2A" stroke-width="3.4" stroke-linecap="round"/><g transform="translate(86 96)">${Array.from({length:10},(_,i)=>`<path d="M0 0 L${(Math.cos(i*.63)*12).toFixed(1)} ${(Math.sin(i*.63)*12).toFixed(1)}" stroke="#1A1A1E" stroke-width="2"/>`).join("")}<circle r="3" fill="#6A4A2A"/></g>`)+
+ pt("head",86,52,`<circle cx="84" cy="50" r="12" fill="${P.n}" ${SW}/><path d="M76 54 Q80 58 86 58" fill="${P.ac}" stroke="none"/>${E2(80,47,3.4,"#1A1A1A",[-.4,0])}`+
+  `<path d="M73 50 L64 50 L72 53 Z" fill="${FMOUTH}"/>`+pt("beak",72,52,`<path d="M72 52 L64 52 L72 56 Z" fill="#1A1A1E" ${SW2}/>`)+`<path d="M73 47 L62 50 L73 50 Z" fill="#1A1A1E" ${SW2}/>`)+
+ fG(g,1,`<circle cx="40" cy="110" r="4" fill="#2A2A30" opacity=".4"/><circle cx="160" cy="120" r="5" fill="#2A2A30" opacity=".4"/>`)+fG(g,2,`<circle cx="106" cy="58" r="3" fill="${P.ll}" ${SW2}/>`)+fG(g,3,star(170,110,6)));
+FORM_TITLE["Flueling"]="Chimney-Sweeping Swift";SM("Flueling","Up The Flue","DRP","a",65,100,"tacc-1@30","Out of the chimney pot in a bang of soot, brush first, and nothing that oughtn't come down it gets a chance to.");
+
+/* Handshadow: the hare that turns up on the wall by candlelight with nobody's hands making it. It's a shadow puppet that has come
+   off the wall: flat, ragged at the edges, with a candle in front of it throwing it. */
+addForm("Handshadow",{n:"#2A2830",a:"#F4E8C8",rn:"#E8E4F4",rb:"#3A3A6A",ra:"#FFD66B"},"hop",(P,g)=>fShadow(40,104)+
+ `<path d="M26 148 V128 Q26 124 30 124 H38 Q42 124 42 128 V148 Z" fill="#F4ECD8" ${SW2}/><path d="M34 124 V118" stroke="${FI}" stroke-width="1.6"/><path d="M34 106 Q39 113 34 120 Q29 113 34 106 Z" fill="#FFB43A" stroke="#C86A1A" stroke-width="1"/><circle cx="34" cy="114" r="14" fill="#FFE6A0" opacity=".22"/>`+
+ pt("legB",128,136,`<path d="M120 128 Q140 128 146 144 L126 146 Z" fill="${P.n}" ${SW2}/>`,.2)+
+ `<path d="M80 140 Q72 112 92 98 Q114 88 132 102 Q144 118 134 140 Q116 148 96 146 Q84 146 80 140 Z" fill="${P.n}" ${SW}/>`+
+ /* where the shadow-hands would join at the wrist, the outline goes knuckly, as if it was made of fingers */
+ `<path d="M94 104 q4 -4 8 0 q4 -4 8 0 q4 -4 8 0" stroke="${P.nl}" stroke-width="1.8" fill="none" opacity=".6"/><path d="M84 132 q-4 4 0 8 M136 126 q4 4 0 8" stroke="${P.nl}" stroke-width="1.6" fill="none" opacity=".5"/>`+
+ pt("tail",140,118,`<circle cx="142" cy="118" r="7" fill="${P.nd}" ${SW2}/>`)+
+ pt("legF",88,136,`<path d="M84 128 Q76 140 70 144 L86 146 Q92 140 94 132 Z" fill="${P.n}" ${SW2}/>`)+
+ pt("head",84,94,`<path d="M100 98 Q98 80 82 78 Q66 80 60 90 Q56 98 62 104 Q76 108 100 98 Z" fill="${P.n}" ${SW}/>`+
+  pt("ear",86,78,`<path d="M84 80 Q76 46 84 26 Q94 46 92 80 Z" fill="${P.n}" ${SW2}/><path d="M86 72 Q82 50 85 36" stroke="${P.nl}" stroke-width="1.6" fill="none" opacity=".6"/>`)+
+  pt("ear",94,80,`<path d="M92 82 Q96 50 108 34 Q110 56 100 84 Z" fill="${P.nd}" ${SW2}/>`,.3)+
+  `<circle cx="72" cy="88" r="3.2" fill="#F4E8C8"/><circle cx="72" cy="88" r="1.3" fill="#1A1A1A"/><path d="M60 92 l-6 -2 M60 95 l-6 1" stroke="${P.nl}" stroke-width="1"/>`+
+  pt("jaw",64,100,`<path d="M58 98 Q64 106 72 100 Z" fill="${FMOUTH}"/>`))+
+ fG(g,1,`<path d="M150 40 q6 -8 12 0 q6 8 12 0" stroke="#4A4458" stroke-width="2" fill="none"/>`)+fG(g,2,`<circle cx="108" cy="124" r="3" fill="${P.ll}" ${SW2}/>`)+fG(g,3,star(170,60,6)));
+FORM_TITLE["Handshadow"]="Shadow-Puppet Hare";SM("Handshadow","One Hare Too Many","CUR","s",0,100,"tacc-1,tspd-1@40","Count the hands. Count the hares on the wall. Count them again.");
+
 /* ---- birds that perch, hop and strut ---- */
 FGP.bird={hab:{"z-mine":1,"z-scrap":2.5,"z-volcano":1.2,"z-glacier":2.5,"z-vault":3,"z-crater":1.5,"z-reactor":1,"z-wreck":2},loco:o=>o.perch?"perch":"hop",want:tr=>tr.light?1.6:tr.heavy?.6:1,
  kinds:{song:["Finch","Sparrow","Robin","Warbler","Bunting","Lark","Thrush","Starling","Siskin","Linnet","Pipit","Dunnock","Chat","Shrike","Wagtail","Nuthatch"],corvid:["Crow","Rook","Jackdaw","Jay","Chough","Nutcracker","Treepie"],
@@ -18892,8 +19252,8 @@ function lntMarlowTalk(m){const cur=lntTrail(),gw=lntF("gwOn")&&!lntGot(WW_NAME)
   if(st)L.push(`${st===1?"One stall still has its prize":st+" stalls still have their prizes"} out on the green.`);if(dr)L.push(`${dr===1?"One door":dr+" doors"} along the lane ${dr===1?"hasn't":"haven't"} had a guiser yet.`);
   if(!L.length)L.push("You've done Hollowmere proud, recruit. Sit by the fire a while. It's only once a year.");talk(m.n,L)}
 function lntWrenTalk(w){const n=LNT_LEAF().filter(a=>lntGot(a.name)).length;
-  talk(w.n,n>=5?["Five. All five things from the leaf piles, registered. I've written to the parish council. They wrote back asking if I'd seen their cat."]
-   :["The storeroom was bricked up in 1932 with everything still in it. Somebody knocked a hole in the front wall last year to see what was inside.",`Things have been turning up in the leaf piles round the village ever since. Five different kinds, I'm fairly sure. ${n?`You've registered ${n}.`:"Have a rummage."}`,"There's an armchair in there under a dust sheet that I am NOT going to look under."])}
+  talk(w.n,n>=LNT_LEAF().length?[`${["Zero","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten"][LNT_LEAF().length]}. Every one of the things from the leaf piles, registered.`+" I've written to the parish council. They wrote back asking if I'd seen their cat."]
+   :["The storeroom was bricked up in 1932 with everything still in it. Somebody knocked a hole in the front wall last year to see what was inside.",`Things have been turning up in the leaf piles round the village ever since. ${["Zero","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten"][LNT_LEAF().length]} different kinds, I'm fairly sure. ${n?`You've registered ${n}.`:"Have a rummage."}`,"There's an armchair in there under a dust sheet that I am NOT going to look under."])}
 function lntSextonTalk(p){talk(p.n,lntF("gwOn")&&!lntGot(WW_NAME)?["It's out again. You'll know it by the cold prints and the lanterns it's drunk.","My grandmother used to say it never gets the last lantern. Something always stands over that one till morning.","The prints are never in the same place two nights running. Follow them while they're fresh."]
   :lntGot(WW_NAME)?["You found the thing that stands over the last lantern. Sixty years I've kept this kirkyard and I've never once seen it.","The Gutterwick's still out there, mind. Nobody's ever laid a hand on that. Folk say it doesn't walk about on its own any more."]
   :["Evening. I keep the kirkyard. Sixty Lantern Nights, man and boy.","Most folk light their neeps for the fun of it. Us old ones light them so the Gutterwick has something to drink besides us.","Don't look at me like that. It's a story. Mostly."])}
@@ -19020,7 +19380,7 @@ function lntMemory(box,head,end){box.innerHTML=head("LANTERN MEMORY","Watch the 
     if(cur>=7&&!lntGot("Besomite"))out.push(it("LANTERN NIGHT · THE BESOM","Something is still wound round the besom on top of Hollowmere Hill."));
     const st=Object.values(HM_STALLS).filter(s=>!lntGot(s.a));if(st.length)out.push(it("LANTERN NIGHT · THE FAIR",`Prizes still to win on the green: ${st.map(s=>s.game).join(", ")}.`));
     const dr=HM_DOOR_P.filter((p,i)=>!lntGot(LNT_ALLOYS.find(o=>o.door===i).name));if(dr.length)out.push(it("LANTERN NIGHT · GUISING",`${dr.length===1?"One door":dr.length+" doors"} along Hollowmere's lane still to guise at. Do your turn, get your treat.`));
-    const lf=LNT_LEAF().filter(a=>!lntGot(a.name)).length;if(lf)out.push(it("LANTERN NIGHT · THE LEAF PILES",`Archivist Wren thinks five different things are hiding in Hollowmere's leaf piles. ${5-lf} registered so far.`));
+    const lf=LNT_LEAF().filter(a=>!lntGot(a.name)).length;if(lf)out.push(it("LANTERN NIGHT · THE LEAF PILES",`Archivist Wren thinks ${LNT_LEAF().length} different things are hiding in Hollowmere's leaf piles. ${LNT_LEAF().length-lf} registered so far.`));
     if(lntF("gwOn")&&!lntGot(WW_NAME))out.push(it("LANTERN NIGHT · THE COLD PRINTS","Something is putting out the lanterns in Hollowmere and leaving cold prints behind. Follow them from the bonfire and see where they stop."))}
   const all=LNT_NEEPS(),n=all.filter(q=>lntLit().has(q)).length;out.push(it("LANTERN NIGHT · NEEPS",n>=all.length?`Every neep lantern on every map is lit (${n} of ${all.length}).`:`Neep lanterns lit across the maps: ${n} of ${all.length}. They're hung everywhere for Lantern Night.`));
   const none=list.querySelector(".obj-none");if(none)none.remove();const kids=[...list.children],lastObj=kids.filter(e=>e.classList.contains("obj")&&!e.classList.contains("fav")).pop(),after=lastObj?lastObj.nextSibling:list.firstChild;out.forEach(e=>list.insertBefore(e,after))}}
@@ -20268,7 +20628,7 @@ lntNight=function(){let n=$("#lnt-night");if(!inHollow()){if(n)n.remove();return
   at(17,11.6,4.2,"rgba(255,206,140,1)");[[17,7],[12,11],[23,11]].forEach(([x,y])=>at(x,y-.6,2.1,"rgba(255,220,160,1)"));
   HM_COTS.forEach(([x,y,v])=>{const dx=[3,4,3,5][v],wx=dx<4?5.5:1.5;[wx,wx+1.2].forEach(o=>at(x+o,y+1.8,1.4,"rgba(255,206,140,.95)"));at(x+dx+1.6,y+2.6,1,"rgba(255,190,110,.9)")});
   (LNT_DECOR["z-hollow"]||[]).forEach(([k,x,y,s])=>{const key="z-hollow:"+x+","+y;if(k==="neep"&&lit.has(key)&&!lntSnuffed(key))at(x,y,1.3,"rgba(255,190,110,.95)");if(k==="trail"&&lntTrail()>s)at(x,y-1,2,"rgba(255,220,160,1)");if(k==="cand"&&!new Set(store.get("wta_lnt_cand",[])).has(key))at(x,y,.9,"rgba(255,206,140,.9)");if(k==="wisp")at(x,y,1.1,"rgba(170,255,170,.7)");if(k==="pot")at(x,y,1,"rgba(170,255,140,.7)");if(k==="strg"&&new Set(store.get("wta_lnt_str",[])).has(key))at(x+1.5,y+.6,1.6,"rgba(255,190,120,.9)")});
-  at(36,22,1.4,"rgba(200,170,255,.8)");
+  at(36,22,1.4,"rgba(200,170,255,.8)");if(typeof hmXLights==="function")hmXLights().forEach(q=>at(...q));
   {const bg=`${L.join(",")},#2E3056`,b=n.querySelector(".dk-base");if(b.style.background!==bg)b.style.background=bg}lntPlayerLight()};
 lntPlayerLight=function(){const n=$("#lnt-night"),w=$("#world");if(!n||!w||!EXP.W)return;const me=n.querySelector(".dk-me");if(!me)return;const tp=w.offsetWidth/EXP.W,r=tp*1.7;
   me.style.width=me.style.height=(2*r)+"px";me.style.transform=`translate(${((EXP.x+.5)*tp-r).toFixed(1)}px,${((EXP.y+.5)*tp-r).toFixed(1)}px)`};
@@ -20842,6 +21202,558 @@ const SHD_SLEEVES=(()=>{const sl=(d,w)=>`<path d="${d}" stroke="#121B40" stroke-
     return l}).map((l,i)=>i===0?l+"\n"+SHD_BACKSLEEVE:l).join("\n").replace("</svg>",SHD_SLEEVES+"</svg>")}}
 /* the journal keeps count while Lantern Night is on */
 {const _jo=journalObjectives;journalObjectives=function(){const J=_jo(),n=posTraces();if(n>0||(typeof lntOn==="function"&&lntOn()&&lntF("hm")))J.push(`<div class="bag-item key obj"><b>TRACES OF SHADOW: ${n}</b><p>${n?"Left on your fingers each time a shadow let go of a sample you identified.":"Shadows have started getting into samples. Identify a possessed one and the shadow has to let go."}</p></div>`);return J}}
+
+/* =============== YOUR ROOM ===============
+   Off the Institute's locker room there's a door marked STAFF QUARTERS, and behind it a room that's yours: a bed, a desk, a lamp, and a
+   lot of empty floor. Furnish it however you like. Everything you've done out in the field turns up as something for it (a seal plaque
+   for every Assay Hall, the besom off Hollowmere Hill, a sealed vial on a stand that's watching you) and display cases hold any alloy
+   you've registered. Plain furniture can be bought from the Quartermaster's catalogue with points earned registering alloys.
+   EDIT ROOM puts things down, picks them up, moves them, and changes the walls and floor. */
+const RM={W:16,H:11,door:[7,10],spawn:[7,9],edit:false,carry:null,zone:null};
+const RINK="#121B40";
+const rmS=(o)=>store.get("wta_room",null)||{items:[{id:"bed",x:2,y:2},{id:"desk",x:11,y:2},{id:"chair",x:11,y:3},{id:"lamp",x:13,y:2},{id:"shelf",x:5,y:1},{id:"case",x:9,y:1,a:null},{id:"rug",x:7,y:6}],wall:"cream",floor:"boards",owned:[]};
+const rmSave=st=>store.set("wta_room",st);
+/* points to spend: every alloy you register adds its round's points; an old save starts with a little for everything already registered */
+const rmPts=()=>{let p=store.get("wta_room_pts",null);if(p===null){p=(S.caught?S.caught.size:0)*10;store.set("wta_room_pts",p)}return p};
+{const _w=win;win=function(){const r=S.r;_w();if(r&&r.won&&!(typeof TUT!=="undefined"&&TUT.on)){store.set("wta_room_pts",rmPts()+Math.max(0,r.pts|0))}}}
+
+/* ---- drawing kit ---- */
+const rsh=(w)=>`<ellipse cx="20" cy="38" rx="${w||14}" ry="2.4" fill="#000" opacity=".22"/>`;
+const rk=(w)=>`stroke="${RINK}" stroke-width="${w||1.2}" stroke-linejoin="round"`;
+const SEAL_COL={"z-mine":"#8A5A3A","z-scrap":"#6A5A4A","z-wreck":"#3A5A7A","z-volcano":"#7A3A2A","z-vault":"#8A6A2A","z-reactor":"#4A6A5A","z-glacier":"#5A7AA0","z-crater":"#5A4A7A"};
+const plaque=(col,inner)=>`<rect x="8" y="9" width="24" height="24" rx="3" fill="#6A4A2A" ${rk()}/><rect x="10.6" y="11.6" width="18.8" height="18.8" rx="2" fill="${col}"/><circle cx="20" cy="21" r="7.4" fill="#F2C94C" ${rk(1)}/>${inner}<path d="M20 4 L20 9" stroke="#5A4A3A" stroke-width=".8"/><circle cx="20" cy="4" r="1" fill="#8A8A92"/>`;
+/* ---- the catalogue: everything that can go in the room ---- */
+const SEAL_SYM={"z-mine":`<path d="M16 25 L20 17 L24 25 Z M18.6 21 L21.4 21" stroke="#5A3A10" stroke-width="1.2" fill="none"/>`,"z-scrap":`<circle cx="20" cy="21" r="3.6" fill="none" stroke="#5A3A10" stroke-width="1.6" stroke-dasharray="2 1.4"/>`,"z-wreck":`<path d="M15.6 22 Q18 19 20 22 Q22 25 24.4 22" stroke="#5A3A10" stroke-width="1.4" fill="none"/>`,"z-volcano":`<path d="M20 16 Q16.6 21 20 25.6 Q23.4 21 20 16 Z" fill="#C8641A"/>`,"z-vault":`<path d="M16 18 H24 M17 18 V24 M20 18 V24 M23 18 V24 M15.6 24.4 H24.4" stroke="#5A3A10" stroke-width="1.1"/>`,"z-reactor":`<circle cx="20" cy="21" r="1.4" fill="#5A3A10"/>${[0,120,240].map(a=>`<path d="M20 21 L${(20+4.4*Math.cos((a-90)*Math.PI/180)).toFixed(1)} ${(21+4.4*Math.sin((a-90)*Math.PI/180)).toFixed(1)}" stroke="#5A3A10" stroke-width="2.4"/>`).join("")}`,"z-glacier":`<path d="M20 16 V26 M15.6 18.6 L24.4 23.4 M24.4 18.6 L15.6 23.4" stroke="#5A3A10" stroke-width="1.2"/>`,"z-crater":`<path d="M20 15.6 l1.4 3.8 4 .2 -3.2 2.4 1.2 3.8 -3.4 -2.2 -3.4 2.2 1.2 -3.8 -3.2 -2.4 4 -.2 Z" fill="#5A3A10"/>`};
+const ROOM_ITEMS=[
+ /* ---- what everyone starts with ---- */
+ {id:"bed",name:"Iron Bed",cat:"Furniture",w:2,start:1,desc:"An Institute-issue iron bedstead with a patchwork quilt. It creaks.",
+  svg:`<g transform="scale(2 1)"><ellipse cx="20" cy="38" rx="17" ry="2.2" fill="#000" opacity=".2"/></g><rect x="6" y="10" width="4" height="28" fill="#4A4E5A" ${rk()}/><rect x="70" y="16" width="4" height="22" fill="#4A4E5A" ${rk()}/><rect x="8" y="20" width="64" height="12" rx="2" fill="#F2EDE0" ${rk()}/><rect x="10" y="17" width="14" height="7" rx="3" fill="#FFFFFF" ${rk(1)}/>${[0,1,2,3,4].map(i=>`<rect x="${26+i*9}" y="19" width="9" height="13" fill="${["#C8643A","#3A7AB8","#E8B840","#6AA84A","#B84A6A"][i]}" opacity=".85"/>`).join("")}<path d="M26 19 H71" stroke="${RINK}" stroke-width=".8"/><path d="M6 12 H10 M70 18 H74" stroke="#7A7E8A" stroke-width="1.4"/>`,use:["You sit on the bed. It creaks, the same as it did the first night.","You could sleep for a week. You won't. There's rubble out there."]},
+ {id:"desk",name:"Writing Desk",cat:"Furniture",w:2,start:1,desc:"An oak desk with a green blotter and one drawer that sticks.",
+  svg:`<ellipse cx="40" cy="38" rx="32" ry="2.4" fill="#000" opacity=".2"/><rect x="6" y="14" width="68" height="6" rx="1" fill="#8A5A2E" ${rk()}/><rect x="8" y="20" width="22" height="16" fill="#7A4E26" ${rk()}/><rect x="10" y="23" width="18" height="5" rx="1" fill="#8A5A2E" ${rk(.8)}/><circle cx="19" cy="25.5" r=".9" fill="#E8C860"/><path d="M70 20 V36" stroke="${RINK}" stroke-width="2.4"/><rect x="34" y="11" width="22" height="4" fill="#3A6A3A" ${rk(.8)}/><rect x="60" y="9" width="7" height="5" fill="#F4ECD8" ${rk(.6)}/>`,use:["Your desk. The blotter's covered in element symbols and a doodle of Dr. Marlow that you'll deny drawing."]},
+ {id:"chair",name:"Desk Chair",cat:"Furniture",start:1,desc:"A bentwood chair. Wobbles on the left.",
+  svg:`${rsh(9)}<path d="M13 6 Q12 0 20 0 Q28 0 27 6 L27 22" fill="none" stroke="#6A4022" stroke-width="2.6"/><rect x="11" y="20" width="18" height="4" rx="1" fill="#8A5A2E" ${rk()}/><path d="M13 24 L12 37 M27 24 L28 37 M15 24 L16 34 M25 24 L24 34" stroke="#6A4022" stroke-width="2"/>`},
+ {id:"lamp",name:"Desk Lamp",cat:"Furniture",start:1,desc:"A brass lamp with a green shade. It's always been on.",glow:1,
+  svg:`${rsh(7)}<circle cx="20" cy="12" r="14" fill="#FFE8A0" opacity=".25"/><rect x="14" y="33" width="12" height="4" rx="1" fill="#C8A040" ${rk()}/><path d="M20 33 V18" stroke="#B8902A" stroke-width="2"/><path d="M11 18 Q20 6 29 18 Z" fill="#3A7A4A" ${rk()}/><path d="M13 18 H27" stroke="#FFE8A0" stroke-width="1.6"/>`},
+ {id:"shelf",name:"Bookshelf",cat:"Furniture",start:1,tall:1,desc:"Field guides, a periodic table with your notes in the margins, and a dictionary propping up the end.",
+  svg:`${rsh(15)}<rect x="6" y="-14" width="28" height="51" fill="#7A4E26" ${rk()}/>${[-10,4,18].map((y,r)=>`<path d="M7 ${y+12} H33" stroke="${RINK}" stroke-width="1.2"/>`+Array.from({length:6},(_,i)=>`<rect x="${8.4+i*4}" y="${y+1+(i%3)}" width="3.4" height="${11-(i%3)}" fill="${["#B84A3A","#3A6AA8","#E8B840","#4A8A4A","#8A4AA8","#C87A3A"][(i+r*2)%6]}" ${rk(.5)}/>`).join("")).join("")}`,use:["Every field guide the Institute ever printed, and three it didn't."]},
+ {id:"case",name:"Display Case",cat:"Display",start:1,display:1,desc:"A glass case on a plinth for showing off a registered alloy. Interact with it to choose which.",
+  svg:`${rsh(11)}<rect x="10" y="26" width="20" height="11" fill="#6A4A2A" ${rk()}/><path d="M11 26 V6 H29 V26" fill="#DDF0FF" fill-opacity=".25" ${rk(1)}/><path d="M13 9 L16 6" stroke="#FFFFFF" stroke-width="1.2" opacity=".7"/>`},
+ {id:"rug",name:"Rag Rug",cat:"Floor",start:1,flat:1,w:2,desc:"Braided from old lab coats. You can tell which ones.",
+  svg:`<ellipse cx="40" cy="22" rx="36" ry="14" fill="#C8B490" ${rk(1)}/><ellipse cx="40" cy="22" rx="28" ry="10" fill="none" stroke="#8A6A9A" stroke-width="2.4"/><ellipse cx="40" cy="22" rx="20" ry="7" fill="none" stroke="#5A8AB8" stroke-width="2.4"/><ellipse cx="40" cy="22" rx="11" ry="3.8" fill="#E8DCC0"/>`},
+ /* ---- earned out in the field ---- */
+ {id:"brassrod",name:"Your First Brass Rod",cat:"Trophy",desc:"The rod from your very first morning, on a little stand.",how:"Finish the tutorial.",open:()=>!!store.get("wta_tut",0),
+  svg:`${rsh(9)}<rect x="12" y="30" width="16" height="7" rx="1" fill="#5A3A1E" ${rk()}/><g transform="rotate(-24 20 22)"><rect x="9" y="19" width="22" height="6" rx="3" fill="#D8B050" ${rk()}/><path d="M12 20.4 H28" stroke="#FFF0B0" stroke-width="1"/></g>`,use:["The brass rod from your first morning. You knew nothing. You still know very little. But more than that."]},
+ {id:"rank",name:"Field Commission",cat:"Wall",wall:1,desc:"Your field rank, framed, signed by Dr. Marlow in very large handwriting.",how:"Earn your first field promotion.",open:()=>typeof FO_RANKS!=="undefined"&&typeof foRank==="function"&&FO_RANKS.indexOf(foRank())>=1,
+  svg:`<rect x="8" y="8" width="24" height="20" fill="#C8A040" ${rk()}/><rect x="10.6" y="10.6" width="18.8" height="14.8" fill="#F4ECD8"/><path d="M13 14 H27 M13 17 H24 M13 20 H26" stroke="#8A7A5A" stroke-width=".8"/><circle cx="25" cy="22.6" r="2" fill="#B83A2A"/><path d="M20 3 L14 8 M20 3 L26 8" stroke="#5A4A3A" stroke-width=".7"/>`,use:()=>[`Field rank: ${typeof foRank==="function"?foRank().toUpperCase():"RECRUIT"}. Signed by Dr. Marlow, and underlined three times.`]},
+ {id:"satchel",name:"Marlow's Old Satchel",cat:"Trophy",desc:"Dr. Marlow's first field satchel. He gave it to you 'on loan'. He has not mentioned it since.",how:"Reach the rank of Field Staff.",open:()=>typeof FO_RANKS!=="undefined"&&typeof foRank==="function"&&FO_RANKS.indexOf(foRank())>=3,
+  svg:`${rsh(10)}<path d="M10 18 Q20 4 30 18" stroke="#6A4022" stroke-width="2" fill="none"/><rect x="9" y="18" width="22" height="18" rx="3" fill="#8A5A2E" ${rk()}/><path d="M9 22 H31" stroke="${RINK}" stroke-width="1"/><rect x="18" y="22" width="4" height="5" fill="#C8A040" ${rk(.6)}/>`},
+ {id:"portrait",name:"The Founder's Portrait",cat:"Wall",wall:1,desc:"A copy of the founder's portrait from the hall. You know whose face it is now.",how:"Finish the founder's story.",open:()=>!!store.get("wta_fin_done",0),
+  svg:`<rect x="9" y="5" width="22" height="28" fill="#8A6A2A" ${rk()}/><rect x="11.6" y="7.6" width="16.8" height="22.8" fill="#4A3A2E"/><circle cx="20" cy="16" r="4.4" fill="#E8C8A0"/><path d="M14 30 Q20 21 26 30 Z" fill="#2A2A3A"/><circle cx="18.3" cy="16" r="1.4" fill="none" stroke="#2A2A2A" stroke-width=".6"/><circle cx="21.7" cy="16" r="1.4" fill="none" stroke="#2A2A2A" stroke-width=".6"/>`,use:["The founder, young, round spectacles. You know who he grew up to be. He's still looking like he's about to say something."]},
+ {id:"vellbox",name:"Deposit Box 001",cat:"Trophy",desc:"Chronicler Vell's deposit box, empty now, with the Vault's compliments.",how:"Open box 001 in the Gilded Vault.",open:()=>typeof Q!=="undefined"&&Q.flag&&Q.flag("half2"),
+  svg:`${rsh(10)}<rect x="10" y="20" width="20" height="16" fill="#8A7A5A" ${rk()}/><rect x="12" y="23" width="16" height="10" fill="#6A5A3A" ${rk(.8)}/><circle cx="20" cy="28" r="2.4" fill="#C8A040" ${rk(.6)}/><path d="M16 35 H24" stroke="#C8A040" stroke-width="1"/>`},
+ {id:"governor",name:"Governor's Cushion",cat:"Trophy",desc:"A velvet cushion with a ring-shaped dent in it, for the Governor when you're not wearing it.",how:"Get the Governor ring.",open:()=>typeof ocOwned==="function"&&ocOwned(),
+  svg:`${rsh(9)}<rect x="12" y="30" width="16" height="7" fill="#5A3A1E" ${rk()}/><ellipse cx="20" cy="28" rx="11" ry="5" fill="#7A2A4A" ${rk()}/><ellipse cx="20" cy="26.6" rx="4.4" ry="2" fill="none" stroke="#E8C860" stroke-width="1.6"/><circle cx="20" cy="25" r="1.4" fill="#F4F0E4" ${rk(.4)}/>`},
+ {id:"pitlamp",name:"Foreman Dray's Lamp",cat:"Trophy",desc:"The brass pit lamp you found at the end of the top tunnel. Dray says keep it; he's got his dad's back.",how:"Do Foreman Dray's favour in the mine.",open:()=>{try{return TQ("lamp")>=2}catch(e){return false}},glow:1,
+  svg:`${rsh(7)}<circle cx="20" cy="20" r="12" fill="#FFE8A0" opacity=".2"/><path d="M15 12 Q20 6 25 12" stroke="#8A6A2A" stroke-width="1.4" fill="none"/><rect x="14" y="13" width="12" height="20" rx="3" fill="#C8A040" ${rk()}/><rect x="16" y="16" width="8" height="10" rx="1" fill="#FFE8A0"/><rect x="13" y="32" width="14" height="5" rx="1" fill="#8A6A2A" ${rk()}/>`},
+ {id:"toolrack",name:"Tool Rack",cat:"Wall",wall:1,desc:"Hooks for everything you carry: the crowbar, the pick, the boots, the lamp.",how:"Get any field tool.",open:()=>typeof toolList==="function"&&toolList().length>0,
+  svg:`<rect x="4" y="10" width="32" height="4" fill="#6A4022" ${rk()}/>${[9,17,25,32].map(x=>`<path d="M${x} 14 v3" stroke="#4A4A52" stroke-width="1.2"/>`).join("")}<path d="M9 17 L7 31 M7 31 L10 31" stroke="#5A5A62" stroke-width="2" fill="none"/><path d="M17 17 L17 27 M13 18 Q17 15 21 18" stroke="#6A6A72" stroke-width="1.8" fill="none"/><path d="M23 17 L23 27 L28 27 L28 24" fill="#3A4A5A" ${rk(.8)}/>`},
+ {id:"syndcap",name:"Syndicate Cap",cat:"Trophy",desc:"A flat cap off one of the Slag Syndicate, hung on a hat stand. They'll want it back. They're not getting it.",how:"Win a showdown at the Slag Works.",open:()=>typeof slagWins==="function"&&slagWins()>=1,tall:1,
+  svg:`${rsh(8)}<path d="M20 37 V0" stroke="#5A3A1E" stroke-width="2"/><path d="M14 37 H26" stroke="#5A3A1E" stroke-width="2.4"/><path d="M13 -2 Q20 -8 27 -2 L29 1 Q20 -1 11 1 Z" fill="#26262C" ${rk(.9)}/><path d="M16 4 L20 0 L24 4" stroke="#5A3A1E" stroke-width="1.4" fill="none"/>`},
+ {id:"kiln",name:"Kiln-Brick Stove",cat:"Furniture",desc:"A little stove built from bricks off the Slag Works' kiln. It's never cold.",how:"Register the Kiln Heart.",open:()=>S.caught&&S.caught.has("Kiln Heart"),glow:1,
+  svg:`${rsh(12)}<rect x="8" y="12" width="24" height="25" fill="#A8826A" ${rk()}/>${[16,22,28].map(y=>`<path d="M8 ${y} H32" stroke="#6A4A3A" stroke-width=".8"/>`).join("")}<rect x="13" y="22" width="14" height="10" rx="2" fill="#2A1A10" ${rk(.8)}/><path d="M15 31 Q20 24 25 31" fill="#FF8A2A"/><rect x="16" y="2" width="6" height="10" fill="#8A6A5A" ${rk()}/>`},
+ {id:"trunk",name:"Guising Trunk",cat:"Event",desc:"Hollowmere's dressing-up trunk. The sheet ghost is on top. Somebody's put the tattie bogle's hat in here again.",how:"Dress up for Lantern Night.",open:()=>!!store.get("wta_lnt_cos",null),
+  svg:`${rsh(13)}<rect x="7" y="20" width="26" height="17" rx="2" fill="#7A4A2A" ${rk()}/><path d="M7 20 Q20 10 33 20" fill="#8A5A3A" ${rk()}/><path d="M12 18 Q16 12 22 14" stroke="#F4F2EC" stroke-width="4" fill="none"/><rect x="18" y="24" width="4" height="5" fill="#C8A040" ${rk(.6)}/>`},
+ {id:"neep",name:"Neep Lantern",cat:"Event",desc:"A carved neep with a candle in it, the old Hollowmere way. Its grin is slightly lopsided.",how:"Light every neep lantern on every map.",open:()=>{try{return LNT_NEEPS().every(k=>lntLit().has(k))}catch(e){return false}},glow:1,
+  svg:`${rsh(8)}<circle cx="20" cy="24" r="12" fill="#FFB43A" opacity=".2"/><ellipse cx="20" cy="27" rx="10" ry="9" fill="#E8DCB8" ${rk()}/><path d="M15 25 L17 22 L18.4 26 Z M22 26 L23.4 22 L25.4 25 Z M14 30 Q20 34 26 30 L24 29 L22 31 L20 29 L18 31 L16 29 Z" fill="#FFB43A"/><path d="M18 18 Q17 13 14 12 M22 18 Q24 13 27 12" stroke="#4A7A3A" stroke-width="1.6" fill="none"/>`},
+ {id:"pumpkin",name:"Carved Pumpkin",cat:"Event",desc:"A carved pumpkin, the way the rest of the country does it. Hollowmere disapproves, quietly.",how:"Visit Hollowmere on Lantern Night.",open:()=>{try{return !!lntF("hm")}catch(e){return false}},glow:1,
+  svg:`${rsh(10)}<circle cx="20" cy="26" r="12" fill="#FFB43A" opacity=".2"/><ellipse cx="13" cy="28" rx="7" ry="8" fill="#C8641A" ${rk()}/><ellipse cx="27" cy="28" rx="7" ry="8" fill="#C8641A" ${rk()}/><ellipse cx="20" cy="28" rx="8" ry="8.4" fill="#E8862A" ${rk()}/><path d="M15 26 L17.6 23 L18.6 27 Z M22 27 L22.6 23 L25 26 Z M14 30.6 L16.6 33 L18 31.4 L20 33.6 L22 31.4 L23.4 33 L26 30.6 Q20 36 14 30.6 Z" fill="#FFD27A"/><path d="M20 20 Q21 16 23 15" stroke="#4A6A24" stroke-width="2" fill="none"/>`},
+ {id:"besom",name:"The Old Besom",cat:"Event",desc:"The besom off the top of Hollowmere Hill, leaning in the corner. It's facing the window. It's always facing the window.",how:"Register Besomite.",open:()=>S.caught&&S.caught.has("Besomite"),tall:1,
+  svg:`${rsh(7)}<path d="M18 -10 L22 26" stroke="#8A5A2A" stroke-width="2.6"/><path d="M16 26 L28 26 L32 38 L12 38 Z" fill="#C8A060" ${rk()}/>${[15,19,23,27].map(x=>`<path d="M${x} 27 L${x-1+((x-21)/3)} 37" stroke="#8A6A3A" stroke-width=".8"/>`).join("")}<path d="M15.6 26 H28.4" stroke="#5A3A1A" stroke-width="2"/>`},
+ {id:"sconce",name:"Candle-Antler Sconce",cat:"Wall",wall:1,desc:"A shed antler from the thing that stands over the last lantern, with a candle on every tine. They don't burn down.",how:"Register Wickwarden.",open:()=>S.caught&&S.caught.has("Wickwarden"),glow:1,
+  svg:`<circle cx="20" cy="14" r="14" fill="#FFB43A" opacity=".18"/><rect x="15" y="24" width="10" height="10" rx="2" fill="#6A4A2A" ${rk()}/><path d="M20 26 Q14 18 10 12 M14 18 L12 10 M20 26 Q26 18 30 12 M26 18 L28 10 M20 26 V14" stroke="#C8BCA0" stroke-width="2" fill="none" stroke-linecap="round"/>${[[10,12],[12,10],[30,12],[28,10],[20,14]].map(([x,y])=>`<rect x="${x-1}" y="${y-4}" width="2" height="4" fill="#F4ECD8"/><path class="lnt-flame" d="M${x} ${y-8} Q${x+1.4} ${y-5.4} ${x} ${y-4} Q${x-1.4} ${y-5.4} ${x} ${y-8} Z" fill="#FFB43A"/>`).join("")}`},
+ {id:"gwvial",name:"The Vial on the Stand",cat:"Event",desc:"The Gutterwick's vial, contained, on a little brass stand. It's empty. Something in it is looking at you anyway.",how:"Register the Gutterwick.",open:()=>S.caught&&S.caught.has(typeof GW_NAME!=="undefined"?GW_NAME:"Gutterwick"),
+  svg:`${rsh(8)}<rect x="12" y="33" width="16" height="4" fill="#C8A040" ${rk()}/><path d="M14 33 L16 29 H24 L26 33" fill="none" stroke="#C8A040" stroke-width="1.4"/><rect x="16" y="8" width="8" height="21" rx="4" fill="#0A0814" ${rk()}/><rect x="15.4" y="6" width="9.2" height="3" fill="#6A4A2A" ${rk(.6)}/><circle class="rm-gweye" cx="18.6" cy="16" r=".9" fill="#FFFFFF"/><circle class="rm-gweye" cx="21.4" cy="16" r=".9" fill="#FFFFFF"/>`,use:["It's empty. It's contained. It's looking at you."]},
+ {id:"shadowjar",name:"A Shadow in a Jar",cat:"Event",desc:"A jam jar with a lid screwed on tight and a little bit of dark inside. It moves when you're not looking.",how:"Gather 25 traces of shadow.",open:()=>(store.get("wta_shd_trace",0)||0)>=25,
+  svg:`${rsh(7)}<rect x="12" y="16" width="16" height="21" rx="3" fill="#DDF0FF" fill-opacity=".35" ${rk()}/><rect x="11" y="13" width="18" height="4" rx="1" fill="#C8A040" ${rk(.8)}/><path class="rm-jar" d="M16 33 Q15 24 20 22 Q25 24 24 33 Z" fill="#0A0814"/><circle cx="18.6" cy="26" r=".7" fill="#FFFFFF"/><circle cx="21.4" cy="26" r=".7" fill="#FFFFFF"/>`},
+ {id:"seals",name:"Assayer's Cup",cat:"Trophy",desc:"A silver cup with all eight hall seals engraved round it. The Assayers clubbed together.",how:"Earn all eight Assay Hall seals.",open:()=>{try{return asData().seals.length>=8}catch(e){return false}},
+  svg:`${rsh(9)}<rect x="13" y="32" width="14" height="5" fill="#5A3A1E" ${rk()}/><path d="M18 32 V27 H22 V32" fill="#C8C8D0" ${rk(.8)}/><path d="M11 10 H29 Q29 24 20 26 Q11 24 11 10 Z" fill="#D8D8E0" ${rk()}/><path d="M11 13 Q6 13 7 18 Q8 21 12 20 M29 13 Q34 13 33 18 Q32 21 28 20" stroke="#B8B8C0" stroke-width="1.6" fill="none"/><path d="M13 12 L15 22" stroke="#FFFFFF" stroke-width="1.2" opacity=".7"/>`},
+ /* ---- a plaque for each Assay Hall's seal ---- */
+ ...["z-mine","z-scrap","z-wreck","z-volcano","z-vault","z-reactor","z-glacier","z-crater"].map(z=>({id:"seal_"+z,name:(typeof GYMS!=="undefined"&&GYMS[z]?GYMS[z].seal:"Seal")+" Plaque",cat:"Wall",wall:1,desc:`The ${typeof GYMS!=="undefined"&&GYMS[z]?GYMS[z].seal:"seal"}, mounted on a board, from the ${typeof GYMS!=="undefined"&&GYMS[z]?GYMS[z].hall.toLowerCase().replace(/(^|\s)\S/g,m=>m.toUpperCase()):"hall"}.`,how:`Earn the ${typeof GYMS!=="undefined"&&GYMS[z]?GYMS[z].seal:"seal"}.`,
+   open:()=>{try{return asData().seals.includes(z)}catch(e){return false}},svg:plaque(SEAL_COL[z],SEAL_SYM[z])})),
+ /* ---- the Quartermaster's catalogue ---- */
+ {id:"armchair",name:"Armchair",cat:"Furniture",price:150,desc:"Deep, worn and mustard-coloured. It was in the common room until somebody spilled tea on it.",
+  svg:`${rsh(14)}<rect x="8" y="10" width="24" height="16" rx="5" fill="#C8A040" ${rk()}/><rect x="5" y="18" width="8" height="16" rx="3" fill="#B8902A" ${rk()}/><rect x="27" y="18" width="8" height="16" rx="3" fill="#B8902A" ${rk()}/><rect x="11" y="24" width="18" height="9" rx="2" fill="#D8B050" ${rk()}/><path d="M8 34 V37 M32 34 V37" stroke="#5A3A1E" stroke-width="2"/><ellipse cx="22" cy="28" rx="3" ry="1.6" fill="#8A6A2A" opacity=".4"/>`,use:["You sink into the armchair. There's a tea stain the exact shape of the Cove."]},
+ {id:"fern",name:"Potted Fern",cat:"Furniture",price:80,desc:"A fern in a cracked crucible. It thrives on neglect.",
+  svg:`${rsh(8)}<path d="M13 27 L15 37 H25 L27 27 Z" fill="#C86A3A" ${rk()}/><path d="M17 31 L19 29 L18 33" stroke="#8A3A1A" stroke-width=".6" fill="none"/>${[[-40,10],[-15,13],[10,14],[35,12],[-28,6],[22,7]].map(([a,l])=>`<path d="M20 27 Q${20+Math.sin(a*Math.PI/180)*l*.5} ${27-l*.8} ${20+Math.sin(a*Math.PI/180)*l*1.1} ${27-l*1.2}" stroke="#3A8A3A" stroke-width="2.4" fill="none" stroke-linecap="round"/>`).join("")}`},
+ {id:"cactus",name:"Cactus",cat:"Furniture",price:60,desc:"It came back from the Caldera in somebody's boot.",
+  svg:`${rsh(6)}<rect x="14" y="29" width="12" height="8" fill="#C86A3A" ${rk()}/><path d="M17 29 V14 Q17 10 20 10 Q23 10 23 14 V29 Z" fill="#4A8A3A" ${rk()}/><path d="M17 20 H14 V16 M23 22 H26 V17" stroke="#4A8A3A" stroke-width="2.6" fill="none" stroke-linecap="round"/><circle cx="20" cy="10" r="1.6" fill="#E85A8A"/>`},
+ {id:"clock",name:"Wall Clock",cat:"Wall",wall:1,price:120,desc:"A railway clock. It's four minutes fast and nobody knows how to change it.",
+  svg:`<circle cx="20" cy="20" r="12" fill="#F4ECD8" ${rk(1.6)}/><circle cx="20" cy="20" r="12" fill="none" stroke="#6A4022" stroke-width="2.4"/>${Array.from({length:12},(_,i)=>`<path d="M${(20+9.4*Math.cos(i*Math.PI/6)).toFixed(1)} ${(20+9.4*Math.sin(i*Math.PI/6)).toFixed(1)} L${(20+10.6*Math.cos(i*Math.PI/6)).toFixed(1)} ${(20+10.6*Math.sin(i*Math.PI/6)).toFixed(1)}" stroke="${RINK}" stroke-width=".8"/>`).join("")}<path class="rm-hand" d="M20 20 L20 12" stroke="${RINK}" stroke-width="1.4" stroke-linecap="round"/><path d="M20 20 L25 22" stroke="${RINK}" stroke-width="1.6" stroke-linecap="round"/>`},
+ {id:"window",name:"Curtained Window",cat:"Wall",wall:1,price:90,desc:"A window onto the moor, with curtains Hobbs found in a box marked 'CURTAINS (?)'.",
+  svg:`<rect x="8" y="6" width="24" height="26" fill="#4A6A9A" ${rk()}/><circle cx="26" cy="12" r="2.6" fill="#F4ECD8"/><path d="M8 26 Q14 22 20 25 Q26 22 32 26 V32 H8 Z" fill="#3A5A3A"/><path d="M20 6 V32 M8 19 H32" stroke="#6A4022" stroke-width="1.6"/><path d="M6 4 H34" stroke="#5A3A1E" stroke-width="2"/><path d="M6 5 Q10 18 7 33 L11 33 Q13 18 11 5 Z M34 5 Q30 18 33 33 L29 33 Q27 18 29 5 Z" fill="#B84A4A" ${rk(.8)}/>`},
+ {id:"poster",name:"Periodic Table Poster",cat:"Wall",wall:1,price:60,desc:"Every element, colour-coded, with three of them circled in your own handwriting.",
+  svg:`<rect x="6" y="8" width="28" height="20" fill="#F4ECD8" ${rk()}/>${Array.from({length:5},(_,r)=>Array.from({length:9},(_,c)=>(r<1&&c>0&&c<8)||(r<3&&c>1&&c<7&&r>0)?"":`<rect x="${8+c*2.8}" y="${10+r*3.2}" width="2.4" height="2.8" fill="${["#E8846A","#E8C860","#8AC86A","#6AA8E8","#B88AE8"][(c+r)%5]}"/>`).join("")).join("")}<circle cx="16.8" cy="20" r="2" fill="none" stroke="#B83A2A" stroke-width=".6"/>`},
+ {id:"globe",name:"Globe",cat:"Furniture",price:140,desc:"An old globe. Drossmarch is a smudge on it, which seems unfair.",
+  svg:`${rsh(8)}<path d="M14 37 H26 M20 37 V30" stroke="#5A3A1E" stroke-width="2.4"/><path d="M10 18 A10 10 0 0 0 30 18" stroke="#C8A040" stroke-width="1.4" fill="none"/><circle cx="20" cy="18" r="9" fill="#4A8AC8" ${rk()}/><path d="M14 14 Q18 12 19 16 Q16 20 13 18 Z M22 18 Q26 16 27 20 Q24 24 22 22 Z" fill="#6AA84A"/>`},
+ {id:"records",name:"Gramophone",cat:"Furniture",price:250,desc:"A wind-up gramophone and one record, which is the Assay Hall march. Sorry.",
+  svg:`${rsh(11)}<rect x="10" y="26" width="20" height="11" fill="#7A4E26" ${rk()}/><ellipse cx="20" cy="26" rx="9" ry="2" fill="#1A1A1E"/><path d="M22 25 L28 14" stroke="#C8A040" stroke-width="1.6"/><path d="M24 15 Q30 4 38 8 Q36 16 28 16 Z" fill="#C8A040" ${rk()}/>`,use:["You wind it up. It plays the Assay Hall march. You let it."]},
+ {id:"tank",name:"Fish Tank",cat:"Furniture",price:300,w:2,desc:"A fish tank with two fish in it, called Brass and Bronze. Brass is the bossy one.",
+  svg:`<ellipse cx="40" cy="38" rx="30" ry="2.4" fill="#000" opacity=".2"/><rect x="8" y="26" width="64" height="11" fill="#5A3A1E" ${rk()}/><rect x="10" y="6" width="60" height="20" fill="#5AA8D8" fill-opacity=".55" ${rk()}/><path d="M10 26 Q25 22 40 26 T70 26" fill="#C8B480" opacity=".8"/><path d="M18 26 V16 M22 26 Q24 18 20 14 M58 26 Q56 18 60 12" stroke="#3A8A3A" stroke-width="1.6" fill="none"/><g class="rm-fish"><path d="M34 14 Q38 11 42 14 Q38 17 34 14 Z M42 14 L45 12 L45 16 Z" fill="#D8A040"/></g><g class="rm-fish2"><path d="M50 19 Q54 16 58 19 Q54 22 50 19 Z M50 19 L47 17 L47 21 Z" fill="#C86A3A"/></g>`},
+ {id:"telescope",name:"Telescope",cat:"Furniture",price:220,desc:"A brass telescope on a tripod, from the Starfall observers. It's pointed at the ceiling.",
+  svg:`${rsh(10)}<path d="M20 22 L12 37 M20 22 L28 37 M20 22 V37" stroke="#5A3A1E" stroke-width="1.6"/><g transform="rotate(-30 20 20)"><rect x="8" y="16" width="26" height="7" rx="2" fill="#C8A040" ${rk()}/><rect x="4" y="17" width="5" height="5" fill="#8A6A2A" ${rk(.8)}/></g>`},
+ {id:"beanbag",name:"Beanbag",cat:"Furniture",price:90,desc:"A beanbag in Institute blue. It's lost about half its beans.",
+  svg:`${rsh(13)}<path d="M7 35 Q4 22 14 18 Q22 14 28 20 Q36 26 33 35 Q20 39 7 35 Z" fill="#3A6AA8" ${rk()}/><path d="M14 24 Q20 28 26 24" stroke="#5A8AC8" stroke-width="1.4" fill="none"/>`},
+ {id:"plantstand",name:"Specimen Jars",cat:"Furniture",price:110,desc:"A stand of empty specimen jars, labelled for alloys you haven't found yet.",
+  svg:`${rsh(11)}<rect x="8" y="26" width="24" height="3" fill="#6A4022" ${rk()}/><path d="M10 29 V37 M30 29 V37" stroke="#6A4022" stroke-width="2"/>${[11,18,25].map((x,i)=>`<rect x="${x}" y="${16+i%2*2}" width="6" height="${10-i%2*2}" rx="1" fill="#DDF0FF" fill-opacity=".4" ${rk(.8)}/><rect x="${x+.6}" y="${20}" width="4.8" height="2" fill="#F4ECD8"/>`).join("")}`},
+ {id:"case2",name:"Display Case",cat:"Display",price:200,display:1,desc:"Another glass case, for another alloy you're proud of.",
+  svg:`${rsh(11)}<rect x="10" y="26" width="20" height="11" fill="#6A4A2A" ${rk()}/><path d="M11 26 V6 H29 V26" fill="#DDF0FF" fill-opacity=".25" ${rk(1)}/><path d="M13 9 L16 6" stroke="#FFFFFF" stroke-width="1.2" opacity=".7"/>`},
+ {id:"case3",name:"Tall Display Case",cat:"Display",price:260,display:1,desc:"A tall glass case with a brass rim, for the alloy that deserves it.",
+  svg:`${rsh(11)}<rect x="10" y="28" width="20" height="9" fill="#3A2A1E" ${rk()}/><path d="M11 28 V2 H29 V28" fill="#DDF0FF" fill-opacity=".25" ${rk(1)}/><path d="M10 2 H30 M10 28 H30" stroke="#C8A040" stroke-width="1.6"/>`},
+ {id:"rugred",name:"Red Rug",cat:"Floor",price:100,flat:1,w:2,desc:"A red rug with a gold border. Too good for this floor.",
+  svg:`<rect x="4" y="10" width="72" height="24" rx="2" fill="#9A2A2A" ${rk()}/><rect x="8" y="13" width="64" height="18" fill="none" stroke="#E8C860" stroke-width="1.6"/><path d="M40 16 L46 22 L40 28 L34 22 Z" fill="#E8C860"/>`},
+ {id:"rugmoor",name:"Moorland Rug",cat:"Floor",price:100,flat:1,w:2,desc:"Woven in heather colours by somebody in Hollowmere who wouldn't take money for it, so the Quartermaster charges instead.",
+  svg:`<ellipse cx="40" cy="22" rx="36" ry="13" fill="#7A6A8A" ${rk()}/>${[0,1,2].map(i=>`<ellipse cx="40" cy="22" rx="${30-i*8}" ry="${11-i*3}" fill="none" stroke="${["#A8B87A","#C88AA8","#E8D8A0"][i]}" stroke-width="2"/>`).join("")}`}];
+const RITEM=Object.fromEntries(ROOM_ITEMS.map(i=>[i.id,i]));
+const RM_WALLS=[{id:"cream",name:"Institute Cream",col:"#E8DCC0",pat:"#D8CCB0"},{id:"sage",name:"Sage Stripe",col:"#B8C8A8",pat:"#A0B090",price:120},{id:"navy",name:"Navy Damask",col:"#3A4A6A",pat:"#4A5A7A",price:120},{id:"rose",name:"Rose Paper",col:"#D8A8A8",pat:"#C89898",price:120},{id:"panel",name:"Oak Panelling",col:"#8A5A2E",pat:"#7A4E26",price:160},{id:"moor",name:"Moorland Mural",col:"#7A8A6A",pat:"#5A6A8A",price:200,how:"Visit Hollowmere on Lantern Night.",open:()=>{try{return !!lntF("hm")}catch(e){return false}}}];
+const RM_FLOORS=[{id:"boards",name:"Bare Boards",col:"#A8784A",line:"#8A5E36"},{id:"oak",name:"Polished Oak",col:"#8A5A2E",line:"#6A4422",price:150},{id:"tiles",name:"Lab Tiles",col:"#D8DCE0",line:"#B8BCC4",price:150},{id:"carpet",name:"Green Carpet",col:"#4A7A4A",line:"#3E6A3E",price:150},{id:"slate",name:"Slate Flags",col:"#6A6E78",line:"#4E525C",price:180}];
+const rmOpen=it=>it.start||(it.price?((rmS().owned||[]).includes(it.id)):(!it.open||it.open()));
+const rmOwnedCount=id=>id;
+
+/* ---- the zone ---- */
+function rmMap(st){const W=RM.W,H=RM.H,M=[];for(let y=0;y<H;y++){let r="";for(let x=0;x<W;x++){r+=(y===0||y===H-1||x===0||x===W-1)?"#":"."}M.push(r)}
+  M[H-1]=M[H-1].slice(0,RM.door[0])+"D"+M[H-1].slice(RM.door[0]+1);
+  /* furniture that stands on the floor blocks it; rugs and wall pieces don't */
+  (st.items||[]).forEach(p=>{const it=RITEM[p.id];if(!it||it.wall||it.flat)return;for(let k=0;k<(it.w||1);k++){const x=p.x+k,r=M[p.y];if(r&&x>0&&x<W-1)M[p.y]=r.slice(0,x)+"H"+r.slice(x+1)}});
+  return M}
+const ROOM_ZONE={name:"YOUR ROOM",sub:"Staff quarters, Quillmoor Institute. Yours, to do with as you like.",cls:"z-quill",special:"room",map:[]};
+const inRoom=()=>!!(EXP.zone&&EXP.zone.special==="room");
+function rmEnter(){EXP.path=null;sfx("clunk");ROOM_ZONE.map=rmMap(rmS());EXP.forceZone=ROOM_ZONE;EXP.spawn=RM.spawn.slice();EXP.stash=null;EXP.resume=null;startExplore()}
+function rmLeave(){RM.edit=false;RM.carry=null;EXP.path=null;sfx("clunk");EXP.forceZone=ZONES.find(q=>q.cls==="z-quill");EXP.spawn=[9,32];EXP.stash=null;EXP.resume=null;startExplore()}
+{const _se=startExplore;startExplore=function(){if(EXP.forceZone===ROOM_ZONE)ROOM_ZONE.map=rmMap(rmS());_se()}}
+/* the room's own walls and floor */
+/* (always through the rest of the chain first, so the chunked drawing still knows the room's size) */
+{const _tl=tileLook;tileLook=function(c,x,y,seed,M){const r=_tl(c,x,y,seed,M);if(!inRoom())return r;const st=rmS();let mine=null;
+    if(c==="D")mine=["f hdoor",HALL_MAT];else if(c==="#")mine=y===0?["w rmw rmw-"+(st.wall||"cream"),""]:["w rmside",""];else if(c==="."||c==="H")mine=["f rmf rmf-"+(st.floor||"boards"),""];
+    if(!mine)return r;if(typeof CH!=="undefined"&&CH.b){CH.inner[y*CH.W+x]=mine[1];return[mine[0]+" cull",""]}return mine}}
+/* the door in the locker room */
+const RM_DOOR_SVG=`<svg viewBox="0 0 40 40" aria-hidden="true" style="overflow:visible"><rect x="8" y="-2" width="24" height="40" rx="1" fill="#7A4E26" stroke="${RINK}" stroke-width="1.4"/><rect x="11" y="2" width="18" height="14" rx="1" fill="#8A5E36" stroke="${RINK}" stroke-width=".8"/><rect x="11" y="20" width="18" height="14" rx="1" fill="#8A5E36" stroke="${RINK}" stroke-width=".8"/><circle cx="27" cy="19" r="1.4" fill="#E8C860" stroke="${RINK}" stroke-width=".5"/><rect x="13" y="6" width="14" height="5" fill="#F4ECD8" stroke="${RINK}" stroke-width=".5"/><path d="M15 8.6 H25" stroke="#3A3A3A" stroke-width=".7"/></svg>`;
+{const _wp=worldPlace;worldPlace=function(){_wp();const z=EXP.zone;if(!z)return;
+  if(z.cls==="z-quill"&&!z.special&&!(typeof TUT!=="undefined"&&TUT.on)){const W=EXP.W,H=EXP.H,d=document.createElement("div");d.className="mapobj rmdoor";d.style.cssText=`width:${100/W}%;height:${100/H}%;left:${RM.door[0]===7?9/W*100:9/W*100}%;top:${33/H*100}%`;d.innerHTML=RM_DOOR_SVG;$("#world").insertBefore(d,$("#player"));
+    EXP.objs.push({x:9,y:33,tile:1,use:()=>rmEnter()})}
+  if(inRoom())rmPlace()}}
+/* walking into the door goes through it */
+{const _st=step;step=function(dx,dy){if(!EXP.busy&&S.phase==="explore"&&EXP.zone&&!DLG.open){const nx=EXP.x+dx,ny=EXP.y+dy;
+    if(EXP.zone.cls==="z-quill"&&!EXP.zone.special&&nx===9&&ny===33){rmEnter();return false}
+    if(inRoom()&&nx===RM.door[0]&&ny===RM.door[1]){rmLeave();return false}}
+  return _st(dx,dy)}}
+SIGNS["z-quill"]=SIGNS["z-quill"]||{};
+
+/* ---- putting the room's things in it ---- */
+function rmItemEl(p,idx){const it=RITEM[p.id];if(!it)return null;const W=EXP.W,H=EXP.H,w=it.w||1,d=document.createElement("div");
+  d.className="mapobj rmi"+(it.wall?" rmwall":"")+(it.flat?" rmflat":"")+(it.tall?" rmtall":"");d.dataset.i=idx;
+  d.style.width=(w*100/W)+"%";d.style.height=(100/H)+"%";d.style.left=(p.x/W*100)+"%";d.style.top=(p.y/H*100)+"%";
+  let inner=it.svg;if(it.display)inner+=rmCaseInner(p);
+  d.innerHTML=`<svg viewBox="0 0 ${40*w} 40" aria-hidden="true" style="overflow:visible">${inner}</svg>`;return d}
+/* what's in a display case: a tiny version of the alloy, with its shine if it's Radiant */
+function rmCaseInner(p){if(!p.a)return`<text x="20" y="18" text-anchor="middle" font-size="5" fill="#8A8A92" font-family="sans-serif">EMPTY</text>`;const a=alloyByName(p.a);if(!a)return"";
+  const sv=specimenSVG(a).replace(/<svg[^>]*viewBox="([^"]+)"[^>]*>/,'<svg x="11.6" y="6.4" width="16.8" height="19" viewBox="$1" preserveAspectRatio="xMidYMid meet">');
+  return sv+(p.rad?`<path d="M26 8 l.8 2 2 .8 -2 .8 -.8 2 -.8 -2 -2 -.8 2 -.8 Z" fill="#F2C94C"/>`:"")}
+function rmPlace(){const st=rmS();document.querySelectorAll("#world>.rmi").forEach(e=>e.remove());const w=$("#world"),pl=$("#player");
+  (st.items||[]).forEach((p,i)=>{const it=RITEM[p.id];if(!it)return;const d=rmItemEl(p,i);if(d)w.insertBefore(d,pl);
+    if(it.flat)return;const lines=typeof it.use==="function"?it.use():it.use;
+    EXP.objs.push({x:p.x,y:p.y,tile:1,rm:1,use:()=>{if(RM.edit){rmPick(i);return}if(it.display){rmChooseAlloy(i);return}talk("",lines||[it.desc])}})});
+  rmBar()}
+
+/* ---- EDIT ROOM ---- */
+function rmBar(){let b=$("#rm-bar");if(!inRoom()||S.phase!=="explore"){if(b)b.remove();return}const mw=$("#mapwrap");if(!mw)return;
+  if(!b){b=document.createElement("div");b.id="rm-bar";mw.appendChild(b)}
+  if(RM.carry){const it=RITEM[RM.carry.id];b.innerHTML=`<span>Placing: <b>${it.name}</b>. Click ${it.wall?"a spot on the back wall":"a floor square"}.</span><button class="btn" id="rm-stow">PACK AWAY</button><button class="btn" id="rm-cancel">CANCEL</button>`;
+    $("#rm-stow").onclick=()=>{RM.carry=null;rmRefresh()};$("#rm-cancel").onclick=()=>{if(RM.carry.from){const st=rmS();st.items.push(RM.carry.from);rmSave(st)}RM.carry=null;rmRefresh()}}
+  else if(RM.edit){b.innerHTML=`<span><b>EDITING.</b> Click a piece to pick it up.</span><button class="btn go" id="rm-open">ADD / CHANGE</button><button class="btn" id="rm-done">DONE</button>`;$("#rm-open").onclick=rmPanel;$("#rm-done").onclick=()=>{RM.edit=false;rmRefresh()}}
+  else{b.innerHTML=`<button class="btn go" id="rm-edit">EDIT ROOM</button>`;$("#rm-edit").onclick=()=>{RM.edit=true;rmRefresh()}}
+  $("#mapwrap").classList.toggle("rm-editing",!!(RM.edit||RM.carry));$("#mapwrap").classList.toggle("rm-carry",!!RM.carry);$("#mapwrap").classList.toggle("rm-carry-wall",!!(RM.carry&&RITEM[RM.carry.id].wall))}
+function rmRefresh(){if(!inRoom())return;ROOM_ZONE.map=rmMap(rmS());const keep=[EXP.x,EXP.y];EXP.spawn=keep;EXP.forceZone=ROOM_ZONE;EXP.stash=null;EXP.resume=null;startExplore()}
+function rmPick(i){const st=rmS(),p=st.items[i];if(!p)return;st.items.splice(i,1);rmSave(st);RM.carry={id:p.id,a:p.a,rad:p.rad,from:p};sfx("sel");rmRefresh()}
+/* can it go there? on free floor (or the back wall), not on the doorway, and never cutting the room in two */
+function rmCanPut(id,x,y){const it=RITEM[id],st=rmS(),W=RM.W,H=RM.H,w=it.w||1;
+  if(it.wall){if(y!==0||x<1||x+w-1>W-2)return false;return!st.items.some(p=>RITEM[p.id]&&RITEM[p.id].wall&&p.y===0&&x<p.x+(RITEM[p.id].w||1)&&p.x<x+w)}
+  if(y<1||y>H-2||x<1||x+w-1>W-2)return false;
+  for(let k=0;k<w;k++){if(x+k===RM.spawn[0]&&y===RM.spawn[1])return false;if(x+k===EXP.x&&y===EXP.y&&!it.flat)return false}
+  const clash=st.items.some(p=>{const q=RITEM[p.id];if(!q||q.wall)return false;if(!!q.flat!==!!it.flat)return false;return p.y===y&&x<p.x+(q.w||1)&&p.x<x+w});if(clash)return false;
+  if(it.flat)return true;
+  const M=rmMap({items:[...st.items,{id,x,y}]});const seen=new Set([RM.spawn+""]),q=[RM.spawn.slice()];
+  while(q.length){const[a,b]=q.pop();for(const[dx,dy]of[[1,0],[-1,0],[0,1],[0,-1]]){const nx=a+dx,ny=b+dy,k=nx+","+ny;if(seen.has(k)||(M[ny]||"")[nx]!==".")continue;seen.add(k);q.push([nx,ny])}}
+  let free=0;M.forEach(r=>{for(const ch of r)if(ch===".")free++});return seen.size===free}
+(function(){const bind=()=>{const mw=$("#mapwrap");if(!mw||mw.__rm)return;mw.__rm=1;
+  mw.addEventListener("click",e=>{if(!inRoom()||!(RM.carry||RM.edit)||e.target.closest("#rm-bar"))return;const m=$("#map");if(!m)return;const r=m.getBoundingClientRect();
+    const x=Math.floor((e.clientX-r.left)/r.width*EXP.W),y=Math.floor((e.clientY-r.top)/r.height*EXP.H);e.stopPropagation();e.preventDefault();
+    if(RM.carry){if(rmCanPut(RM.carry.id,x,y)){const st=rmS();st.items.push({id:RM.carry.id,x,y,a:RM.carry.a||null,rad:RM.carry.rad||0});rmSave(st);RM.carry=null;sfx("pickup");rmRefresh()}else{sfx("miss");say0("It won't go there. It needs free floor, can't block the door, and can't cut the room off.")}return}
+    /* editing: pick up whatever is on that square (a rug last, if something stands on it) */
+    const st=rmS();let hit=-1;st.items.forEach((p,i)=>{const it=RITEM[p.id];if(!it)return;if(p.y===y&&x>=p.x&&x<p.x+(it.w||1)){if(hit<0||RITEM[st.items[hit].id].flat)hit=i}});if(hit>=0)rmPick(hit)},true)};
+  const t=setInterval(()=>{if($("#mapwrap")){bind();clearInterval(t)}},300)})();
+/* the panel: your things, the walls and floor, and the Quartermaster's catalogue */
+function rmPanel(tab){tab=tab||RM.tab||"things";RM.tab=tab;const m=modal("rmpanel","YOUR ROOM"),L=m.querySelector(".bag-list"),st=rmS(),pts=rmPts();
+  const placedCount=id=>st.items.filter(p=>p.id===id).length;
+  const tabs=`<div class="rm-tabs">${[["things","YOUR THINGS"],["looks","WALLS & FLOOR"],["shop","CATALOGUE"]].map(([k,n])=>`<button class="btn${k===tab?" go":""}" data-tab="${k}">${n}</button>`).join("")}<span class="rm-pts">${pts} pts</span></div>`;
+  const pv=it=>`<svg viewBox="${it.w===2?"0 -6 80 46":"0 -14 40 54"}" aria-hidden="true">${it.svg}</svg>`;
+  let body="";
+  if(tab==="things"){const mine=ROOM_ITEMS.filter(rmOpen),lock=ROOM_ITEMS.filter(i=>!rmOpen(i)&&!i.price);
+    body=`<p class="bag-empty">Pick something to put in the room. Each piece can go in once.</p>`+mine.map(it=>{const n=placedCount(it.id);return`<div class="bag-item rm-it"><div class="rm-pv">${pv(it)}</div><div><b>${it.name}</b><p>${it.desc}</p></div>${n?`<span class="always">IN THE ROOM</span>`:`<button class="btn go" data-put="${it.id}">PLACE</button>`}</div>`}).join("")
+      +(lock.length?`<h5 class="bag-h">STILL TO EARN</h5>`+lock.map(it=>`<div class="bag-item rm-it locked"><div class="rm-pv">${pv(it)}</div><div><b>${it.name}</b><p>${it.how||""}</p></div><span class="always">LOCKED</span></div>`).join(""):"")}
+  else if(tab==="looks"){const sw=(L,kind)=>L.map(o=>{const own=!o.price&&(!o.open||o.open())||(st.owned||[]).includes(kind+":"+o.id),cur=(kind==="wall"?st.wall:st.floor)===o.id;
+      return`<div class="bag-item rm-it${!own&&o.open&&!o.open()?" locked":""}"><div class="rm-sw rm${kind==="wall"?"w":"f"}-${o.id}"></div><div><b>${o.name}</b><p>${o.how&&!(o.open&&o.open())?o.how:own?"Yours.":o.price+" pts"}</p></div>${cur?`<span class="always">IN USE</span>`:own?`<button class="btn go" data-look="${kind}:${o.id}">USE</button>`:o.open&&!o.open()?`<span class="always">LOCKED</span>`:`<button class="btn" data-buy="${kind}:${o.id}" ${pts<o.price?"disabled":""}>BUY ${o.price}</button>`}</div>`}).join("");
+    body=`<h5 class="bag-h">WALLPAPER</h5>${sw(RM_WALLS,"wall")}<h5 class="bag-h">FLOOR</h5>${sw(RM_FLOORS,"floor")}`}
+  else{body=`<p class="bag-empty">The Quartermaster's catalogue. Points come from registering alloys: every one you register adds its round's points.</p>`+ROOM_ITEMS.filter(i=>i.price).map(it=>{const own=(st.owned||[]).includes(it.id);
+      return`<div class="bag-item rm-it"><div class="rm-pv">${pv(it)}</div><div><b>${it.name}</b><p>${it.desc}</p></div>${own?`<span class="always">OWNED</span>`:`<button class="btn" data-buy="item:${it.id}" ${pts<it.price?"disabled":""}>BUY ${it.price}</button>`}</div>`}).join("")}
+  L.innerHTML=tabs+body;
+  L.querySelectorAll("[data-tab]").forEach(b=>b.onclick=()=>rmPanel(b.dataset.tab));
+  L.querySelectorAll("[data-put]").forEach(b=>b.onclick=()=>{RM.carry={id:b.dataset.put};m.hidden=true;RM.edit=true;rmBar();say0(`Placing the ${RITEM[b.dataset.put].name.toUpperCase()}: click ${RITEM[b.dataset.put].wall?"a spot on the back wall":"a free floor square"}.`)});
+  L.querySelectorAll("[data-look]").forEach(b=>b.onclick=()=>{const[k,id]=b.dataset.look.split(":"),S2=rmS();S2[k]=id;rmSave(S2);sfx("sel");m.hidden=true;rmRefresh()});
+  L.querySelectorAll("[data-buy]").forEach(b=>b.onclick=()=>{const[k,id]=b.dataset.buy.split(":"),S2=rmS(),o=k==="item"?RITEM[id]:(k==="wall"?RM_WALLS:RM_FLOORS).find(q=>q.id===id),p=rmPts();if(!o||p<o.price)return;
+    store.set("wta_room_pts",p-o.price);S2.owned=[...(S2.owned||[]),k==="item"?id:k+":"+id];rmSave(S2);sfx("pickup");say0(`Bought: ${o.name.toUpperCase()}.`);rmPanel(tab)})}
+/* choosing what goes in a display case: any registered alloy, shown Radiant if you've caught it Radiant */
+function rmChooseAlloy(i){const m=modal("rmcase","DISPLAY CASE"),L=m.querySelector(".bag-list"),st=rmS(),p=st.items[i];
+  const got=ALLOYS.filter(a=>S.caught.has(a.name)).sort((x,y)=>x.no-y.no);
+  L.innerHTML=`<p class="bag-empty">${got.length?"Pick a registered alloy to show in this case.":"You haven't registered anything yet. Go and find something to be proud of."}</p><div class="rm-grid">${p&&p.a?`<button class="rm-al" data-a="">EMPTY THE CASE</button>`:""}${got.map(a=>`<button class="rm-al${p&&p.a===a.name?" on":""}" data-a="${a.name}"><span class="rm-als">${specimenSVG(a)}</span><b>${a.name}</b>${radOwned(a)?`<i data-r="${a.name}" title="Show it Radiant">✦</i>`:""}</button>`).join("")}</div>`;
+  L.querySelectorAll(".rm-al").forEach(b=>b.onclick=e=>{const S2=rmS(),q=S2.items[i];if(!q)return;q.a=b.dataset.a||null;q.rad=e.target.dataset&&e.target.dataset.r?1:0;rmSave(S2);sfx("sel");m.hidden=true;rmRefresh();if(q.a)say0(`The ${q.a.toUpperCase()} goes in the case.${q.rad?" It shines.":""}`)})}
+/* new things for the room, as you earn them */
+function rmNew(){const seen=store.get("wta_room_seen",null),open=ROOM_ITEMS.filter(i=>!i.price&&!i.start&&rmOpen(i)).map(i=>i.id);
+  if(seen===null){store.set("wta_room_seen",open);return}const fresh=open.filter(id=>!seen.includes(id));if(!fresh.length)return;store.set("wta_room_seen",[...seen,...fresh]);
+  setTimeout(()=>say0(`New for your room: ${fresh.map(id=>RITEM[id].name.toUpperCase()).join(", ")}. Put ${fresh.length>1?"them":"it"} out with EDIT ROOM in your room, through the locker room in the Institute.`),1600)}
+{const _se=startExplore;startExplore=function(){_se();rmNew();rmBar()}}
+{const _en=encounter;encounter=function(){const b=$("#rm-bar");if(b)b.remove();_en()}}
+
+/* =============== WHO YOU ARE: pick a boy or a girl on a new game, change any time at the wardrobe ===============
+   The girl keeps every coat, hat, pair of goggles and held sample the boy has. Only the hair changes: a fringe on top, long hair
+   down the back past the collar, a lock in front of the ear and a clip. Old saves keep the character they already had. */
+const LOOK_KEY="wta_look";
+const lookNow=()=>store.get(LOOK_KEY,"boy")==="girl"?"girl":"boy";
+const GIRL_HAIR="#6B4424";
+const GIRL_BACK=`<path d="M13.2 8.6 Q10 13.6 10.8 20.4 Q11.2 25.2 13.4 26.8 Q15.6 27.6 17.4 25.6 Q15.8 22.4 16.4 18 L26.6 12.4 Q25.6 5.8 20 5.8 Q15.4 5.8 13.2 8.6 Z" fill="${GIRL_HAIR}" stroke="#121B40" stroke-width="1.3" stroke-linejoin="round"/><path d="M12.6 15.4 Q12.4 21 14.2 24.8 M14.6 14.2 Q14.4 19.6 15.6 23.4" stroke="#4A2C14" stroke-width=".6" fill="none" stroke-linecap="round"/>`;
+const GIRL_TOP=`<path d="M12.6 12.8 Q11.8 5.2 19.6 5 Q27.6 5 27.9 11.8 Q25.6 8.8 22 9.6 Q20.4 11.2 17.6 10.8 Q14.6 11.2 12.6 12.8 Z" fill="${GIRL_HAIR}" stroke="#121B40" stroke-width="1.3" stroke-linejoin="round"/><path d="M27.6 10.8 Q28.8 15 27.4 19.2 Q26.2 17.4 26.6 13.2 Z" fill="${GIRL_HAIR}" stroke="#121B40" stroke-width=".9" stroke-linejoin="round"/><rect x="22.2" y="6.2" width="3.4" height="1.3" rx=".6" fill="#E8412C" stroke="#121B40" stroke-width=".5" transform="rotate(-18 23.9 6.8)"/>`;
+const GIRL_LASH=`<path d="M27.7 12.2 L28.7 11.5 M27.8 13.2 L28.9 13" stroke="#121B40" stroke-width=".55" stroke-linecap="round"/>`;
+function girlify(s,c){if(c&&c.id==="shadowkid")return s;
+  const L=MINER.split("\n"),head=L[14],hair=L[15];
+  const hi=s.indexOf(head);if(hi<0)return s;
+  s=s.slice(0,hi)+GIRL_BACK+"\n"+s.slice(hi);
+  /* bare-headed coats keep MINER's hair line: swap it for the fringe. Hatted coats: the hat stays, the fringe lock shows under it */
+  if(s.includes(hair))s=s.replace(hair,GIRL_TOP);
+  else{const at=s.indexOf(head)+head.length;s=s.slice(0,at)+`\n<path d="M27.6 10.8 Q28.8 15 27.4 19.2 Q26.2 17.4 26.6 13.2 Z" fill="${GIRL_HAIR}" stroke="#121B40" stroke-width=".9" stroke-linejoin="round"/>`+s.slice(at)}
+  const e=s.lastIndexOf("</svg>");return e>=0?s.slice(0,e)+GIRL_LASH+s.slice(e):s}
+{const _ps=playerSVG;playerSVG=function(c){const coat=c||coatNow(),s=_ps(c);return lookNow()==="girl"?girlify(s,coat):s}}
+/* a preview of either look in the current coat, regardless of which is chosen */
+function lookPreview(k){const was=store.get(LOOK_KEY,"boy");store.set(LOOK_KEY,k);const s=playerSVG();store.set(LOOK_KEY,was);return s}
+function lookSet(k){store.set(LOOK_KEY,k);sfx("sel");coatRefresh()}
+
+/* ---- new game: who are you? ---- */
+function lookPicker(done){const o=document.createElement("div");o.className="tut-offer look-offer";
+  o.innerHTML=`<div class="tut-bub mid"><div class="tut-face">${marlowSVG()}</div><div class="tut-body"><b>BEFORE YOU START</b><p>The new assistant! Come in, come in. Which one of these is you? You can change your mind at the wardrobe any time.</p>
+    <div class="look-pick">${["boy","girl"].map(k=>`<button class="look-opt" data-look="${k}"><span class="coatpv">${lookPreview(k)}</span><b>${k.toUpperCase()}</b></button>`).join("")}</div></div></div>`;
+  document.body.appendChild(o);o.querySelectorAll("[data-look]").forEach(b=>b.onclick=()=>{lookSet(b.dataset.look);o.remove();done()})}
+{const sb=$("#startbtn"),old=sb.onclick;sb.onclick=e=>{
+  if(store.get(LOOK_KEY,null)==null){
+    /* an old save (it already got through the tutorial, or has things registered) keeps the character it had */
+    const old2=store.get("wta_tut",0)||(typeof S!=="undefined"&&S.caught&&S.caught.size);
+    if(old2){store.set(LOOK_KEY,"boy");old(e);return}
+    auInit&&auInit();lookPicker(()=>old(e));return}
+  old(e)}}
+
+/* ---- the wardrobe: a mirror on the inside of the door ---- */
+{const _ow=openWardrobe;openWardrobe=function(){_ow();const m=$("#wardrobe");if(!m)return;const list=m.querySelector(".bag-list");if(!list||list.querySelector(".look-row"))return;
+  const cur=lookNow();
+  list.insertAdjacentHTML("afterbegin",`<div class="look-row"><p class="bag-empty">The mirror on the inside of the door. Who's looking back?</p><div class="look-pick">${["boy","girl"].map(k=>`<button class="look-opt${k===cur?" on":""}" data-look="${k}" ${k===cur?"disabled":""}><span class="coatpv">${lookPreview(k)}</span><b>${k.toUpperCase()}</b></button>`).join("")}</div></div>`);
+  list.querySelectorAll(".look-row [data-look]").forEach(b=>b.onclick=()=>{lookSet(b.dataset.look);openWardrobe();say0("You check the mirror. Yes. That's you.")})}}
+
+/* =============== HOLLOWMERE: MORE TO DO, AND SOMEBODY WHO NEVER CAME HOME ===============
+   Nine new things to do in the village, each with its own prize, and one at the bog gate at the top of the moor.
+   Scattered through them, and through what people say, are scraps of one old story. Nothing ever tells it straight out. */
+
+/* ---- the map: three new pieces of furniture ---- */
+{const put=(x,y,c)=>{const r=MAPS["z-hollow"][y];MAPS["z-hollow"][y]=r.slice(0,x)+c+r.slice(x+1)};
+  put(1,7,"A");put(37,11,"A");put(38,14,"A");HOLLOW_ZONE.map=MAPS["z-hollow"].slice()}
+const HMX={bell:[1,7],ledger:[37,11],barrel:[38,14],gate:[36,0],bog:[2,0],chalk:[35,20],grave:[3,13],burn:[[37,18],[37,19]],
+  morag:[23,14],judge:[20,10],bel:[36,14]};
+const hmA=n=>LNT_MORE.find(o=>o.name===n);
+const hmPrize=n=>storyFight(n,{intro:"It wriggles out of your hands as soon as you've got it. Identify it before it's off!"});
+
+/* ---- scraps of the story ---- */
+const HM_FRAGS={
+ ledger:"A lamplighter's round book: 'Bog gate lamp out again. Relit.' Every night, for years. The last entry is Lantern Night, 1889: 'All lit but the gate. Going back up for it.'",
+ chalk:"Chalk gone into the stone on the end wall of the last cottage: a tall figure with a lamp on a pole, holding a little one by the hand. Underneath, half rubbed away: 'DA'.",
+ grave:"A rubbing of the worn stone in the kirkyard: 'J.H. · KEEPER OF THE LANTERNS · HE WENT BACK UP FOR THE LAST ONE.' No dates. Underneath, smaller: 'NOT HERE.'",
+ register:"The parish book, 1 November 1889: 'Ada H., aged seven, came down off the moor at first light, wet to the waist, unharmed. Says a man with a lamp walked her to the gate and would not come through it. Search for J.H. called off on the 9th.'",
+ tags:"Card tags tied along the top bar of the bog gate, years and years of them, faded past reading. The newest still says 'HOME. A.' It's dated 1970. There are none after that.",
+ chimney:"Hauled up from the bottom of the well: a lamp chimney black with old soot, scratched near the base: 'for A., so you can see me coming.'",
+ peel:"Every apple peel thrown in the cider yard lands as an A. 'Every year, everybody's,' says Bel Ormerod. 'Long before my time.'",
+ story:"Every story told round the fire on the green ends the same way: 'And he's out there still.'",
+ marlow:"An Institute field note from Lantern Night, 1889: 'A single lamp moving along the bog edge in the small hours, against the wind. Stopping, starting. Assumed a search party. There was no search party out until morning.'",
+ voice:"Somebody with a shadow in them asked you, in a voice that wasn't their own: 'Is she home? Has anybody looked to see if she got home?'"};
+const HM_FRAG_ORDER=["ledger","chalk","grave","register","tags","chimney","peel","story","marlow","voice"];
+const hmFrags=()=>lntF("frags")||[];
+function hmFrag(k){const f=hmFrags();if(f.includes(k))return false;lntSet("frags",[...f,k]);setTimeout(()=>say0("You'll remember that. (It's in your journal.)"),60);return true}
+const hmBG=()=>lntF("bg")||0;  /* 0 nobody asked, 1 carrying the tag up, 2 the lamp is lit on the gate */
+
+/* ---- drawings ---- */
+const HMX_SVG={
+ bell:`<ellipse cx="20" cy="37" rx="12" ry="2.4" fill="#000" opacity=".3"/><path d="M8 37 V0 M32 37 V0" stroke="#4A3422" stroke-width="3"/><path d="M5 0 H35" stroke="#4A3422" stroke-width="4" stroke-linecap="round"/><path d="M4 -2 L20 -10 L36 -2" fill="none" stroke="#3A2A1A" stroke-width="2"/>
+  <g class="hmx-bell"><path d="M14 2 Q13.6 12 11 16 H29 Q26.4 12 26 2 Q20 -1 14 2 Z" fill="#C8A060" stroke="#2A1A0A" stroke-width="1.2"/><path d="M11 16 Q20 19 29 16" stroke="#2A1A0A" stroke-width="1.2" fill="none"/><circle cx="20" cy="18" r="1.6" fill="#5A4A3A"/></g>
+  <path d="M20 16 V30" stroke="#B8A880" stroke-width="1.4"/><rect x="18" y="24" width="4" height="7" rx="1.5" fill="#C83A2A" stroke="#2A1A0A" stroke-width=".7"/>`,
+ ledger:`<ellipse cx="20" cy="36" rx="14" ry="2.4" fill="#000" opacity=".3"/><path d="M6 20 H34 V35 H6 Z" fill="#7A5A3A" stroke="#2A1A0A" stroke-width="1.2"/><path d="M6 27 H34 M13 20 V35 M27 20 V35" stroke="#5A3A20" stroke-width=".8"/><path d="M10 20 L12 13 H30 L28 20 Z" fill="#E8E0C8" stroke="#2A1A0A" stroke-width="1"/><path d="M20 13 V20" stroke="#8A7A5A" stroke-width=".8"/><path d="M14 15 H18 M14 17 H19 M22 15 H27 M22 17 H26" stroke="#6A6A70" stroke-width=".6"/><path d="M12 13 L14 10 H30 V13" fill="#5A3A20" stroke="#2A1A0A" stroke-width=".8"/>`,
+ barrel:`<ellipse cx="20" cy="37" rx="12" ry="2.4" fill="#000" opacity=".3"/><path d="M8 12 Q6 24 8 36 H32 Q34 24 32 12 Z" fill="#8A5A30" stroke="#2A1A0A" stroke-width="1.2"/><path d="M7 18 H33 M7 30 H33" stroke="#4A4A50" stroke-width="2"/><ellipse cx="20" cy="12" rx="12" ry="3.6" fill="#5A3A1A" stroke="#2A1A0A" stroke-width="1"/>${[[14,10],[20,9],[26,10],[17,12],[23,12]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="2.6" fill="#C83A2A" stroke="#2A1A0A" stroke-width=".6"/>`).join("")}<path d="M30 6 h8 v6 h-8 Z" fill="#2A2A30" stroke="#121216" stroke-width=".6"/><path d="M31 8 h6 M31 10 h4" stroke="#E8E4DA" stroke-width=".5"/>`,
+ chalk:`<g opacity=".72" stroke="#E8E8E0" stroke-width=".9" fill="none" stroke-linecap="round"><circle cx="13" cy="12" r="2.2"/><path d="M13 14 V24 M13 24 L10 30 M13 24 L16 30 M13 17 L19 20"/><path d="M8 14 V4 M8 4 h-3 v4 h3"/><circle cx="22" cy="19" r="1.6"/><path d="M22 21 V26 M22 26 L20 30 M22 26 L24 30 M22 22 L19 20"/><path d="M9 34 l1.4 -4 l1.4 4 M10 33 h1 M14 30 v4 q2 0 2 -2 q0 -2 -2 -2" stroke-width=".8"/></g>`,
+ gate:(lit)=>`<path d="M4 38 V6 M36 38 V6" stroke="#4A3422" stroke-width="3.4"/><path d="M4 12 H36 M4 22 H36 M4 32 H36 M4 32 L36 12" stroke="#6A4A30" stroke-width="2.6" stroke-linecap="round"/>
+  ${Array.from({length:7},(_,i)=>`<rect x="${7+i*4}" y="12.6" width="2.4" height="3.4" rx=".4" fill="#D8D0B8" stroke="#6A6450" stroke-width=".3" transform="rotate(${(i*7)%13-6} ${8+i*4} 13)"/>`).join("")}
+  <path d="M36 8 Q40 8 40 12" stroke="#2A2A30" stroke-width="1.4" fill="none"/>${lit?`<circle cx="40" cy="18" r="10" fill="#FFD66B" opacity=".25"/><path d="M40 12 V13.4" stroke="#2A2A30" stroke-width=".9"/><path d="M37 13.4 H43 L44 15 V21 H36 V15 Z" fill="#FFE6A0" stroke="#2A1A0A" stroke-width=".9"/><path d="M40 15.6 Q41.4 17.6 40 19.6 Q38.6 17.6 40 15.6 Z" fill="#FF8A2A"/>`:""}`,
+ bog:`<path d="M2 38 Q4 26 2 16 M7 38 Q8 24 10 14 M12 38 Q12 28 15 18 M27 38 Q28 26 25 15 M32 38 Q33 28 36 20 M36 38 Q37 30 39 24" stroke="#5A6A3A" stroke-width="1.6" fill="none"/><path d="M10 14 q1 -3 2 0 q-1 2 -2 0 Z M25 15 q1 -3 2 0 q-1 2 -2 0 Z" fill="#6A4A2A"/><circle cx="20" cy="8" r="1.6" fill="#B8FFB0" opacity=".8"/><circle cx="31" cy="3" r="1.1" fill="#B8FFB0" opacity=".6"/>`};
+
+/* ---- the furniture and the people, placed on top of what's already there ---- */
+{const _hp=hollowPlace;hollowPlace=function(){_hp();if(!inHollow())return;
+  const add=(x,y,use)=>{const o={x,y,use};EXP.objs.push(o);return o},ob=(k,x,y,svg,w,h,cls)=>lntEl("mapobj hmx hmx-"+k+(cls?" "+cls:""),x,y,lntSvg(svg),w,h);
+  ob("bell",...HMX.bell,HMX_SVG.bell);add(...HMX.bell,hmBell);
+  ob("ledger",...HMX.ledger,HMX_SVG.ledger);add(...HMX.ledger,hmLedger);
+  ob("barrel",...HMX.barrel,HMX_SVG.barrel);add(...HMX.barrel,hmBarrel);
+  ob("chalk",...HMX.chalk,HMX_SVG.chalk);add(...HMX.chalk,hmChalk);
+  ob("bog",...HMX.bog,HMX_SVG.bog);add(...HMX.bog,hmBogEdge);
+  if(hmBG()===1){EXP.hmWatcher=lntEl("mapobj hmx hmx-watch",HMX.gate[0]+1.06,-.2,shadeSVG({t:"slender"}),.88,2.2);add(HMX.gate[0]+1,1,hmGate)}else EXP.hmWatcher=null;
+  EXP.hmGateEl=ob("gate",...HMX.gate,HMX_SVG.gate(hmBG()===2));add(...HMX.gate,hmGate);
+  HMX.burn.forEach(([x,y])=>add(x,y,hmBurn));
+  /* the worn stone, the bonfire and the well now do more than they used to */
+  EXP.objs.forEach(o=>{if(o.x===HMX.grave[0]&&o.y===HMX.grave[1])o.use=hmGrave;if(o.x>=16&&o.x<=18&&o.y>=11&&o.y<=12)o.use=hmChestnuts});
+  const P=(look,n,at,t)=>{const o=storyNPC({n,look,talks:[["..."]]},at);o.quest=()=>t(o);return o};
+  P({coat:"#3A2A3A",hair:"#E8E4DA",hs:"bun",acc:["scarf"],scarf:"#8A3A4A",skin:"#E8C0A0"},"Old Morag",HMX.morag,hmMorag);
+  P({coat:"#2A3A2A",hair:"#5A4A3A",hs:"short",acc:["badge","mustache"],skin:"#E8B898"},"Councillor Bede Hask",HMX.judge,hmJudge);
+  P({coat:"#6A3A22",hair:"#C86A2A",hs:"long",acc:["apron"],skin:"#F2C7A5"},"Bel Ormerod",HMX.bel,hmBel);
+  lntNight()}}
+
+/* ---- extra pools of light on the night sheet ---- */
+function hmXLights(){const L=[];if(hmBG()===2)L.push([HMX.gate[0]+1,HMX.gate[1]+.4,1.6,"rgba(255,220,160,1)"]);L.push([HMX.morag[0]-1,HMX.morag[1],1.4,"rgba(255,200,130,.85)"]);return L}
+
+/* ---- a small shared game box (same look as the fair's) ---- */
+function hmGame(cls,title,msg,done){EXP.busy=true;let box=$("#lnt-mg");if(box)box.remove();box=document.createElement("div");box.id="lnt-mg";box.className="lnt-mg hmg "+cls;document.body.appendChild(box);
+  box.innerHTML=`<div class="lnt-mg-card"><h3>${title}</h3><p class="lnt-mg-msg" id="mg-msg">${msg}</p><div class="lnt-mg-play" id="mg-play"></div><div class="lnt-mg-bar" id="mg-bar"></div><button class="btn" id="mg-quit">WALK AWAY</button></div>`;
+  const G={box,play:box.querySelector("#mg-play"),over:false,
+    msg:t=>box.querySelector("#mg-msg").textContent=t,bar:t=>box.querySelector("#mg-bar").textContent=t,
+    end:w=>{if(G.over)return;G.over=true;cancelAnimationFrame(G.raf);clearInterval(G.iv);(G.timers||[]).forEach(clearTimeout);if(G.key)document.removeEventListener("keydown",G.key);if(G.keyup)document.removeEventListener("keyup",G.keyup);
+      setTimeout(()=>{box.remove();EXP.busy=false;done(w)},w?900:700)},
+    loop:f=>{let last=performance.now();const t=n=>{if(G.over)return;const dt=Math.min(.05,(n-last)/1000);last=n;f(dt,n);G.raf=requestAnimationFrame(t)};G.raf=requestAnimationFrame(t)},
+    later:(f,ms)=>{(G.timers=G.timers||[]).push(setTimeout(()=>{if(!G.over)f()},ms))},
+    keys:(down,up)=>{G.key=down;document.addEventListener("keydown",down);if(up){G.keyup=up;document.addEventListener("keyup",up)}}};
+  box.querySelector("#mg-quit").onclick=()=>G.end(false);return G}
+/* one shape for every prize: first win flagged, every win after gets another of the same */
+function hmWin(k,who,name,first,again){const got=lntGot(name);if(gate("lntok",500))sfx("pickup");
+  if(!got&&!lntF("w_"+k)){lntSet("w_"+k,1);talk(who,[].concat(first),()=>hmPrize(name));return}
+  talk(who,[].concat(again||"Well done! There's always another one off the same lot. Here."),()=>hmPrize(name))}
+
+/* =============== 1. THE WORN STONE: a grave rubbing =============== */
+function hmGrave(){if(DLG.open)return;
+  talk("",hmFrags().includes("grave")?["The worn stone. You've a rubbing of it already, but the paper and charcoal are still tucked behind it if you want another."]
+   :["The stone's so worn you can only read one word of it: LANTERNS.","Somebody has tucked a roll of paper and a stick of charcoal behind it, out of the wet. A rubbing might bring up more than your eyes can."],
+   ()=>hmGame("rub","GRAVE RUBBING","Rub the charcoal over the paper and bring the letters up. Be quick, before the wind takes the paper.",w=>{
+     if(!w){talk("",["The wind gets under the paper and it's off across the kirkyard. There's another roll behind the stone."]);return}
+     const first=hmFrag("grave");talk("",["The letters come up white out of the charcoal:","'J.H. · KEEPER OF THE LANTERNS · HE WENT BACK UP FOR THE LAST ONE.'","No dates. And underneath, much smaller, as if added later by somebody else: 'NOT HERE.'"],
+       ()=>hmWin("rub","",hmA("Lychmark").name,["Something fell out of the back of the paper as you rolled it up. It's warm."],["Something has come off on the paper again. It's warm."]))}))}
+/* the games themselves start from here, so each one's setup sits next to its prize */
+const HMG={};
+HMG.rub=G=>{G.play.innerHTML=`<div class="rb-stone"><div class="rb-words"><b>J.H.</b><span>KEEPER OF THE LANTERNS</span><span>HE WENT BACK UP</span><span>FOR THE LAST ONE</span><i>NOT HERE</i></div><canvas class="rb-paper" width="320" height="200"></canvas></div>`;
+  const cv=G.play.querySelector("canvas"),cx=cv.getContext("2d",{willReadFrequently:true});cx.fillStyle="#F2EEE0";cx.fillRect(0,0,320,200);cx.globalCompositeOperation="destination-out";
+  let t=15,down=false,lx=0,ly=0;const pos=e=>{const r=cv.getBoundingClientRect(),p=e.touches?e.touches[0]:e;return[(p.clientX-r.left)*320/r.width,(p.clientY-r.top)*200/r.height]};
+  const rub=(x,y)=>{cx.lineCap="round";cx.lineWidth=26;cx.strokeStyle="rgba(0,0,0,.55)";cx.beginPath();cx.moveTo(lx,ly);cx.lineTo(x,y);cx.stroke();lx=x;ly=y};
+  cv.onpointerdown=e=>{down=true;[lx,ly]=pos(e);rub(lx,ly);cv.setPointerCapture(e.pointerId)};cv.onpointermove=e=>{if(down){const[x,y]=pos(e);rub(x,y)}};cv.onpointerup=cv.onpointercancel=()=>down=false;
+  const done=()=>{const d=cx.getImageData(0,0,320,200).data;let n=0,c=0;for(let y=8;y<200;y+=12)for(let x=8;x<320;x+=12){c++;if(d[(y*320+x)*4+3]<90)n++}return n/c};
+  G.iv=setInterval(()=>{t-=.25;const f=done();G.bar(`REVEALED ${Math.round(f*100)}% · WIND IN ${Math.max(0,Math.ceil(t))}s`);if(f>=.8){G.msg("That's it. Every letter's up.");G.end(true)}else if(t<=0){G.msg("A gust! The paper's off across the kirkyard.");G.end(false)}},250)};
+
+/* =============== 2. THE BONFIRE: chestnuts on the shovel =============== */
+function hmChestnuts(){if(DLG.open)return;
+  talk("",["The Lantern Night bonfire. It's taller than a house, and it smells of toffee and wet leaves.","There's a long-handled shovel of chestnuts propped at the edge of the heat, and a chalked board: TAKE THEM OFF WHEN THEY SPLIT. NOT BEFORE. NOT AFTER."],
+   ()=>hmGame("chest","CHESTNUTS ON THE SHOVEL","Each chestnut splits when it's done. Flick it off the shovel then: too soon it's raw, too late it's charcoal. Six good ones out of eight.",w=>{
+     if(!w){talk("",["A shovel of charcoal and two raw ones. The board seems to be looking at you. You fill the shovel again."]);return}
+     hmWin("chest","",hmA("Roastling").name,["Six perfect chestnuts. You count them off the shovel, and there are seven. The seventh didn't crack when it popped."],["You count them off again. One too many, again."])}))}
+HMG.chest=G=>{G.play.innerHTML=`<div class="cn-shovel">${Array.from({length:8},(_,i)=>`<button class="cn-nut" data-i="${i}"><i></i></button>`).join("")}</div>`;
+  const N=[...G.play.querySelectorAll(".cn-nut")].map((e,i)=>({e,t0:.8+i*.9+Math.random()*1.4,cook:2.2+Math.random()*1.6,win:1.25,st:"raw",t:0}));let good=0,bad=0,T=0;
+  const bar=()=>G.bar(`GOOD ${good}/6 · SPOILT ${bad} (THREE AND IT'S OVER)`);bar();
+  const set=(n,s)=>{n.st=s;n.e.className="cn-nut "+s};
+  const check=()=>{if(good>=6){G.msg("Six good ones!");G.end(true)}else if(bad>=3){G.msg("That's three spoilt. Start again.");G.end(false)}else if(N.every(n=>n.st==="off"||n.st==="burnt"||n.st==="raw-off")&&good<6){G.msg("The shovel's empty.");G.end(false)}};
+  N.forEach(n=>n.e.onclick=()=>{if(n.st==="ready"){set(n,"off");good++;if(gate("cnok",150))sfx("pickup");G.msg("Off it comes, split and steaming.")}
+    else if(n.st==="raw"||n.st==="heat"){set(n,"raw-off");bad++;if(gate("cnno",150))sfx("miss");G.msg("Too soon! It's raw.")}bar();check()});
+  G.loop(dt=>{T+=dt;N.forEach(n=>{if(n.st==="raw"&&T>n.t0)set(n,"heat");if(n.st==="heat"&&T>n.t0+n.cook){set(n,"ready")}if(n.st==="ready"&&T>n.t0+n.cook+n.win){set(n,"burnt");bad++;bar();G.msg("Too late! That one's charcoal.");check()}})})};
+
+/* =============== 3. THE WELL: haul up what glints =============== */
+function hmWell(){if(DLG.open)return;
+  talk("",["The village well. A bucket on a chain, and a long way down, a little round piece of night sky.","Down in the water, something glints, and moves, and glints again."],
+   ()=>hmGame("well","THE WELL BUCKET","The bucket goes down on its own. HAUL when it's level with the glint. Three things up before five hauls.",w=>{
+     if(!w){talk("",["Five buckets of cold water and nothing in them. Your arms ache. The glint is still down there."]);return}
+     const first=!hmFrags().includes("chimney");
+     const go=()=>hmWin("well","",hmA("Wellwisher").name,["The third bucket comes up with something sitting in it, quite calmly, as if it had been waiting for a lift."],["The bucket comes up with another passenger."]);
+     if(first){hmFrag("chimney");talk("",["The second bucket brought up a lamp chimney, the glass kind, black with old soot.","Near the base, somebody has scratched: 'for A., so you can see me coming.'"],go)}else go()}))}
+HMG.well=G=>{G.play.innerHTML=`<div class="wl-shaft"><div class="wl-water"></div><i class="wl-glint"></i><div class="wl-chain"></div><div class="wl-bucket"></div></div><button class="btn go" id="wl-go">HAUL!</button>`;
+  const sh=G.play.querySelector(".wl-shaft"),gl=sh.querySelector(".wl-glint"),bk=sh.querySelector(".wl-bucket"),ch=sh.querySelector(".wl-chain");let b=0,v=.3,g=.6,gp=0,got=0,tries=5,haul=false;
+  const bar=()=>G.bar(`UP ${got}/3 · HAULS LEFT ${tries}`);bar();
+  G.loop(dt=>{gp+=dt*(1+got*.4);g=.55+Math.sin(gp*1.3)*.3+Math.sin(gp*.47)*.08;gl.style.top=(g*100)+"%";if(!haul){b+=v*dt*(1+got*.25);if(b>1){b=0}}const y=(b*100).toFixed(1)+"%";bk.style.top=y;ch.style.height=y});
+  const go=()=>{if(haul||tries<=0||got>=3)return;haul=true;tries--;const hit=Math.abs(b-g)<.07;if(gate("wl",200))sfx(hit?"pickup":"miss");
+    G.msg(hit?(got===1&&!hmFrags().includes("chimney")?"Something heavy! You haul it up hand over hand.":"Got it! Up it comes, dripping."):"Nothing but cold water.");if(hit)got++;bar();
+    G.later(()=>{haul=false;b=0;if(got>=3)G.end(true);else if(tries<=0)G.end(false)},600)};
+  G.play.querySelector("#wl-go").onclick=go;G.keys(e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();go()}})};
+
+/* =============== 4. THE KIRKYARD BELL =============== */
+function hmBell(){if(DLG.open)return;
+  talk("",["A bell on a wooden frame, at the corner of the kirkyard. The rope's sally is worn smooth at a height that would suit a tall man.","A card pinned to the frame: 'DUSK PEAL. PULL AT THE BALANCE, WHERE IT HANGS STILL AT THE TOP. NOT IN THE MIDDLE OF THE SWING. — The Sexton.'"],
+   ()=>hmGame("bell","THE DUSK PEAL","Pull when the bell is right at the top of its swing, where it hangs still for a moment. Eight good pulls. Three bad ones and it clangs.",w=>{
+     if(!w){talk("Sexton Pyke",["(From across the kirkyard.) That's not a peal, that's a cutlery drawer falling down the stairs. Try again."]);return}
+     hmWin("bell","Sexton Pyke",hmA("Changeringer").name,["(The sexton comes over, slowly.) Now that was a peal. You've the knack.","Something shook loose out of the bell when you rang it. It does that, for the good ringers. Here."],["Another fine peal. And another something out of the bell."])}))}
+HMG.bell=G=>{G.play.innerHTML=`<div class="bl-frame"><div class="bl-bell"><svg viewBox="0 0 80 80"><path d="M26 8 Q24 34 14 46 H66 Q56 34 54 8 Q40 0 26 8 Z" fill="#C8A060" stroke="#2A1A0A" stroke-width="3"/><path d="M14 46 Q40 54 66 46" stroke="#2A1A0A" stroke-width="3" fill="none"/><circle cx="40" cy="52" r="5" fill="#5A4A3A"/><path d="M32 12 Q30 30 26 40" stroke="#F4E0A8" stroke-width="3" fill="none"/></svg></div><i class="bl-zone l"></i><i class="bl-zone r"></i></div><button class="btn go" id="bl-go">PULL!</button>`;
+  const bl=G.play.querySelector(".bl-bell");let ph=0,w=2.2,good=0,bad=0,lock=false;const A=58;
+  const bar=()=>G.bar(`GOOD PULLS ${good}/8 · BAD ${bad}/3`);bar();
+  G.loop(dt=>{ph+=dt*w;bl.style.transform=`rotate(${(Math.sin(ph)*A).toFixed(1)}deg)`});
+  const go=()=>{if(lock)return;lock=true;G.later(()=>lock=false,220);const s=Math.abs(Math.sin(ph));if(s>.9){good++;w+=.18;if(gate("blok",150))sfx("right");G.msg(["DONG.","Right at the balance!","Lovely. It sings."][good%3])}else{bad++;if(gate("blno",150))sfx("miss");G.msg("CLANK. Middle of the swing.")}
+    bar();if(good>=8)G.end(true);else if(bad>=3)G.end(false)};
+  G.play.querySelector("#bl-go").onclick=go;G.keys(e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();go()}})};
+
+/* =============== 5. THE COSTUME JUDGING =============== */
+const HM_THEMES=[{t:"Something from the kirkyard",ok:"sheet",yes:"A ghost! Proper old-fashioned. The sheet's even got a darn in it. That's the spirit."},
+ {t:"Something from the top field",ok:"bogle",yes:"A tattie bogle! Straw out the sleeves and everything. The crows will be beside themselves."},
+ {t:"Something with a light in it",ok:"neep",yes:"A neep-head, lit! Can you see anything in there? No? Perfect. That's the true Hollowmere look."}];
+function hmJudge(p){const i=(lntF("theme")||0)%HM_THEMES.length,T=HM_THEMES[i],c=lntCos();
+  if(!lntF("jmet")){lntSet("jmet",1);talk(p.n,["Councillor Hask, chair of the Lantern Night judging. Best costume on the green wins the rosette.","There's a theme, and it changes. Tonight's is: "+T.t.toUpperCase()+".","And there's one rule we've never broken since 1890, so don't you be the first: nobody comes dressed as a lamplighter. Don't ask me why. Nobody knows. Nobody's going to change it.","Come back in costume and I'll judge you."]);return}
+  if(!c){talk(p.n,["No costume, no judging. Tonight's theme is "+T.t.toLowerCase()+". The trunk's on the green."]);return}
+  if(c!==T.ok){if(gate("lntno",500))sfx("miss");talk(p.n,[`A ${COSTUMES[c].name}. Very nice. But tonight's theme is ${T.t.toLowerCase()}.`,"Off you go and have a rethink. The trunk's not going anywhere."]);return}
+  lntSet("theme",i+1);talk(p.n,[T.yes,"Best on the green! The rosette is yours. And the theme changes, so come back and try for it again."],()=>hmWin("contest",p.n,hmA("Rosettine").name,["Hold still while I pin it on. Oh! The pin's come off in my hand. Wait, that's not a pin."],["Pinned on again! And the pin's come off again. Some things are traditions."]))}
+
+/* =============== 6. THE CIDER YARD: one long peel =============== */
+function hmBarrel(){if(DLG.open)return;
+  talk("",["A barrel of apples in the cider yard, with a paring knife on a string and a slate: 'PEEL ONE IN ONE LONG STRIP. THROW IT OVER YOUR SHOULDER. SEE WHO YOU'LL MARRY.'"],
+   ()=>hmGame("peel","ONE LONG PEEL","Hold PEEL to turn the apple. Press too hard and the peel snaps; let go and it stops. Keep the knife in the band until the whole apple's peeled.",w=>{
+     if(!w){talk("",["Snap. The peel drops in a little curl on the cobbles. Bel Ormerod tuts and hands you another apple."]);return}
+     const first=hmFrag("peel");
+     talk("",["One long unbroken strip! You throw it over your shoulder, and it lands on the cobbles in an A.","You try another. An A."],()=>talk("Bel Ormerod",first?["Don't look so surprised. It's always an A. Every year, everybody's.","Long before my time. My mam's, and hers. Nobody's ever married anyone with an A. I think it's somebody else's letter."]:["An A again? Course it is."],
+       ()=>hmWin("peel","Bel Ormerod",hmA("Longpeel").name,["And look, there's something curled up in the peel. Go on, it's yours."],["Something curled up in that one too."])))}))}
+HMG.peel=G=>{G.play.innerHTML=`<div class="pl-wrap"><svg viewBox="0 0 120 120" class="pl-apple"><circle cx="60" cy="64" r="40" fill="#F4ECC0" stroke="#2A1A0A" stroke-width="3"/><path id="pl-skin" d="M60 44 A20 20 0 1 1 59.9 44" fill="none" stroke="#C83A2A" stroke-width="40" stroke-dasharray="252 252" stroke-dashoffset="0" opacity=".9" transform="rotate(-90 60 64)" pathLength="252"/><circle cx="60" cy="64" r="40" fill="none" stroke="#2A1A0A" stroke-width="3"/><path d="M60 24 Q58 14 64 10" stroke="#5A3A1A" stroke-width="4" fill="none"/></svg>
+  <div class="pl-gauge"><i class="pl-band"></i><i class="pl-needle"></i></div></div><button class="btn go" id="pl-go">HOLD TO PEEL</button>`;
+  const sk=G.play.querySelector("#pl-skin"),band=G.play.querySelector(".pl-band"),nd=G.play.querySelector(".pl-needle"),btn=G.play.querySelector("#pl-go");let p=.2,hold=false,prog=0,bc=.5,bp=0,nz=0;
+  const bar=()=>G.bar(`PEELED ${Math.round(prog*100)}%`);bar();
+  G.loop(dt=>{bp+=dt;bc=.5+Math.sin(bp*.9)*.17;nz+=(Math.random()-.5)*dt*3;nz*=.96;p+=(hold?.55:-.6)*dt+nz*dt;p=Math.max(0,Math.min(1,p));
+    const inB=Math.abs(p-bc)<.13;if(hold&&inB)prog+=dt/6;band.style.left=((bc-.13)*100)+"%";nd.style.left=(p*100)+"%";nd.classList.toggle("ok",inB);sk.setAttribute("stroke-dashoffset",(prog*252).toFixed(1));bar();
+    if(p>=.97){G.msg("SNAP! Too hard.");G.end(false)}else if(prog>=1){G.msg("All in one piece!");G.end(true)}});
+  const on=e=>{e&&e.preventDefault&&e.preventDefault();hold=true},off=()=>hold=false;btn.onpointerdown=on;btn.onpointerup=btn.onpointerleave=btn.onpointercancel=off;
+  G.keys(e=>{if(e.key===" "||e.key==="Enter"){e.preventDefault();hold=true}},e=>{if(e.key===" "||e.key==="Enter")hold=false})};
+function hmBel(p){talk(p.n,hmFrags().includes("peel")?["Peeled your A yet? Everybody gets one. Ask Morag by the fire whose it is and she'll tell you a different story every time."]
+  :["Bel Ormerod. The cider yard's mine, the apples are the village's. Peel one in one go and throw it, it's tradition.","The barrel's just there. Mind the knife, it's sharper than it looks, and it looks very sharp."])}
+
+/* =============== 7. STORIES BY THE FIRE =============== */
+const HM_STORIES=[
+ {t:"The Lamplighter's Round",L:["This one's old. My granny had it off hers.","Hollowmere had a man for the lamps, once. Thirty-one lamps, every dusk, up one side of the village and down the other, and the last one up at the bog gate, because that's where folk come down off the moor in the dark.",
+   "Now, the gate lamp would never stay lit. Every night he lit it, and every night something put it out, so every night he went back up and lit it again.","One Lantern Night the lights were dancing out on the bog, and a little one followed them. He saw her go off the path, and he went up after her with his lamp.","She came down in the morning, wet to the knees. He didn't.","And he's out there still."],
+  Q:[["How many lamps did he light every dusk?",["31","thirty one","thirty-one","thirtyone"]],["Which lamp would never stay lit?",["gate","bog"]],["Who came down off the moor in the morning?",["little","girl","she","her","child","daughter","ada","kid","one"]]]},
+ {t:"The Penny On The Post",L:["Children used to leave a penny on the bog gatepost on Lantern Night. 'For the lamp oil,' they said. Their mams told them to say it.","Gone by morning, every one. And never a footprint in the frost round that post but the children's own.",
+   "Then the old lady at the end cottage died, and nobody took a lamp up to the gate, and the children stopped leaving pennies. That was the year the shadows started coming down into the village.","Make of that what you like. He's out there still."],
+  Q:[["What did the children leave on the gatepost?",["penny","pennies","coin","money"]],["What did they say it was for?",["oil","lamp"]],["What came down into the village the year it all stopped?",["shadow","shadows"]]]},
+ {t:"Masks Down",L:["Why do Hollowmere guisers wear masks? You'll think it's for the fun of it. It isn't.","Something goes along the lanes on Lantern Night looking into faces. One face, it's after. It's not cruel. It's only looking.",
+   "But if it finds a face that's nearly right, it stops. And it looks closer. And it doesn't like to stop looking, once it's started.","So you wear your mask, and you keep it down, and it goes on past you to the next. And he's out there still."],
+  Q:[["What do Hollowmere guisers wear?",["mask","masks","costume","disguise"]],["What is the thing on the lanes looking into?",["face","faces"]],["What does it do when it finds a face that's nearly right?",["stop","stops","look","looks","closer","stare"]]]}];
+function hmMorag(p){if(DLG.open)return;const i=(lntF("story")||0)%HM_STORIES.length,S0=HM_STORIES[i];
+  talk(p.n,[lntF("mmet")?"Back for another? Sit down, then. This one's called "+S0.t.toUpperCase()+".":"Sit by the fire, pet. I tell the stories on Lantern Night. Listen properly, mind: I'll be asking you about it after. This one's called "+S0.t.toUpperCase()+".",...S0.L],()=>{
+    lntSet("mmet",1);hmFrag("story");let right=0,q=0;
+    const ask=()=>{if(q>=S0.Q.length){lntSet("story",i+1);if(right>=2)hmWin("story",p.n,hmA("Hearthtale").name,["You were listening! Good. Here, this came out of the fire at the end of the last story, same as it always does. Take it."],["Listening again! Here's another out of the fire."]);else{if(gate("lntno",500))sfx("miss");talk(p.n,[`${right} out of three. You were looking at the fire, weren't you. Come back and I'll tell you another.`])}return}
+      const[qq,ok]=S0.Q[q];talk(p.n,[qq],null,ans=>{const n=lntNorm(ans);const hit=ok.some(w=>n.split(" ").includes(w)||n===w||n.includes(w));if(hit)right++;q++;talk(p.n,[hit?["That's it.","Good.","Mm-hm."][q%3]:["No...","Not quite.","Hm. No."][q%3]],ask)})};ask()})}
+
+/* =============== 8. THE LANTERN FLOAT, on the burn =============== */
+function hmBurn(){if(DLG.open)return;
+  talk("",["The burn runs out under the hedge and away up towards the bog. A stack of paper lanterns sits on the bank, each one with a little card: 'FOR WHOEVER IS STILL OUT THERE.'","Steer it past the stones and it'll float all the way."],
+   ()=>hmGame("float","THE LANTERN FLOAT","Steer your paper lantern down the burn with ◀ ▶. Stones put it out: three and it's gone. Get it all the way to the bog.",w=>{
+     if(!w){talk("",["The lantern catches on a stone, tips, and goes out with a hiss. There are more on the bank."]);return}
+     hmWin("float","",hmA("Driftlight").name,["Your lantern floats out past the hedge, small and steady, all the way to the bog.","A minute later, something comes back down the burn against the current, still glowing, and bumps against your boots."],["Out to the bog it goes, and back down the burn comes something else."])}))}
+HMG.float=G=>{G.play.innerHTML=`<div class="fl-burn"><i class="fl-bank l"></i><i class="fl-bank r"></i><div class="fl-lan"></div></div><div class="fl-btns"><button class="btn" id="fl-l">◀</button><button class="btn" id="fl-r">▶</button></div>`;
+  const B=G.play.querySelector(".fl-burn"),L=B.querySelector(".fl-lan");let lane=1,hits=0,T=0,next=.6,R=[];const DUR=22;
+  const bar=()=>G.bar(`DISTANCE ${Math.min(100,Math.round(T/DUR*100))}% · STONES HIT ${hits}/3`);bar();
+  const mv=d=>{lane=Math.max(0,Math.min(2,lane+d));L.style.left=(lane*33.3+16.6)+"%"};mv(0);
+  G.play.querySelector("#fl-l").onclick=()=>mv(-1);G.play.querySelector("#fl-r").onclick=()=>mv(1);
+  G.keys(e=>{if(e.key==="ArrowLeft"||e.key==="a"){e.preventDefault();mv(-1)}if(e.key==="ArrowRight"||e.key==="d"){e.preventDefault();mv(1)}});
+  G.loop(dt=>{T+=dt;next-=dt;const sp=.42+T*.012;
+    if(next<=0&&T<DUR-1.5){const free=Math.random()*3|0,ln=[0,1,2].filter(k=>k!==free),n=Math.random()<.35?2:1;ln.sort(()=>Math.random()-.5).slice(0,n).forEach(k=>{const e=document.createElement("i");e.className="fl-rock";e.style.left=(k*33.3+16.6)+"%";B.appendChild(e);R.push({e,k,y:-.1})});next=Math.max(.55,1.1-T*.025)}
+    R.forEach(r=>{r.y+=sp*dt;r.e.style.top=(r.y*100)+"%";if(!r.hit&&r.y>.74&&r.y<.88&&r.k===lane){r.hit=1;hits++;L.classList.remove("bump");void L.offsetWidth;L.classList.add("bump");if(gate("flh",200))sfx("miss");G.msg(hits>=3?"It's out.":"Bump! The flame gutters.")}});
+    R=R.filter(r=>{if(r.y>1.1){r.e.remove();return false}return true});bar();
+    if(hits>=3)G.end(false);else if(T>=DUR){G.msg("Out past the hedge and away to the bog!");G.end(true)}})};
+
+/* =============== 9. THE LIGHTS ON THE BOG =============== */
+function hmBogEdge(){if(DLG.open)return;
+  talk("",["A gap in the dyke where you can see out over Hollowmere bog. Out in the dark, small lights are moving: drifting, dipping, flaring, going out and coming back.","There's an old saying carved into the dyke stone, half under moss: 'FOLLOW NONE THAT DANCE.'"],
+   ()=>hmGame("bog","THE LIGHTS ON THE BOG","Most of the lights out there flicker and dance. One burns perfectly steady. When they come back after going dark, pick the steady one. Three times. One mistake allowed.",w=>{
+     if(!w){talk("",["The light you chose gutters and dances off, laughing, if a light can laugh. You decide to stay this side of the dyke."]);return}
+     hmWin("bog","",hmA("Steadyflame").name,["You watch the steady light. It doesn't dance. It just waits, the way a lamp on a hook waits.","When you look down, there's a jar at your feet that wasn't there before, and something in it is glowing, perfectly still."],["The steady light again. And another jar at your feet."])}))}
+HMG.bog=G=>{G.play.innerHTML=`<div class="bg-bog"></div>`;const box=G.play.querySelector(".bg-bog");let round=0,miss=0,lights=[],ready=false;
+  const bar=()=>G.bar(`ROUND ${Math.min(round+1,3)}/3 · MISTAKES ${miss}/1`);bar();
+  const deal=()=>{ready=false;box.innerHTML="";const n=5+round,tr=Math.random()*n|0;lights=[];
+    for(let i=0;i<n;i++){const e=document.createElement("button");e.className="bg-l"+(i===tr?" true":" fake");e.style.setProperty("--fd",(.35+Math.random()*.5-round*.06).toFixed(2)+"s");e.style.setProperty("--fo",(.25+round*.15).toFixed(2));
+      const o={e,x:.1+Math.random()*.8,y:.15+Math.random()*.7,ph:Math.random()*6,tr:i===tr};box.appendChild(e);lights.push(o);e.onclick=()=>pick(o)}
+    G.msg("They're going dark...");box.classList.add("dark");G.later(()=>{box.classList.remove("dark");ready=true;G.msg("Which one is steady?")},900)};
+  const pick=o=>{if(!ready)return;ready=false;if(o.tr){round++;if(gate("bgok",200))sfx("right");G.msg("That's the one. It doesn't move a hair.")}else{miss++;if(gate("bgno",200))sfx("miss");G.msg("That one dances off, laughing.");lights.find(q=>q.tr).e.classList.add("show")}
+    bar();if(round>=3)G.end(true);else if(miss>1)G.end(false);else G.later(deal,1100)};
+  G.loop(dt=>lights.forEach(o=>{o.ph+=dt*(o.tr?.5:.9);o.e.style.left=((o.x+Math.sin(o.ph)*.05)*100).toFixed(1)+"%";o.e.style.top=((o.y+Math.cos(o.ph*1.3)*.05)*100).toFixed(1)+"%"}));deal()};
+
+/* wire the game builders into hmGame: each game box picks its builder by its class */
+{const _g=hmGame;hmGame=function(cls,title,msg,done){const G=_g(cls,title,msg,done);if(HMG[cls])HMG[cls](G);return G}}
+
+/* =============== THE STORY'S OTHER SCRAPS =============== */
+function hmLedger(){if(DLG.open)return;const first=hmFrag("ledger");
+  talk("",first?["A crate with a book on it, swollen with damp. A lamplighter's round book.","Thirty-one lamps a night, ticked off in a neat hand, for years. Every Lantern Night the same line: 'Bog gate lamp out again. Relit.'","The last entry is Lantern Night, 1889: 'All lit but the gate. Going back up for it.' The rest of the book is empty."]
+   :["The lamplighter's round book. 'All lit but the gate. Going back up for it.' The rest of the pages are empty."])}
+function hmChalk(){if(DLG.open)return;const first=hmFrag("chalk");
+  talk("",first?["Chalk on the end wall of the last cottage, so old it's gone into the stone. Nobody's ever scrubbed it off.","A tall stick figure with a lamp on a pole, holding a little one by the hand. Underneath, in a child's capitals, one word with its end rubbed away: 'DA'."]
+   :["The old chalk drawing: the tall one with the lamp, the little one holding on. 'DA'."])}
+function hmGate(){if(DLG.open)return;const st=hmBG();
+  if(st===1){if(gate("lntgw",800))sfx("alert");
+    talk("",["The bog gate. Beyond it there's nothing but dark and the smell of peat. And somebody is standing beside the gate, between you and the bog.","It's very tall and very still, the way the shadows stand. It doesn't come closer. It doesn't go. Its head is turned towards the hook on the gatepost, where there's no lamp.",
+      "You light Ada's lamp and hang it on the hook, and tie her last tag on the top bar under it: HOME SAFE. A.","For a long time nothing happens. Then the tall shape bends, slowly, the way you'd bend to read something small.",
+      "It stays like that a long while. Then it straightens, steps through the gate as if it wasn't there, and there's only fog where it was, and the frost on the top bar is running off the wood in drops.","In the morning there's something hanging on the hook beside the lamp."],
+      ()=>{lntSet("bg",2);if(EXP.hmWatcher){EXP.hmWatcher.remove();EXP.hmWatcher=null}if(EXP.hmGateEl)EXP.hmGateEl.innerHTML=lntSvg(HMX_SVG.gate(true));lntNight();
+        storyFight(hmA("Homeward").name,{intro:"It slips off the hook and away up the path towards home. Identify it before it's gone!"})});return}
+  if(st===2){const again=!EXP.hmGateDone;EXP.hmGateDone=1;
+    talk("",["The lamp on the bog gate is still burning. The tag has gone from the bar, string and all.",again?"There's something hanging on the hook again.":"Nothing on the hook tonight. Maybe tomorrow."],again?()=>storyFight(hmA("Homeward").name,{intro:"It slips off the hook and away up the path towards home. Identify it before it's gone!"}):null);return}
+  const first=hmFrag("tags");
+  talk("",first?["The bog gate, at the top of the moor. Beyond it there's nothing but dark and the smell of peat.","There's an iron hook on the gatepost, worn smooth, with nothing hanging on it. Under the hook, the wood is worn into a hollow about the size of a hand.","Along the top bar, dozens of little card tags are tied on with string, years and years of them, faded past reading. The newest still says 'HOME. A.' It's dated 1970.","There are none after that."]
+   :["The bog gate. The empty hook, the hollow in the wood, and the old tags along the bar. 'HOME. A.' 1970. None after."])}
+/* the sexton has the parish book, once you've a rubbing of the stone */
+{const _s=lntSextonTalk;lntSextonTalk=function(p){const f=hmFrags();
+  if(f.includes("grave")&&!f.includes("register")){hmFrag("register");
+    talk(p.n,["You've a rubbing of the old worn stone? Let me see that.","(He reads it twice, then goes into the vestry and comes back with a book as big as a gravestone.)","The parish book. My predecessor's predecessor wrote this. First of November, 1889:",
+      "'Ada H., aged seven, came down off the moor at first light, wet to the waist, unharmed. Says a man with a lamp walked her as far as the gate and would not come through it. Search for J.H. called off on the 9th.'","(He shuts the book.) There's nobody under that stone, you know. There never was. We just thought he ought to have one."]);return}
+  if(hmBG()===2){talk(p.n,["Somebody took a lamp up to the bog gate. First time since Ada. I could see it from the vestry window all night.","Kept me up, watching it. In a good way. I think it's the quietest Lantern Night I've known."]);return}
+  if(f.length>=6&&hmBG()===0&&!lntF("sx6")){lntSet("sx6",1);talk(p.n,["You've been asking all round the village. Folk have noticed. They don't mind.","Granny Moffat, along the lane. She was a girl when the old lady at the end cottage was still alive. If anybody's been waiting for somebody to ask, it's her."]);return}
+  _s(p)}}
+/* Dr. Marlow found something in the Institute's papers */
+{const _m=lntMarlowTalk;lntMarlowTalk=function(m){const f=hmFrags();
+  if(lntF("hm")&&!lntF("more")){lntSet("more",1);talk(m.n,["Recruit! There's more going on in Hollowmere this year than I've ever seen.","The sexton's put the old bell back up, there's a costume judging on the green, Bel Ormerod has her cider yard open, Old Morag's telling stories by the fire, and somebody's floating lanterns down the burn.","Try your hand at all of it. Everything in this village has a prize, if you're good enough."]);return}
+  if(f.length>=3&&!f.includes("marlow")){hmFrag("marlow");
+    talk(m.n,["Recruit. Wren tells me you've been reading gravestones. I went through the Institute's papers for Hollowmere, out of curiosity.","There was a survey party up on the moor in 1889, on Lantern Night of all nights. One field note, in pencil:",
+      "'A single lamp moving along the bog edge in the small hours, against the wind. Stopping, starting. Assumed a search party. There was no search party out until morning.'","(He folds the note away.) Science has nothing to say about that. I just thought you'd want to know."]);return}
+  _m(m)}}
+/* Granny Moffat has been waiting for somebody to ask */
+{const _g=lntGuise;lntGuise=function(i){if(i===1&&hmFrags().length>=6&&hmBG()===0){
+    talk("Granny Moffat",["(Granny Moffat opens the door and looks at you for a long moment, and then past you, up the lane towards the moor.)","You've been asking about the lamplighter. Don't look like that, pet. It's a very small village.",
+      "When I was a girl there was an old lady at the end cottage. Ada. Every Lantern Night, she walked a lamp up to the bog gate and tied a tag on the top bar, and in the morning she'd come down and say, 'He's had it.'",
+      "She made us keep our masks right down, guising. 'He's still looking,' she'd say, and she'd never say for what.","She went in the spring of '71. Nobody took the lamp up that year. Nor any year since. And Lantern Night's been a bad night ever since, hasn't it.",
+      "She left me this tin. 'For when somebody asks,' she said. Fifty-odd years, and you're the first.","(Inside the tin: a little lamp, cleaned and filled, and one card tag, written but never tied. It says HOME SAFE. A.)","Take it up to the gate, pet. Somebody ought to."],
+      ()=>{lntSet("bg",1);say0("Granny Moffat gave you ADA'S LAMP and a tag that says HOME SAFE. A.")});return}
+  if(i===1&&hmBG()===1){talk("Granny Moffat",["Up to the bog gate with it, pet. Top of the moor. Hang the lamp on the hook."]);return}
+  if(i===1&&hmBG()===2&&!lntF("gm2")){lntSet("gm2",1);talk("Granny Moffat",["I saw it from my window. The lamp on the gate.","(She's quiet for a moment.) That's that, then. Thank you, pet. Go on, do your turn, I've treats in."],()=>_g(i));return}
+  _g(i)}}
+/* somebody with a shadow in them, in Hollowmere, sometimes says something that isn't theirs */
+{const _tt=talkTo;talkTo=function(p){if(p&&p.possessed&&inHollow()&&hmBG()<2&&Math.random()<.45){
+    const L=["(It isn't their voice.) Is she home? Has anybody looked to see if she got home?","(It isn't their voice.) It's cold out. She'll be cold. Is the gate lit?","(Their head turns, slowly, and they look at your face very closely. Then away.) Not her."];
+    const k=hmFrags().includes("voice")?L[Math.random()*L.length|0]:L[0];hmFrag("voice");talk(p.n,[k,"...Sorry. Where was I? I came over all cold for a second."],()=>{});return}
+  _tt(p)}}
+/* the well is a game now (unless the cold prints lead there tonight) */
+{const _sp=lntSpot;lntSpot=function(k){if(k==="well"&&!(EXP.gwSpot==="well"&&lntF("gwOn")&&!lntGot(WW_NAME))){hmWell();return}_sp(k)}}
+
+/* ---- the journal ---- */
+{const _oj=openJournal;openJournal=function(){_oj();if(!lntOn()||!lntF("hm"))return;const m=$("#journal");if(!m)return;const list=m.querySelector(".bag-list");if(!list)return;
+  const it=(t,p)=>{const d=document.createElement("div");d.className="bag-item key obj lnt-obj";d.innerHTML=`<b>${t}</b><p>${p}</p>`;return d},out=[],f=hmFrags(),st=hmBG();
+  const todo=[["rub","Lychmark","a rubbing of the worn stone in the kirkyard"],["chest","Roastling","chestnuts at the bonfire"],["well","Wellwisher","the well"],["bell","Changeringer","the dusk peal on the kirkyard bell"],["contest","Rosettine","the costume judging on the green"],["peel","Longpeel","an apple peel in the cider yard"],["story","Hearthtale","Old Morag's stories by the fire"],["float","Driftlight","the lantern float on the burn"],["bog","Steadyflame","the lights on the bog"]].filter(([k,n])=>!lntGot(n));
+  if(todo.length)out.push(it("LANTERN NIGHT · ABOUT THE VILLAGE",`Still a prize in: ${todo.map(t=>t[2]).join(", ")}.`));
+  if(f.length)out.push(it(`LANTERN NIGHT · SCRAPS (${f.length} of ${HM_FRAG_ORDER.length})`,"Bits of an old Hollowmere story, picked up here and there:<br>"+HM_FRAG_ORDER.filter(k=>f.includes(k)).map(k=>"· "+HM_FRAGS[k]).join("<br>")));
+  if(f.length>=6&&st===0)out.push(it("LANTERN NIGHT · SOMEBODY'S WAITING","Somebody along the lane has been waiting a long time for anyone to ask."));
+  if(st===1)out.push(it("LANTERN NIGHT · THE BOG GATE","Take Ada's lamp and her tag, HOME SAFE. A., up to the bog gate at the top of the moor, and hang the lamp on the hook."));
+  if(st===2&&!lntGot("Homeward"))out.push(it("LANTERN NIGHT · THE BOG GATE","Something was left hanging on the hook of the bog gate, beside the lamp."));
+  const none=list.querySelector(".obj-none");if(none)none.remove();const kids=[...list.children],lastObj=kids.filter(e=>e.classList.contains("obj")&&!e.classList.contains("fav")).pop(),after=lastObj?lastObj.nextSibling:list.firstChild;out.forEach(e=>list.insertBefore(e,after))}}
 
 
 newRun();
