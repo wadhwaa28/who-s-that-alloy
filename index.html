@@ -21822,6 +21822,9 @@ const SHD_SLEEVES=(()=>{const sl=(d,w)=>`<path d="${d}" stroke="#121B40" stroke-
     return l}).map((l,i)=>i===0?l+"\n"+SHD_BACKSLEEVE:l).join("\n").replace("</svg>",SHD_SLEEVES+"</svg>")}}
 /* the journal keeps count while Lantern Night is on */
 {const _jo=journalObjectives;journalObjectives=function(){const J=_jo(),n=posTraces();if(n>0||(typeof lntOn==="function"&&lntOn()&&lntF("hm")))J.push(`<div class="bag-item key obj"><b>TRACES OF SHADOW: ${n}</b><p>${n?"Left on your fingers each time a shadow let go of a sample you identified.":"Shadows have started getting into samples. Identify a possessed one and the shadow has to let go."}</p></div>`);return J}}
+/* the lab redraws the sample after every test (a scratch, a streak, a dunk), which used to wipe the shadow off it. Whatever redraws it,
+   the shadow is put straight back until the sample is identified. */
+{const sp=$("#specimen");if(sp)new MutationObserver(()=>{if(S.r&&S.r.possessed&&S.r.stage!=="done"&&!sp.querySelector(".posfx"))posFx(sp)}).observe(sp,{childList:true})}
 
 /* =============== YOUR ROOM ===============
    Off the Institute's locker room there's a door marked STAFF QUARTERS, and behind it a room that's yours: a bed, a desk, a lamp, and a
