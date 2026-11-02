@@ -19524,7 +19524,7 @@ addForm("The Unmaker",{n:"#C9CED4",a:"#F4F8FC",rn:"#F0C040",rb:"#1A1006",ra:"#FF
   [[49,131,0],[53,136,.5],[57,128,1]].map(([x,y,b])=>`<path d="M${x} ${y} Q${x+.4} ${y+6} ${x} ${y+9}" stroke="url(#${U}c)" stroke-width="1.8" fill="none" stroke-linecap="round"/><circle cx="${x}" r="1.5" fill="${C1}"><animate attributeName="cy" values="${y+9};${y+9};146" keyTimes="0;.5;1" dur="1.8s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0" keyTimes="0;.9;1" dur="1.8s" begin="${b}s" repeatCount="indefinite"/></circle>`).join("");
 
  return defs+`<g transform="translate(16 28) scale(.82)"><ellipse class="shd" cx="96" cy="150" rx="70" ry="5" fill="#000" opacity=".35"/><g transform="translate(${GX} 146) scale(1.5 1) translate(${-GX} -146)">${girder}</g>`+pool+
-  pt("head",88,46,`<g transform="translate(0 -22)">${hairBack}</g>`)+pt("armB",66,56,hang,.3)+pt("armF",110,56,reach)+`<g transform="translate(0 146) scale(1 1.22) translate(0 -146)"><g transform="translate(80 0) scale(.9 1) translate(-80 0)">`+pt("sway",88,146,`<path d="M26 148 Q30 143 40 144 Q48 145 52 140 Q53 138 54 134 L122 134 Q123 138 126 140 Q128 145 136 144 Q148 143 152 148 Q140 153 120 152 Q100 155 88 153 Q70 155 54 152 Q34 153 26 148 Z" fill="url(#${U}c)"/>`+body+
+  pt("head",88,38,`<g transform="translate(0 -22)">${hairBack}</g>`)+pt("armB",66,56,hang,.3)+pt("armF",110,56,reach)+`<g transform="translate(0 146) scale(1 1.22) translate(0 -146)"><g transform="translate(80 0) scale(.9 1) translate(-80 0)">`+`<g class="um-body">`+(`<path d="M26 148 Q30 143 40 144 Q48 145 52 140 Q53 138 54 134 L122 134 Q123 138 126 140 Q128 145 136 144 Q148 143 152 148 Q140 153 120 152 Q100 155 88 153 Q70 155 54 152 Q34 153 26 148 Z" fill="url(#${U}c)"/>`+body+
   `<path d="M26 148 Q30 143 40 144 Q48 145 52 140 Q53 138 54 134 M152 148 Q148 143 136 144 Q128 145 126 140 Q123 138 122 134" fill="none" stroke="${INK}" stroke-width="2.2" stroke-linecap="round"/>`+
   /* runs of metal sagging off the hem: each one swells and slides down into the pool */
   [[64,134,0,9],[76,136,.7,12],[90,135,1.4,10],[104,134,.35,11],[113,133,1,8]].map(([x,y,b,w])=>{const A=`M${x-w/2} ${y} Q${x} ${y+3} ${x+w/2} ${y} Q${x+w/2+1} ${y+8} ${x+w/2+3} 147 L${x-w/2-3} 147 Q${x-w/2-1} ${y+8} ${x-w/2} ${y} Z`,B=`M${x-w/2} ${y} Q${x} ${y+5} ${x+w/2} ${y} Q${x+w/2+2} ${y+9} ${x+w/2+5} 147 L${x-w/2-5} 147 Q${x-w/2-2} ${y+9} ${x-w/2} ${y} Z`;
@@ -19532,7 +19532,7 @@ addForm("The Unmaker",{n:"#C9CED4",a:"#F4F8FC",rn:"#F0C040",rb:"#1A1006",ra:"#FF
     `<ellipse cx="${x}" rx="${F(w*.16)}" ry="${F(w*.2)}" fill="${C1}" opacity=".8"><animate attributeName="cy" values="${y+3};146" dur="2s" begin="${b}s" repeatCount="indefinite"/></ellipse>`}).join("")+
   /* the puddle surface, with ripples where the runs land */
   `<path d="M30 147 Q60 144.6 88 145.6 Q116 144.6 148 147 Q140 152 120 152 Q100 155 88 153 Q70 155 54 152 Q36 152 30 147 Z" fill="url(#${U}c)"/>`+`<path d="M34 148 Q60 146 88 147 Q116 146 144 148 Q116 151 88 150 Q60 151 34 148 Z" fill="${C0}" opacity=".45"/>`+
-  [[66,0],[90,1.1],[112,.6]].map(([x,b])=>`<ellipse cx="${x}" cy="148" rx="2" ry=".8" fill="none" stroke="${C0}" stroke-width=".9"><animate attributeName="rx" values="2;11" dur="2s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="ry" values=".8;2.6" dur="2s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values=".9;0" dur="2s" begin="${b}s" repeatCount="indefinite"/></ellipse>`).join(""))+`</g>`+`</g>`+neck+""+pt("head",88,46,`<g transform="translate(0 -22)">${head}${hairFront}</g>`)+chunks+`</g>`+
+  [[66,0],[90,1.1],[112,.6]].map(([x,b])=>`<ellipse cx="${x}" cy="148" rx="2" ry=".8" fill="none" stroke="${C0}" stroke-width=".9"><animate attributeName="rx" values="2;11" dur="2s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="ry" values=".8;2.6" dur="2s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values=".9;0" dur="2s" begin="${b}s" repeatCount="indefinite"/></ellipse>`).join(""))+`</g>`+`</g>`+`</g>`+neck+""+pt("head",88,38,`<g transform="translate(0 -22)">${head}${hairFront}</g>`)+chunks+`</g>`+
   fG(g,1,`<rect x="176" y="150" width="2.4" height="2.4" fill="${ST}"/><rect x="22" y="148" width="2" height="2" fill="${C1}"/>`)+fG(g,2,`<circle cx="30" cy="40" r="2" fill="${C1}" opacity=".7"/>`)+fG(g,3,star(184,20,6))});
 FORM_TITLE["The Unmaker"]="Quicksilver Wraith";
 
@@ -20337,12 +20337,12 @@ const RINGS=[{id:"governor",name:"The Governor",desc:"A plain band of first bras
 /* the sample from your first morning: whatever the tutorial gave you */
 function tutForm(){const a=alloyByName(TUT_ALLOY);return a&&a.form==="vial"?"vial":"rod"}
 function tutName(cap){const t=TUT_ALLOY==="Brass"?"brass rod":"little "+tutForm();return cap?"The "+t:t}
-function ocDemo(a,done){const g=0;let d=$("#ocdemo");if(!d){d=document.createElement("div");d.id="ocdemo";document.body.appendChild(d)}
-  d.className="ocdemo";d.hidden=false;d.innerHTML=`<div class="ocd-card"><div class="ocd-desk"><div class="ocd-stage ddspec">${specimenSVG(a)}</div></div><p class="ocd-cap">${tutName(1)} from your first morning, on Dr. Marlow's desk.</p></div>`;
+function ocDemo(a,done,o){o=o||{};const g=0;let d=$("#ocdemo");if(!d){d=document.createElement("div");d.id="ocdemo";document.body.appendChild(d)}
+  d.className="ocdemo";d.hidden=false;d.innerHTML=`<div class="ocd-card"><div class="ocd-desk"><div class="ocd-stage ddspec">${specimenSVG(a)}</div></div><p class="ocd-cap">${o.desk?`${tutName(1)} from your first morning, in an envelope on Dr. Marlow's desk, with a ring tied to it on a bit of string.`:`${tutName(1)} from your first morning, on Dr. Marlow's desk.`}</p></div>`;
   const st=d.querySelector(".ocd-stage"),cap=d.querySelector(".ocd-cap");
-  setTimeout(async()=>{cap.textContent=`He slips a ring off his finger and sets it beside the ${tutForm()}. The ${tutForm()} starts to hum.`;await sleep2(1300);
+  setTimeout(async()=>{cap.textContent=o.desk?`You untie the ring and set it beside the ${tutForm()}. The ${tutForm()} starts to hum.`:`He slips a ring off his finger and sets it beside the ${tutForm()}. The ${tutForm()} starts to hum.`;await sleep2(1300);
     await ocMorph(st,specimenSVG(a),BATTLE_FORMS[a.name](a,g,false),{up:1});st.classList.add("bform");cap.textContent="Overclocked.";if(typeof formCry==="function")formCry(st,a);await sleep2(2600);
-    cap.textContent="He picks the ring back up. It cools.";await ocMorph(st,BATTLE_FORMS[a.name](a,g,false),specimenSVG(a),{up:0});st.classList.remove("bform");await sleep2(1100);
+    cap.textContent=o.desk?"You pick the ring back up. It cools.":"He picks the ring back up. It cools.";await ocMorph(st,BATTLE_FORMS[a.name](a,g,false),specimenSVG(a),{up:0});st.classList.remove("bform");await sleep2(1100);
     d.hidden=true;done&&done()},700)}
 const sleep2=ms=>new Promise(r=>setTimeout(r,ms));
 
@@ -23824,7 +23824,10 @@ function tatkBox(f){const box=f.closest(".as-field")||f;if(getComputedStyle(box)
  .khstrike .p-armF{animation:khsArm ${D}ms ease-in-out both!important}
  .khstrike .p-head{animation:khsHead ${D}ms ease-in-out both!important}
  .khstrike .cr-body{animation:khsBody ${D}ms ease-in-out both!important;transform-box:fill-box;transform-origin:50% 100%}
- @keyframes khsArm{0%{transform:none}16%,22%{transform:rotate(60deg) translateY(-8px)}28%{transform:rotate(-10deg) translateY(6px)}34%{transform:rotate(-6deg) translateY(4px)}60%,100%{transform:none}}
+ /* the fist goes up over its shoulder, then comes down hard in front of it */
+ @keyframes khsArm{0%{transform:none}8%{transform:rotate(40deg)}18%,23%{transform:rotate(104deg) translateY(-3px)}28%{transform:rotate(-14deg) translateY(4px)}34%{transform:rotate(-10deg) translateY(3px)}60%,100%{transform:none}}
+ /* nothing it does may be cut off at the edge of its own picture */
+ .khstrike,.khstrike svg,.khstrike .as-bf,.khstrike .as-flip,.khstrike .ib{overflow:visible!important}
  @keyframes khsHead{0%{transform:none}16%,22%{transform:rotate(-8deg)}28%,40%{transform:rotate(6deg) translateY(3px)}60%,100%{transform:none}}
  @keyframes khsBody{0%{transform:none}16%,22%{transform:scale(1.03,.98)}28%{transform:scale(.97,1.04) translateY(2px)}34%{transform:none}100%{transform:none}}`;
  document.head.appendChild(css);
@@ -23871,6 +23874,46 @@ function tatkBox(f){const box=f.closest(".as-field")||f;if(getComputedStyle(box)
 /* let the attack play out before the battle moves on: the "used ..." line shows with it, anything after waits until it's done */
 {const _say=asSay;asSay=async function(msg,ms){const w=(window.__tatkUntil||0)-performance.now();if(w>0&&!/ used /.test(String(msg)))await new Promise(r=>setTimeout(r,w));return _say.apply(this,arguments)}}
 function threatAttack(f){const t=f&&TATK.find(([q])=>f.querySelector(q));if(t)t[1](f);return !!t}
+
+/* =============== OVERCLOCKED, FOR SAVES THAT WERE ALREADY PAST IT ===============
+   The Overclocked questline only ever started when you spoke to Dr. Marlow in person. Through the middle of the story (while he's
+   "called away") he isn't in his office at all, only his desk is, so a save that was in that stretch when Overclocking was added,
+   or that got there before talking to him, could never start it: no Governor, no Overclocking, ever.
+   Now his desk starts it too. While he's away, there's an envelope under the tray with your first sample and his own governor ring
+   tied to it, and a letter. You see it Overclock, and the questline starts exactly as it would have from him in person. */
+function ocDeskStart(done){const a=alloyByName(TUT_ALLOY)||alloyByName("Brass");
+  talk("",["Under the tray there's a fat envelope with your name on it, in brown ink. Underneath your name: 'About the halls. Open it in here, not out there.'","Inside is the "+tutName()+" from your very first morning, and a plain ring tied to it with a bit of string."],
+   ()=>ocDemo(a,()=>{Q.set("ocKnown");
+    talk("",["There's a letter folded round the ring.","'That's what the hall leaders call Overclocked. Push a sample hard enough, with the right thing on your finger, and it stops pretending to be a rod. It shows you what it would have been, if the moor had finished cooking it.'","'The ring is a governor. Engines have them so they don't run away with themselves. So should samples. That one's mine and I want it back, so you'll need your own. I can't make one, but I know who'll know how. Start with Wren. She keeps the first survey's notebooks. M.'","(You put his ring back in the envelope and leave it in the tray for him.)"],
+     ()=>{OC.st=1;sfx("pickup");say0(`New questline: OVERCLOCKED. It's in your JOURNAL. ${ocGoal()}`);done&&done()})},{desk:1}))}
+const ocCanStart=()=>OC.st===0&&foIdx()>=1;
+/* the desk, while he's called away */
+{const _mo=marlowOrders;marlowOrders=function(m,via){if(via&&ocCanStart()){ocDeskStart();return}return _mo(m,via)}}
+/* the desk, while he's out on a field order (Rustvein, Starfall): it's on the desk then too */
+{const _tk=talk;talk=function(who,lines,cb){if(who===""&&Array.isArray(lines)&&/^Dr\. Marlow's desk\. The chair is pushed back/.test(lines[0]||"")&&ocCanStart())return _tk(who,lines,()=>{cb&&cb();ocDeskStart()});
+  return _tk.apply(this,arguments)}}
+/* and if he's in, but has a finished field order waiting for him, he takes the report first and shows you straight after */
+{const _mo=marlowOrders;marlowOrders=function(m,via){const pend=!via&&m&&ocCanStart()&&foReady();if(!pend)return _mo(m,via);
+  const _t=talk;let wrapped=false;talk=function(w,l,cb){if(!wrapped){wrapped=true;talk=_t;return _t(w,l,()=>{cb&&cb();setTimeout(()=>{if(ocCanStart()&&!foReady())ocMarlow(m)},400)})}return _t.apply(this,arguments)};
+  try{return _mo(m,via)}finally{if(!wrapped)talk=_t}}}
+
+/* ---- it must not be possible to miss it at all ----
+   Every way the conversation could be swallowed by something else (the Lantern Night move down to Hollowmere, other quests' talk
+   hooks running first, him being out) is covered by checking for it last, on top of everything: whenever it hasn't started yet and
+   you're past your first field order, talking to Dr. Marlow anywhere, or to Archivist Wren, starts it. */
+{const _tt=talkTo;talkTo=function(p){
+  if(p&&ocCanStart()&&!(typeof TUT!=="undefined"&&TUT.on)&&!DLG.open){
+    if(p.n==="Dr. Marlow"&&!foReady()&&ocMarlow(p))return;
+    if(p.n==="Archivist Wren"){talk(p.n,["Oh! Before I forget. Dr. Marlow left this with me for you. He said you'd be past due for it.","(She hands you a fat envelope with your name on it in brown ink.)"],()=>ocDeskStart());return}}
+  _tt(p)}}
+/* and it says so in the journal, so you know to go and ask */
+{const _jo=journalObjectives;journalObjectives=function(){const J=_jo();if(ocCanStart())J.push(`<div class="bag-item key obj"><b>SOMETHING TO SHOW YOU</b><p>Dr. Marlow wants to show you something about the Assay halls. Talk to him, or to Archivist Wren, or look on his desk at the Quillmoor Institute.</p></div>`);return J}}
+/* saves left half-way in an impossible spot by older versions are put right on load */
+(function ocRepair(){const s=OC.st,ring=Q.flag("ocRing");
+  if(s>=1&&!Q.flag("ocKnown"))Q.set("ocKnown");
+  if(ring&&s>=1&&s<6)OC.st=6;
+  if(!ring&&s>=6){Q.set("ocRing");Q.set("ocKnown")}
+  if(s===6&&ocWorn())OC.st=7})();
 
 
 newRun();
