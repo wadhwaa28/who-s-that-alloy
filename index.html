@@ -9656,7 +9656,7 @@ function asData(){const d=store.get("wta_assay",null)||{};d.case=d.case||[];d.ra
 function asSave(d){store.set("wta_assay",d)}
 const alloyByName=n=>ALLOYS.find(a=>a.name===n);
 function gradeOf(xp){let g=0;for(let i=0;i<4;i++)if(xp>=GRADE_XP[i])g=i;return g}
-function caseSlots(){return Math.min(6,3+Math.floor(asData().seals.length/2))}
+function caseSlots(){return 6}
 function obeyGrade(){return Math.min(3,1+Math.floor(asData().seals.length/3))}
 /* ---- what an alloy is, in numbers it never shows ---- */
 function aSum(a,els){const w=frac(a);return els.reduce((s,e)=>s+(w[e]||0),0)}
@@ -9849,7 +9849,7 @@ function asHit(sd){const f=document.querySelector(`#as-${sd} .as-form`);if(!f)re
 /* ---- starting and finishing an Assay ---- */
 function asTeamFromCase(){const d=asData();return d.case.map(n=>alloyByName(n)).filter(Boolean).map(a=>{const g=gradeOf(d.xp[a.name]||0);const eq=(d.eq[a.name]||[]).filter(id=>MV[id]&&movesAt(a,g).some(m=>m.id===id));const m=mkMon(a,g,eq.length?eq:autoEquip(a,g),d.hp[a.name]);m.rad=radOn(a);return m})}
 function asStart(foe,done){const team=asTeamFromCase();
-  if(!team.length){talk("",["Your Sample Case is empty. Open the CASE and choose which registered samples to carry."]);done&&done(null);return}
+  if(!team.length){talk("",["Your Sample Case is empty. Fill it from a sample store: there's one in the Institute locker room, and one on the rest rack in every Assay Hall."]);done&&done(null);return}
   if(!team.some(m=>m.hp>0)){talk("",["Every sample in your case is spent. Rest them at a bench first."]);done&&done(null);return}
   const ot=foe.team.map(([n,g])=>{const a=alloyByName(n);return a&&mkMon(a,g)}).filter(Boolean);
   AS.B={p:{team,act:team.findIndex(m=>m.hp>0)},o:{team:ot,act:0},foe,turn:0,busy:true,ups:[],done};AS.on=true;EXP.busy=true;EXP.path=null;
@@ -10025,7 +10025,7 @@ function gymPerson(p,x,y,face){const W=EXP.W,H=EXP.H,d=document.createElement("d
 {const _wp=worldPlace;worldPlace=function(){_wp();const z=EXP.zone;if(!z||(typeof TUT!=="undefined"&&TUT.on))return;
   if(GYMS[z.cls]&&!z.special){hallOutside(z.cls);return}
   if(z.special!=="hall")return;const G=GYMS[z.cls];
-  const[bx,by]=GYM_POS.bench;EXP.objs.push({x:bx,y:by,tile:1,use:()=>{asHealAll();sfx("pickup");talk("",["You set your samples on the rest rack. Warm air from the annealing lamp works the stress out of them.","Your Sample Case is fully rested."])}});
+  const[bx,by]=GYM_POS.bench;EXP.objs.push({x:bx,y:by,tile:1,use:()=>{asHealAll();sfx("pickup");talk("",["You set your samples on the rest rack. Warm air from the annealing lamp works the stress out of them.","Your Sample Case is fully rested. There's a sample store hatch in the rack, too, if you want to swap any out."],()=>openStore())}});
   EXP.objs.push({x:1,y:1,tile:1,use:()=>talk("",[G.hall+".",`Assayer: ${G.leader.n}. Seal of this hall: the ${G.seal}.`,"Hall hands first, the Assayer last. Rest your samples at the rack by the door whenever you like."])});
   EXP.objs.push({x:1,y:23,tile:1,use:()=>hallLeave()});
   G.hands.forEach((h,i)=>{const[x,y,f]=GYM_POS.hands[i];const o=gymPerson(h,x,y,f);o.gymHand=1;o.quest=function(){gymChallenge(z.cls,o,false);return true}});
@@ -10039,7 +10039,7 @@ function gymChallenge(z,o,spotted){const d=asData(),k=gymKey(z,o.n),h=GYMS[z].ha
 function gymLeaderTalk(z,o){const G=GYMS[z],L=G.leader,d=asData(),won=d.seals.includes(z);
   if(!won&&G.hands.some(h=>!d.beat[gymKey(z,h.n)])){talk(L.n,[L.hi[0],"My hall hands test you first. Both of them. Then come and see me."]);return}
   talk(L.n,won?L.again:L.hi,()=>asStart({n:L.n,title:L.title,leader:1,smart:1,team:gymTeam(z,"leader",won?Math.max(6,d.seals.length):d.seals.length)},res=>{if(res==null)return;
-    if(res){const D=asData();if(!D.seals.includes(z)){D.seals.push(z);asSave(D);sfx("fanfare");talk(L.n,L.win,()=>talk("",[`You received the ${G.seal.toUpperCase()}.`,`Seals: ${D.seals.length} of ${Object.keys(GYMS).length}. Your Sample Case holds ${caseSlots()} samples, and samples up to ${GRADES[obeyGrade()]} will take your orders.`]))}else talk(L.n,["Good. Again some time."])}
+    if(res){const D=asData();if(!D.seals.includes(z)){D.seals.push(z);asSave(D);sfx("fanfare");talk(L.n,L.win,()=>talk("",[`You received the ${G.seal.toUpperCase()}.`,`Seals: ${D.seals.length} of ${Object.keys(GYMS).length}. Samples up to ${GRADES[obeyGrade()]} will take your orders now.`]))}else talk(L.n,["Good. Again some time."])}
     else{talk(L.n,L.lose,()=>gymLost(z))}}))}
 function gymLost(z){asHealAll();if(!inHallZone()){say0("Your samples are rested.");return}const[x,y]=GYM_POS.spawn;EXP.x=x;EXP.y=y;placePlayer(true);if(typeof cam==="function")cam(true);say0("You were helped back to the rest rack by the door. Your samples are rested.")}
 /* hall hands spot you if you walk into their line of sight */
@@ -10068,7 +10068,7 @@ Object.assign(TRACKS,{
 /* ---- the journal ---- */
 {const _jo=journalObjectives;journalObjectives=function(){const J=_jo(),d=asData(),Z=Object.keys(GYMS),left=Z.filter(z=>!d.seals.includes(z));
   const nm=z=>(ZONES.find(q=>q.cls===z)||{}).name||z;
-  J.push(`<div class="bag-item key obj"><b>ASSAY SEALS: ${d.seals.length} OF ${Z.length}</b><p>${d.case.length?`Carry your Sample Case into the Assay Halls, one in every area but Quillmoor, and earn their Seals.`:`Open the CASE and choose which registered samples to carry, then take them to the Assay Halls, one in every area but Quillmoor.`}<span class="obj-list">${left.map(z=>`<span><b>${GYMS[z].hall}:</b> ${nm(z)}.</span>`).join("")}${d.seals.length?`<span><b>EARNED:</b> ${d.seals.map(z=>GYMS[z].seal).join(", ")}.</span>`:""}</span></p></div>`);return J}}
+  J.push(`<div class="bag-item key obj"><b>ASSAY SEALS: ${d.seals.length} OF ${Z.length}</b><p>${d.case.length?`Carry your Sample Case into the Assay Halls, one in every area but Quillmoor, and earn their Seals.`:`Fill your Sample Case at a sample store (the Institute locker room, or the rest rack in any Assay Hall), then take it to the Assay Halls, one in every area but Quillmoor.`}<span class="obj-list">${left.map(z=>`<span><b>${GYMS[z].hall}:</b> ${nm(z)}.</span>`).join("")}${d.seals.length?`<span><b>EARNED:</b> ${d.seals.map(z=>GYMS[z].seal).join(", ")}.</span>`:""}</span></p></div>`);return J}}
 
 /* =============== BATTLE FORMS (third pass: rigged) ===============
    Each form is a creature built from what its alloy IS: its metals, its types, and what it is used for, with its story only as an
@@ -13508,7 +13508,7 @@ const STAT_NAME={max:"Integrity",atk:"Bite",def:"Hold",draw:"Draw",ward:"Ward",s
 
 /* ---- registering an alloy gives you a sample of it ---- */
 {const _w=win;win=function(){const r=S.r;_w();if(!r||!r.won||!r.a||r.a.threat||r.tut)return;const s=newInst(r.a.name,!!r.radiant);
-  setTimeout(()=>{const best=STAT_KEYS.slice().sort((p,q)=>s.iv[q]-s.iv[p])[0];say0(`You've a new sample of ${r.a.name.toUpperCase()}${s.rad?" (radiant)":""}. Its ${STAT_NAME[best].toLowerCase()} is ${IV_WORD(s.iv[best])}. It knows ${s.mv.map(id=>MV[id].n).join(", ")}.`)},5200)}}
+  setTimeout(()=>{const best=STAT_KEYS.slice().sort((p,q)=>s.iv[q]-s.iv[p])[0];say0(`You've a new sample of ${r.a.name.toUpperCase()}${s.rad?" (radiant)":""}. Its ${STAT_NAME[best].toLowerCase()} is ${IV_WORD(s.iv[best])}. It knows ${s.mv.map(id=>MV[id].n).join(", ")}.${s.where==="case"?" It's gone in your Sample Case.":s.where==="store"?" Your case is full, so it's gone to the sample store.":""}`)},5200)}}
 
 /* ---- in an Assay ---- */
 asTeamFromCase=function(){const d=asData();return d.case.map(id=>d.inst[id]).filter(Boolean).map(s=>{const a=alloyByName(s.n);if(!a)return null;const g=gradeOf(s.xp);
@@ -18805,6 +18805,808 @@ addForm("Deepthaw",{n:"#7A5A3A",a:"#F4F0E6",rn:"#F4F0E6",rb:"#3A4A8A",ra:"#7AE8F
  SNOW(g)+fG(g,2,`<circle cx="116" cy="100" r="3" fill="${P.ll}" ${SW2}/>`)+fG(g,3,star(176,20,6)));
 FORM_TITLE["Deepthaw"]="Thawing Mammoth Calf";SM("Deepthaw","Ice Age Over","STR","a",85,90,"crit,spd+1","The ice runs off it in sheets. One eye opens. Then the other. It has been waiting a very, very long time to stretch its legs.");
 
+/* =============== CINDER MERCURY, OVERCLOCKED: the Glacier Sun ===============
+   Threats don't melt when they Overclock. Shown only in the Alloydex Overclock view.
+   Not an animal, and not a blob: the thing its sample only hints at, a sun trapped in a glacier. A white-hot core of the burning
+   metal, its surface churning, a corona of spikes turning behind it and loops of flame arcing off its edge, held down in a crown of
+   glacier ice that keeps erupting around it in faceted spikes as it freezes and melts again. The ice is lit from inside: the faces
+   towards the core glow orange through the blue, light spears out through the gaps. Flames climb between the spikes, two jets of
+   fire blast out sideways through cracks, embers rise. Its face is in the core: two narrow white-hot slits and a jagged fissure
+   that splits open on fire. The ice shelf it sits on is cracked through with glowing seams, with a pool of meltwater reflecting it;
+   drips run down and hiss into steam. Radiant: the metal burns violet, the colour caesium really burns, and the ice goes black. */
+addForm("Cinder Mercury",{n:"#E2CF86",a:"#FF8A2A",rn:"#F2F4FA",rb:"#0A0620",ra:"#9A5AFF"},"hover",(P,g,rad)=>{
+ const U="cm"+(rad?"r":"n"),F=v=>(+v).toFixed(1),CX=100,CY=106,SC=CY-14;
+ const C0="#FFFFFF",C1=rad?"#F0E4FF":"#FFF4C0",C2=rad?"#B878FF":"#FFA830",C3=rad?"#6A28E0":"#F0581A",C4=rad?"#2A0A6A":"#8A1A06",
+  I0=rad?"#8A84AA":"#F2FCFF",I1=rad?"#3A3458":"#7CC4F0",I2=rad?"#14101E":"#2A6AB0",I3=rad?"#06040C":"#0E2E5A",ED=rad?"#000000":"#0A1E3A";
+ const defs=`<defs>
+  <radialGradient id="${U}c" cx=".44" cy=".42" r=".6"><stop offset="0" stop-color="${C0}"/><stop offset=".3" stop-color="${C1}"/><stop offset=".65" stop-color="${C2}"/><stop offset="1" stop-color="${C3}"/></radialGradient>
+  <radialGradient id="${U}h" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="${C2}" stop-opacity=".8"/><stop offset=".35" stop-color="${C3}" stop-opacity=".35"/><stop offset="1" stop-color="${C3}" stop-opacity="0"/></radialGradient>
+  <linearGradient id="${U}L" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="${C2}" stop-opacity=".95"/><stop offset=".35" stop-color="${C3}" stop-opacity=".55"/><stop offset=".6" stop-color="${I1}" stop-opacity=".85"/><stop offset="1" stop-color="${I0}"/></linearGradient>
+  <linearGradient id="${U}M" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="${C1}"/><stop offset=".3" stop-color="${C2}" stop-opacity=".8"/><stop offset=".55" stop-color="${I0}" stop-opacity=".9"/><stop offset="1" stop-color="#FFFFFF"/></linearGradient>
+  <linearGradient id="${U}D" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="${C4}" stop-opacity=".9"/><stop offset=".3" stop-color="${I3}"/><stop offset=".75" stop-color="${I2}"/><stop offset="1" stop-color="${I1}"/></linearGradient>
+  <linearGradient id="${U}T" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${I0}"/><stop offset="1" stop-color="${I1}"/></linearGradient>
+  <linearGradient id="${U}B" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${I2}"/><stop offset="1" stop-color="${I3}"/></linearGradient>
+  <linearGradient id="${U}J" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${C1}"/><stop offset=".4" stop-color="${C2}"/><stop offset="1" stop-color="${C3}" stop-opacity="0"/></linearGradient>
+  <filter id="${U}g" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.6" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="${U}b" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+  <filter id="${U}t" x="0" y="0" width="100%" height="100%"><feTurbulence type="fractalNoise" baseFrequency=".11" numOctaves="2" seed="${rad?7:3}"/><feColorMatrix values="0 0 0 0 1  0 0 0 0 ${rad?.85:.95}  0 0 0 0 ${rad?1:.7}  0 0 0 1.8 -.75"/></filter>
+  <clipPath id="${U}k"><circle cx="${CX}" cy="${SC}" r="25"/></clipPath></defs>`;
+ /* a faceted ice spike: three faces (the one towards the core glowing through, a bright ridge, a cold shadowed face),
+    a white edge on the ridge, and a couple of fractures inside */
+ const spike=(x,w,h,lean,s)=>{const b=CY+16,tx=x+lean,ty=b-h,ml=x-w*.3*s,mr=x+w*.25*s,lit=s>0?[x-w,ml]:[mr,x+w],cold=s>0?[mr,x+w]:[x-w,ml];
+   const face=(a,c,gr)=>`<path d="M${F(a)} ${b} L${F(tx)} ${F(ty)} L${F(c)} ${b} Z" fill="url(#${U}${gr})" stroke="${ED}" stroke-width="1.1" stroke-linejoin="round"/>`;
+   return face(cold[0],cold[1],"D")+face(lit[0],lit[1],"L")+face(ml,mr,"M")+
+    `<path d="M${F(tx)} ${F(ty+1)} L${F((ml+mr)/2)} ${b-2}" stroke="#FFFFFF" stroke-width=".9" opacity=".8"/>`+
+    `<path d="M${F(x-w*.5)} ${F(b-h*.3)} l${F(w*.3)} ${F(-h*.08)} l${F(-w*.1)} ${F(-h*.1)}" stroke="#FFFFFF" stroke-width=".6" fill="none" opacity=".5"/>`};
+ /* light spearing out through the gaps */
+ const rays=[-64,-40,-20,-4,16,34,58].map((a,i)=>{const r=a*Math.PI/180,L=130,w=4+(i%3)*3;return`<path d="M${CX} ${SC} L${F(CX+Math.sin(r)*L-w)} ${F(SC-Math.cos(r)*L)} L${F(CX+Math.sin(r)*L+w)} ${F(SC-Math.cos(r)*L)} Z" fill="${C2}" opacity=".16" filter="url(#${U}b)"><animate attributeName="opacity" values=".08;.26;.08" dur="${2.2+i*.37}s" repeatCount="indefinite"/></path>`}).join("");
+ /* the corona: a ring of fine spikes turning slowly behind the core */
+ let cor="";for(let k=0;k<28;k++){const a=k/28*360,l=k%2?9:15;cor+=`<path d="M-2 -25 L0 ${-25-l} L2 -25 Z" fill="${k%2?C1:C2}" transform="rotate(${a})"/>`}
+ const corona=`<g transform="translate(${CX} ${SC})"><g opacity=".85">${cor}<animateTransform attributeName="transform" type="rotate" values="0;360" dur="30s" repeatCount="indefinite"/></g></g>`;
+ /* loops of flame arcing off the edge */
+ const prom=(a,b)=>`<g transform="translate(${CX} ${SC}) rotate(${a})"><path d="M-8 -23 C-10 -42 10 -42 8 -23" stroke="${C2}" stroke-width="3.4" fill="none" stroke-linecap="round" opacity=".9"><animate attributeName="d" values="M-8 -23 C-10 -42 10 -42 8 -23;M-8 -23 C-14 -50 14 -50 8 -23;M-8 -23 C-10 -42 10 -42 8 -23" dur="3s" begin="${b}s" repeatCount="indefinite"/></path><path d="M-8 -23 C-10 -42 10 -42 8 -23" stroke="${C1}" stroke-width="1.2" fill="none"><animate attributeName="d" values="M-8 -23 C-10 -42 10 -42 8 -23;M-8 -23 C-14 -50 14 -50 8 -23;M-8 -23 C-10 -42 10 -42 8 -23" dur="3s" begin="${b}s" repeatCount="indefinite"/></path></g>`;
+ /* the core: the trapped sun, its surface churning */
+ const core=`<circle cx="${CX}" cy="${SC}" r="84" fill="url(#${U}h)"/>`+corona+prom(-50,0)+prom(64,1.4)+
+  `<circle cx="${CX}" cy="${SC}" r="25" fill="url(#${U}c)"/>`+
+  `<g clip-path="url(#${U}k)"><g opacity=".5" style="mix-blend-mode:screen"><rect x="${CX-40}" y="${SC-40}" width="80" height="80" filter="url(#${U}t)"/><animateTransform attributeName="transform" type="rotate" values="0 ${CX} ${SC};360 ${CX} ${SC}" dur="24s" repeatCount="indefinite"/></g>`+
+  [[-12,6,0],[10,-8,.5],[4,14,.9],[-8,-14,1.3],[16,8,1.7]].map(([dx,dy,b])=>`<circle cx="${CX+dx}" cy="${SC+dy}" r="2" fill="none" stroke="${C0}" stroke-width="1" opacity="0"><animate attributeName="r" values="1;6" dur="1.4s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values=".9;0" dur="1.4s" begin="${b}s" repeatCount="indefinite"/></circle>`).join("")+`</g>`+
+  `<circle cx="${CX}" cy="${SC}" r="25" fill="none" stroke="${C3}" stroke-width="1.6" opacity=".8"/><circle cx="${CX}" cy="${SC}" r="27" fill="none" stroke="${C1}" stroke-width="1" opacity=".5"><animate attributeName="r" values="26;30;26" dur="1.1s" repeatCount="indefinite"/><animate attributeName="opacity" values=".6;0;.6" dur="1.1s" repeatCount="indefinite"/></circle>`;
+ const Y=SC;
+ const face=`<g class="eye"><path d="M${CX-18} ${Y-6} Q${CX-10} ${Y-11} ${CX-3} ${Y-3} Q${CX-11} ${Y-4} ${CX-18} ${Y-6} Z" fill="${C4}"/><path d="M${CX+18} ${Y-6} Q${CX+10} ${Y-11} ${CX+3} ${Y-3} Q${CX+11} ${Y-4} ${CX+18} ${Y-6} Z" fill="${C4}"/>`+
+  `<path d="M${CX-15} ${Y-5} Q${CX-10} ${Y-7.4} ${CX-5} ${Y-3.6}" stroke="#FFFFFF" stroke-width="1.8" fill="none" stroke-linecap="round"/><path d="M${CX+15} ${Y-5} Q${CX+10} ${Y-7.4} ${CX+5} ${Y-3.6}" stroke="#FFFFFF" stroke-width="1.8" fill="none" stroke-linecap="round"/></g>`+
+  `<path d="M${CX-12} ${Y+8} L${CX-7} ${Y+6} L${CX-3} ${Y+8} L${CX+2} ${Y+5.5} L${CX+7} ${Y+8} L${CX+12} ${Y+7}" stroke="${C4}" stroke-width="1.8" fill="none" stroke-linejoin="round" stroke-linecap="round"/>`+
+  pt("jaw",CX,Y+8,`<path d="M${CX-11} ${Y+8.6} L${CX-7} ${Y+10} L${CX-3} ${Y+8.6} L${CX+2} ${Y+10.2} L${CX+7} ${Y+8.6} L${CX+11} ${Y+9.2}" stroke="${C3}" stroke-width="1.4" fill="none" stroke-linejoin="round" stroke-linecap="round"/>`);
+ /* flames: three layers, flickering */
+ const fl=(x,y,s,b)=>{const A=`M0 0 C-9 -6 -8 -18 -2 -30 C-1 -21 4 -22 4 -28 C11 -16 10 -5 0 0 Z`,B=`M0 0 C-10 -8 -5 -21 1 -34 C1 -23 6 -22 7 -29 C11 -15 8 -4 0 0 Z`;
+   return`<g transform="translate(${x} ${y}) scale(${s})"><path d="${A}" fill="${C3}"><animate attributeName="d" values="${A};${B};${A}" dur=".62s" begin="${b}s" repeatCount="indefinite"/></path><g transform="scale(.72) translate(0 -1)"><path d="${A}" fill="${C2}"><animate attributeName="d" values="${B};${A};${B}" dur=".5s" begin="${b}s" repeatCount="indefinite"/></path></g><g transform="scale(.42)"><path d="${A}" fill="${C1}"/></g></g>`};
+ const flames=fl(CX-30,CY+8,1.2,0)+fl(CX+28,CY+8,1.3,.2)+fl(CX-14,CY+10,1,.35)+fl(CX+14,CY+10,1.05,.1)+fl(CX+46,CY+10,.85,.27)+fl(CX-48,CY+10,.8,.42);
+ const embers=[[-30,0],[-10,.6],[14,1.2],[34,1.8],[0,2.4],[24,.3],[-22,1.5]].map(([dx,b])=>`<circle cx="${CX+dx}" cy="${CY}" r="1.2" fill="${C1}"><animate attributeName="cy" values="${CY};${CY-80}" dur="2.6s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="cx" values="${CX+dx};${CX+dx+(dx%2?6:-6)};${CX+dx}" dur="2.6s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0" dur="2.6s" begin="${b}s" repeatCount="indefinite"/></circle>`).join("");
+ /* jets of fire blasting out sideways through cracks in the ice */
+ const jet=(s,b)=>{const A=`M0 -6 Q${s*22} -11 ${s*48} -2 Q${s*22} 5 0 6 Z`,B=`M0 -7 Q${s*26} -14 ${s*56} -3 Q${s*26} 6 0 7 Z`;
+   return`<path d="${A}" fill="${C3}" filter="url(#${U}g)"><animate attributeName="d" values="${A};${B};${A}" dur=".42s" begin="${b}s" repeatCount="indefinite"/></path><path d="M0 -4 Q${s*18} -6 ${s*36} -1 Q${s*18} 3 0 4 Z" fill="${C2}"/><path d="M0 -2 Q${s*12} -2.4 ${s*22} 0 Q${s*12} 1.6 0 2 Z" fill="${C1}"/>`+
+    [0,.2,.4].map(d=>`<circle r="1" fill="${C1}"><animate attributeName="cx" values="0;${s*60}" dur=".7s" begin="${b+d}s" repeatCount="indefinite"/><animate attributeName="cy" values="0;${-6+d*20}" dur=".7s" begin="${b+d}s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur=".7s" begin="${b+d}s" repeatCount="indefinite"/></circle>`).join("")};
+ /* the crown of ice */
+ const back=spike(CX-62,12,46,-16,1)+spike(CX+62,12,52,16,-1)+spike(CX-38,15,80,-12,1)+spike(CX+36,16,90,12,-1)+spike(CX-12,13,100,-5,1)+spike(CX+14,12,72,5,-1);
+ const front=spike(CX-52,13,38,-10,1)+spike(CX+50,14,44,10,-1)+spike(CX-28,10,26,-5,1)+spike(CX+28,10,28,5,-1)+spike(CX-74,9,22,-8,1)+spike(CX+74,9,24,8,-1);
+ /* the shelf: a faceted slab of ice, cracked through with glowing seams, a pool of meltwater reflecting the sun */
+ const shelf=`<path d="M${CX-84} ${CY+16} L${CX-60} ${CY+11} L${CX-30} ${CY+14} L${CX} ${CY+10} L${CX+30} ${CY+14} L${CX+60} ${CY+11} L${CX+84} ${CY+16} L${CX+60} ${CY+22} L${CX} ${CY+24} L${CX-60} ${CY+22} Z" fill="url(#${U}T)" stroke="${ED}" stroke-width="1.6" stroke-linejoin="round"/>`+
+  `<path d="M${CX-84} ${CY+16} L${CX-60} ${CY+22} L${CX} ${CY+24} L${CX+60} ${CY+22} L${CX+84} ${CY+16} L${CX+70} ${CY+30} L${CX} ${CY+36} L${CX-70} ${CY+30} Z" fill="url(#${U}B)" stroke="${ED}" stroke-width="1.6" stroke-linejoin="round"/>`+
+  `<ellipse cx="${CX}" cy="${CY+18}" rx="26" ry="3.6" fill="${C2}" opacity=".55"><animate attributeName="opacity" values=".4;.7;.4" dur="1.8s" repeatCount="indefinite"/></ellipse><ellipse cx="${CX}" cy="${CY+18}" rx="10" ry="1.4" fill="${C1}" opacity=".8"/>`+
+  `<path d="M${CX-50} ${CY+24} L${CX-44} ${CY+30} L${CX-48} ${CY+34} M${CX+18} ${CY+25} L${CX+24} ${CY+31} L${CX+20} ${CY+35} M${CX+52} ${CY+23} L${CX+46} ${CY+30}" stroke="${C2}" stroke-width="1.4" fill="none" filter="url(#${U}g)"><animate attributeName="opacity" values=".5;1;.5" dur="1.4s" repeatCount="indefinite"/></path>`;
+ const melt=[[CX-38,0],[CX+36,1.1],[CX-12,.6]].map(([x,b])=>`<circle cx="${x}" r="1.5" fill="${I0}" opacity="0"><animate attributeName="cy" values="${CY-36};${CY+14}" dur="1.8s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.9;.9;0" keyTimes="0;.1;.85;1" dur="1.8s" begin="${b}s" repeatCount="indefinite"/></circle>`+
+   `<path d="M${x} ${CY+12} q-3 -5 0 -9 q3 -4 0 -8" stroke="#FFFFFF" stroke-width="1.8" fill="none" stroke-linecap="round" opacity="0"><animate attributeName="opacity" values="0;0;.6;0" keyTimes="0;.8;.9;1" dur="1.8s" begin="${b}s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0;0 0;0 -6" keyTimes="0;.8;1" dur="1.8s" begin="${b}s" repeatCount="indefinite"/></path>`).join("");
+ const frost=[[30,30,0],[170,46,1.5],[60,14,3],[150,18,2.2]].map(([x,y,b])=>`<path d="M${x} ${y} m-3 0 h6 m-3 -3 v6 m-2 -2 l4 -4 m-4 0 l4 4" stroke="${I0}" stroke-width=".8" opacity="0"><animate attributeName="opacity" values="0;.8;0" dur="4s" begin="${b}s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0;4 14" dur="4s" begin="${b}s" repeatCount="indefinite"/></path>`).join("");
+ return defs+`<ellipse class="shd" cx="${CX}" cy="${CY+34}" rx="80" ry="6" fill="#000" opacity=".35"/>`+rays+frost+
+  pt("sway",CX,CY,back+flames+core+
+   pt("armB",CX+38,CY-8,`<g transform="translate(${CX+38} ${CY-8}) rotate(-22)">${jet(1,.15)}</g>`,.3)+
+   pt("armF",CX-40,CY-10,`<g transform="translate(${CX-40} ${CY-10}) rotate(20)">${jet(-1,0)}</g>`)+
+   pt("head",CX,Y,face)+embers+shelf+front+melt)+
+  fG(g,1,`<path d="M22 146 l4 -4 M176 146 l4 -4" stroke="${I1}" stroke-width="2" opacity=".7"/>`)+fG(g,2,`<circle cx="160" cy="30" r="2.2" fill="${C2}" opacity=".7"/>`)+fG(g,3,star(182,20,6))});
+FORM_TITLE["Cinder Mercury"]="Glacier Sun";
+
+/* this IS its Overclocked look: it must not be melted down on top */
+BATTLE_FORMS["Cinder Mercury"].molten=1;
+
+/* =============== CROWN OF RAYS, OVERCLOCKED: the Hungering Crown ===============
+   Threats don't melt when they Overclock. Shown only in the Alloydex Overclock view.
+   The lore: a royal treasure from the days when glowing things were thought to be healthy; it shines faintly in the dark, stays
+   warm on its own, and slowly poisons whoever wears it; its category is Cursed Regalia. So, all the way into what it is: the crown
+   itself, awake, hungry for a head. A heavy closed crown hovering on its own: a gold band set with stones, five fleur-de-lis
+   points, two arches meeting under an orb and cross, the velvet cap inside glowing sick green. Its two great centre stones are its
+   eyes. Its band has split all the way round into a mouth, the ermine rim below dropping open as a jaw, fangs of gold along both
+   edges, the hollow where a head goes shining green inside. The radium pearls on its points throw out rays. The jewelled pendants
+   that hang from its sides swing like arms. Its glow drips from the jaw. Radiant: white platinum, blue radium glow, violet cap. */
+addForm("Crown of Rays",{n:"#E6C35A",a:"#8CFF9E",rn:"#E8ECF4",rb:"#0A0620",ra:"#7AB8FF"},"hover",(P,g,rad)=>{
+ const U="cr"+(rad?"r":"n"),F=v=>(+v).toFixed(1),CX=100;
+ const W="#FFFFFF",G0=rad?"#FFFFFF":"#FFF2B0",G1=rad?"#D8DEEA":"#E6C35A",G2=rad?"#8A92A6":"#A8822A",G3=rad?"#4A5064":"#5E4410",
+  R0=rad?"#E8FBFF":"#EAFFEA",R1=rad?"#7AB8FF":"#8CFF9E",R2=rad?"#2A5AE0":"#2AC86A",R3=rad?"#081030":"#04200E",
+  V0=rad?"#8A5AD0":"#B82034",V1=rad?"#4A2090":"#7A1020",ER="#F4F0E8",ERD="#C8C0B0",INK="#1A0A10",RUBY="#C8283A",SAPH="#3A5AD8";
+ const defs=`<defs><linearGradient id="${U}g" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${G0}"/><stop offset=".45" stop-color="${G1}"/><stop offset="1" stop-color="${G2}"/></linearGradient>
+  <linearGradient id="${U}gh" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${G3}"/><stop offset=".25" stop-color="${G1}"/><stop offset=".45" stop-color="${G0}"/><stop offset=".7" stop-color="${G1}"/><stop offset="1" stop-color="${G3}"/></linearGradient>
+  <radialGradient id="${U}v" cx=".4" cy=".3" r=".8"><stop offset="0" stop-color="${V0}"/><stop offset="1" stop-color="${V1}"/></radialGradient>
+  <radialGradient id="${U}r" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="${R0}"/><stop offset=".35" stop-color="${R1}"/><stop offset="1" stop-color="${R2}" stop-opacity="0"/></radialGradient>
+  <radialGradient id="${U}in" cx=".5" cy=".4" r=".6"><stop offset="0" stop-color="${R0}"/><stop offset=".4" stop-color="${R1}"/><stop offset="1" stop-color="${R3}"/></radialGradient>
+  <radialGradient id="${U}st" cx=".35" cy=".3" r=".75"><stop offset="0" stop-color="${R0}"/><stop offset=".4" stop-color="${R1}"/><stop offset="1" stop-color="${R2}"/></radialGradient>
+  <linearGradient id="${U}ray" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="${R1}" stop-opacity=".6"/><stop offset="1" stop-color="${R1}" stop-opacity="0"/></linearGradient>
+  <filter id="${U}gl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.5" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="${U}bl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter></defs>`;
+ const fleur=(x,y,s,back)=>`<g transform="translate(${x} ${y}) scale(${s})"><path d="M-7 0 L-6 -8 Q-14 -10 -14 -18 Q-12 -24 -7 -22 Q-9 -17 -5 -15 Q-6 -24 0 -32 Q6 -24 5 -15 Q9 -17 7 -22 Q12 -24 14 -18 Q14 -10 6 -8 L7 0 Z" fill="url(#${U}g)" stroke="${INK}" stroke-width="${F(1.8/s)}" stroke-linejoin="round"${back?' opacity=".8"':""}/><path d="M0 -6 Q-2 -16 0 -28" stroke="${G0}" stroke-width="1" fill="none" opacity=".7"/><path d="M-8 -9 H8" stroke="${INK}" stroke-width="${F(1.4/s)}"/><rect x="-8" y="-11" width="16" height="3.4" rx="1" fill="url(#${U}g)" stroke="${INK}" stroke-width="${F(1/s)}"/></g>`;
+ const pearl=(x,y,r,i)=>`<circle cx="${x}" cy="${y}" r="${r*2.6}" fill="url(#${U}r)" filter="url(#${U}bl)"><animate attributeName="r" values="${r*2.2};${r*3};${r*2.2}" dur="${1.6+i*.23}s" repeatCount="indefinite"/></circle><circle cx="${x}" cy="${y}" r="${r}" fill="${R0}" stroke="${G2}" stroke-width=".9"/>`;
+ /* the hollow where a head goes, glowing; back points and the velvet cap behind the arches */
+ const back=[[70,52,.7],[86,50,.72],[114,50,.72],[130,52,.7]].map(([x,y,s])=>fleur(x,y,s,1)).join("")+
+  `<path d="M52 60 Q52 18 ${CX} 18 Q148 18 148 60 Z" fill="url(#${U}v)" stroke="${INK}" stroke-width="2"/><path d="M60 54 Q62 28 ${CX} 24" stroke="${V0}" stroke-width="2" fill="none" opacity=".7"/>`+
+  `<ellipse cx="${CX}" cy="40" rx="30" ry="18" fill="${R1}" opacity=".18" filter="url(#${U}bl)"/>`;
+ /* arches over the cap, meeting under an orb and cross */
+ const arches=`<path d="M52 60 Q50 16 ${CX} 14 Q150 16 148 60" stroke="${INK}" stroke-width="7" fill="none"/><path d="M52 60 Q50 16 ${CX} 14 Q150 16 148 60" stroke="url(#${U}gh)" stroke-width="4.4" fill="none"/>`+
+  `<path d="M${CX} 72 Q${CX-3} 30 ${CX} 14" stroke="${INK}" stroke-width="7" fill="none"/><path d="M${CX} 72 Q${CX-3} 30 ${CX} 14" stroke="${G1}" stroke-width="4.4" fill="none"/>`+
+  [[60,34],[72,22],[128,22],[140,34],[98,30],[98,46]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="1.6" fill="${G0}" stroke="${INK}" stroke-width=".7"/>`).join("")+
+  `<circle cx="${CX}" cy="8" r="6.4" fill="url(#${U}g)" stroke="${INK}" stroke-width="1.8"/><path d="M94 8 H106" stroke="${G2}" stroke-width="1.4"/><path d="M${CX} 2 V-10 M95 -5 H105" stroke="${INK}" stroke-width="4" stroke-linecap="round"/><path d="M${CX} 2 V-10 M95 -5 H105" stroke="${G1}" stroke-width="2" stroke-linecap="round"/>`;
+ /* the band's upper half, with its brow, its eyes and stones */
+ const BAND=`M48 60 Q${CX} 72 152 60 L152 82 Q${CX} 96 48 82 Z`;
+ const eye=x=>`<ellipse cx="${x}" cy="76" rx="9" ry="7.4" fill="${G2}" stroke="${INK}" stroke-width="1.8"/><ellipse cx="${x}" cy="76" rx="7" ry="5.6" fill="url(#${U}st)"/><path d="M${x} 71 L${x+1.6} 76 L${x} 81 L${x-1.6} 76 Z" fill="${R3}"/><circle cx="${x-2.6}" cy="73.6" r="1.3" fill="${W}"/>`+
+   [0,1,2,3,4,5,6,7].map(k=>{const a=k/8*Math.PI*2;return`<circle cx="${F(x+Math.cos(a)*9.6)}" cy="${F(76+Math.sin(a)*8)}" r=".9" fill="${G0}"/>`}).join("");
+ const brow=`<path d="M70 68 Q80 64 92 72 L90 66 Q80 60 68 64 Z M130 68 Q120 64 108 72 L110 66 Q120 60 132 64 Z" fill="url(#${U}g)" stroke="${INK}" stroke-width="1.4" stroke-linejoin="round"/>`;
+ const band=`<path d="${BAND}" fill="url(#${U}gh)" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/><path d="M48 63 Q${CX} 75 152 63" stroke="${G0}" stroke-width="1.2" fill="none"/>`+
+  [[58,73,RUBY],[142,73,RUBY]].map(([x,y,c])=>`<rect x="${x-3.4}" y="${y-3.4}" width="6.8" height="6.8" fill="${c}" stroke="${G3}" stroke-width="1" transform="rotate(45 ${x} ${y})"/>`).join("")+
+  `<ellipse cx="${CX}" cy="78" rx="4" ry="5" fill="${SAPH}" stroke="${G3}" stroke-width="1"/><circle cx="98.6" cy="76" r="1" fill="${W}"/>`+
+  `<g class="eye">${eye(80)}${eye(120)}</g>`+brow+
+  /* upper fangs along the split */
+  Array.from({length:11},(_,i)=>{const x=52+i*9.6,t=(x-CX)/52,y=82+14*(1-t*t)*.5;return`<path d="M${F(x-3)} ${F(y-1)} L${F(x)} ${F(y+6-(i%2)*2)} L${F(x+3)} ${F(y-1)} Z" fill="url(#${U}g)" stroke="${INK}" stroke-width="1"/>`}).join("");
+ const front=[[58,62,.8],[79,67,.9],[CX,70,1.05],[121,67,.9],[142,62,.8]].map(([x,y,s])=>fleur(x,y,s)).join("");
+ const pearls=[[58,36.4,2.4],[79,38.2,2.6],[CX,36.4,3],[121,38.2,2.6],[142,36.4,2.4],[CX,8,0]].filter(p=>p[2]).map(([x,y,r],i)=>pearl(x,y,r,i)).join("");
+ const rays=`<g><g>${[[60,35],[80,37],[CX,35],[120,37],[140,35]].map(([x,y],i)=>{const a=(i-2)*24;return`<g transform="rotate(${a} ${x} ${y})"><path d="M${x-1.6} ${y} L${x-9} ${y-70} L${x+9} ${y-70} L${x+1.6} ${y} Z" fill="url(#${U}ray)"/></g>`}).join("")}<animateTransform attributeName="transform" type="rotate" values="-6 ${CX} 60;6 ${CX} 60;-6 ${CX} 60" dur="6s" repeatCount="indefinite"/></g></g>`;
+ /* the mouth: the hollow inside, then the jaw: a gold lower rim and an ermine roll, dropped open, fangs pointing up */
+ const hollow=`<path d="M50 84 Q${CX} 98 150 84 L148 98 Q${CX} 114 52 98 Z" fill="url(#${U}in)"/>`;
+ const JAW=`M50 96 Q${CX} 110 150 96 L150 104 Q${CX} 118 50 104 Z`;
+ const jaw=pt("jaw",CX,92,`<path d="${JAW}" fill="url(#${U}gh)" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>`+
+  Array.from({length:10},(_,i)=>{const x=56+i*9.8,t=(x-CX)/50,y=96+14*(1-t*t)*.5;return`<path d="M${F(x-2.6)} ${F(y+1)} L${F(x)} ${F(y-5+(i%2)*1.6)} L${F(x+2.6)} ${F(y+1)} Z" fill="url(#${U}g)" stroke="${INK}" stroke-width="1"/>`}).join("")+
+  `<path d="M48 104 Q${CX} 118 152 104 Q154 112 146 114 Q${CX} 128 54 114 Q46 112 48 104 Z" fill="${ER}" stroke="${INK}" stroke-width="1.8" stroke-linejoin="round"/>`+
+  [[60,111],[76,116],[92,119],[108,119],[124,116],[140,111]].map(([x,y])=>`<path d="M${x} ${y-1.6} q1 2 0 4.4 q-1 -2 0 -4.4 Z" fill="${INK}"/>`).join("")+
+  [[84,0],[100,.7],[116,1.3]].map(([x,b])=>`<circle cx="${x}" r="1.7" fill="${R1}" filter="url(#${U}gl)"><animate attributeName="cy" values="${110+(x===CX?3:1)};140" dur="1.8s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur="1.8s" begin="${b}s" repeatCount="indefinite"/></circle>`).join(""));
+ /* the pendants hanging from its sides, swinging */
+ const pend=s=>{const x=CX+s*50;return`<path d="M${x} 84 L${x+s*2} 100 L${x} 114 L${x+s*2} 126" stroke="${G2}" stroke-width="1.6" fill="none" stroke-dasharray="2 1.4"/>`+
+   [[x+s*2,100,RUBY],[x,114,R1],[x+s*2,126,G1]].map(([cx,cy,c],i)=>`<circle cx="${cx}" cy="${cy}" r="${i===1?2.6:2}" fill="${c}" stroke="${INK}" stroke-width=".8"/>`).join("")+
+   `<path d="M${x+s*2} 128 l-4 3 l4 9 l4 -9 Z" fill="url(#${U}st)" stroke="${INK}" stroke-width="1.2"/><circle cx="${x+s*2}" cy="134" r="5" fill="${R1}" opacity=".3" filter="url(#${U}bl)"/>`};
+ const dust=Array.from({length:10},(_,k)=>{const x=20+k*18,b=k*.37;return`<circle cx="${x}" r="${k%3?.9:1.3}" fill="${k%2?G0:R1}"><animate attributeName="cy" values="${140-(k%4)*8};${30+(k%3)*10}" dur="${4+k%3}s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.9;0" dur="${4+k%3}s" begin="${b}s" repeatCount="indefinite"/></circle>`}).join("");
+ return defs+`<g transform="translate(6 18) scale(.94)"><ellipse cx="${CX}" cy="70" rx="96" ry="80" fill="url(#${U}r)" opacity=".16"/><ellipse class="shd" cx="${CX}" cy="150" rx="44" ry="4" fill="${R1}" opacity=".25"/>`+dust+
+  pt("sway",CX,80,
+   rays+pt("armB",CX+50,84,pend(1),.3)+pt("armF",CX-50,84,pend(-1))+
+   pt("head",CX,80,back+arches+hollow+jaw+band+front+pearls))+`</g>`+
+  fG(g,1,`<circle cx="24" cy="40" r="1.4" fill="${R1}" opacity=".7"/><circle cx="176" cy="120" r="1.2" fill="${G0}" opacity=".7"/>`)+fG(g,2,`<circle cx="30" cy="140" r="2.2" fill="${G1}" opacity=".7"/>`)+fG(g,3,star(184,20,6))});
+FORM_TITLE["Crown of Rays"]="Hungering Crown";
+
+/* this IS its Overclocked look: it must not be melted down on top */
+BATTLE_FORMS["Crown of Rays"].molten=1;
+
+/* =============== DROWNED FIRE, OVERCLOCKED: the Burning Wreck ===============
+   Threats don't melt when they Overclock. Shown only in the Alloydex Overclock view.
+   The lore: it was blamed for a ship fire that burned below the waterline; water doesn't put it out, it feeds it; it keeps
+   burning underwater and spits out gas that catches fire too. Its home is the galleon wreck in Sunken Galleon Cove, which in its
+   sample still has fire glowing in its portholes. So, all the way into what it is: it IS that fire, and the ship is its body now.
+   The galleon lies on the sea floor side-on, listing, masts and all. Its eyes are its two hawse holes, the holes in the bow the
+   anchor cables run through (sailors have always called them the ship's eyes), lit from inside.
+   Its mouth is the hole the fire burned below the waterline, right at the bow: planks burst outward, fire roaring inside, flaring
+   as the sea pours in. Down its side, every gunport has its lid hanging open on fire; the stern gallery burns. The anchor still
+   hangs from one eye on its cable, the other cable snapped. Broken masts lean over it with scorched rags of sail. Bubbles of gas
+   boil off the deck and burst into fire. Radiant: the hull is charred black, and the fire burns white, the true colour of burning
+   magnesium. */
+addForm("Drowned Fire",{n:"#C8CACC",a:"#FF8A3A",rn:"#2A2622",rb:"#0A0808",ra:"#FFFFFF"},"hover",(P,g,rad)=>{
+ const U="df"+(rad?"r":"n"),F=v=>(+v).toFixed(1);
+ const W="#FFFFFF",C1=rad?"#FFFFFF":"#FFF2C0",C2=rad?"#BFE4FF":"#FFA83A",C3=rad?"#3A9AFF":"#F05A1A",C4=rad?"#06102A":"#3A1004",
+  H0=rad?"#4A443E":"#9A6A3A",H1=rad?"#2A2622":"#6E4626",H2=rad?"#141210":"#3E2614",PL=rad?"#050404":"#24140A",IRON=rad?"#5A5A5E":"#4A4A50",
+  SAND="#C8B080",SANDD="#9A845A",FOAM="#DDF4FF",BARN="#D8D2C0",WEED=rad?"#2A3A2A":"#3A5A2A",SAIL=rad?"#3A3632":"#CDBE96",CU0=rad?"#2A322E":"#4E9A80",CU1=rad?"#141A18":"#2A5A4C";
+ const defs=`<defs><linearGradient id="${U}r" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${H0}"/><stop offset=".5" stop-color="${H1}"/><stop offset="1" stop-color="${H2}"/></linearGradient>
+  <linearGradient id="${U}l" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${H1}"/><stop offset="1" stop-color="${PL}"/></linearGradient>
+  <radialGradient id="${U}f" cx=".5" cy=".6" r=".6"><stop offset="0" stop-color="${W}"/><stop offset=".3" stop-color="${C1}"/><stop offset=".65" stop-color="${C2}"/><stop offset="1" stop-color="${C3}"/></radialGradient>
+  <radialGradient id="${U}g2" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="${C2}" stop-opacity=".5"/><stop offset="1" stop-color="${C3}" stop-opacity="0"/></radialGradient>
+  <filter id="${U}g" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.3" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
+ const flick=k=>`<animate attributeName="opacity" values="${k%2?".6;1;.65;.95;.6":".95;.6;1;.7;.95"}" dur="${F(.8+(k%4)*.25)}s" repeatCount="indefinite"/>`;
+ const flame=(x,y,s,b)=>{const A=`M0 0 C-6 -5 -6 -14 -1 -22 C0 -15 3 -15 3 -20 C8 -12 7 -4 0 0 Z`,B=`M0 0 C-7 -6 -4 -16 1 -25 C1 -17 5 -16 5 -21 C8 -11 6 -3 0 0 Z`;
+   return`<g transform="translate(${x} ${y}) scale(${s})"><path d="${A}" fill="${C3}"><animate attributeName="d" values="${A};${B};${A}" dur=".6s" begin="${b}s" repeatCount="indefinite"/></path><g transform="scale(.66)"><path d="${A}" fill="${C2}"><animate attributeName="d" values="${B};${A};${B}" dur=".5s" begin="${b}s" repeatCount="indefinite"/></path></g><g transform="scale(.36)"><path d="${A}" fill="${C1}"/></g></g>`};
+ /* side-on, so it reads as a ship at a glance: a galleon's long hull with its sheer rising to a high stern castle, a forecastle
+    at the bow, a bowsprit, three masts with yards and burnt square sails, rigging, a rudder; listing, settled into the sand */
+ const HULL=`M20 100 Q22 92 30 88 L58 92 Q100 98 140 90 L150 80 L178 72 L182 74 Q184 100 176 116 L170 126 Q120 138 66 134 Q36 130 26 118 Q18 110 20 100 Z`;
+ const sheer=t=>{const pts=[[30,88],[58,92],[100,97],[140,90],[150,80],[178,72]];const i=Math.min(4,Math.floor(t*5)),f=t*5-i;return[pts[i][0]+(pts[i+1][0]-pts[i][0])*f,pts[i][1]+(pts[i+1][1]-pts[i][1])*f]};
+ const hull=`<path d="${HULL}" fill="url(#${U}r)" stroke="${PL}" stroke-width="2.4" stroke-linejoin="round"/>`+
+  `<clipPath id="${U}hc"><path d="${HULL}"/></clipPath><g clip-path="url(#${U}hc)">`+[0,1,2,3,4,5,6].map(i=>`<path d="M10 ${104+i*5.4} Q100 ${112+i*5} 190 ${84+i*6}" stroke="${PL}" stroke-width=".9" fill="none" opacity=".7"/>`).join("")+
+  /* below the waterline: old copper sheathing gone green, plate by plate */
+  `<path d="M0 120 Q100 130 200 104 L200 160 L0 160 Z" fill="${CU1}"/>`+Array.from({length:44},(_,i)=>{const c=i%11,r=i/11|0,x=12+c*16+(r%2)*8,t=x/200,y0=(1-t)*(1-t)*120+2*(1-t)*t*130+t*t*104+r*6;return`<rect x="${x}" y="${F(y0+2)}" width="14" height="5" fill="${CU0}" opacity="${.55+((i*7)%5)*.08}" stroke="${CU1}" stroke-width=".5"/>`}).join("")+
+  `<path d="M0 120 Q100 130 200 104" stroke="${WEED}" stroke-width="2.4" fill="none" opacity=".7" stroke-dasharray="2 3"/>`+
+  /* char spreading round the fires */
+  `<ellipse cx="40" cy="114" rx="26" ry="16" fill="${PL}" opacity=".45"/><ellipse cx="112" cy="104" rx="46" ry="8" fill="${PL}" opacity=".25"/>`+
+  /* the fire showing through the gaps between the planks */
+  `<g filter="url(#${U}g)">`+[[60,107,82,109],[96,111,124,108],[130,104,150,99],[150,104,168,96],[70,118,92,120]].map(([x1,y1,x2,y2],k)=>`<path d="M${x1} ${y1} L${x2} ${y2}" stroke="${C2}" stroke-width="1.2" stroke-linecap="round">${flick(k)}</path>`).join("")+`</g>`+
+  `<ellipse cx="110" cy="112" rx="60" ry="20" fill="url(#${U}g2)"/></g>`+
+  `<path d="M30 88 L58 92 Q100 98 140 90 L150 80 L178 72" stroke="${C2}" stroke-width="1.2" fill="none" opacity=".55"/>`+
+  /* wales and the castles */
+  `<path d="M24 100 Q100 110 180 82" stroke="${PL}" stroke-width="3.4" fill="none"/><path d="M24 100 Q100 110 180 82" stroke="${H0}" stroke-width="1.2" fill="none" opacity=".7"/>`+
+  `<path d="M140 90 L150 80 L178 72 L180 60 L148 68 Z" fill="url(#${U}r)" stroke="${PL}" stroke-width="1.8" stroke-linejoin="round"/>`+
+  `<path d="M30 88 L58 92 L58 84 L28 80 Z" fill="url(#${U}r)" stroke="${PL}" stroke-width="1.8" stroke-linejoin="round"/>`+
+  /* bulwark rails with posts */
+  `<path d="M58 88 Q100 94 140 86" stroke="${PL}" stroke-width="1.8" fill="none"/>`+[66,78,90,102,114,126].map((x,i)=>`<path d="M${x} ${F(90+Math.sin(i/5*Math.PI)*3.6)} v4" stroke="${PL}" stroke-width="1.2"/>`).join("")+
+  /* the rudder and the stern lantern */
+  `<path d="M180 76 L188 80 L186 120 L176 118" fill="${H1}" stroke="${PL}" stroke-width="1.6" stroke-linejoin="round"/>`+
+  `<path d="M180 60 L184 52" stroke="${PL}" stroke-width="1.6"/><rect x="181" y="44" width="6" height="8" rx="1.4" fill="url(#${U}f)" stroke="${PL}" stroke-width="1">${flick(2)}</rect>`+
+  /* stern gallery windows */
+  [0,1,2].map(i=>`<rect x="${152+i*8}" y="${71-i*2.2}" width="5" height="5" fill="url(#${U}f)" stroke="${PL}" stroke-width=".8">${flick(i)}</rect>`).join("");
+ /* a row of gunports down the side, lids hanging open on fire */
+ const gports=[[72,106],[88,108],[104,108],[120,106],[136,102],[152,96],[166,90]].map(([x,y],k)=>`<rect x="${x-3}" y="${y-3}" width="6" height="6" fill="${C4}" stroke="${PL}" stroke-width="1"/><rect x="${x-2.2}" y="${y-2.2}" width="4.4" height="4.4" fill="url(#${U}f)">${flick(k)}</rect><path d="M${x-3} ${y-3} L${x+3} ${y-3} L${x+5} ${y-6} L${x-1} ${y-6} Z" fill="${H2}" stroke="${PL}" stroke-width=".8"/>`).join("");
+ const barn=[[44,124],[48,127],[98,132],[104,131],[150,120],[156,118]].map(([x,y])=>`<path d="M${x-2} ${y} L${x} ${y-2.6} L${x+2} ${y} Z" fill="${BARN}" stroke="${PL}" stroke-width=".6"/>`).join("");
+ /* the face at the bow: its two hawse holes are its eyes, lit from inside; the burned breach below the waterline is its mouth */
+ const hawse=(x,y,k)=>`<ellipse cx="${x}" cy="${y}" rx="6.6" ry="6" fill="${IRON}" stroke="${PL}" stroke-width="1.6"/><ellipse cx="${x}" cy="${y}" rx="4.6" ry="4.2" fill="url(#${U}f)"/><path d="M${x} ${y-3.4} L${x+1.2} ${y} L${x} ${y+3.4} L${x-1.2} ${y} Z" fill="${C4}"/><circle cx="${x-1.4}" cy="${y-1.8}" r=".9" fill="${W}"/>`;
+ const eyes=`<g class="eye">${hawse(32,98,0)}${hawse(48,100,1)}</g><path d="M24 91 L40 94 M42 94 L56 95" stroke="${PL}" stroke-width="3" stroke-linecap="round"/>`;
+ const mouthIn=`<path d="M24 110 Q40 106 58 112 L56 124 Q40 128 28 122 Z" fill="${C4}"/><ellipse cx="41" cy="117" rx="12" ry="5" fill="url(#${U}f)"><animate attributeName="rx" values="10;14;10" dur=".7s" repeatCount="indefinite"/></ellipse>`+flame(36,122,.6,.1)+flame(46,123,.65,.35);
+ const upper=`<path d="M22 108 L24 111 L27 108 L31 116 L34 108 L37 112 L41 108 L43 117 L47 109 L49 112 L53 109 L56 115 L60 110 Q40 102 22 106 Z" fill="url(#${U}r)" stroke="${PL}" stroke-width="1.2" stroke-linejoin="round"/>`;
+ const lower=pt("jaw",42,124,`<path d="M26 124 L28 120 L31 124 L35 116 L38 124 L41 121 L44 124 L48 117 L51 124 L54 120 L57 123 L56 128 Q40 132 27 128 Z" fill="url(#${U}r)" stroke="${PL}" stroke-width="1.2" stroke-linejoin="round"/>`);
+ const inflow=[0,.3,.6].map(b=>`<path d="M0 ${110+b*10} Q10 ${112+b*7} 22 ${114+b*4}" stroke="${FOAM}" stroke-width="1.2" fill="none" stroke-dasharray="4 5" opacity=".7"><animate attributeName="stroke-dashoffset" values="0;-18" dur=".8s" begin="${b}s" repeatCount="indefinite"/></path>`).join("");
+ /* bowsprit and rigging */
+ const sprit=`<path d="M32 84 L4 66" stroke="${PL}" stroke-width="4.6" stroke-linecap="round"/><path d="M32 84 L4 66" stroke="${H1}" stroke-width="2.4" stroke-linecap="round"/>`;
+ /* masts: tall, with yards and square sails, burnt and holed, one still burning; the mainmast top snapped off */
+ const sail=(w,h,k)=>`<path d="M${-w} 0 L${w} 0 Q${w+2} ${h*.5} ${w-2} ${h} L${w*.4} ${h*.8} L${w*.1} ${h+2} L${-w*.3} ${h*.75} L${-w+2} ${h} Q${-w-2} ${h*.5} ${-w} 0 Z" fill="${SAIL}" stroke="${PL}" stroke-width="1.1" opacity=".95"/><path d="M${F(-w*.5)} ${F(h*.3)} L${F(-w*.2)} ${F(h*.22)} L${F(-w*.05)} ${F(h*.42)} L${F(-w*.25)} ${F(h*.62)} L${F(-w*.45)} ${F(h*.55)} Z" fill="#0A0814" stroke="${C2}" stroke-width="1" stroke-linejoin="round"/>`+
+   (k?`<path d="M${w*.4} ${h*.8} L${w*.1} ${h+2} L${-w*.3} ${h*.75}" stroke="${C2}" stroke-width="1.6" fill="none">${flick(k)}</path>`:"");
+ const mast=(x,y,len,ang,sails,snap)=>`<g transform="translate(${x} ${y}) rotate(${ang})"><path d="M0 0 L0 ${-len}" stroke="${PL}" stroke-width="5" stroke-linecap="round"/><path d="M0 0 L0 ${-len}" stroke="${H1}" stroke-width="2.6" stroke-linecap="round"/>`+
+   sails.map(([yy,w,h,k])=>`<path d="M${-w-2} ${-yy} L${w+2} ${-yy}" stroke="${PL}" stroke-width="2.4" stroke-linecap="round"/><g transform="translate(0 ${-yy+1})">${sail(w,h,k)}</g>`).join("")+
+   (snap?`<path d="M0 ${-len} l-3 -4 l2 0 l1 -5 l2 6 l2 -2 Z" fill="${H1}" stroke="${PL}" stroke-width="1"/>`:`<path d="M-3 ${-len} h6" stroke="${PL}" stroke-width="2"/>`)+`</g>`;
+ const rig=`<path d="M4 66 L46 30 M46 30 L96 18 M96 18 L150 40 M150 40 L180 60 M46 30 L62 92 M96 18 L80 96 M96 18 L120 94 M150 40 L170 74" stroke="${PL}" stroke-width=".8" fill="none" opacity=".75"/>`;
+ const masts=mast(46,90,62,-6,[[34,13,15,0],[54,9,10,0]],0)+mast(150,74,36,8,[[24,10,12,2]],0);
+ const main=mast(96,96,80,2,[[40,17,18,1],[62,12,12,0]],1);
+ /* the anchor still hangs from one eye on its cable */
+ const anchor=`<path d="M32 104 Q26 124 22 140" stroke="${IRON}" stroke-width="2.2" fill="none" stroke-dasharray="3 1.4"/><g transform="translate(22 140)"><path d="M0 0 V10 M-5 3 H5" stroke="${IRON}" stroke-width="2.2" stroke-linecap="round"/><path d="M-7 7 Q0 15 7 7" stroke="${IRON}" stroke-width="2.2" fill="none" stroke-linecap="round"/></g>`;
+ const hatchFire=flame(84,94,.75,0)+flame(116,92,.7,.3)+[[84,0],[116,.6],[40,1.2]].map(([x,b])=>`<circle cx="${x}" r="1.2" fill="none" stroke="${FOAM}" stroke-width=".7"><animate attributeName="cy" values="86;40" dur="1.8s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;.9;0" dur="1.8s" begin="${b}s" repeatCount="indefinite"/></circle>`).join("");
+ const kelp=[[150,116,1],[168,108,2]].map(([x,y,b])=>`<path d="M${x} ${y} q-4 8 0 14 q4 6 0 12" stroke="${WEED}" stroke-width="2.4" fill="none" stroke-linecap="round"><animateTransform attributeName="transform" type="rotate" values="-8 ${x} ${y};8 ${x} ${y};-8 ${x} ${y}" dur="${3+b*.6}s" repeatCount="indefinite"/></path>`).join("");
+ const gas=[[84,0],[116,1.1],[150,2]].map(([x,b])=>`<g><circle r="2.6" fill="${FOAM}" fill-opacity=".25" stroke="${FOAM}" stroke-width="1"/><circle r=".9" cx="-.9" cy="-.9" fill="${W}"/><animateMotion dur="2.8s" begin="${b}s" repeatCount="indefinite" path="M${x} 88 Q${x+8} 50 ${x+2} 14"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.1;.8;.82" dur="2.8s" begin="${b}s" repeatCount="indefinite"/></g>`+
+  `<g opacity="0"><circle cx="${x+2}" cy="14" r="6" fill="${C2}" filter="url(#${U}g)"/><circle cx="${x+2}" cy="14" r="3" fill="${C1}"/><animate attributeName="opacity" values="0;0;1;0" keyTimes="0;.8;.84;1" dur="2.8s" begin="${b}s" repeatCount="indefinite"/></g>`).join("");
+ const sand=`<path d="M10 150 Q50 136 100 140 Q150 142 196 130 Q200 146 186 152 Q100 160 10 150 Z" fill="${SAND}" stroke="${SANDD}" stroke-width="1.4"/>`;
+ return defs+`<ellipse cx="100" cy="96" rx="96" ry="62" fill="url(#${U}g2)" opacity=".5"/>`+
+  `<g transform="rotate(-4 100 140)">`+pt("sway",100,140,
+   rig+masts+pt("armB",96,96,main,.3)+hatchFire+
+   pt("head",40,104,sprit+hull+gports+barn+mouthIn+upper+lower+eyes)+inflow+
+   pt("armF",32,104,anchor))+`</g>`+
+  gas+sand+
+  fG(g,1,`<circle cx="190" cy="120" r="1.8" fill="none" stroke="${FOAM}" opacity=".6"/><circle cx="12" cy="40" r="1.4" fill="none" stroke="${FOAM}" opacity=".6"/>`)+fG(g,2,`<path d="M170 154 l5 -7 l5 7 Z" fill="${BARN}" stroke="${SANDD}" stroke-width="1"/>`)+fG(g,3,star(186,20,6))});
+FORM_TITLE["Drowned Fire"]="Burning Wreck";
+
+/* this IS its Overclocked look: it must not be melted down on top */
+BATTLE_FORMS["Drowned Fire"].molten=1;
+
+/* =============== EVERBURN, OVERCLOCKED: the Undying Hearth ===============
+   Threats don't melt when they Overclock. Shown only in the Alloydex Overclock view.
+   The lore: it catches fire from air and then keeps burning at very high temperatures, forever (the Undying Ember); in a fight
+   it spits embers that start fires and spread; its sample is kept in a vessel "built for a fire that never goes out", set into a
+   firebrick hearth under a chimney cap with a spark arrestor. So, all the way into what it is: it burned in that hearth so long
+   that it fired the bricks around it, and took them for a body. A great hunched kiln-beast of firebrick, round-bellied, its brick
+   courses curving round its bulk, cracked and glowing where the heat comes through. It stands on short bowed legs and leans on
+   long heavy arms of iron-banded brick, knuckling the ground with fire-tong claws like an ape. Its chimney rises from its back
+   and arcs forward over its head like a neck. Its mouth is the firebox, an iron arch with grate fangs; the iron door drops open
+   on its bottom hinge as its jaw. Its eyes are two damper ports under a heavy brick brow. Sparks pour from the chimney cap, and
+   embers it spits start new little fires where they land. Radiant: soot-black brick, burning uranium-green. */
+addForm("Everburn",{n:"#7E7A70",a:"#FF7A2A",rn:"#2A2A26",rb:"#041004",ra:"#7AFF6A"},"hover",(P,g,rad)=>{
+ const U="eb"+(rad?"r":"n"),F=v=>(+v).toFixed(1),CX=100;
+ const W="#FFFFFF",C1=rad?"#F0FFE0":"#FFF2B0",C2=rad?"#9AFF6A":"#FFA030",C3=rad?"#2AC83A":"#E8481A",C4=rad?"#062A06":"#4A0E02",
+  B0=rad?"#55524C":"#D06E40",B1=rad?"#34322E":"#A04626",B2=rad?"#1A1918":"#5E2616",MO=rad?"#0A0A0A":"#3A1A10",IR=rad?"#3A3A3E":"#2E2A2A",IRL=rad?"#6E6E74":"#5E5852",GR="#140E0C";
+ /* the body: round-bellied, shoulders hunched up, wider at the bottom */
+ const BODY=`M54 124 Q40 112 42 92 Q44 64 62 52 Q80 42 ${CX} 42 Q120 42 138 52 Q156 64 158 92 Q160 112 146 124 Q124 132 ${CX} 132 Q76 132 54 124 Z`;
+ const defs=`<defs><radialGradient id="${U}b" cx=".4" cy=".35" r=".75"><stop offset="0" stop-color="${B0}"/><stop offset=".6" stop-color="${B1}"/><stop offset="1" stop-color="${B2}"/></radialGradient>
+  <linearGradient id="${U}heat" x1="0" y1="0" x2="0" y2="1"><stop offset=".45" stop-color="${C3}" stop-opacity="0"/><stop offset="1" stop-color="${C3}" stop-opacity=".55"/></linearGradient>
+  <radialGradient id="${U}f" cx=".5" cy=".75" r=".75"><stop offset="0" stop-color="${W}"/><stop offset=".3" stop-color="${C1}"/><stop offset=".65" stop-color="${C2}"/><stop offset="1" stop-color="${C3}"/></radialGradient>
+  <radialGradient id="${U}a" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="${C2}" stop-opacity=".5"/><stop offset="1" stop-color="${C3}" stop-opacity="0"/></radialGradient>
+  <linearGradient id="${U}fl" x1="0" y1="1" x2="0" y2="0"><stop offset="0" stop-color="${C3}"/><stop offset=".5" stop-color="${C2}"/><stop offset="1" stop-color="${C1}" stop-opacity=".3"/></linearGradient>
+  <linearGradient id="${U}ir" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${IRL}"/><stop offset="1" stop-color="${IR}"/></linearGradient>
+  <filter id="${U}g" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="${U}bl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter>
+  <clipPath id="${U}c"><path d="${BODY}"/></clipPath></defs>`;
+ const flick=k=>`<animate attributeName="opacity" values="${k%2?".6;1;.65;.95;.6":".95;.6;1;.7;.95"}" dur="${F(.8+(k%4)*.25)}s" repeatCount="indefinite"/>`;
+ const flame=(x,y,s,b,rot)=>{const A=`M0 0 C-6 -5 -6 -14 -1 -22 C0 -15 3 -15 3 -20 C8 -12 7 -4 0 0 Z`,B=`M0 0 C-7 -6 -4 -16 1 -25 C1 -17 5 -16 5 -21 C8 -11 6 -3 0 0 Z`;
+   return`<g transform="translate(${x} ${y}) rotate(${rot||0}) scale(${s})"><path d="${A}" fill="url(#${U}fl)"><animate attributeName="d" values="${A};${B};${A}" dur=".6s" begin="${b}s" repeatCount="indefinite"/></path><g transform="scale(.55)"><path d="${A}" fill="${C1}"/></g></g>`};
+ /* brick courses that curve round its bulk; joints closer together towards the sides, so it reads as round */
+ let courses="";for(let r=0;r<12;r++){const y=48+r*7.4,bow=6-Math.abs(r-6)*.5;courses+=`<path d="M30 ${F(y)} Q${CX} ${F(y+bow)} 170 ${F(y)}" stroke="${MO}" stroke-width="1" fill="none"/>`;
+   for(let k=-6;k<=6;k++){const u=(k+(r%2)*.5)/6.5;if(Math.abs(u)>1)continue;const x=CX+Math.sin(u*1.35)*64,yy=y+bow*(1-u*u)*.9;courses+=`<path d="M${F(x)} ${F(yy)} v7" stroke="${MO}" stroke-width=".9"/>`}}
+ const shade=Array.from({length:30},(_,i)=>{const r=i%12,c=(i*7)%11-5,y=48+r*7.4,x=CX+Math.sin(c/6*1.35)*64;return`<rect x="${F(x-4)}" y="${F(y+1)}" width="9" height="5.4" fill="${i%3?B2:B0}" opacity=".35"/>`}).join("");
+ const body=`<path d="${BODY}" fill="url(#${U}b)" stroke="${GR}" stroke-width="2.8" stroke-linejoin="round"/>`+
+  `<g clip-path="url(#${U}c)">${shade}${courses}<path d="${BODY}" fill="url(#${U}heat)"/>`+
+  `<path d="M62 116 L54 100 L60 88 L52 74 M138 116 L146 100 L140 88 L148 74 M90 60 L96 50 L92 44 M114 62 L108 52" stroke="${C2}" stroke-width="1.6" fill="none" stroke-linejoin="round" filter="url(#${U}g)"><animate attributeName="opacity" values=".4;1;.4" dur="1.8s" repeatCount="indefinite"/></path></g>`+
+  `<path d="M58 54 Q80 44 ${CX} 44 Q120 44 142 54" stroke="${B0}" stroke-width="1.4" fill="none" opacity=".6"/>`+
+  /* iron bands round its belly */
+  `<g clip-path="url(#${U}c)"><path d="M30 104 Q${CX} 114 170 104" stroke="url(#${U}ir)" stroke-width="5" fill="none"/>${[50,150].map(x=>`<circle cx="${x}" cy="${x<CX?106:106}" r="1.6" fill="${IRL}"/>`).join("")}</g>`;
+ /* the chimney: one continuous brick stack rising from its back, arcing forward over its head */
+ const NP=`M128 50 C136 34 136 18 122 10 C114 6 104 8 98 14`;
+ const chimney=`<path d="${NP}" stroke="${GR}" stroke-width="20" fill="none" stroke-linecap="butt"/><path d="${NP}" stroke="${B1}" stroke-width="16" fill="none"/><path d="${NP}" stroke="${B0}" stroke-width="6" fill="none" opacity=".5" transform="translate(-2 -1)"/>`+
+  `<path d="${NP}" stroke="${MO}" stroke-width="16" fill="none" stroke-dasharray="1 7"/>`+
+  `<path d="M120 36 L140 40 M118 22 L138 18" stroke="url(#${U}ir)" stroke-width="3.4"/>`+
+  /* the cap, its spark arrestor bursting */
+  `<g transform="translate(98 14) rotate(-130)"><rect x="-10" y="-2" width="20" height="6" fill="url(#${U}ir)" stroke="${GR}" stroke-width="1.4"/><path d="M-9 4 Q0 18 9 4" fill="${GR}" fill-opacity=".45" stroke="${IRL}" stroke-width="1.4"/><path d="M-5 6 L-4 12 M0 6 V14 M5 6 L4 12" stroke="${IRL}" stroke-width=".8"/></g>`+
+  `<circle cx="90" cy="20" r="8" fill="${C2}" opacity=".55" filter="url(#${U}bl)">${flick(1)}</circle>`;
+ const sparks=Array.from({length:12},(_,k)=>{const dx=(k%6-2.5)*7,b=k*.18;return`<circle r="${k%3?1:1.5}" fill="${k%2?C1:C2}"><animateMotion dur="1.5s" begin="${b}s" repeatCount="indefinite" path="M90 20 Q${80+dx} 6 ${74+dx*2} 22"/><animate attributeName="opacity" values="1;1;0" dur="1.5s" begin="${b}s" repeatCount="indefinite"/></circle>`}).join("");
+ /* the face */
+ const port=x=>`<path d="M${x-8} 72 L${x-8} 66 Q${x-8} 58 ${x} 58 Q${x+8} 58 ${x+8} 66 L${x+8} 72 Z" fill="url(#${U}ir)" stroke="${GR}" stroke-width="1.8"/><path d="M${x-5.4} 71 L${x-5.4} 66 Q${x-5.4} 61 ${x} 61 Q${x+5.4} 61 ${x+5.4} 66 L${x+5.4} 71 Z" fill="url(#${U}f)"/><path d="M${x} 62 L${x+1.6} 66.5 L${x} 71 L${x-1.6} 66.5 Z" fill="${C4}"/>`;
+ const brow=`<path d="M64 56 Q78 56 96 64 L96 58 Q78 48 62 50 Z M136 56 Q122 56 104 64 L104 58 Q122 48 138 50 Z" fill="${B1}" stroke="${GR}" stroke-width="1.8" stroke-linejoin="round"/><path d="M66 52 Q80 52 94 59 M134 52 Q120 52 106 59" stroke="${B0}" stroke-width="1" fill="none"/>`;
+ const eyes=`<g class="eye">${port(82)}${port(118)}</g>`+brow;
+ const box=`M70 122 L70 96 Q70 76 ${CX} 76 Q130 76 130 96 L130 122 Z`;
+ const mouth=`<path d="${box}" fill="url(#${U}f)"/>`+
+  [0,1,2,3].map(i=>`<path d="M${80+i*13} 122 l-2 -8 l3 -6 l3 6 l-2 8 Z" fill="${C2}">${flick(i)}</path>`).join("")+
+  flame(86,118,.8,0)+flame(100,120,1.15,.25)+flame(114,118,.8,.4)+
+  [76,86,96,104,114,124].map((x,i)=>`<path d="M${x} ${i===0||i===5?84:78} V${i===0||i===5?92:i%2?92:96}" stroke="${GR}" stroke-width="4.4" stroke-linecap="round"/><path d="M${x} ${i===0||i===5?84:78} V${i===0||i===5?92:i%2?92:96}" stroke="url(#${U}ir)" stroke-width="2.6" stroke-linecap="round"/>`).join("")+
+  `<path d="${box}" fill="none" stroke="${GR}" stroke-width="6" stroke-linejoin="round"/><path d="${box}" fill="none" stroke="url(#${U}ir)" stroke-width="3.6" stroke-linejoin="round"/>`+
+  [[70,102],[70,114],[130,102],[130,114],[84,79],[116,79]].map(([x,y])=>`<circle cx="${x}" cy="${y}" r="1.2" fill="${IRL}"/>`).join("");
+ const door=pt("jaw",CX,122,`<path d="M68 122 L132 122 L136 132 L64 132 Z" fill="url(#${U}ir)" stroke="${GR}" stroke-width="1.8" stroke-linejoin="round"/>`+
+  [74,86,98,110,122].map(x=>`<path d="M${x} 122 l2.4 -5 l2.4 5" fill="${IRL}" stroke="${GR}" stroke-width=".8"/>`).join("")+`<path d="M70 127 H130" stroke="${IRL}" stroke-width="1"/><circle cx="68" cy="129" r="1.4" fill="${IRL}"/><circle cx="132" cy="129" r="1.4" fill="${IRL}"/>`);
+ /* long heavy arms of iron-banded brick, knuckling the ground with fire-tong claws */
+ const arm=s=>{const sh=[CX+s*52,72],el=[CX+s*74,100],wr=[CX+s*72,134];
+   const seg=(a,b,w)=>{const an=Math.atan2(b[1]-a[1],b[0]-a[0])*180/Math.PI,L=Math.hypot(b[0]-a[0],b[1]-a[1]);return`<g transform="translate(${a[0]} ${a[1]}) rotate(${F(an)})"><rect x="-4" y="${-w/2}" width="${F(L+8)}" height="${w}" rx="${w/2.6}" fill="url(#${U}b)" stroke="${GR}" stroke-width="2.2"/><path d="M${F(L*.33)} ${-w/2} V${w/2} M${F(L*.66)} ${-w/2} V${w/2} M0 0 H${F(L)}" stroke="${MO}" stroke-width=".9"/><path d="M${F(L*.5)} ${-w/2-1} V${w/2+1}" stroke="url(#${U}ir)" stroke-width="3"/></g>`};
+   return seg(sh,el,18)+seg(el,wr,15)+`<circle cx="${el[0]}" cy="${el[1]}" r="6" fill="url(#${U}ir)" stroke="${GR}" stroke-width="1.6"/>`+
+    `<g transform="translate(${wr[0]} ${wr[1]})"><path d="M-7 -2 Q${-s*2-8} 8 ${-s*2-5} 14 M0 0 Q0 9 ${s*2} 14 M7 -2 Q${s*2+8} 8 ${s*2+6} 14" stroke="${GR}" stroke-width="4.4" fill="none" stroke-linecap="round"/><path d="M-7 -2 Q${-s*2-8} 8 ${-s*2-5} 14 M0 0 Q0 9 ${s*2} 14 M7 -2 Q${s*2+8} 8 ${s*2+6} 14" stroke="url(#${U}ir)" stroke-width="2.4" fill="none" stroke-linecap="round"/><rect x="-9" y="-6" width="18" height="6" rx="2" fill="url(#${U}ir)" stroke="${GR}" stroke-width="1.6"/></g>`+
+    flame(CX+s*50,64,.7,s>0?.2:0,s*30)};
+ /* short bowed legs */
+ const leg=s=>`<path d="M${CX+s*26} 124 Q${CX+s*40} 134 ${CX+s*36} 146" stroke="${GR}" stroke-width="18" fill="none" stroke-linecap="round"/><path d="M${CX+s*26} 124 Q${CX+s*40} 134 ${CX+s*36} 146" stroke="${B1}" stroke-width="14" fill="none" stroke-linecap="round"/><path d="M${CX+s*30} 128 l${s*10} 4 M${CX+s*34} 138 l${s*10} 0" stroke="${MO}" stroke-width=".9"/>`+
+   `<rect x="${CX+s*36-13}" y="144" width="26" height="7" rx="2" fill="${B0}" stroke="${GR}" stroke-width="1.8"/>`;
+ const spit=(x2,y2,b)=>`<circle r="2" fill="${C1}" stroke="${C2}" stroke-width="1"><animateMotion dur="1.2s" begin="${b}s" repeatCount="indefinite" path="M90 20 Q${(90+x2)/2} -10 ${x2} ${y2}"/><animate attributeName="opacity" values="1;1;0;0" keyTimes="0;.95;.96;1" dur="1.2s" begin="${b}s" repeatCount="indefinite"/></circle>`+
+   `<g transform="translate(${x2} ${y2})"><g transform="scale(0)">${flame(0,0,.8,b)}<animateTransform attributeName="transform" type="scale" values="0;0;.6;1;1;0" keyTimes="0;.3;.45;.75;.9;1" dur="3.6s" begin="${b}s" repeatCount="indefinite"/></g></g>`;
+ const ground=`<ellipse cx="${CX}" cy="151" rx="92" ry="8" fill="${GR}"/><path d="M12 152 L36 149 L48 153 L64 150 M136 150 L152 153 L170 149 L190 152" stroke="${C3}" stroke-width="1.4" fill="none" filter="url(#${U}g)"><animate attributeName="opacity" values=".5;1;.5" dur="2.2s" repeatCount="indefinite"/></path><ellipse cx="${CX}" cy="149" rx="56" ry="5" fill="${C2}" opacity=".35" filter="url(#${U}bl)"/>`;
+ return defs+`<g transform="translate(4 6) scale(.96)"><ellipse cx="${CX}" cy="96" rx="96" ry="70" fill="url(#${U}a)" opacity=".7"/>`+ground+spit(14,148,0)+spit(190,148,1.8)+
+  pt("legB",CX+30,124,leg(1),.3)+pt("legF",CX-30,124,leg(-1))+
+  pt("armB",CX+52,72,arm(1),.3)+pt("armF",CX-52,72,arm(-1))+
+  pt("head",CX,90,chimney+body+eyes+mouth+door)+sparks+`</g>`+
+  fG(g,1,`<circle cx="30" cy="40" r="1.4" fill="${C2}" opacity=".7"/><circle cx="172" cy="36" r="1.2" fill="${C2}" opacity=".7"/>`)+fG(g,2,`<rect x="164" y="146" width="8" height="5" fill="${B1}" stroke="${GR}" stroke-width="1"/>`)+fG(g,3,star(184,20,6))});
+FORM_TITLE["Everburn"]="Undying Hearth";
+
+/* this IS its Overclocked look: it must not be melted down on top */
+BATTLE_FORMS["Everburn"].molten=1;
+
+/* =============== FOUNDER'S FOLLY, OVERCLOCKED: the quill and the inkwell ===============
+   Threats don't melt when they Overclock. Shown only in the Alloydex Overclock view.
+   Two objects that work as one: the founder's inkwell and his quill, both awake.
+   The inkwell is a heavy cut-glass well on a brass foot, with a domed brass lid that opens like a jaw on a serrated rim. Inside the
+   glass, the ink has formed a single great eye that looks out at you. The quill is a long swan's feather sweeping over it, poised
+   mid-stroke, with its own narrow eye where the vane meets the shaft. A glossy rope of ink pours up out of the well and into the nib:
+   the well feeds, the quill writes. What it writes is the Folly's mark: thick calligraphic bars stroked across the air one after
+   another, spattering as they land, blacking out whatever is behind them. Faint loops of old handwriting drift in the background.
+   The ink glows blue in its depths, the sheen of sample one's husk. Radiant: white feather, gold fittings, and red ink. */
+addForm("Founder's Folly",{n:"#2E3E5E",a:"#4AB0FF",rn:"#F6F2EA",rb:"#2A0A10",ra:"#E8343A"},"hover",(P,g,rad)=>{
+ const U="ff"+(rad?"r":"n"),FE=P.n,FED=P.nd,FEL=P.nl,FELL=P.nll,INK=P.ac,INKD=shade(INK,-.55),BR=rad?"#E0B040":"#C89A3A",BRD=shade(BR,-.4),BRL=shade(BR,.45),
+  GL=rad?"#3A1A20":"#1A2A3A",F=v=>(+v).toFixed(1);
+ const defs=`<defs>
+  <linearGradient id="${U}g" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${shade(GL,.5)}"/><stop offset=".22" stop-color="${GL}"/><stop offset=".5" stop-color="${shade(GL,.25)}"/><stop offset=".78" stop-color="${GL}"/><stop offset="1" stop-color="${shade(GL,-.5)}"/></linearGradient>
+  <radialGradient id="${U}k" cx=".5" cy=".55" r=".55"><stop offset="0" stop-color="${INK}"/><stop offset=".6" stop-color="${INKD}"/><stop offset="1" stop-color="#04060C"/></radialGradient>
+  <linearGradient id="${U}r" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="#04060C"/><stop offset=".5" stop-color="${INKD}"/><stop offset="1" stop-color="#04060C"/></linearGradient>
+  <linearGradient id="${U}f" x1="0" y1="0" x2="1" y2="1"><stop offset="0" stop-color="${FELL}"/><stop offset=".45" stop-color="${FE}"/><stop offset="1" stop-color="${FED}"/></linearGradient>
+  <linearGradient id="${U}b" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${BRL}"/><stop offset=".5" stop-color="${BR}"/><stop offset="1" stop-color="${BRD}"/></linearGradient></defs>`;
+ /* faint loops of old handwriting drifting behind */
+ const script=[[18,30,0],[120,14,2],[150,70,4]].map(([x,y,b])=>`<path d="M${x} ${y} c4 -6 8 -6 8 0 s4 6 8 0 s4 -8 8 -2 s2 6 6 0 c3 -5 6 -4 6 1" stroke="${INK}" stroke-width="1.2" fill="none" opacity=".18"><animateTransform attributeName="transform" type="translate" values="0 0;-6 2;0 0" dur="${7+b}s" repeatCount="indefinite"/></path>`).join("");
+ /* calligraphic redaction bars, stroked on, spattering, fading */
+ const bar=(x,y,w,rot,b)=>{const d=`M${x} ${y+2} Q${x+w*.5} ${y-3} ${x+w} ${y} L${x+w-2} ${y+7} Q${x+w*.5} ${y+5} ${x+2} ${y+8} Z`;
+   return`<g transform="rotate(${rot} ${x} ${y})" opacity="0"><path d="${d}" fill="#06070C" stroke="${INK}" stroke-width="1.2"/>${[[w+4,-2],[w+8,4],[w+2,10]].map(([dx,dy],i)=>`<circle cx="${x+dx}" cy="${y+dy}" r="${1.6-i*.4}" fill="#06070C"/>`).join("")}`+
+   `<animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.12;.7;1" dur="4.8s" begin="${b}s" repeatCount="indefinite"/></g>`};
+ const bars=bar(16,40,56,-6,0)+bar(142,26,44,8,1.2)+bar(148,124,38,-4,2.4)+bar(14,98,40,5,3.6);
+ /* the eye made of ink, inside the glass */
+ /* the eyes are made of ink: no white to them at all. A dark almond of ink with a glossy meniscus for lids, a ring of glowing iris
+    streaked like a drop spreading in water, a slit pupil, and a bead of ink always gathering at the corner and running down. */
+ const inkI=(cx,cy,rx,ry,rot,drip)=>{const ir=ry*.82;return`<g transform="rotate(${rot} ${cx} ${cy})">`+
+   `<path d="M${cx-rx} ${cy} Q${cx} ${F(cy-ry*1.5)} ${cx+rx} ${cy} Q${cx} ${F(cy+ry*1.5)} ${cx-rx} ${cy} Z" fill="#04060C" stroke="${FI}" stroke-width="1.6"/>`+
+   `<circle cx="${cx}" cy="${cy}" r="${F(ir)}" fill="url(#${U}k)"/>`+
+   Array.from({length:10},(_,k)=>{const a=k/10*Math.PI*2;return`<path d="M${F(cx+Math.cos(a)*ir*.35)} ${F(cy+Math.sin(a)*ir*.35)} L${F(cx+Math.cos(a)*ir*.95)} ${F(cy+Math.sin(a)*ir*.95)}" stroke="${shade(INK,.5)}" stroke-width=".6" opacity=".35"/>`}).join("")+
+   `<circle cx="${cx}" cy="${cy}" r="${F(ir)}" fill="none" stroke="${shade(INK,.6)}" stroke-width="1" opacity=".8"/>`+
+   `<ellipse cx="${cx}" cy="${cy}" rx="${F(ir*.18)}" ry="${F(ir*.8)}" fill="#020306"/>`+
+   `<path d="M${F(cx-rx*.7)} ${F(cy-ry*.55)} Q${cx} ${F(cy-ry*1.25)} ${F(cx+rx*.7)} ${F(cy-ry*.55)}" stroke="#FFFFFF" stroke-width="1.2" fill="none" opacity=".55"/>`+
+   `<circle cx="${F(cx+ir*.4)}" cy="${F(cy-ir*.45)}" r="${F(ir*.16)}" fill="#FFFFFF"/>`+
+   (drip?`<path d="M${F(cx+rx*.92)} ${F(cy+1)} q1.4 3 0 5.6 q-1.4 -2.6 0 -5.6 Z" fill="#04060C" stroke="${INK}" stroke-width=".6"><animateTransform attributeName="transform" type="translate" values="0 0;0 0;0 9" keyTimes="0;.6;1" dur="2.8s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0" keyTimes="0;.7;1" dur="2.8s" repeatCount="indefinite"/></path>`:"")+`</g>`};
+ const inkEye=`<circle cx="80" cy="118" r="18" fill="${INK}" opacity=".18"/><g class="eye">${inkI(80,118,20,10.4,0,1)}</g>`;
+ const quillEye=`<g class="eye">${inkI(0,0,7.6,4,0,0)}</g>`;
+ return defs+script+`<ellipse class="shd" cx="80" cy="148" rx="40" ry="5.6" fill="#000" opacity=".4"/>`+bars+
+ /* THE INKWELL: brass foot, cut-glass body with facets, the eye in the ink */
+ `<path d="M44 140 H116 L120 146 H40 Z" fill="url(#${U}b)" stroke="${FI}" stroke-width="2.2" stroke-linejoin="round"/>`+
+ `<path d="M48 140 L44 112 L56 98 H104 L116 112 L112 140 Z" fill="url(#${U}g)" stroke="${FI}" stroke-width="2.6" stroke-linejoin="round"/>`+
+ `<path d="M56 98 L60 140 M104 98 L100 140 M44 112 H116" stroke="${FI}" stroke-width="1.2" opacity=".55" fill="none"/><path d="M50 116 L53 136" stroke="#FFFFFF" stroke-width="2.4" opacity=".35" stroke-linecap="round"/><path d="M106 104 L112 112" stroke="#FFFFFF" stroke-width="1.6" opacity=".3"/>`+
+ `<path d="M60 128 Q80 134 100 128 L99 138 H61 Z" fill="url(#${U}k)" opacity=".85"/>`+
+ pt("head",80,120,inkEye)+
+ /* the collar and the domed lid, hinged at the back: it opens like a jaw on a serrated rim */
+ `<rect x="58" y="92" width="44" height="8" rx="2" fill="url(#${U}b)" stroke="${FI}" stroke-width="2.2"/>${[62,70,78,86,94].map(x=>`<circle cx="${x+2}" cy="96" r="1" fill="${BRD}"/>`).join("")}`+
+ `<ellipse cx="80" cy="92" rx="18" ry="3.6" fill="#04060C" stroke="${FI}" stroke-width="1.4"/><ellipse cx="80" cy="92" rx="12" ry="2" fill="${INK}" opacity=".6"><animate attributeName="opacity" values=".3;.8;.3" dur="2.4s" repeatCount="indefinite"/></ellipse>`+
+ pt("jaw",60,92,`<g transform="rotate(-70 60 92)"><path d="M60 92 Q60 70 80 68 Q100 70 100 92 Z" fill="url(#${U}b)" stroke="${FI}" stroke-width="2.4" stroke-linejoin="round"/>`+
+  `<path d="M62 92 ${[0,1,2,3,4,5,6,7,8].map(i=>`L${F(62+i*4.2+2.1)} ${i%2?92:88} `).join("")}L98 92 Z" fill="${BRL}" stroke="${FI}" stroke-width="1"/><circle cx="80" cy="66" r="3.6" fill="url(#${U}b)" stroke="${FI}" stroke-width="1.6"/><path d="M68 80 Q80 72 92 80" stroke="${BRL}" stroke-width="1.6" fill="none"/></g>`+
+  `<circle cx="60" cy="92" r="2.6" fill="${BRD}" stroke="${FI}" stroke-width="1.2"/>`)+
+ /* the rope of ink pouring up out of the well and into the nib */
+ pt("tail",82,90,`<path d="M78 92 C70 76 74 58 92 52 C108 48 124 60 128 80" stroke="${FI}" stroke-width="10" fill="none" stroke-linecap="round"/><path d="M78 92 C70 76 74 58 92 52 C108 48 124 60 128 80" stroke="url(#${U}r)" stroke-width="7" fill="none" stroke-linecap="round"/>`+
+  `<path d="M77 84 C72 72 76 60 90 55" stroke="${INK}" stroke-width="1.8" fill="none" stroke-linecap="round" stroke-dasharray="5 9"><animate attributeName="stroke-dashoffset" values="0;-28" dur="1s" repeatCount="indefinite"/></path><path d="M95 52 C106 50 120 58 125 70" stroke="#FFFFFF" stroke-width="1.2" fill="none" opacity=".45"/>`+
+  [[70,70,0],[110,46,.7]].map(([x,y,b])=>`<circle cx="${x}" cy="${y}" r="2" fill="#06070C" stroke="${INK}" stroke-width=".6"><animateTransform attributeName="transform" type="translate" values="0 0;${x<90?-6:6} -8;${x<90?-10:10} 4" dur="1.6s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0" dur="1.6s" begin="${b}s" repeatCount="indefinite"/></circle>`).join(""))+
+ /* THE QUILL: a long swan feather sweeping up and right, poised mid-stroke, nib in the ink */
+ pt("armF",128,80,`<g transform="translate(128 80) rotate(26) scale(.74)">`+
+  /* nib and brass ferrule */
+  `<path d="M-3 0 L0 12 L3 0 Z" fill="${BRD}" stroke="${FI}" stroke-width="1.4" stroke-linejoin="round"/><path d="M0 2 V10" stroke="${FI}" stroke-width=".8"/><circle cx="0" cy="3" r=".9" fill="${FI}"/>`+
+  `<path d="M-3.4 -10 H3.4 L3 0 H-3 Z" fill="url(#${U}b)" stroke="${FI}" stroke-width="1.4"/><path d="M-3.2 -6 H3.2 M-3.1 -3 H3.1" stroke="${BRD}" stroke-width=".8"/>`+
+  /* bare shaft, then the vane: curved, wider on one side, barbs splitting at the edges */
+  `<path d="M0 -10 V-24" stroke="${FI}" stroke-width="4" stroke-linecap="round"/><path d="M0 -10 V-24" stroke="${FELL}" stroke-width="2" stroke-linecap="round"/>`+
+  `<path d="M0 -22 C-12 -36 -16 -66 -6 -96 C-2 -104 4 -108 8 -104 C14 -82 16 -52 4 -30 Q2 -26 0 -22 Z" fill="url(#${U}f)" stroke="${FI}" stroke-width="2.4" stroke-linejoin="round"/>`+
+  `<path d="M-13 -60 l4 3 M-14 -72 l5 3 M-11 -86 l4 2 M13 -64 l-4 2 M14 -78 l-5 2" stroke="${FI}" stroke-width="1.6" stroke-linecap="round"/>`+
+  Array.from({length:9},(_,i)=>{const y=-30-i*8;return`<path d="M${F(1-i*.2)} ${y} Q${F(-6-i*.4)} ${y-4} ${F(-10-Math.sin(i/8*Math.PI)*3)} ${y-9}" stroke="${FED}" stroke-width=".9" fill="none" opacity=".75"/><path d="M${F(1+i*.15)} ${y} Q${F(6+i*.2)} ${y-3} ${F(9+Math.sin(i/8*Math.PI)*3)} ${y-8}" stroke="${FED}" stroke-width=".9" fill="none" opacity=".75"/>`}).join("")+
+  `<path d="M0 -22 C1 -50 4 -80 6 -104" stroke="${FELL}" stroke-width="1.8" fill="none"/>`+
+  `<g transform="translate(-1 -40) rotate(-80)">${quillEye}</g>`+
+  `<circle cx="0" cy="12.6" r="1.8" fill="${INK}"><animate attributeName="opacity" values="1;.3;1" dur="1.2s" repeatCount="indefinite"/></circle></g>`)+
+ fG(g,1,`<circle cx="176" cy="96" r="1.8" fill="${INK}" opacity=".6"/><circle cx="30" cy="130" r="1.4" fill="${INK}" opacity=".6"/>`)+fG(g,2,`<circle cx="160" cy="148" r="2.4" fill="${P.ll}" opacity=".7"/>`)+fG(g,3,star(186,16,6))});
+FORM_TITLE["Founder's Folly"]="Quill-and-Inkwell Pair";
+
+/* this IS its Overclocked look: it must not be melted down on top */
+BATTLE_FORMS["Founder's Folly"].molten=1;
+
+/* =============== HOLLOW STAR, OVERCLOCKED: the Collapsing Remnant ===============
+   Threats don't melt when they Overclock. This one goes all the way into what it is. Shown only in the Alloydex Overclock view.
+   Not an animal. A dying star caught in the middle of collapsing: a ragged corona round a hole with nothing in it, hovering. What's
+   left of its matter goes round the hole in glowing chunks on uneven orbits. Its face is made of missing light: two pinholes, and a
+   tear in the rim of the void that rips open when it cries. Its arms are streamers of vapour that come apart at the ends and pull
+   back together. On a slow pulse, part of it decays away: the corona dims, a chunk boils off and fades, and it gathers itself back a
+   little way from where it was. Starlight is still dragged in and snuffed out. */
+addForm("Hollow Star",{n:"#8A6AE0",a:"#F4ECFF",rn:"#E2DEF0",rb:"#F4F0FF",ra:"#E8B84A"},"hover",(P,g,rad)=>{
+ const U="hs"+(rad?"r":"n"),V=P.n,VD=P.nd,VL=P.nl,C=P.ac,VOID=rad?"#FFFDF2":"#04020A",W=rad?"#1A1430":"#FFFFFF",CX=104,CY=80,F=v=>(+v).toFixed(1);
+ const defs=`<defs><radialGradient id="${U}g" cx=".5" cy=".5" r=".5"><stop offset=".3" stop-color="#FFFFFF" stop-opacity="0"/><stop offset=".36" stop-color="#FFFFFF" stop-opacity=".9"/><stop offset=".5" stop-color="${C}" stop-opacity=".55"/><stop offset=".75" stop-color="${V}" stop-opacity=".22"/><stop offset="1" stop-color="${V}" stop-opacity="0"/></radialGradient>
+  <linearGradient id="${U}p" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${W}" stop-opacity=".95"/><stop offset=".45" stop-color="${C}" stop-opacity=".7"/><stop offset="1" stop-color="${V}" stop-opacity="0"/></linearGradient>
+  <filter id="${U}b" x="-40%" y="-40%" width="180%" height="180%"><feGaussianBlur stdDeviation="2"/></filter></defs>`;
+ /* the half-life pulse: every 4.4 s it dims, and comes back a little way off */
+ const pulse=`<animate attributeName="opacity" values="1;1;.35;.2;1;1" keyTimes="0;.6;.68;.74;.8;1" dur="4.4s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0;0 0;6 -3;6 -3" keyTimes="0;.74;.75;1" dur="8.8s" calcMode="discrete" repeatCount="indefinite"/>`;
+ /* a ragged corona: flame-shaped streamers of uneven length, two layers turning opposite ways */
+ const petals=(n,r0,lmin,lmax,seed)=>{let s="";for(let k=0;k<n;k++){if((k+seed)%7===0)continue;const a=k/n*360+((k*37+seed)%13-6),len=lmin+((k*53+seed*7)%100)/100*(lmax-lmin),w=4+((k*29+seed)%5);
+   s+=`<path d="M0 -${F(w)} C${F(len*.35)} -${F(w*1.3)} ${F(len*.75)} -2 ${F(len)} ${(k%3)-1} C${F(len*.75)} 2 ${F(len*.35)} ${F(w*1.3)} 0 ${F(w)} Z" fill="url(#${U}p)" transform="rotate(${F(a)}) translate(${r0} 0)"/>`}return s};
+ const corona=`<g transform="translate(${CX} ${CY})"><g>${petals(22,24,14,52,3)}<animateTransform attributeName="transform" type="rotate" values="0;360" dur="40s" repeatCount="indefinite"/></g><g opacity=".7">${petals(13,22,12,30,11)}<animateTransform attributeName="transform" type="rotate" values="360;0" dur="27s" repeatCount="indefinite"/></g></g>`;
+ /* starlight dragged in */
+ const motes=[[14,20,0],[190,30,.8],[186,130,1.6],[18,120,2.4],[120,8,3.1],[60,150,3.8]].map(([x,y,b])=>`<circle r="1.5" fill="#FFFFFF"><animateMotion ${rad?'keyPoints="1;0" keyTimes="0;1" calcMode="linear" ':""}dur="3.6s" begin="${b}s" repeatCount="indefinite" path="M${x} ${y} Q${(x+CX)/2+(y<CY?30:-30)} ${(y+CY)/2+(x<CX?20:-20)} ${CX} ${CY}"/><animate attributeName="opacity" values="0;1;1;0" keyTimes="0;.15;.85;1" dur="3.6s" begin="${b}s" repeatCount="indefinite"/></circle>`).join("");
+ /* the matter that's left, going round on uneven orbits */
+ const chunk=(rx,ry,tilt,dur,b,sz,shape)=>{const pts=shape.map(([x,y])=>`${F(x*sz)},${F(y*sz)}`).join(" ");
+   return`<g transform="translate(${CX} ${CY}) rotate(${tilt})"><g><polygon points="${pts}" fill="${VL}" stroke="${FI}" stroke-width="1.6" stroke-linejoin="round"/><polygon points="${pts}" fill="${C}" opacity=".45" transform="scale(.55)"/><animateMotion dur="${dur}s" begin="-${b}s" repeatCount="indefinite" path="M${rx} 0 A${rx} ${ry} 0 1 1 ${-rx} 0 A${rx} ${ry} 0 1 1 ${rx} 0"/></g></g>`};
+ const SH=[[[-1,-1],[1.2,-.8],[1,1],[-.8,1.1]],[[0,-1.3],[1.1,0],[.3,1],[-1,.4]],[[-1.2,0],[0,-1],[1,.2],[0,1.2]]];
+ /* the one that boils off this cycle: drifts away from the orbit and fades to vapour */
+ const boil=`<g opacity="0"><polygon points="-4,-3 4,-4 5,3 -3,4" fill="${VL}" stroke="${FI}" stroke-width="1.4"/><circle r="9" fill="${V}" opacity=".5" filter="url(#${U}b)"/><animateMotion dur="4.4s" repeatCount="indefinite" path="M${CX+38} ${CY+10} Q${CX+60} ${CY-6} ${CX+80} ${CY-36}"/><animate attributeName="opacity" values="0;0;1;.6;0" keyTimes="0;.55;.62;.85;1" dur="4.4s" repeatCount="indefinite"/></g>`;
+ /* vapour streamers for arms: whole near the rim, coming apart into beads at the ends */
+ const arm=(d,bx,by)=>`<path d="${d}" stroke="${FI}" stroke-width="7" fill="none" stroke-linecap="round" opacity=".9" stroke-dasharray="40 4 14 5 6 6"/><path d="${d}" stroke="${V}" stroke-width="4.4" stroke-dasharray="40 4 14 5 6 6" fill="none" stroke-linecap="round"/><path d="${d}" stroke="${VL}" stroke-width="2" fill="none" stroke-linecap="round" opacity=".7"/>`+
+   [0,1,2].map(i=>`<circle cx="${bx+i*(bx<CX?-5:5)}" cy="${by+i*4}" r="${3-i*.7}" fill="${V}" stroke="${FI}" stroke-width="1"><animate attributeName="opacity" values="1;.2;1" dur="${1.4+i*.4}s" repeatCount="indefinite"/></circle>`).join("");
+ return defs+`<ellipse class="shd" cx="${CX}" cy="148" rx="34" ry="5" fill="${V}" opacity=".25"/>`+motes+
+ `<g>${pulse}`+
+  `<circle cx="${CX}" cy="${CY}" r="64" fill="url(#${U}g)"/>`+corona+
+  pt("armB",CX+22,CY+16,arm(`M${CX+22} ${CY+16} Q${CX+44} ${CY+20} ${CX+52} ${CY+38} Q${CX+58} ${CY+50} ${CX+70} ${CY+52}`,CX+74,CY+52),.3)+
+  pt("armF",CX-22,CY+18,arm(`M${CX-22} ${CY+18} Q${CX-36} ${CY+36} ${CX-30} ${CY+50} Q${CX-26} ${CY+62} ${CX-40} ${CY+66}`,CX-44,CY+66))+
+  [[-14,0],[4,.7],[18,1.4]].map(([dx,b])=>`<path d="M${CX+dx} ${CY-30} q-4 -8 0 -14 q4 -6 0 -12" stroke="${VL}" stroke-width="3" fill="none" stroke-linecap="round" opacity="0"><animate attributeName="opacity" values="0;.75;0" dur="2.2s" begin="${b}s" repeatCount="indefinite"/><animateTransform attributeName="transform" type="translate" values="0 0;0 -12" dur="2.2s" begin="${b}s" repeatCount="indefinite"/></path>`).join("")+
+  `<g transform="rotate(-12 ${CX} ${CY})"><path d="M${CX-58} ${CY} A58 14 0 0 1 ${CX+58} ${CY}" fill="none" stroke="${C}" stroke-width="5" opacity=".55"/><path d="M${CX-58} ${CY} A58 14 0 0 1 ${CX+58} ${CY}" fill="none" stroke="${W}" stroke-width="1.4" opacity=".8" stroke-dasharray="10 6"><animate attributeName="stroke-dashoffset" values="0;-32" dur="1.6s" repeatCount="indefinite"/></path></g>`+
+  pt("head",CX,CY,`<circle cx="${CX}" cy="${CY}" r="26" fill="${VOID}"/><circle cx="${CX}" cy="${CY}" r="26" fill="none" stroke="${W}" stroke-width="3"/><circle cx="${CX}" cy="${CY}" r="29" fill="none" stroke="${C}" stroke-width="4" opacity=".45"/>`+
+   `<g class="eye"><circle cx="${CX-8}" cy="${CY-4}" r="1.3" fill="${W}"/><circle cx="${CX+8}" cy="${CY-4}" r="1.3" fill="${W}"/></g>`+
+   /* the mouth: a ragged tear in the rim, lower down, with light spilling through */
+   `<path d="M${CX-12} ${CY+23} L${CX-6} ${CY+20} L${CX-1} ${CY+24} L${CX+5} ${CY+20} L${CX+11} ${CY+23}" stroke="${W}" stroke-width="1.6" fill="none" stroke-linejoin="round"/>`+
+   pt("jaw",CX,CY+24,`<path d="M${CX-12} ${CY+23} L${CX-6} ${CY+26} L${CX-1} ${CY+23} L${CX+5} ${CY+27} L${CX+11} ${CY+23} Q${CX+8} ${CY+34} ${CX} ${CY+36} Q${CX-8} ${CY+34} ${CX-12} ${CY+23} Z" fill="${rad?"#1A1430":VOID}" stroke="${W}" stroke-width="1.6" stroke-linejoin="round"/><path d="M${CX-6} ${CY+30} L${CX-14} ${CY+42} M${CX} ${CY+33} L${CX} ${CY+46} M${CX+6} ${CY+30} L${CX+14} ${CY+42}" stroke="${C}" stroke-width="2" stroke-linecap="round" opacity=".8"/>`))+
+  `<g transform="rotate(-12 ${CX} ${CY})"><path d="M${CX+58} ${CY} A58 14 0 0 1 ${CX-58} ${CY}" fill="none" stroke="${C}" stroke-width="5" opacity=".7"/><path d="M${CX+58} ${CY} A58 14 0 0 1 ${CX-58} ${CY}" fill="none" stroke="${W}" stroke-width="1.6" stroke-dasharray="10 6"><animate attributeName="stroke-dashoffset" values="0;-32" dur="1.6s" repeatCount="indefinite"/></path></g>`+
+  chunk(46,22,-14,5.2,0,4.4,SH[0])+chunk(40,30,22,7.6,2.4,3.4,SH[1])+chunk(54,18,6,9.4,5,3,SH[2])+boil+
+ `</g>`+
+ fG(g,1,`<circle cx="30" cy="140" r="1.2" fill="#FFFFFF" opacity=".7"/><circle cx="176" cy="60" r="1" fill="#FFFFFF" opacity=".7"/>`)+fG(g,2,`<circle cx="${CX+30}" cy="${CY-30}" r="2.4" fill="${P.ll}" opacity=".7"/>`)+fG(g,3,star(176,22,6))});
+FORM_TITLE["Hollow Star"]="Collapsing Remnant";
+
+/* this IS its Overclocked look: it must not be melted down on top */
+BATTLE_FORMS["Hollow Star"].molten=1;
+/* its Radiant is a white hole: everything about the black one, turned inside out */
+
+/* =============== KILN HEART, OVERCLOCKED: the Hoard Golem ===============
+   Threats don't melt when they Overclock. Shown only in the Alloydex Overclock view.
+   The lore: the Slag Syndicate fed every sample they ever stole into one great pour, and something in the mix woke up; it won't
+   cool or set; its category is Fused Plunder; when it wakes it climbs out of the crucible. So, all the way into what it is: the
+   pour, standing up. A hulking golem cast from cooling slag, broad-shouldered, its head sunk low between its shoulders, long heavy
+   arms ending in great fists. What went into the pour was samples, every one they ever stole, so that's what it's studded with:
+   sample rods of every metal (brass, copper, steel, gold, bismuth, cobalt...) half-melted into its hide, a bundle of them fused into
+   a pauldron, rods bristling from its back, rings of rod-ends down its forearms, and the glass of stolen vials, cracked and fused,
+   their caps still on. It never sets: molten light runs in every crack, and in the middle of its chest the crust is torn open on
+   the white-hot core, the kiln's heart, beating. Radiant: it burns copper-green. */
+addForm("Kiln Heart",{n:"#8A5A3A",a:"#FF8A2A",rn:"#2A6A4A",rb:"#041008",ra:"#6AFFB0"},"walk",(P,g,rad)=>{
+ const U="kh"+(rad?"r":"n"),F=v=>(+v).toFixed(1),CX=100;
+ const W="#FFFFFF",H0=rad?"#F0FFF4":"#FFF4C0",H1=rad?"#7AFFB8":"#FFB040",H2=rad?"#1AB46A":"#F0601A",H3=rad?"#04502A":"#8A2006",
+  S0=rad?"#3A4A40":"#5A4436",S1=rad?"#222C26":"#3A2A20",S2=rad?"#101612":"#1E140E",INK="#0E0806",
+  GOLD="#E8B84A",GOLDD="#8A6A1A",SILV="#C8CCD0",SILVD="#6A6E74",COP="#C87040",COPD="#6A3010";
+ const defs=`<defs><linearGradient id="${U}s" x1="0" y1="0" x2="0" y2="1"><stop offset="0" stop-color="${S0}"/><stop offset=".6" stop-color="${S1}"/><stop offset="1" stop-color="${S2}"/></linearGradient>
+  <radialGradient id="${U}c" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="${W}"/><stop offset=".3" stop-color="${H0}"/><stop offset=".65" stop-color="${H1}"/><stop offset="1" stop-color="${H2}"/></radialGradient>
+  <radialGradient id="${U}gl" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="${H1}" stop-opacity=".7"/><stop offset="1" stop-color="${H2}" stop-opacity="0"/></radialGradient>
+  <radialGradient id="${U}a" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="${H2}" stop-opacity=".35"/><stop offset="1" stop-color="${H2}" stop-opacity="0"/></radialGradient>
+  <linearGradient id="${U}far" x1="0" y1="0" x2="1" y2="0"><stop offset=".45" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".5"/></linearGradient>
+  <clipPath id="${U}tc"><path d="M44 50 Q50 38 70 36 L130 36 Q150 38 156 50 Q160 66 146 84 Q138 98 132 112 L68 112 Q62 98 54 84 Q40 66 44 50 Z"/></clipPath>
+  <filter id="${U}g" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="${U}b" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="2.6"/></filter></defs>`;
+ const glowLine=(d,w,k)=>`<path d="${d}" stroke="${H2}" stroke-width="${w+1.6}" fill="none" stroke-linejoin="round" stroke-linecap="round" opacity=".7"/><path d="${d}" stroke="${H1}" stroke-width="${w}" fill="none" stroke-linejoin="round" stroke-linecap="round" filter="url(#${U}g)"><animate attributeName="opacity" values=".55;1;.55" dur="${1.6+(k||0)*.3}s" repeatCount="indefinite"/></path>`;
+ const coin=(x,y,r,c,cd,a)=>`<g transform="rotate(${a||0} ${x} ${y})"><ellipse cx="${x}" cy="${y}" rx="${r}" ry="${F(r*.8)}" fill="${c}" stroke="${INK}" stroke-width=".9"/><ellipse cx="${x}" cy="${y}" rx="${F(r*.6)}" ry="${F(r*.46)}" fill="none" stroke="${cd}" stroke-width=".7"/></g>`;
+ /* stolen samples: rods of every metal, and vials with their caps on */
+ const RODC=[["#C9A04A","#7A5E1E"],["#C87040","#6A3010"],["#A8AEB4","#5E646A"],["#E8C860","#8A6A1A"],["#6A7ACA","#2E3A80"],["#D8DCE2","#7A8088"],["#8AC0A8","#3A6A58"],["#C890D0","#6A3A80"]];
+ const rod=(x,y,len,ang,k,sunk)=>{const[c,cd]=RODC[k%RODC.length];return`<g transform="translate(${x} ${y}) rotate(${ang})"><rect x="-2.6" y="${-len}" width="5.2" height="${len}" rx="1" fill="${c}" stroke="${INK}" stroke-width="1"/><path d="M-1 ${-len+1.4} V-1.4" stroke="${W}" stroke-width=".9" opacity=".55"/><path d="M1.6 ${-len+1} V-1" stroke="${cd}" stroke-width="1"/><ellipse cy="${-len}" rx="2.6" ry="1" fill="${c}" stroke="${INK}" stroke-width=".8"/>`+(sunk?`<path d="M-4 0 Q0 -3 4 0" stroke="${H1}" stroke-width="1.4" fill="none" filter="url(#${U}g)"/>`:"")+`</g>`};
+ const vial=(x,y,ang,liq)=>`<g transform="translate(${x} ${y}) rotate(${ang})"><rect x="-3.4" y="-14" width="6.8" height="14" rx="2.4" fill="#DDF0F8" fill-opacity=".35" stroke="${INK}" stroke-width="1"/><rect x="-2.4" y="-7" width="4.8" height="6.2" rx="1.4" fill="${liq}" opacity=".85"/><rect x="-3.8" y="-17" width="7.6" height="3.6" rx=".8" fill="#3A3A40" stroke="${INK}" stroke-width=".8"/><path d="M-1.6 -12 V-8" stroke="${W}" stroke-width=".8" opacity=".7"/><path d="M1 -13 L2.6 -9 L.4 -6" stroke="${W}" stroke-width=".5" fill="none" opacity=".8"/></g>`;
+ const rodEnd=(x,y,r,k)=>{const[c,cd]=RODC[k%RODC.length];return`<ellipse cx="${x}" cy="${y}" rx="${r}" ry="${F(r*.8)}" fill="${c}" stroke="${INK}" stroke-width=".9"/><ellipse cx="${x}" cy="${y}" rx="${F(r*.5)}" ry="${F(r*.4)}" fill="${cd}" opacity=".6"/>`};
+ /* legs: short thick pillars of slag */
+ const leg=s=>{const x=CX+s*20;return`<path d="M${x-13} 108 L${x+13} 108 L${x+14} 140 L${x-14} 140 Z" fill="url(#${U}s)" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/>`+
+   `<path d="M${x-18} 140 L${x+18} 140 L${x+20} 150 L${x-20} 150 Z" fill="${S1}" stroke="${INK}" stroke-width="2.2" stroke-linejoin="round"/>`+
+   glowLine(`M${x-6} 112 L${x-2} 122 L${x-7} 132 L${x-3} 140`,1.2,s>0?1:0)+
+   (s<0?rod(x+6,132,12,25,2,1)+rodEnd(x-6,118,2.6,4):vial(x+4,132,-15,"#6AD08A")+rodEnd(x-5,120,2.6,1))};
+ /* the torso: massive shoulders tapering to the hips */
+ const TOR=`M44 50 Q50 38 70 36 L130 36 Q150 38 156 50 Q160 66 146 84 Q138 98 132 112 L68 112 Q62 98 54 84 Q40 66 44 50 Z`;
+ const cracks=glowLine(`M58 56 L70 62 L66 74 L76 84 M142 56 L130 62 L134 74 L124 84 M76 96 L88 92 L86 104 M124 96 L112 92 L114 104 M96 40 L100 48 L104 40`,1.4,0);
+ /* the kiln's heart: the crust torn open in the middle of the chest, the white-hot core beating behind it */
+ const heart=`<ellipse cx="${CX}" cy="70" rx="26" ry="22" fill="url(#${U}gl)"><animate attributeName="rx" values="24;30;24;27;24;24" keyTimes="0;.1;.2;.3;.4;1" dur="1.4s" repeatCount="indefinite"/></ellipse>`+
+  `<path d="M${CX-12} 58 L${CX-4} 54 L${CX+6} 57 L${CX+13} 66 L${CX+10} 80 L${CX+2} 86 L${CX-8} 82 L${CX-14} 72 Z" fill="url(#${U}c)" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>`+
+  `<g transform="translate(${CX} 70)"><g><circle r="6.6" fill="${W}" filter="url(#${U}g)"/><animateTransform attributeName="transform" type="scale" values="1;1.25;1;1.12;1;1" keyTimes="0;.1;.2;.3;.4;1" dur="1.4s" repeatCount="indefinite"/></g></g>`+
+  /* crust ribs half over the wound */
+  `<path d="M${CX-16} 64 L${CX-6} 66 M${CX-16} 76 L${CX-4} 76 M${CX+16} 62 L${CX+6} 66 M${CX+14} 76 L${CX+4} 75" stroke="${S1}" stroke-width="3.4" stroke-linecap="round"/><path d="M${CX-16} 64 L${CX-6} 66 M${CX-16} 76 L${CX-4} 76 M${CX+16} 62 L${CX+6} 66 M${CX+14} 76 L${CX+4} 75" stroke="${INK}" stroke-width="1" stroke-linecap="round" opacity=".6"/>`;
+ /* loot fused into the hide */
+  const chestLoot=rodEnd(78,50,3.4,0)+rodEnd(122,48,3.2,5)+rodEnd(86,104,2.8,1)+rodEnd(114,104,3,3)+rodEnd(140,76,2.6,6)+
+  rod(66,104,13,-20,4,1)+rod(134,104,11,25,7,1)+vial(62,78,-10,"#E8A040");
+ const torso=`<path d="${TOR}" fill="url(#${U}s)" stroke="${INK}" stroke-width="2.6" stroke-linejoin="round"/>`+cracks+heart+chestLoot+
+  `<path d="M54 52 Q60 42 72 40" stroke="${S0}" stroke-width="2" fill="none" opacity=".8"/>`;
+ /* the head, sunk low between the shoulders */
+ const head=`<path d="M82 40 Q80 22 92 16 Q100 13 108 16 Q120 22 118 40 Q112 46 100 46 Q88 46 82 40 Z" fill="url(#${U}s)" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/>`+
+  `<path d="M82 27 L95 31 L95 27 L84 23 Z M111 27 L101 31 L101 27 L110 23 Z" fill="${S0}" stroke="${INK}" stroke-width="1.4" stroke-linejoin="round"/>`+
+  `<g class="eye" filter="url(#${U}g)"><path d="M84 32 Q89 29 94 33 Q89 35 84 32 Z" fill="${H0}"/><path d="M109 32 Q106 29.6 102 33 Q106 34.6 109 32 Z" fill="${H0}"/></g>`+
+  rodEnd(106,20,2.4,3)+`<path d="M108 18 Q120 24 118 40 Q112 46 104 46 Q114 36 108 18 Z" fill="#000" opacity=".35"/>`+
+  `<path d="M87 40 L92 38.6 L97 40.6 L102 38.6 L106 40" stroke="${INK}" stroke-width="2" fill="none" stroke-linejoin="round"/>`+
+  pt("jaw",CX-3,40,`<path d="M87 40 L92 38.6 L97 40.6 L102 38.6 L106 40 L103 44.6 L97 46 L91 44.6 Z" fill="${H1}" stroke="${INK}" stroke-width="1.4" stroke-linejoin="round"/><ellipse cx="97" cy="42.6" rx="3.6" ry="1.4" fill="${H0}" filter="url(#${U}g)"/>`);
+ /* arms: long and heavy, slag over a molten core, coins fused down the forearm like scales; great fists */
+ const arm=s=>{const sh=[CX+s*50,52],el=[CX+s*64,86],fi=[CX+s*64,118];
+   const seg=(a,b,w)=>{const an=Math.atan2(b[1]-a[1],b[0]-a[0])*180/Math.PI,L=Math.hypot(b[0]-a[0],b[1]-a[1]);return`<g transform="translate(${a[0]} ${a[1]}) rotate(${F(an)})"><rect x="-4" y="${-w/2}" width="${F(L+8)}" height="${w}" rx="${F(w/2.4)}" fill="url(#${U}s)" stroke="${INK}" stroke-width="2.2"/>${glowLine(`M2 ${F(-w*.15)} L${F(L*.4)} ${F(w*.15)} L${F(L*.8)} ${F(-w*.1)}`,1.1,s>0?1:2)}</g>`};
+   const scales=[.2,.4,.6,.8].map((t,i)=>rodEnd(F(el[0]+(fi[0]-el[0])*t+s*3),F(el[1]+(fi[1]-el[1])*t),2.6,i*3+(s>0?1:0))).join("");
+   const fist=`<rect x="${fi[0]-12}" y="${fi[1]-6}" width="24" height="22" rx="7" fill="url(#${U}s)" stroke="${INK}" stroke-width="2.2"/>`+
+    /* four fingers curled under, knuckles along the bottom */
+    [-6,0,6].map(dx=>`<path d="M${fi[0]+dx} ${fi[1]+3} V${fi[1]+15}" stroke="${INK}" stroke-width="1.3"/>`).join("")+
+    [-9,-3,3,9].map(dx=>`<path d="M${fi[0]+dx-2.6} ${fi[1]+4} Q${fi[0]+dx} ${fi[1]+1.6} ${fi[0]+dx+2.6} ${fi[1]+4}" stroke="${S0}" stroke-width="1.4" fill="none"/>`).join("")+
+    /* the thumb folded across */
+    `<path d="M${fi[0]-s*12} ${fi[1]-2} Q${fi[0]-s*2} ${fi[1]-4} ${fi[0]+s*4} ${fi[1]+1}" stroke="${INK}" stroke-width="6.4" fill="none" stroke-linecap="round"/><path d="M${fi[0]-s*12} ${fi[1]-2} Q${fi[0]-s*2} ${fi[1]-4} ${fi[0]+s*4} ${fi[1]+1}" stroke="${S1}" stroke-width="4" fill="none" stroke-linecap="round"/>`+
+    glowLine(`M${fi[0]-6} ${fi[1]+1} L${fi[0]+1} ${fi[1]+4} L${fi[0]+7} ${fi[1]}`,1,3)+
+    (s<0?rodEnd(fi[0]+5,fi[1]+10,2.4,7):"");
+   return seg(sh,el,20)+seg(el,fi,17)+`<circle cx="${el[0]}" cy="${el[1]}" r="9" fill="url(#${U}s)" stroke="${INK}" stroke-width="2"/>${glowLine(`M${el[0]-4} ${el[1]-3} L${el[0]+2} ${el[1]+1} L${el[0]-1} ${el[1]+5}`,1,1)}`+scales+fist};
+ /* a silver platter fused on as a pauldron on one shoulder, cutlery jutting from the other */
+ const platter=`<g transform="rotate(-18 54 46)"><ellipse cx="54" cy="47" rx="19" ry="9" fill="${S1}" stroke="${INK}" stroke-width="2"/></g>`+
+  [[40,46,0],[46,43,1],[52,41,2],[58,40,3],[64,41,4],[44,50,5],[50,47,6],[56,46,7],[62,46,0],[68,45,1]].map(([x,y,k])=>rodEnd(x,y,3,k)).join("")+
+  `<path d="M38 52 Q54 56 70 48" stroke="${H1}" stroke-width="1.2" fill="none" filter="url(#${U}g)" opacity=".8"/>`;
+ const cutlery=rod(142,44,22,28,2,1)+rod(150,48,18,48,4,1)+rod(134,40,14,12,5,1)+vial(156,58,70,"#A070E0");
+ const drips=[[70,112,0],[118,112,.7],[CX+6,86,1.3]].map(([x,y,b])=>`<circle cx="${x}" r="1.6" fill="${H1}"><animate attributeName="cy" values="${y};${y};150" keyTimes="0;.5;1" dur="2.2s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0" keyTimes="0;.85;1" dur="2.2s" begin="${b}s" repeatCount="indefinite"/></circle>`).join("");
+ const sparks=Array.from({length:6},(_,k)=>{const x=78+k*9,b=k*.37;return`<circle cx="${x}" r="1" fill="${k%2?H0:H1}"><animate attributeName="cy" values="60;10" dur="2.4s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;1;0" dur="2.4s" begin="${b}s" repeatCount="indefinite"/></circle>`}).join("");
+ return defs+`<ellipse cx="${CX}" cy="80" rx="96" ry="76" fill="url(#${U}a)"/><ellipse class="shd" cx="${CX}" cy="151" rx="64" ry="5" fill="#000" opacity=".45"/><ellipse cx="${CX}" cy="150" rx="40" ry="3.4" fill="${H2}" opacity=".3" filter="url(#${U}b)"/>`+
+  `<g transform="translate(${CX+20} 108) scale(.86 1) translate(${-CX-20} -108) translate(-6 -2)"><g opacity=".85">`+pt("legB",CX+20,108,leg(1),.3)+`</g></g>`+
+  `<g transform="translate(-4 0) translate(${CX+50} 52) scale(.86 .96) translate(${-CX-50} -52)"><g style="filter:brightness(.7)">`+pt("armB",CX+50,52,arm(1),.3)+`</g></g>`+
+  `<g transform="translate(60 0) scale(.88 1) translate(-60 0)">`+torso+`<g clip-path="url(#${U}tc)"><rect x="40" y="30" width="122" height="86" fill="url(#${U}far)"/></g>`+platter+cutlery+`</g>`+
+  pt("legF",CX-20,108,leg(-1))+
+  `<g transform="translate(-6 0)">`+pt("head",CX,40,head)+`</g>`+pt("armF",CX-50,52,arm(-1))+drips+sparks+
+  fG(g,1,`<circle cx="22" cy="40" r="1.4" fill="${H1}" opacity=".7"/><circle cx="178" cy="30" r="1.2" fill="${H1}" opacity=".7"/>`)+fG(g,2,rod(184,150,10,70,3))+fG(g,3,star(16,20,6))});
+FORM_TITLE["Kiln Heart"]="Hoard Golem";
+
+/* this IS its Overclocked look: it must not be melted down on top */
+BATTLE_FORMS["Kiln Heart"].molten=1;
+
+/* =============== PHOENIX LATTICE, OVERCLOCKED: the wireframe phoenix ===============
+   Threats don't melt when they Overclock. Shown only in the Alloydex Overclock view.
+   A phoenix that is nothing but its own crystal lattice, head and beak to the left, tail streaming away to the
+   right, both wings raised. The wings are now the sample's wings: each one a fan of long faceted blades of light, magenta at the
+   root, violet, then cyan at the tips, every blade outlined and braced with bonds and glowing atoms. The body, head and tail are
+   bonds of light between atoms. It lives on a loop: it builds itself bond by bond from the tail up, flashes white when it's whole,
+   burns, then decays to ash and starts again. You only see it through a projector, so it has colour ghosts and scanlines, and the two
+   rings from its fight turn round it and lock together at the rebirth. Radiant: threat red, deep red at the root to pale red at the tips. */
+addForm("Phoenix Lattice",{n:"#FF4AC8",a:"#78F0FF",rn:"#B0121E",rb:"#1A0204",ra:"#FF8A7A"},"hover",(P,g,rad)=>{
+ const U="px"+(rad?"r":"n"),M=rad?"#B0121E":"#FF4AC8",VI=rad?"#E8303A":"#B07AFF",CY=rad?"#FF8A7A":"#78F0FF",W="#FFFFFF",F=v=>(+v).toFixed(1),CYC=5;
+ const stops=`<stop offset="0" stop-color="${M}" stop-opacity=".85"/><stop offset=".5" stop-color="${VI}" stop-opacity=".6"/><stop offset="1" stop-color="${CY}" stop-opacity=".4"/>`;
+ const defs=`<defs><linearGradient id="${U}f" x1="1" y1="1" x2="0" y2="0">${stops}</linearGradient><linearGradient id="${U}b" x1="0" y1="1" x2="1" y2="0">${stops}</linearGradient>
+  <radialGradient id="${U}h" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="${VI}" stop-opacity=".45"/><stop offset="1" stop-color="${VI}" stop-opacity="0"/></radialGradient>
+  <filter id="${U}g" x="-30%" y="-30%" width="160%" height="160%"><feGaussianBlur stdDeviation="1.4" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <pattern id="${U}s" width="4" height="4" patternUnits="userSpaceOnUse"><rect width="4" height="1.2" fill="#000" opacity=".22"/></pattern></defs>`;
+ const on=(st,d)=>`<animate attributeName="stroke-dashoffset" values="1;1;0;0" keyTimes="0;${F(st)};${F(st+(d||.07))};1" dur="${CYC}s" repeatCount="indefinite"/>`;
+ const bond=(x1,y1,x2,y2,col,w,st,op)=>`<path d="M${F(x1)} ${F(y1)} L${F(x2)} ${F(y2)}" stroke="${col}" stroke-width="${w}" stroke-linecap="round" pathLength="1" stroke-dasharray="1 1"${op?` opacity="${op}"`:""}>${on(st)}</path>`;
+ const atom=(x,y,st,r)=>`<circle cx="${F(x)}" cy="${F(y)}" r="${r||1.7}" fill="${W}"><animate attributeName="opacity" values="0;0;1;1" keyTimes="0;${F(st)};${F(st+.06)};1" dur="${CYC}s" repeatCount="indefinite"/></circle>`;
+ const fade=st=>`<animate attributeName="opacity" values="0;0;1;1" keyTimes="0;${F(st)};${F(st+.08)};1" dur="${CYC}s" repeatCount="indefinite"/>`;
+ /* one faceted blade of the wing: filled, outlined, braced */
+ const blade=([x0,y0],[x1,y1],[x2,y2],st,gr)=>{const mx=(x0+x1)/2,my=(y0+y1)/2;
+   return`<path d="M${x0} ${y0} L${x1} ${y1} L${x2} ${y2} Z" fill="url(#${gr})" opacity="0">${fade(st)}</path>`+
+    [[-1.4,"#3AE8FF"],[1.4,"#FF3AD0"]].map(([d,c])=>bond(x0+d,y0,x1+d,y1,c,1.2,st,.45)).join("")+
+    bond(x0,y0,x1,y1,M,2.4,st)+bond(x1,y1,x2,y2,CY,2,st+.02)+bond(x2,y2,x0,y0,M,2.4,st+.01)+bond(mx,my,(x1+x2)/2,(y1+y2)/2,VI,1.2,st+.03)+
+    atom(x1,y1,st+.03)+atom(x2,y2,st+.03)+atom(mx,my,st+.04,1.2)};
+ /* the near wing sweeps up and forward, the far wing up and back: blades fanning from the shoulder, longest on top */
+ const wing=(R,T,gr,st)=>T.map(([a,b],i)=>blade(R,a,b,st+i*.02,gr)).join("");
+ const wingF=wing([102,88],[[[60,2],[86,10]],[[34,12],[62,24]],[[18,34],[44,42]]],`${U}f`,.1);
+ const wingB=wing([114,86],[[[136,0],[160,8]],[[176,12],[190,32]],[[194,46],[184,62]],[[180,74],[166,80]]],`${U}b`,.08);
+ /* the rest of it, as before: atoms and bonds, side-on */
+ const N={body:[[96,96],[110,90],[124,94],[130,104],[122,114],[106,116],[94,110],[88,102],[110,103]],
+  head:[[84,88],[76,78],[62,66],[70,61],[78,68],[73,77],[63,77],[68,69]],
+  beakU:[[62,70],[49,74],[62,74]],beakL:[[62,75],[52,79],[63,79]],
+  tail:[[128,108],[150,118],[172,126],[190,140],[146,112],[168,110],[188,114],[140,118],[156,136],[164,152]]};
+ const E={body:[[0,1],[1,2],[2,3],[3,4],[4,5],[5,6],[6,7],[7,0],[8,0],[8,2],[8,4],[8,6],[1,8],[3,8],[5,8],[7,8]],
+  head:[[0,1],[1,5],[5,6],[6,2],[2,3],[3,4],[4,1],[4,7],[7,2],[7,6],[3,7]],beakU:[[0,1],[1,2],[2,0]],beakL:[[0,1],[1,2],[2,0]],
+  tail:[[0,1],[1,2],[2,3],[0,4],[4,5],[5,6],[0,7],[7,8],[8,9],[1,4],[4,2],[1,7],[7,2],[5,2]]};
+ const ORDER={tail:0,body:.05,head:.2,beakU:.23,beakL:.23};
+ const lat=(k,dx,col,w,ghost)=>{const n=N[k],s0=ORDER[k];return E[k].map(([a,b],i)=>{const[x1,y1]=n[a],[x2,y2]=n[b];
+   return bond(x1+dx,y1,x2+dx,y2,col,w,Math.min(.3,s0+i*.006),ghost?.45:0)}).join("")+
+   (ghost?"":n.map(([x,y],i)=>atom(x,y,s0+.02,i===n.length-1&&k==="body"?2.6:1.8)).join(""))};
+ const part=k=>lat(k,-1.6,"#3AE8FF",1.4,1)+lat(k,1.6,"#FF3AD0",1.4,1)+lat(k,0,k==="tail"?CY:M,3.2,0)+lat(k,0,W,1.1,0);
+ const fill=(pts,st)=>`<path d="M${pts.map(p=>p.join(" ")).join(" L")} Z" fill="${VI}" opacity="0">${fade(st)}</path>`;
+ const decay=`<animate attributeName="opacity" values="1;1;1;.12;.12" keyTimes="0;.4;.78;.94;1" dur="${CYC}s" repeatCount="indefinite"/>`;
+ const ash=[[70,60],[90,40],[140,40],[120,96],[100,110],[150,116],[170,124],[60,24],[40,50],[176,40]].map(([x,y],i)=>`<rect x="${x}" y="${y}" width="2.4" height="2.4" fill="${i%2?M:CY}" opacity="0"><animateTransform attributeName="transform" type="translate" values="0 0;0 0;${i%2?6:-6} 40" keyTimes="0;.78;1" dur="${CYC}s" repeatCount="indefinite"/><animate attributeName="opacity" values="0;0;.9;0" keyTimes="0;.78;.85;1" dur="${CYC}s" repeatCount="indefinite"/></rect>`).join("");
+ const flash=`<circle cx="104" cy="84" r="80" fill="#FFFFFF" opacity="0"><animate attributeName="opacity" values="0;0;.7;0;0" keyTimes="0;.3;.33;.42;1" dur="${CYC}s" repeatCount="indefinite"/></circle>`;
+ const rings=`<ellipse cx="108" cy="102" rx="60" ry="14" fill="none" stroke="${CY}" stroke-width="1.6" stroke-dasharray="5 4" opacity=".6"/>`+
+  `<ellipse cx="108" cy="102" rx="60" ry="14" fill="none" stroke="${M}" stroke-width="1.6" opacity=".8"><animateTransform attributeName="transform" type="rotate" values="-24 108 102;0 108 102;0 108 102;-24 108 102" keyTimes="0;.32;.5;1" dur="${CYC}s" repeatCount="indefinite"/></ellipse>`;
+ return defs+`<g transform="translate(6 10) scale(.92)"><ellipse class="shd" cx="108" cy="148" rx="40" ry="5" fill="${M}" opacity=".18"/><circle cx="106" cy="80" r="80" fill="url(#${U}h)"/>`+rings+
+ `<g filter="url(#${U}g)">${decay}`+
+  pt("tail",128,108,part("tail"),.2)+pt("wingB",114,86,`<g opacity=".8">${wingB}</g>`,.3)+fill(N.body.slice(0,8),.08)+part("body")+pt("wingF",102,88,wingF)+
+  pt("head",82,86,fill([[84,88],[76,78],[70,61],[62,66],[63,77],[73,77]],.22)+part("head")+part("beakU")+
+   `<g class="eye"><circle cx="68" cy="69" r="3.2" fill="${W}"/><circle cx="68" cy="69" r="1.4" fill="${CY}"/></g>`+
+   pt("jaw",62,77,part("beakL")))+
+ `</g>`+ash+flash+`</g>`+
+ `<rect x="0" y="0" width="200" height="160" fill="url(#${U}s)" opacity=".5" pointer-events="none"/>`+
+ fG(g,1,`<path d="M26 120 l4 -4 M178 92 l4 -4" stroke="${M}" stroke-width="2" opacity=".6"/>`)+fG(g,2,`<circle cx="30" cy="96" r="2.2" fill="${CY}" opacity=".7"/>`)+fG(g,3,star(184,140,6))});
+FORM_TITLE["Phoenix Lattice"]="Wireframe Phoenix";
+
+/* this IS its Overclocked look: it must not be melted down on top */
+BATTLE_FORMS["Phoenix Lattice"].molten=1;
+
+/* =============== THE UNMAKER, OVERCLOCKED: the Quicksilver Wraith ===============
+   Threats don't melt when they Overclock. Shown only in the Alloydex Overclock view.
+   The lore: a liquid metal that seeps along the grain boundaries of ordinary metal and makes it crumble like stale bread; it never
+   runs out, because every fragment that breaks away carries the liquid in its seams on to the next thing it touches; its category
+   is Devourer. So, all the way into what it is: the liquid itself, standing up. A tall, slender, feminine figure of mirror-bright liquid
+   metal rising out of its own pool, no legs, drawn a little larger than life: a full chest and hips and heavy arms, an ordinary skirt
+   that pours into the pool, shoulder-length liquid hair growing from the scalp with a side-swept fringe, its surface quivering and reflecting sky and dark like chrome. Its face is two hollows and a
+   mouth that stretches open in the liquid. One arm hangs, its fingers running down in long drips into the pool. The other reaches
+   out and grips a steel girder, and the girder is being unmade: silver veins spread out from its fingers along the grain, the steel
+   cracks along them, and chunks break away and crumble into grains, each one wet with silver. Radiant: liquid gold. */
+addForm("The Unmaker",{n:"#C9CED4",a:"#F4F8FC",rn:"#F0C040",rb:"#1A1006",ra:"#FFF4C0"},"hover",(P,g,rad)=>{
+ const U="um"+(rad?"r":"n"),F=v=>(+v).toFixed(1);
+ const W="#FFFFFF",EYEG=rad?"#FFB040":"#9FE0FF",EYEW=rad?"#FFF2C0":"#E8FAFF",C0=rad?"#FFF8D8":"#FFFFFF",C1=rad?"#F6D870":"#DCE6F0",SKY=rad?"#E8B840":"#9EBCDA",DK=rad?"#4A2C06":"#2E3846",MID=rad?"#B07A1A":"#7E8C9C",LO=rad?"#F0C860":"#C6D2DE",
+  INK="#10141A",ST=rad?"#5A4A40":"#6E747C",STL=rad?"#8A766A":"#9AA2AA",STD=rad?"#2E2420":"#40464E",VEIN=rad?"#FFE89A":"#F4FAFF";
+ /* chrome: one reflection map shared by body, arms and pool, so the horizon line runs straight across all of it */
+ const defs=`<defs><linearGradient id="${U}c" gradientUnits="userSpaceOnUse" x1="0" y1="14" x2="0" y2="150"><stop offset="0" stop-color="${C0}"/><stop offset=".22" stop-color="${C1}"/><stop offset=".44" stop-color="${SKY}"/><stop offset=".5" stop-color="${C1}"/><stop offset=".53" stop-color="${DK}"/><stop offset=".62" stop-color="${MID}"/><stop offset=".85" stop-color="${LO}"/><stop offset="1" stop-color="${C1}"/></linearGradient>
+  <linearGradient id="${U}v" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${MID}"/><stop offset=".12" stop-color="${C0}"/><stop offset=".3" stop-color="${C1}"/><stop offset=".55" stop-color="${SKY}"/><stop offset=".72" stop-color="${DK}"/><stop offset=".86" stop-color="${MID}"/><stop offset="1" stop-color="${LO}"/></linearGradient>
+  <linearGradient id="${U}s" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="#000" stop-opacity=".35"/><stop offset=".3" stop-color="#000" stop-opacity="0"/><stop offset=".75" stop-color="#000" stop-opacity="0"/><stop offset="1" stop-color="#000" stop-opacity=".4"/></linearGradient>
+  <linearGradient id="${U}b" x1="0" y1="0" x2="1" y2="0"><stop offset="0" stop-color="${STD}"/><stop offset=".4" stop-color="${STL}"/><stop offset="1" stop-color="${ST}"/></linearGradient>
+  <radialGradient id="${U}hl" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="${C0}" stop-opacity=".75"/><stop offset="1" stop-color="${C0}" stop-opacity="0"/></radialGradient><radialGradient id="${U}hd" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="${DK}" stop-opacity=".7"/><stop offset="1" stop-color="${DK}" stop-opacity="0"/></radialGradient><clipPath id="${U}bc"><path d="M55 150 Q54 132 55 122 Q57 111 74 106 Q66 98 65 88 Q63 74 67 69 Q77 65 88 65 Q100 65 109 68 Q112 71 112 74 Q126 79 124 91 Q121 100 108 101 Q104 103 102 106 Q119 111 121 122 Q122 132 121 150 Z"/></clipPath>
+  <linearGradient id="${U}bst" gradientUnits="userSpaceOnUse" x1="0" y1="72" x2="0" y2="98"><stop offset="0" stop-color="${MID}" stop-opacity="0"/><stop offset=".3" stop-color="${MID}" stop-opacity=".3"/><stop offset=".6" stop-color="${C1}" stop-opacity=".6"/><stop offset=".78" stop-color="${C0}" stop-opacity=".45"/><stop offset=".92" stop-color="${MID}" stop-opacity=".45"/><stop offset="1" stop-color="${DK}" stop-opacity=".5"/></linearGradient>
+  <radialGradient id="${U}bf" cx=".38" cy=".58" r=".62"><stop offset="0" stop-color="${C0}" stop-opacity=".6"/><stop offset=".4" stop-color="${C1}" stop-opacity=".2"/><stop offset=".75" stop-color="${DK}" stop-opacity=".2"/><stop offset="1" stop-color="${DK}" stop-opacity=".55"/></radialGradient>
+  <filter id="${U}sb" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.1"/></filter>
+  <filter id="${U}gl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter>
+  <filter id="${U}bl" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="3"/></filter></defs>`;
+ /* the pool it rises from, rippling */
+ const pool=`<ellipse cx="86" cy="146" rx="50" ry="8" fill="url(#${U}c)" stroke="${INK}" stroke-width="2"/><ellipse cx="86" cy="145" rx="40" ry="5" fill="${C0}" opacity=".35"/>`+
+  [0,1.2].map(b=>`<ellipse cx="58" cy="146" rx="2" ry=".8" fill="none" stroke="${C0}" stroke-width="1"><animate attributeName="rx" values="2;14" dur="2.4s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="ry" values=".8;3.4" dur="2.4s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur="2.4s" begin="${b}s" repeatCount="indefinite"/></ellipse>`).join("");
+ /* the body: rising out of the pool, narrow waist, broad shoulders, leaning toward the girder; it quivers */
+ const B1=`M55 150 Q54 132 55 122 Q57 111 74 106 Q66 98 65 88 Q63 74 67 69 Q77 65 88 65 Q100 65 109 68 Q112 71 112 74 Q126 79 124 91 Q121 100 108 101 Q104 103 102 106 Q119 111 121 122 Q122 132 121 150 Z`;
+ const B2=`M56 150 Q54 132 54 122 Q56 110 73 105 Q65 97 64 88 Q62 73 67 68 Q77 64 88 64 Q100 64 109 67 Q112 70 113 73 Q127 78 125 91 Q122 100 109 101 Q105 103 103 105 Q120 110 122 122 Q122 132 120 150 Z`;
+ const body=`<path d="${B1}" fill="url(#${U}c)" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"><animate attributeName="d" values="${B1};${B2};${B1}" dur="2.6s" repeatCount="indefinite"/></path>`+
+  `<path d="${B1}" fill="url(#${U}s)"><animate attributeName="d" values="${B1};${B2};${B1}" dur="2.6s" repeatCount="indefinite"/></path>`+
+  `<g clip-path="url(#${U}bc)">`+
+  /* collarbones and the flat upper chest */
+  `<path d="M74 70 Q81 73 87 71 M91 71 Q98 73 104 70" stroke="${DK}" stroke-width="1.6" fill="none" opacity=".45" filter="url(#${U}sb)"/>`+
+  /* the chest: two forms resting on the ribcage, seen three-quarters; the light lands low on each, the underside turns into shadow */
+  /* far form: a soft sheen on its lit lower-left, its outer edge and underside in shadow */
+  `<ellipse cx="108" cy="90" rx="7" ry="5.6" fill="url(#${U}hl)" opacity=".25"/><ellipse cx="121" cy="88" rx="4" ry="9" fill="url(#${U}hd)" opacity=".3"/>`+
+  `<path d="M99 95 Q110 103 123 94 Q119 101 110 102 Q103 101.4 99 95 Z" fill="${DK}" opacity=".3" filter="url(#${U}sb)"/>`+
+  /* near form: the light lands on its full lower-left curve; its inner side rolls into shadow where it meets the far one */
+  `<ellipse cx="80" cy="90" rx="11" ry="7.4" fill="url(#${U}hl)" opacity=".35"/><ellipse cx="95" cy="88" rx="5" ry="9" fill="url(#${U}hd)" opacity=".2"/>`+
+  `<path d="M68 93 Q83 105 99 94 Q94 101 83 101.6 Q72 100.6 68 93 Z" fill="${DK}" opacity=".3" filter="url(#${U}sb)"/>`+
+  `<path d="M98 80 Q100.4 88 97.6 96" stroke="${DK}" stroke-width="2.2" fill="none" opacity=".15" filter="url(#${U}sb)"/>`+
+  /* the ribcage below it, narrowing to the waist */
+  `<ellipse cx="80" cy="104" rx="5" ry="3" fill="url(#${U}hl)" opacity=".3"/><ellipse cx="104" cy="104" rx="5" ry="4" fill="url(#${U}hd)" opacity=".45"/><ellipse cx="88" cy="107" rx="16" ry="2.6" fill="url(#${U}hd)" opacity=".5"/>`+
+  /* each hip a rounded form: lit on its upper curve, falling into shadow underneath and at the outer edge */
+  `<ellipse cx="70" cy="119" rx="17" ry="12" fill="url(#${U}hl)" opacity=".5"/><ellipse cx="105" cy="120" rx="12" ry="10" fill="url(#${U}hl)" opacity=".26"/>`+
+  `<ellipse cx="70" cy="136" rx="22" ry="8" fill="url(#${U}hd)" opacity=".45"/><ellipse cx="108" cy="133" rx="17" ry="11" fill="url(#${U}hd)" opacity=".55"/>`+
+  `<ellipse cx="120" cy="125" rx="6" ry="16" fill="url(#${U}hd)" opacity=".65"/><ellipse cx="56" cy="123" rx="3.4" ry="11" fill="url(#${U}hd)" opacity=".45"/>`+
+  `</g>`+
+  "";
+ /* the head: a smooth drop with two hollows for eyes and a mouth that stretches open */
+ const H1=`M88 20 Q100 21 101 37 Q101 50 95 60 Q91 65 86 60 Q74 50 73.6 37 Q74 21 88 20 Z`;
+ const head=
+  `<path d="${H1}" fill="url(#${U}v)" stroke="${INK}" stroke-width="2.2"/><path d="${H1}" fill="url(#${U}s)"/><ellipse cx="79" cy="30" rx="2.6" ry="6" fill="${W}" opacity=".35" transform="rotate(12 79 30)"/>`+
+  /* hollow cheeks and a sharp jaw */
+  `<path d="M78 42 Q80 50 86 55" stroke="${DK}" stroke-width="2.6" fill="none" stroke-linecap="round" opacity=".45"/><path d="M101 36 Q100 50 95 59 Q98 48 98.6 38 Z" fill="${DK}" opacity=".5"/>`+
+  /* sunken sockets, deep and dark, a pinpoint of cold light far inside each */
+  `<g class="eye"><path d="M78 36 Q81.6 31 88 34.6 Q87.6 41 82.6 41.6 Q78.2 40.6 78 36 Z" fill="${INK}"/><g transform="translate(97 37) scale(.74 1) translate(-97 -37)"><path d="M102.6 36 Q99 31 92.6 34.6 Q93 41 98 41.6 Q102.4 40.6 102.6 36 Z" fill="${INK}"/></g>`+
+  `<circle cx="83.2" cy="37.4" r="2.4" fill="${EYEG}" opacity=".35"/><circle cx="97.4" cy="37.4" r="2" fill="${EYEG}" opacity=".35"/><circle cx="83.2" cy="37.4" r="1" fill="${EYEW}"/><circle cx="97.4" cy="37.4" r=".9" fill="${EYEW}"/></g>`+
+  `<path d="M92 37 Q93.4 42 93.6 45 Q92.6 46.4 91 46" stroke="${DK}" stroke-width="1" fill="none" opacity=".7"/><path d="M91 38 Q91.6 42 92.4 44.6" stroke="${W}" stroke-width=".9" fill="none" opacity=".5"/><path d="M89.6 46 Q91 46.8 92.4 46" stroke="${DK}" stroke-width=".9" fill="none" opacity=".6"/>`+
+  /* the mouth: a thin dark seam that drops open long and narrow, strands of metal stretching across it */
+  `<path d="M87 50 Q91 49.4 94.6 50" stroke="${INK}" stroke-width="1.4" fill="none" stroke-linecap="round"/>`+
+  pt("jaw",91,50,`<path d="M87 50 Q91 49.4 94.6 50 Q95 56 93.2 61 Q90.8 63.4 88.4 61 Q86.6 56 87 50 Z" fill="${INK}"/><path d="M88.4 51 Q88 56 89 60 M93.2 51 Q93.6 56 92.6 60" stroke="url(#${U}v)" stroke-width=".8" fill="none" opacity=".8"/>`);
+
+
+ /* hair of liquid metal. Back layer: the length of it, falling from behind the head, down behind the shoulders, the long side
+    pouring into the pool. Front layer: it grows from the scalp, covering the crown, with a side-swept fringe across the forehead
+    and a lock framing each side of the face. (Drawn in head space; the head sits 14 higher than its old place.) */
+ const HA=`M88 4 Q64 4 63 30 Q62 52 64 66 Q70 72 76 66 Q76 56 77 48 L99 48 Q100 56 100 66 Q106 72 112 66 Q114 52 113 30 Q112 4 88 4 Z`;
+ const HB=`M88 4 Q63 4 62 30 Q61 52 62 67 Q69 73 75 67 Q76 56 77 48 L99 48 Q100 56 101 67 Q107 73 114 67 Q115 52 114 30 Q112 4 88 4 Z`;
+ const hairBack=`<path d="${HA}" fill="url(#${U}v)" stroke="${INK}" stroke-width="2" stroke-linejoin="round" paint-order="stroke"><animate attributeName="d" values="${HA};${HB};${HA}" dur="3.2s" repeatCount="indefinite"/></path>`+
+  "";
+ const hairFront=`<path d="M71 54 Q66 40 68 26 Q69 3 88 3 Q107 3 108 26 Q110 40 105 54 Q101 42 101 30 Q100 21 94 17 Q86 14 80 20 Q75 26 76 40 Q76 48 71 54 Z" fill="url(#${U}v)"/>`+`<path d="M105 54 Q101 42 101 30 Q100 21 94 17 Q86 14 80 20 Q75 26 76 40 Q76 48 71 54" fill="none" stroke="${INK}" stroke-width="1.8" stroke-linejoin="round"/>`+
+  `<path d="M84 4 Q78 12 77 24 M90 5 Q98 9 101 20 M76 6 Q68 20 68 40 Q68 56 70 68 M100 6 Q108 20 108 40 Q108 56 106 68" stroke="${W}" stroke-width="1" fill="none" opacity=".6"/><path d="M80 6 Q75 14 74 28" stroke="${DK}" stroke-width=".9" fill="none" opacity=".45"/>`;
+ /* the neck: slim, the same chrome as the rest of her, mostly in the shadow of her jaw, opening only a little into the shoulders */
+ const neck=`<path d="M85.6 36 Q86.2 46 83.4 53.4 L95.6 53.4 Q92.6 46 93.2 36 Z" fill="url(#${U}c)"/>`+
+  `<path d="M85.6 36 Q86.2 46 83.4 53.4 M93.2 36 Q92.6 46 95.6 53.4" stroke="${INK}" stroke-width="1.8" fill="none" stroke-linecap="round"/>`+
+  `<path d="M90.6 36 Q91 46 93.4 53.4 L95.6 53.4 Q92.6 46 93.2 36 Z" fill="${DK}" opacity=".35" filter="url(#${U}sb)"/>`+
+  `<path d="M85.6 36 Q89.4 42 93.2 36 Z" fill="${DK}" opacity=".45" filter="url(#${U}sb)"/>`;
+ /* the steel girder it's unmaking */
+ const GX=150;
+ const girder=`<path d="M${GX-12} 56 H${GX+12} V62 H${GX+4} V140 H${GX+12} V146 H${GX-12} V140 H${GX-4} V62 H${GX-12} Z" fill="url(#${U}b)" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>`+
+  `<path d="M${GX-12} 56 L${GX-6} 52 L${GX-1} 56 L${GX+4} 51 L${GX+12} 56" fill="url(#${U}b)" stroke="${INK}" stroke-width="1.6" stroke-linejoin="round"/>`+
+  [70,96,122].map(y=>`<circle cx="${GX}" cy="${y}" r="1.4" fill="${STD}" stroke="${INK}" stroke-width=".6"/>`).join("")+
+  /* silver veins spreading through the steel along the grain, outward from its grip */
+  `<g filter="url(#${U}gl)"><path d="M${GX-4} 86 L${GX} 78 L${GX-2} 70 L${GX+2} 62 M${GX} 88 L${GX+3} 96 L${GX-1} 104 L${GX+2} 114 M${GX-2} 70 L${GX-8} 60 M${GX+3} 96 L${GX+9} 100" stroke="${VEIN}" stroke-width="1.4" fill="none" stroke-linejoin="round" pathLength="1" stroke-dasharray="1 1"><animate attributeName="stroke-dashoffset" values="1;0;0" keyTimes="0;.7;1" dur="3s" repeatCount="indefinite"/></path></g>`+
+  /* bites out of the flange where it has already crumbled */
+  `<path d="M${GX+12} 62 L${GX+6} 66 L${GX+9} 70 L${GX+4} 72" fill="none" stroke="${INK}" stroke-width="1.2"/>`;
+ const chunks=[[GX+6,64,0],[GX-6,58,1.1],[GX+4,104,2]].map(([x,y,b],i)=>`<g><polygon points="${x-3},${y-2} ${x+2},${y-3} ${x+3},${y+2} ${x-2},${y+3}" fill="${ST}" stroke="${INK}" stroke-width=".8"/><path d="M${x-2} ${y} L${x+2} ${y}" stroke="${VEIN}" stroke-width=".8"/><animateTransform attributeName="transform" type="translate" values="0 0;0 0;${i%2?-6:6} ${146-y}" keyTimes="0;.4;1" dur="3s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;1;0" keyTimes="0;.4;.9;1" dur="3s" begin="${b}s" repeatCount="indefinite"/></g>`).join("")+
+  Array.from({length:8},(_,k)=>{const x=GX-8+k*2.4,b=k*.3;return`<rect x="${x}" width="1.6" height="1.6" fill="${k%2?ST:VEIN}"><animate attributeName="y" values="88;146" dur="1.6s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;0" dur="1.6s" begin="${b}s" repeatCount="indefinite"/></rect>`}).join("")+
+  `<path d="M${GX-16} 147 l3 -2 l2 2 l4 -1 l2 2 l5 -1 l3 1 l4 -2 l3 2" stroke="${STD}" stroke-width="2" fill="none"/>`;
+ /* arms: smooth tapering liquid; one gripping the girder, the other running down into the pool */
+ /* an arm shaped and shaded like a rounded limb: tapering from a full shoulder to the wrist, the light (from the upper left) catching
+    one side in a soft sheen and the far side falling into shadow, with no hard lines drawn on it */
+ const tube=(P,Wd)=>{const S=[];for(let k=0;k<=24;k++){const t=k/24,u=1-t,x=u*u*P[0][0]+2*u*t*P[1][0]+t*t*P[2][0],y=u*u*P[0][1]+2*u*t*P[1][1]+t*t*P[2][1],w=t<.5?Wd[0]+(Wd[1]-Wd[0])*t*2:Wd[1]+(Wd[2]-Wd[1])*(t-.5)*2;S.push([x,y,w])}
+   const N=S.map((p,i)=>{const q=S[Math.min(i+1,S.length-1)],o=S[Math.max(i-1,0)],dx=q[0]-o[0],dy=q[1]-o[1],L=Math.hypot(dx,dy)||1;return[-dy/L,dx/L]});
+   const m=N[12],sg=(m[0]+m[1])>0?-1:1;
+   const band=(f0,f1)=>{const A=S.map((p,i)=>[p[0]+N[i][0]*p[2]*f0*sg,p[1]+N[i][1]*p[2]*f0*sg]),B=S.map((p,i)=>[p[0]+N[i][0]*p[2]*f1*sg,p[1]+N[i][1]*p[2]*f1*sg]).reverse();return"M"+[...A,...B].map(q=>F(q[0])+" "+F(q[1])).join(" L")+" Z"};
+   return`<path d="${band(1,-1)}" fill="url(#${U}c)" stroke="${INK}" stroke-width="2" stroke-linejoin="round"/>`+
+    `<path d="${band(-.15,-.95)}" fill="${DK}" opacity=".5" filter="url(#${U}sb)"/>`+
+    `<path d="${band(.75,.2)}" fill="${C0}" opacity=".55" filter="url(#${U}sb)"/>`};
+ const reach=tube([[100,62],[136,56],[141,82]],[9,6.8,5.2])+
+  /* the hand, wrapped round the girder: a palm, four fingers curling over the web, the thumb under */
+  `<path d="M137 79 Q144 76 148 81 Q149 88 143 90 Q137 89 136 84 Z" fill="url(#${U}c)" stroke="${INK}" stroke-width="1.8" stroke-linejoin="round"/>`+
+  [[80,0],[83,1],[86,2],[89,3]].map(([y,i])=>`<path d="M146 ${y} Q154 ${y-3} 157 ${y+2}" stroke="${INK}" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M146 ${y} Q154 ${y-3} 157 ${y+2}" stroke="url(#${U}c)" stroke-width="2.4" fill="none" stroke-linecap="round"/>`).join("")+
+  `<path d="M139 89 Q144 93 149 92" stroke="${INK}" stroke-width="4" fill="none" stroke-linecap="round"/><path d="M139 89 Q144 93 149 92" stroke="url(#${U}c)" stroke-width="2.4" fill="none" stroke-linecap="round"/>`+
+  `<path d="M146 93 q-1 5 0 9" stroke="url(#${U}c)" stroke-width="2" stroke-linecap="round"/><circle cx="146" r="1.6" fill="${C1}"><animate attributeName="cy" values="102;102;146" keyTimes="0;.5;1" dur="2s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0" keyTimes="0;.9;1" dur="2s" repeatCount="indefinite"/></circle>`;
+ /* the other arm hangs; its fingers lengthen and run down into the pool */
+ const hang=tube([[76,62],[42,76],[52,110]],[9,6.8,5.2])+
+  `<path d="M47 108 Q52 106 57 108 Q58 114 56 118 Q52 120 48 118 Q46 114 47 108 Z" fill="url(#${U}c)" stroke="${INK}" stroke-width="1.6" stroke-linejoin="round"/>`+
+  `<path d="M47 116 Q46 124 48 130 Q49 134 50 130 Q51 125 52 132 Q53 137 54 131 Q55 124 57 128 Q58 130 58 124 Q58 118 57 116 Z" fill="url(#${U}c)" stroke="${INK}" stroke-width="1.6" stroke-linejoin="round"/>`+
+  [[49,131,0],[53,136,.5],[57,128,1]].map(([x,y,b])=>`<path d="M${x} ${y} Q${x+.4} ${y+6} ${x} ${y+9}" stroke="url(#${U}c)" stroke-width="1.8" fill="none" stroke-linecap="round"/><circle cx="${x}" r="1.5" fill="${C1}"><animate attributeName="cy" values="${y+9};${y+9};146" keyTimes="0;.5;1" dur="1.8s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0" keyTimes="0;.9;1" dur="1.8s" begin="${b}s" repeatCount="indefinite"/></circle>`).join("");
+
+ return defs+`<g transform="translate(16 28) scale(.82)"><ellipse class="shd" cx="96" cy="150" rx="70" ry="5" fill="#000" opacity=".35"/><g transform="translate(${GX} 146) scale(1.5 1) translate(${-GX} -146)">${girder}</g>`+pool+
+  pt("head",88,46,`<g transform="translate(0 -22)">${hairBack}</g>`)+pt("armB",66,56,hang,.3)+pt("armF",110,56,reach)+`<g transform="translate(0 146) scale(1 1.22) translate(0 -146)"><g transform="translate(80 0) scale(.9 1) translate(-80 0)">`+pt("sway",88,146,`<path d="M26 148 Q30 143 40 144 Q48 145 52 140 Q53 138 54 134 L122 134 Q123 138 126 140 Q128 145 136 144 Q148 143 152 148 Q140 153 120 152 Q100 155 88 153 Q70 155 54 152 Q34 153 26 148 Z" fill="url(#${U}c)"/>`+body+
+  `<path d="M26 148 Q30 143 40 144 Q48 145 52 140 Q53 138 54 134 M152 148 Q148 143 136 144 Q128 145 126 140 Q123 138 122 134" fill="none" stroke="${INK}" stroke-width="2.2" stroke-linecap="round"/>`+
+  /* runs of metal sagging off the hem: each one swells and slides down into the pool */
+  [[64,134,0,9],[76,136,.7,12],[90,135,1.4,10],[104,134,.35,11],[113,133,1,8]].map(([x,y,b,w])=>{const A=`M${x-w/2} ${y} Q${x} ${y+3} ${x+w/2} ${y} Q${x+w/2+1} ${y+8} ${x+w/2+3} 147 L${x-w/2-3} 147 Q${x-w/2-1} ${y+8} ${x-w/2} ${y} Z`,B=`M${x-w/2} ${y} Q${x} ${y+5} ${x+w/2} ${y} Q${x+w/2+2} ${y+9} ${x+w/2+5} 147 L${x-w/2-5} 147 Q${x-w/2-2} ${y+9} ${x-w/2} ${y} Z`;
+   return`<path d="${A}" fill="url(#${U}c)"><animate attributeName="d" values="${A};${B};${A}" dur="${2.4+b}s" repeatCount="indefinite"/></path>`+
+    `<ellipse cx="${x}" rx="${F(w*.16)}" ry="${F(w*.2)}" fill="${C1}" opacity=".8"><animate attributeName="cy" values="${y+3};146" dur="2s" begin="${b}s" repeatCount="indefinite"/></ellipse>`}).join("")+
+  /* the puddle surface, with ripples where the runs land */
+  `<path d="M30 147 Q60 144.6 88 145.6 Q116 144.6 148 147 Q140 152 120 152 Q100 155 88 153 Q70 155 54 152 Q36 152 30 147 Z" fill="url(#${U}c)"/>`+`<path d="M34 148 Q60 146 88 147 Q116 146 144 148 Q116 151 88 150 Q60 151 34 148 Z" fill="${C0}" opacity=".45"/>`+
+  [[66,0],[90,1.1],[112,.6]].map(([x,b])=>`<ellipse cx="${x}" cy="148" rx="2" ry=".8" fill="none" stroke="${C0}" stroke-width=".9"><animate attributeName="rx" values="2;11" dur="2s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="ry" values=".8;2.6" dur="2s" begin="${b}s" repeatCount="indefinite"/><animate attributeName="opacity" values=".9;0" dur="2s" begin="${b}s" repeatCount="indefinite"/></ellipse>`).join(""))+`</g>`+`</g>`+neck+""+pt("head",88,46,`<g transform="translate(0 -22)">${head}${hairFront}</g>`)+chunks+`</g>`+
+  fG(g,1,`<rect x="176" y="150" width="2.4" height="2.4" fill="${ST}"/><rect x="22" y="148" width="2" height="2" fill="${C1}"/>`)+fG(g,2,`<circle cx="30" cy="40" r="2" fill="${C1}" opacity=".7"/>`)+fG(g,3,star(184,20,6))});
+FORM_TITLE["The Unmaker"]="Quicksilver Wraith";
+
+/* this IS its Overclocked look: it must not be melted down on top */
+BATTLE_FORMS["The Unmaker"].molten=1;
+
+/* =============== WIDOW'S VEIN, OVERCLOCKED: the Seam-Widow ===============
+   Threats don't melt when they Overclock. Shown only in the Alloydex Overclock view.
+   The widow and the seam were never two things. Overclocked, the vein comes out of the rock as her: a widow the size of a mine cart,
+   made of the ore itself. Her abdomen is a glossy black nodule of the seam, split by cracks that glow venom-green from inside, with
+   the red hourglass on top. Her legs are long jointed seams of the same black metal, with clusters of raw grey ore granules where the
+   joints should be. Seen at an angle from a little above, she stands on all eight, feet planted. Her fangs open and bead
+   green venom that drips to the floor.
+   Radiant: bleached white metal, a black hourglass, and red venom. */
+addForm("Widow's Vein",{n:"#15170F",a:"#AADC6E",rn:"#ECE8DE",rb:"#1A0606",ra:"#E8343A"},"crawl",(P,g,rad)=>{
+ const U="wv"+(rad?"r":"n"),F=v=>(+v).toFixed(1),CX=100;
+ const B0=rad?"#FFFFFF":"#5A5E52",B1=rad?"#D8D2C4":"#15170F",B2=rad?"#8A8274":"#030402",HG=rad?"#0A0A0A":"#E01A2A",VN=rad?"#E8343A":"#AADC6E",VD=rad?"#7A0A10":"#3A6A1A",
+  ORE=rad?"#C8C0B0":"#8C9096",ORD=rad?"#7A7468":"#4A4E52",SILK=rad?"#F0E4E4":"#E8ECE0",TIM="#3A2614",TIML="#6A4A28";
+ const defs=`<defs><radialGradient id="${U}a" cx=".38" cy=".3" r=".75"><stop offset="0" stop-color="${B0}"/><stop offset=".35" stop-color="${B1}"/><stop offset="1" stop-color="${B2}"/></radialGradient>
+  <radialGradient id="${U}f" cx=".5" cy=".5" r=".5"><stop offset="0" stop-color="${VN}" stop-opacity=".55"/><stop offset="1" stop-color="${VN}" stop-opacity="0"/></radialGradient>
+  <filter id="${U}g" x="-50%" y="-50%" width="200%" height="200%"><feGaussianBlur stdDeviation="1.2" result="b"/><feMerge><feMergeNode in="b"/><feMergeNode in="SourceGraphic"/></feMerge></filter></defs>`;
+ /* the mine: two pit-props and a beam, the orb web strung between them */
+ const timbers=`<rect x="2" y="4" width="10" height="150" fill="${TIM}" stroke="${FI}" stroke-width="2"/><rect x="188" y="4" width="10" height="150" fill="${TIM}" stroke="${FI}" stroke-width="2"/><rect x="0" y="0" width="200" height="9" fill="${TIML}" stroke="${FI}" stroke-width="2"/>`;
+ const WC=[CX,66];let web="";
+ const spokes=[[12,8],[60,6],[100,6],[140,6],[188,8],[190,40],[190,90],[190,136],[150,150],[100,152],[50,150],[10,136],[10,90],[10,40]];
+ spokes.forEach(([x,y])=>web+=`<path d="M${WC[0]} ${WC[1]} L${x} ${y}"/>`);
+ for(let r=1;r<=7;r++){const t=r/7.6;web+=`<path d="M${spokes.map(([x,y],i)=>{const k=1+((i*7+r*3)%5-2)*.02;return F(WC[0]+(x-WC[0])*t*k)+" "+F(WC[1]+(y-WC[1])*t*k)}).join(" L")} Z" fill="none"/>`}
+ web=`<g stroke="${SILK}" stroke-width=".7" fill="none" opacity=".55">${web}</g><path d="M${WC[0]} ${WC[1]} L${CX} 8" stroke="${SILK}" stroke-width="1.2" opacity=".8"/>`;
+ const cocoon=`<g transform="translate(32 34)"><path d="M0 -10 L0 -2" stroke="${SILK}" stroke-width="1"/><ellipse cy="8" rx="6" ry="11" fill="${SILK}" stroke="${FI}" stroke-width="1.6"/><path d="M-5 2 Q0 5 5 1 M-6 8 Q0 11 6 7 M-5 14 Q0 17 5 13" stroke="${FI}" stroke-width=".8" fill="none" opacity=".5"/><animateTransform attributeName="transform" type="rotate" values="-4 32 24;4 32 24;-4 32 24" dur="4.2s" repeatCount="indefinite" additive="sum"/></g>`;
+ /* a leg: three long segments of black seam-metal, with raw ore granules clustered at each joint; k scales it for depth */
+ const gran=(x,y,s)=>`<g transform="translate(${F(x)} ${F(y)}) scale(${F(s)})"><polygon points="-3,-1 -1,-4 2,-3 3,0 1,3 -2,2" fill="${ORE}" stroke="${FI}" stroke-width="1"/><polygon points="1,-3 4,-4 5,-1 3,0" fill="${ORD}" stroke="${FI}" stroke-width=".8"/><polygon points="-4,1 -2,2 -3,4 -5,3" fill="${ORD}" stroke="${FI}" stroke-width=".8"/></g>`;
+ /* a leg tapers like a real one: thick at the hip, a sharp high knee, a long thinning shin, a fine foot; a little ore at the knee */
+ const leg=(pts,k)=>{const W=[3.8,2.9,2.0,1.2];let o="",i2="";for(let i=0;i<pts.length-1;i++){const d=`M${F(pts[i][0])} ${F(pts[i][1])} L${F(pts[i+1][0])} ${F(pts[i+1][1])}`;
+   o+=`<path d="${d}" stroke="${FI}" stroke-width="${F(W[i]*k+2)}" stroke-linecap="round"/>`;i2+=`<path d="${d}" stroke="${k<.9?shade(B1,rad?-.12:.14):B1}" stroke-width="${F(W[i]*k)}" stroke-linecap="round"/>`}
+   return o+i2+`<path d="M${pts.slice(0,3).map(p=>F(p[0])+" "+F(p[1])).join(" L")}" stroke="${B0}" stroke-width=".9" fill="none" opacity=".55" transform="translate(-.5 -.7)"/>`+gran(pts[1][0],pts[1][1]-1,.62*k)};
+ /* Seen at an angle from a little above. She's laid out on the floor in 3D and projected, so every leg is right: each one fans out
+    from the body at its own angle (front pair reaching forward, back pair reaching back), rises to a high knee, bends down through
+    the ankle and plants its foot on the floor. Legs on the far side are further away, so they're thinner and drawn behind her body. */
+ const fx=-.9,fy=.44,SY=.46,SZ=.89,GX=94,GY=114,K=1.25;
+ const Pj=(x,y,h)=>[GX+x*K,GY+(y*SY-h*SZ)*K];
+ const rot=(a)=>{const c=Math.cos(a),s=Math.sin(a);return[fx*c-fy*s,fx*s+fy*c]};
+ /* angle from forward (degrees) and reach, per side: set so no leg points straight at us or straight away from us */
+ const LDEF={"-1":[[2,70],[26,58],[112,54],[150,66]],"1":[[8,70],[42,58],[104,66],[166,94]]};
+ const legs=[];[1,-1].forEach(side=>LDEF[side].forEach(([ang,R],i)=>{const[dx,dy]=rot(side*ang*Math.PI/180),hip=[dx*9,dy*9,22];
+   const pts=[hip,[dx*R*.36,dy*R*.36,(dy<0?66:46)-i*2],[dx*R*.78,dy*R*.78,16],[dx*R*.94,dy*R*.94,4],[dx*R,dy*R,0]];legs.push({pts,depth:dy*R*.6+(i===0?1:0)})}));
+ const legSvg=L=>{const k=(1+L.depth/160)*.95,P2=L.pts.map(q=>Pj(...q));return leg(P2,Math.max(.62,Math.min(1.25,k)))};
+ const far=legs.filter(L=>L.depth<0).sort((a,b)=>a.depth-b.depth),near=legs.filter(L=>L.depth>=0).sort((a,b)=>a.depth-b.depth);
+ /* the abdomen: a glossy nodule of the seam, raised up behind her, venom glowing through its cracks, the hourglass on its back */
+ const AB=Pj(-fx*40,-fy*40,34),AA=Math.atan2(fy*SY,fx)*180/Math.PI+180;
+ const cracks=`<g filter="url(#${U}g)" transform="translate(${F(AB[0])} ${F(AB[1])}) scale(1.05)"><path d="M-16 -12 L-8 -6 L-12 2 L-4 8 M16 -18 L8 -10 L14 -2 M-2 -22 L4 -18 L0 -12" stroke="${VN}" stroke-width="1.8" fill="none" stroke-linejoin="round"><animate attributeName="opacity" values=".4;1;.4" dur="2.6s" repeatCount="indefinite"/></path></g>`;
+ const abdomen=`<g transform="translate(${F(AB[0])} ${F(AB[1])}) rotate(${F(AA)})"><ellipse rx="30" ry="24" fill="url(#${U}a)" stroke="${FI}" stroke-width="2.6"/><ellipse cx="-6" cy="-12" rx="10" ry="4" fill="#FFFFFF" opacity=".28"/>`+
+  `<path d="M-9 -6 L-9 6 L0 1 L9 6 L9 -6 L0 -1 Z" fill="${HG}" stroke="${FI}" stroke-width="1.4" stroke-linejoin="round" transform="translate(4 -4)"/></g>`+cracks+
+  gran(AB[0]+18,AB[1]+12,.9)+gran(AB[0]-14,AB[1]-16,.7);
+ /* the front of her: the cephalothorax, eight eyes on its face, fangs that open and bead venom */
+ const HC=Pj(0,0,24),EY=Pj(fx*9,fy*9,28),FG=Pj(fx*11,fy*11,18);
+ const eyes=[[-6,-1.5],[-2,-2.5],[2,-2.5],[6,-1.5],[-7,2],[-2.5,1],[2.5,1],[7,2]].map(([dx,dy],i)=>`<circle cx="${F(EY[0]+dx*.7)}" cy="${F(EY[1]+dy)}" r="${i<4?1.6:1.2}" fill="${rad?"#E8343A":"#E01A2A"}" stroke="${FI}" stroke-width=".6"/><circle cx="${F(EY[0]+dx*.7-.5)}" cy="${F(EY[1]+dy-.5)}" r=".5" fill="#FFFFFF"/>`).join("");
+ const fang=(x,s)=>`<path d="M${F(x)} ${F(FG[1])} Q${F(x+s*4)} ${F(FG[1]+6)} ${F(x-1)} ${F(FG[1]+12)}" stroke="${FI}" stroke-width="4.2" fill="none" stroke-linecap="round"/><path d="M${F(x)} ${F(FG[1])} Q${F(x+s*4)} ${F(FG[1]+6)} ${F(x-1)} ${F(FG[1]+12)}" stroke="${B1}" stroke-width="2.2" fill="none" stroke-linecap="round"/>`;
+ const FL=Pj(fx*11,fy*11,0);
+ const drip=`<circle cx="${F(FG[0]-1)}" cy="${F(FG[1]+13)}" r="1.8" fill="${VN}" stroke="${VD}" stroke-width=".6"><animate attributeName="cy" values="${F(FG[1]+13)};${F(FG[1]+13)};${F(FL[1])}" keyTimes="0;.6;1" dur="2.4s" repeatCount="indefinite"/><animate attributeName="opacity" values="1;1;0" keyTimes="0;.8;1" dur="2.4s" repeatCount="indefinite"/></circle>`;
+ const head=`<ellipse cx="${F(HC[0])}" cy="${F(HC[1])}" rx="20" ry="16" fill="url(#${U}a)" stroke="${FI}" stroke-width="2.4" transform="rotate(${F(AA-180)} ${F(HC[0])} ${F(HC[1])})"/>`+`<g class="eye">${eyes}</g>`+
+  pt("jaw",FG[0],FG[1],fang(FG[0]-4,-1)+fang(FG[0]+4,1)+`<circle cx="${F(FG[0]-5)}" cy="${F(FG[1]+12)}" r="1.4" fill="${VN}"/><circle cx="${F(FG[0]+3)}" cy="${F(FG[1]+12)}" r="1.4" fill="${VN}"/>`)+drip;
+ const SH=Pj(-fx*8,-fy*8,0);
+ return defs+`<ellipse class="shd" cx="${F(SH[0])}" cy="${F(SH[1])}" rx="96" ry="26" fill="#000" opacity=".3"/>`+
+  pt("sway",HC[0],HC[1],
+   pt("legB",HC[0],HC[1],far.map(legSvg).join(""),.3)+
+   pt("tail",AB[0],AB[1]+20,abdomen,.2)+
+   pt("legF",HC[0],HC[1],near.map(legSvg).join(""))+
+   pt("head",HC[0],HC[1],head))+
+  fG(g,1,`<path d="M184 146 l4 -4 M24 140 l4 -4" stroke="${VN}" stroke-width="2" opacity=".5"/>`)+fG(g,2,gran(150,150,.9))+fG(g,3,star(184,22,6))});
+FORM_TITLE["Widow's Vein"]="Seam-Widow";
+
+/* this IS its Overclocked look: it must not be melted down on top */
+BATTLE_FORMS["Widow's Vein"].molten=1;
+
 /* ---- birds that perch, hop and strut ---- */
 FGP.bird={hab:{"z-mine":1,"z-scrap":2.5,"z-volcano":1.2,"z-glacier":2.5,"z-vault":3,"z-crater":1.5,"z-reactor":1,"z-wreck":2},loco:o=>o.perch?"perch":"hop",want:tr=>tr.light?1.6:tr.heavy?.6:1,
  kinds:{song:["Finch","Sparrow","Robin","Warbler","Bunting","Lark","Thrush","Starling","Siskin","Linnet","Pipit","Dunnock","Chat","Shrike","Wagtail","Nuthatch"],corvid:["Crow","Rook","Jackdaw","Jay","Chough","Nutcracker","Treepie"],
@@ -22420,6 +23222,46 @@ function pmeTick(){if(!PME.on)return;const paused=S.phase!=="explore"||DLG.open|
 {const _cr=coatRefresh;coatRefresh=function(){_cr();pmeEyes()}}
 {const _pp=placePlayer;placePlayer=function(i){_pp(i);if(PME.on&&!$("#player .pme-eyes"))pmeEyes()}}
 if(store.get("wta_pme",0))store.set("wta_pme",0);
+
+/* =============== THE SAMPLE CASE HOLDS SIX, AND THE REST GO TO THE STORE ===============
+   The case carries six samples, always. A new sample goes straight into the case if there's room, and to the Institute's sample store
+   if there isn't. You can look in the case anywhere; you can only swap samples in and out at a sample store: the steel cabinet in the
+   Institute locker room, or the hatch in the rest rack of any Assay Hall. */
+const STORE={open:false};
+const storeIds=d=>Object.keys(d.inst).filter(id=>!d.case.includes(id));
+{const _ni=newInst;newInst=function(name,rad,xp){const s=_ni(name,rad,xp),d=asData();if(d.case.length<caseSlots()){d.case.push(s.id);asSave(d);s.where="case"}else s.where="store";return s}}
+const csRow=(s,btns)=>{const a=alloyByName(s.n),g=gradeOf(s.xp);return`<div class="bag-item cs-row"><div class="cs-ic">${specimenSVG(a)}</div><div><b>${s.n}${s.rad?" ✦":""}</b><p>${GRADES[g]} · ${s.hp<=0?"spent":Math.round(s.hp*100)+"% sound"} · ${s.mv.map(id=>MV[id]?MV[id].n:"").join(", ")}</p></div><div class="cs-btns">${btns}</div></div>`};
+/* the case itself: six slots, reorder them (the first one leads), read any sample's card */
+openCase=function(){const m=modal("samplecase","SAMPLE CASE"),d=asData(),L=m.querySelector(".bag-list"),inCase=d.case.map(id=>d.inst[id]).filter(Boolean);
+  L.innerHTML=`<p class="bag-empty">Your case holds ${caseSlots()} samples. The first one goes out first in an Assay. ${storeIds(d).length} more ${storeIds(d).length===1?"is":"are"} in the sample store; swap them in at the Institute locker room or the rest rack of any Assay Hall.</p>`+
+    inCase.map((s,i)=>csRow(s,`${i?`<button class="btn cs-up" data-i="${i}" aria-label="Move up">▲</button>`:""}<button class="btn cs-info" data-id="${s.id}">DETAILS</button>`)).join("")+
+    Array.from({length:caseSlots()-inCase.length},()=>`<div class="bag-item cs-row cs-empty"><div class="cs-ic"></div><div><b>Empty slot</b></div></div>`).join("");
+  L.querySelectorAll(".cs-up").forEach(b=>b.onclick=()=>{const D=asData(),i=+b.dataset.i;[D.case[i-1],D.case[i]]=[D.case[i],D.case[i-1]];asSave(D);sfx("sel");openCase()});
+  L.querySelectorAll(".cs-info").forEach(b=>b.onclick=()=>openSample(b.dataset.id));m.hidden=false};
+/* the store: put samples away, take them out, or swap one for another when the case is full */
+function openStore(){STORE.open=true;const m=modal("samplestore","SAMPLE STORE"),d=asData(),L=m.querySelector(".bag-list"),inCase=d.case.map(id=>d.inst[id]).filter(Boolean),full=inCase.length>=caseSlots();
+  const sw=STORE.swap&&d.inst[STORE.swap]&&!d.case.includes(STORE.swap)?d.inst[STORE.swap]:null;if(!sw)STORE.swap=null;
+  L.innerHTML=`<p class="bag-empty">${sw?`Swapping in <b>${sw.n}</b>. Pick the sample in your case it replaces.`:"Six in the case, everything else in here. The first sample in the case goes out first."}</p><h5 class="bag-h">IN YOUR CASE (${inCase.length}/${caseSlots()})</h5>`+
+    inCase.map((s,i)=>csRow(s,sw?`<button class="btn go st-swap" data-i="${i}">SWAP</button>`:`${i?`<button class="btn cs-up" data-i="${i}" aria-label="Move up">▲</button>`:""}<button class="btn cs-info" data-id="${s.id}">DETAILS</button><button class="btn st-put" data-i="${i}">STORE</button>`)).join("")+
+    (sw?`<button class="btn st-cancel">CANCEL SWAP</button>`:"")+
+    `<h5 class="bag-h">IN THE STORE (${storeIds(d).length})</h5><input class="cs-q" placeholder="Search the store" aria-label="Search the store"><div class="cs-add st-list"></div>`;
+  const fill=q=>{const box=L.querySelector(".st-list"),ok=storeIds(d).map(id=>d.inst[id]).filter(s=>!q||s.n.toLowerCase().includes(q)).sort((x,y)=>x.n<y.n?-1:x.n>y.n?1:y.xp-x.xp);
+    box.innerHTML=ok.length?ok.slice(0,80).map(s=>`<button class="cs-pick${STORE.swap===s.id?" on":""}" data-id="${s.id}">${s.n}${s.rad?" ✦":""}<span>${GRADES[gradeOf(s.xp)]} · ${STAT_KEYS.reduce((t,k)=>t+s.iv[k],0)}/90 · ${full?"SWAP":"TAKE"}</span></button>`).join("")+(ok.length>80?`<p class="bag-empty">${ok.length-80} more. Search to narrow it down.</p>`:"")
+      :`<p class="bag-empty">${storeIds(d).length?"Nothing in the store by that name.":"The store is empty. New samples come here when your case is full."}</p>`;
+    box.querySelectorAll(".cs-pick").forEach(b=>b.onclick=()=>{const D=asData();if(D.case.length<caseSlots()){D.case.push(b.dataset.id);asSave(D);sfx("sel");openStore()}else{STORE.swap=b.dataset.id;sfx("sel");openStore()}})};
+  fill("");const q=L.querySelector(".cs-q");q.oninput=()=>fill(q.value.trim().toLowerCase());
+  L.querySelectorAll(".st-put").forEach(b=>b.onclick=()=>{const D=asData();D.case.splice(+b.dataset.i,1);asSave(D);sfx("sel");openStore()});
+  L.querySelectorAll(".st-swap").forEach(b=>b.onclick=()=>{const D=asData();D.case[+b.dataset.i]=STORE.swap;STORE.swap=null;asSave(D);sfx("sel");openStore()});
+  L.querySelectorAll(".cs-up").forEach(b=>b.onclick=()=>{const D=asData(),i=+b.dataset.i;[D.case[i-1],D.case[i]]=[D.case[i],D.case[i-1]];asSave(D);sfx("sel");openStore()});
+  L.querySelectorAll(".cs-info").forEach(b=>b.onclick=()=>{openSample(b.dataset.id);const sm=$("#sampleinfo");if(sm){const bk=sm.querySelector(".bag-top .btn");bk.onclick=()=>{sm.hidden=true;openStore()}}});
+  const c=L.querySelector(".st-cancel");if(c)c.onclick=()=>{STORE.swap=null;openStore()};
+  const close=m.querySelector(".bag-top .btn");close.onclick=()=>{m.hidden=true;STORE.open=false;STORE.swap=null};m.hidden=false}
+/* the store cabinet in the Institute locker room */
+const STORE_AT=[15,27];
+const STORE_SVG=`<ellipse cx="20" cy="37" rx="13" ry="2.4" fill="#000" opacity=".3"/><rect x="7" y="2" width="26" height="35" rx="1.5" fill="#7A8A98" stroke="#1A2230" stroke-width="1.4"/><path d="M20 2 V37" stroke="#1A2230" stroke-width="1"/>${[8,15,22,29].map(y=>`<rect x="9.5" y="${y}" width="8.5" height="5" rx=".8" fill="#9AAAB8" stroke="#1A2230" stroke-width=".7"/><rect x="22" y="${y}" width="8.5" height="5" rx=".8" fill="#9AAAB8" stroke="#1A2230" stroke-width=".7"/><circle cx="13.7" cy="${y+2.5}" r=".7" fill="#1A2230"/><circle cx="26.2" cy="${y+2.5}" r=".7" fill="#1A2230"/>`).join("")}<rect x="11" y="3.4" width="18" height="3.4" fill="#F4ECD8" stroke="#1A2230" stroke-width=".5"/><path d="M13 5.1 H27" stroke="#5A6A7A" stroke-width=".6"/>`;
+{const _wp=worldPlace;worldPlace=function(){_wp();const z=EXP.zone;if(!z||z.cls!=="z-quill"||z.special)return;const[x,y]=STORE_AT;
+  const d=document.createElement("div");d.className="mapobj store-cab";d.style.width=(100/EXP.W)+"%";d.style.height=(100/EXP.H)+"%";d.style.left=(x/EXP.W*100)+"%";d.style.top=(y/EXP.H*100)+"%";d.innerHTML=`<svg viewBox="0 0 40 40" aria-hidden="true" style="overflow:visible">${STORE_SVG}</svg>`;$("#world").insertBefore(d,$("#player"));
+  EXP.objs.push({x,y,el:d,use:()=>talk("",["THE SAMPLE STORE. A steel cabinet of numbered drawers, one for every sample you've ever registered that isn't in your case.","A card on the front: 'SIX IN THE CASE. THE REST STAY HERE. — Q.M. Hobbs.'"],()=>openStore())})}}
 
 
 newRun();
