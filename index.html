@@ -9880,9 +9880,9 @@ function openCase(){const m=modal("samplecase","SAMPLE CASE"),d=asData(),L=m.que
   const row=(a,i)=>{const g=gradeOf(d.xp[a.name]||0),hp=d.hp[a.name]==null?1:d.hp[a.name],eq=(d.eq[a.name]&&d.eq[a.name].length?d.eq[a.name]:autoEquip(a,g));
     return`<div class="bag-item cs-row"><div class="cs-ic">${specimenSVG(a)}</div><div><b>${a.name}</b><p>${GRADES[g]} · ${hp<=0?"spent":Math.round(hp*100)+"% sound"} · ${eq.map(id=>MV[id]?MV[id].n:"").join(", ")}</p></div><div class="cs-btns">${radOwned(a)?`<button class="btn cs-rad${(d.rad||{})[a.name]?" on":""}" data-n="${a.name}">${(d.rad||{})[a.name]?"RADIANT":"STANDARD"}</button>`:""}<button class="btn cs-mv" data-n="${a.name}">MOVES</button><button class="btn cs-rm" data-i="${i}">REMOVE</button></div></div>`};
   const inCase=d.case.map(alloyByName).filter(Boolean);
-  L.innerHTML=`<p class="bag-empty">Carry up to ${slots} registered samples. More room comes with Assay Seals. Contained threats can't be signed out.</p>`+inCase.map(row).join("")+
+  L.innerHTML=`<p class="bag-empty">Carry up to ${slots} registered samples. More room comes with Assay Seals.</p>`+inCase.map(row).join("")+
    (inCase.length<slots?`<h5 class="bag-h">ADD A SAMPLE</h5><input class="cs-q" placeholder="Search your register" aria-label="Search your register"><div class="cs-add"></div>`:"");
-  const fill=q=>{const box=L.querySelector(".cs-add");if(!box)return;const ok=ALLOYS.filter(a=>S.caught.has(a.name)&&!a.threat&&!d.case.includes(a.name)&&(!q||a.name.toLowerCase().includes(q)));
+  const fill=q=>{const box=L.querySelector(".cs-add");if(!box)return;const ok=ALLOYS.filter(a=>S.caught.has(a.name)&&!d.case.includes(a.name)&&(!q||a.name.toLowerCase().includes(q)));
     box.innerHTML=ok.length?ok.slice(0,60).map(a=>`<button class="cs-pick" data-n="${a.name}">${a.name}<span>${GRADES[gradeOf(d.xp[a.name]||0)]}</span></button>`).join("")+(ok.length>60?`<p class="bag-empty">${ok.length-60} more. Search to narrow it down.</p>`:""):`<p class="bag-empty">${S.caught.size?"Nothing else in your register can go in the case.":"Register some alloys out in the field first."}</p>`;
     box.querySelectorAll(".cs-pick").forEach(b=>b.onclick=()=>{const D=asData();if(D.case.length>=caseSlots())return;D.case.push(b.dataset.n);asSave(D);sfx("sel");openCase()})};
   fill("");const q=L.querySelector(".cs-q");if(q)q.oninput=()=>fill(q.value.trim().toLowerCase());
@@ -23914,6 +23914,21 @@ const ocCanStart=()=>OC.st===0&&foIdx()>=1;
   if(ring&&s>=1&&s<6)OC.st=6;
   if(!ring&&s>=6){Q.set("ocRing");Q.set("ocKnown")}
   if(s===6&&ocWorn())OC.st=7})();
+
+/* =============== THREATS IN THE ASSAYS ===============
+   Registering a threat never gave you a sample of it (the sample-giving step skipped threats, and so did the change-over that turned
+   every old registration into a sample), so a contained threat could never go in your case or the store, and never into an Assay.
+   Now registering a threat gives you a sample of it like anything else, and every threat you'd already registered is given its
+   sample the next time the game loads. */
+function threatBackfill(){if(threatBackfill.busy||typeof S==="undefined"||!S.caught)return;threatBackfill.busy=1;
+  try{const d=asData(),have=new Set(Object.values(d.inst).map(s=>s.n));
+    [...S.caught].forEach(n=>{const a=alloyByName(n);if(a&&a.threat&&!have.has(n)){newInst(n,false,0);have.add(n)}})}
+  finally{threatBackfill.busy=0}}
+{const _w=win;win=function(){const r=S.r;_w();if(!r||!r.won||!r.a||!r.a.threat||r.tut)return;
+  const had=Object.values(asData().inst).some(s=>s.n===r.a.name);if(had)return;const s=newInst(r.a.name,!!r.radiant);
+  setTimeout(()=>say0(`You've a sample of ${r.a.name.toUpperCase()}${s.rad?" (radiant)":""}, sealed for the Assays. ${s.where==="case"?"It's gone in your case.":"It's gone to your sample store."}`),3400)}}
+/* fill in the old registrations whenever the case, the store or an Assay is about to be used, and once on start */
+["openCase","openStore","asStart","startExplore"].forEach(fn=>{if(typeof window[fn]!=="function")return;const _f=window[fn];window[fn]=function(){threatBackfill();return _f.apply(this,arguments)}});
 
 
 newRun();
