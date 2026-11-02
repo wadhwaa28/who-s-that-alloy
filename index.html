@@ -23263,6 +23263,615 @@ const STORE_SVG=`<ellipse cx="20" cy="37" rx="13" ry="2.4" fill="#000" opacity="
   const d=document.createElement("div");d.className="mapobj store-cab";d.style.width=(100/EXP.W)+"%";d.style.height=(100/EXP.H)+"%";d.style.left=(x/EXP.W*100)+"%";d.style.top=(y/EXP.H*100)+"%";d.innerHTML=`<svg viewBox="0 0 40 40" aria-hidden="true" style="overflow:visible">${STORE_SVG}</svg>`;$("#world").insertBefore(d,$("#player"));
   EXP.objs.push({x,y,el:d,use:()=>talk("",["THE SAMPLE STORE. A steel cabinet of numbered drawers, one for every sample you've ever registered that isn't in your case.","A card on the front: 'SIX IN THE CASE. THE REST STAY HERE. — Q.M. Hobbs.'"],()=>openStore())})}}
 
+/* =============== THE GUTTERWICK'S CRY: "Drink the Light" ===============
+   It lifts the lantern up level with your face so the flame flares, throws its head forward with its jaw hanging open, and
+   inhales: the light comes out of the vial in a stream and goes down its throat, its eyes burn up bright, and the lantern
+   goes dark. As the light leaves, dark spills out across the ground. Then it shuts its mouth and the lantern rekindles. */
+/* It's a shadow, so it Overclocks into its shadow form (see the shadow Overclocks): the extra pieces for the cry are laid on top of
+   that finished shadow form, not drawn into the form before it's turned to smoke, so the smoke, halo, wisps and fog all stay, and the
+   light it drinks is its own lantern-light (violet; the pitch-black Radiant drinks a cold white). */
+{const _bf=BATTLE_FORMS["Gutterwick"];
+ const fx=(L,L2)=>`<g class="gw-fx">`+
+  `<circle class="gw-flare" cx="49" cy="76" r="20" fill="${L}" opacity="0" style="filter:blur(4px)"/>`+
+  Array.from({length:9},(_,k)=>`<circle class="gw-mote" cx="0" cy="0" r="${1.4+(k%3)*.6}" fill="${k%2?L2:L}" style="--k:${k}"/>`).join("")+
+  `<path class="gw-stream" d="M49 72 Q60 48 77 45" stroke="${L}" stroke-width="3" fill="none" stroke-linecap="round" opacity="0" style="filter:blur(1px)"/>`+
+  `<ellipse class="gw-dark" cx="70" cy="146" rx="90" ry="12" fill="#000" opacity="0" style="filter:blur(2px)"/>`+
+  `</g>`;
+ const nb=(a,g,rad)=>{let s=_bf(a,g,rad);const L=rad?"#FFFFFF":"#C9A6FF",L2=rad?"#D8D8E0":"#F3EDFF";
+   s=s.replace(/<g class="eye soc-eye"[^>]*>/,m=>m+`<circle class="gw-eyefl" cx="80" cy="24" r="3.4" fill="${L}"/><circle class="gw-eyefl" cx="87" cy="23" r="3.4" fill="${L}"/>`);
+   const k=s.lastIndexOf("</g></g></g></svg>");return k<0?s:s.slice(0,k)+fx(L,L2)+s.slice(k)};
+ Object.assign(nb,_bf);BATTLE_FORMS["Gutterwick"]=nb;
+ /* in the Overclock view, its cry is this instead of the stock cry */
+ {const _fc=formCry;formCry=function(el,a){if(a&&a.name==="Gutterwick"&&el){el.classList.remove("fcry","gwatk");void el.offsetWidth;el.classList.add("gwatk");clearTimeout(el._ft);el._ft=setTimeout(()=>el.classList.remove("gwatk"),2300);return}_fc(el,a)}}
+ const css=document.createElement("style");css.textContent=`
+ .gw-fx>*,.gw-eyefl{opacity:0}
+ .gwatk .p-armF{animation:gwArm 2.2s ease-in-out both!important}
+ .gwatk .p-head{animation:gwHead 2.2s ease-in-out both!important}
+ .gwatk .p-beak{animation:gwJaw 2.2s ease-in-out both!important}
+ .gwatk .p-armB{animation:gwClaw 2.2s ease-in-out both!important}
+ .gwatk .p-sway{animation:gwHang 2.2s ease-in-out both!important}
+ .gwatk .p-glow{animation:gwVial 2.2s linear both!important}
+ .gwatk .gw-flare{animation:gwFlare 2.2s ease-out both}
+ .gwatk .gw-stream{animation:gwStream 2.2s linear both}
+ .gwatk .gw-mote{offset-path:path("M49 72 Q60 48 77 45");animation:gwMote 2.2s linear both;animation-delay:calc(var(--k)*.05s)}
+ .gwatk .gw-eyefl{animation:gwEye 2.2s ease-in-out both}
+ .gwatk .gw-dark{animation:gwDark 2.2s ease-out both}
+ @keyframes gwHang{0%{transform:rotate(0)}22%,74%{transform:rotate(-60deg)}92%,100%{transform:rotate(0)}}
+ @keyframes gwArm{0%{transform:rotate(0)}22%,74%{transform:rotate(60deg)}92%,100%{transform:rotate(0)}}
+ @keyframes gwHead{0%{transform:none}20%{transform:rotate(10deg)}36%,72%{transform:translate(-10px,8px) rotate(-20deg)}90%,100%{transform:none}}
+ @keyframes gwJaw{0%,24%{transform:rotate(0)}36%,70%{transform:rotate(-34deg)}76%,100%{transform:rotate(0)}}
+ @keyframes gwClaw{0%,26%{transform:rotate(0)}40%,64%{transform:rotate(34deg)}84%,100%{transform:rotate(0)}}
+ @keyframes gwVial{0%{opacity:.7}22%{opacity:1;stroke-width:3px}40%{opacity:1}66%,82%{opacity:0}100%{opacity:.7}}
+ @keyframes gwFlare{0%,10%{opacity:0}24%{opacity:.85}40%{opacity:.6}64%,100%{opacity:0}}
+ @keyframes gwStream{0%,36%{opacity:0}44%,60%{opacity:.75}68%,100%{opacity:0}}
+ @keyframes gwMote{0%,36%{offset-distance:0%;opacity:0}40%{opacity:1}66%{offset-distance:100%;opacity:1}68%,100%{offset-distance:100%;opacity:0}}
+ @keyframes gwEye{0%,44%{opacity:0;transform:scale(.5)}62%,72%{opacity:1;transform:scale(1.2)}88%,100%{opacity:0}}
+ @keyframes gwDark{0%,50%{opacity:0;transform:scaleX(.3)}70%{opacity:.9;transform:scaleX(1)}86%{opacity:.7}100%{opacity:0}}
+ .gw-eyefl{transform-box:fill-box;transform-origin:center;filter:blur(1px)}
+ .gw-dark{transform-box:fill-box;transform-origin:center}`;
+ document.head.appendChild(css)}
+
+/* =============== THREAT OVERCLOCK ATTACKS ===============
+   Each threat's Overclock form gets its own attack, played whenever it attacks in a battle, instead of the stock jaw-and-arm swing.
+   Attacks that reach out of the form's own box draw on an overlay laid over whatever holds the form (the battle field, or the
+   Alloydex panel), so the effect fills that whole space instead of stopping at the edge of the drawing.
+
+   The Gutterwick: "Lights Out". A shadow can only take hold of you in the dark, so first it makes the dark: it chokes the lantern
+   and everything goes black. Then all you can see is its eyes and its grin, and they come at you, fast, getting bigger, with two
+   long shadow hands reaching in out of the black from either side to grab. Then it snaps back, and the lantern gutters up again. */
+const TATK=[];
+/* where its target is: in a battle, the form on the other side; anywhere else, the far side of the space it's in */
+function tatkTarget(f,B){const side=f.closest("#as-o")?"p":f.closest("#as-p")?"o":null,o=side&&document.querySelector(`#as-${side} .as-form`);
+  if(o){const r=o.getBoundingClientRect();if(r.width)return[r.left+r.width/2-B.left,r.top+r.height*.55-B.top]}
+  return null}
+/* most forms are drawn facing left; these are drawn facing right, so which side flips them is the other way round */
+const FACE_R=new Set(["The Unmaker"]);
+{const _bf=battleForm;battleForm=function(a,g,rad){const h=_bf(a,g,rad);return a&&FACE_R.has(a.name)?h.replace('class="as-bf','class="as-bf face-r'):h}}
+function tatkBox(f){const box=f.closest(".as-field")||f;if(getComputedStyle(box).position==="static")box.style.position="relative";return box}
+{const css=document.createElement("style");css.textContent=`
+ /* every form is drawn facing left, which is right for the opposing side; on your side it has to turn round to face them */
+ #as-p .as-flip{transform:scaleX(-1)}
+ #as-o .as-bf.face-r .as-flip{transform:scaleX(-1)}
+ #as-p .as-bf.face-r .as-flip{transform:none}
+ .tatk-ov{position:absolute;inset:0;z-index:30;pointer-events:none;overflow:hidden}
+ .tatk-ov>*{position:absolute}
+ .gwstrike .p-glow{animation:gwsVial 3.4s linear both!important}
+ .gwstrike .p-head{animation:gwsHead 3.4s ease-in both!important}
+ .gwstrike .cr-body{animation:gwsMelt 3.4s ease-in-out both!important;transform-box:fill-box;transform-origin:50% 100%}
+ @keyframes gwsVial{0%{opacity:.7}6%{opacity:1}9%{opacity:.2}12%{opacity:.8}15%,90%{opacity:0}100%{opacity:.7}}
+ @keyframes gwsHead{0%,6%{transform:none}13%{transform:rotate(12deg)}100%{transform:none}}
+ /* it melts away into the dark before the face comes, and gathers itself back up after */
+ @keyframes gwsMelt{0%,12%{transform:none;opacity:1;filter:none}24%{transform:scale(1.15,.2);opacity:0;filter:blur(3px)}86%{transform:scale(1.15,.2);opacity:0;filter:blur(3px)}100%{transform:none;opacity:1;filter:none}}`;
+ document.head.appendChild(css)}
+{const D=3400;
+ const face=(E,G)=>`<svg viewBox="-12 -6 24 20" width="100%" height="100%" style="overflow:visible"><path d="M-6.4 .6 Q-3.6 -2 -.8 .2 Q-3.6 1.4 -6.4 .6 Z" fill="${G}" style="filter:blur(.8px)"/><path d="M6.4 0 Q3.6 -2.6 .8 -.4 Q3.6 .8 6.4 0 Z" fill="${G}" style="filter:blur(.8px)"/><path d="M-5.6 .5 Q-3.6 -1.2 -1.4 .2 Q-3.6 .9 -5.6 .5 Z" fill="${E}"/><path d="M5.6 -.1 Q3.6 -1.8 1.4 -.4 Q3.6 .4 5.6 -.1 Z" fill="${E}"/>`+
+  `<path d="M-9 7 Q0 13 9 6" stroke="${G}" stroke-width=".9" fill="none" opacity=".8"/>${Array.from({length:8},(_,k)=>{const x=-8+k*2.2,y=7.4+Math.sin(k/7*Math.PI)*3.6;return`<path d="M${x.toFixed(1)} ${y.toFixed(1)} L${(x+1).toFixed(1)} ${(y+4).toFixed(1)} L${(x+2).toFixed(1)} ${y.toFixed(1)} Z" fill="#FFFFFF"/>`}).join("")}</svg>`;
+ const hand=(s,RIM,F)=>{const draw=(d,w)=>`<path d="${d}" stroke="${RIM}" stroke-width="${w+1.8}" fill="none" stroke-linecap="round" opacity=".55"/><path d="${d}" stroke="#05040A" stroke-width="${w}" fill="none" stroke-linecap="round"/>`;
+   return`<svg viewBox="-56 -14 112 30" width="100%" height="100%" style="overflow:visible"><g transform="scale(${-s} 1)" filter="url(#${F})">`+draw("M-56 0 C-40 -4 -26 -2 -14 4",9)+[-9,-3,3,9].map((dy,k)=>draw(`M-16 4 Q-4 ${dy} 4 ${dy+7+k}`,3.6-k*.3)).join("")+`</g></svg>`};
+ function gwStrike(f){const rad=!!f.querySelector('[filter="url(#socFB)"]'),E=rad?"#FFFFFF":"#F3EDFF",G=rad?"#9A9AA4":"#C9A6FF",RIM=rad?"#26262B":"#B58CFF",FL=rad?"socFB":"socF";const box=tatkBox(f),B=box.getBoundingClientRect(),h=(f.querySelector(".p-head .eye")||f).getBoundingClientRect();
+  f.classList.remove("gwstrike");void f.offsetWidth;f.classList.add("gwstrike");setTimeout(()=>f.classList.remove("gwstrike"),D);
+  const ov=document.createElement("div");ov.className="tatk-ov";box.appendChild(ov);
+  const sx=h.left+h.width/2-B.left,sy=h.top+h.height/2-B.top,fw=Math.max(18,h.width*3.4),tg=tatkTarget(f,B),tx=tg?B.width*.5+(tg[0]-B.width*.5)*.35:B.width*.5,ty=tg?B.height*.5+(tg[1]-B.height*.5)*.35:B.height*.5,sc=B.height*.75/fw*1.25;
+  const dark=document.createElement("div");dark.style.cssText="inset:0;background:#020106;opacity:0";
+  const fc=document.createElement("div");fc.style.cssText=`left:${sx-fw/2}px;top:${sy-fw*.42}px;width:${fw}px;height:${fw*.84}px;opacity:0`;fc.innerHTML=face(E,G);
+  const hw=B.width*.62,hh=hw*30/112,hl=document.createElement("div"),hr=document.createElement("div");
+  [hl,hr].forEach((e,i)=>{e.style.cssText=`top:${ty+fw*sc*.12-hh/2}px;width:${hw}px;height:${hh}px;opacity:0;left:${i?B.width-hw:0}px`;e.innerHTML=hand(i?1:-1,RIM,FL)});
+  ov.append(dark,hl,hr,fc);
+  const o={duration:D,fill:"both"};
+  /* timeline (fractions of D): .12-.24 it melts away; .2 the dark comes; .28 the eyes and grin open where its head was;
+     .3-.44 they rush you; .44-.8 they stay, breathing, with the hands holding on; .8-.88 gone; .86 the dark lifts and it re-forms */
+  dark.animate([{opacity:0,offset:0},{opacity:0,offset:.12},{opacity:.94,offset:.24},{opacity:.94,offset:.84},{opacity:0,offset:.94},{opacity:0,offset:1}],o);
+  const T=`translate(${tx-sx}px,${ty-sy}px)`,HX=tg?tg[0]:tx,HY=tg?tg[1]:ty,HIT=`translate(${HX-sx}px,${HY-sy}px)`;
+  fc.animate([{opacity:0,transform:"none",offset:0},{opacity:0,offset:.24},{opacity:1,transform:"none",offset:.29},
+   {opacity:1,transform:`${T} scale(${sc})`,offset:.42,easing:"ease-in"},{transform:`translate(${tx-sx+5}px,${ty-sy+3}px) scale(${sc*.95})`,offset:.45},{transform:`${T} scale(${sc})`,offset:.48},
+   {transform:`${T} scale(${sc*1.03})`,offset:.58},{transform:`${T} scale(${sc*.99})`,offset:.68},{opacity:1,transform:`${T} scale(${sc*1.03})`,offset:.78},
+   {opacity:1,transform:`${HIT} scale(${sc*.3})`,offset:.82,easing:"ease-in"},{opacity:0,transform:`${HIT} scale(${sc*.12})`,offset:.84},{opacity:0,offset:1}],o);
+  [[hl,-1],[hr,1]].forEach(([e,s])=>e.animate([{opacity:0,transform:`translateX(${s*hw*.8}px)`,offset:0},{opacity:0,offset:.36},{opacity:1,offset:.4},
+   {opacity:1,transform:`translateX(${-s*hw*.05}px)`,offset:.46,easing:"cubic-bezier(.5,0,.3,1)"},{opacity:1,transform:`translateX(${-s*hw*.02}px)`,offset:.62},{opacity:1,transform:`translateX(${-s*hw*.05}px)`,offset:.78},
+   {opacity:1,transform:`translate(${(HX-hw/2-(s<0?0:B.width-hw))*1+s*hw*.12}px,${HY-(ty+fw*sc*.12)}px) scale(.5)`,offset:.82,easing:"ease-in"},{opacity:0,transform:`translate(${(HX-hw/2-(s<0?0:B.width-hw))+s*hw*.05}px,${HY-(ty+fw*sc*.12)}px) scale(.3)`,offset:.85},{opacity:0,offset:1}],o));
+  /* and it lands: the target, plunged in shadow, shudders; claw marks rake across it and shadow smokes off it as the dark lifts */
+  const side=f.closest("#as-o")?"p":f.closest("#as-p")?"o":null,tf=side&&document.querySelector(`#as-${side} .as-form`);
+  if(tf){tf.animate([{transform:"none",filter:"none",offset:0},{transform:"none",filter:"none",offset:.82},{transform:"translate(-6px,2px) scale(.94)",filter:"brightness(.25) saturate(.2) drop-shadow(0 0 8px #A57BFF)",offset:.84},
+     {transform:"translate(5px,-1px)",offset:.87},{transform:"translate(-4px,1px)",offset:.9},{transform:"translate(2px,0)",filter:"brightness(.55) saturate(.5) drop-shadow(0 0 6px #A57BFF)",offset:.93},{transform:"none",filter:"none",offset:1}],o)}
+  const cw=Math.max(40,B.width*.16);
+  for(let k=0;k<3;k++){const e=document.createElement("div");e.style.cssText=`left:${HX-cw/2+(k-1)*cw*.18}px;top:${HY-cw*.5}px;width:${cw}px;height:${cw}px;opacity:0`;
+   e.innerHTML=`<svg viewBox="0 0 40 40" width="100%" height="100%" style="overflow:visible"><path d="M10 4 Q18 20 30 36" stroke="#05040A" stroke-width="5" fill="none" stroke-linecap="round"/><path d="M10 4 Q18 20 30 36" stroke="#C9A6FF" stroke-width="1.6" fill="none" stroke-linecap="round"/></svg>`;ov.appendChild(e);
+   e.animate([{opacity:0,clipPath:"inset(0 0 100% 0)",offset:0},{opacity:0,clipPath:"inset(0 0 100% 0)",offset:.83+k*.008},{opacity:1,clipPath:"inset(0 0 0 0)",offset:.86+k*.008},{opacity:1,offset:.93},{opacity:0,offset:1}],o)}
+  for(let k=0;k<8;k++){const e=document.createElement("div"),r=Math.max(10,B.width*.035)*(1+(k%3)*.4);e.style.cssText=`left:${HX-r/2+(k-3.5)*r*.45}px;top:${HY-r/2+(k%2)*r*.3}px;width:${r}px;height:${r}px;border-radius:50%;background:radial-gradient(circle,#05040Add,#2E2541aa 55%,transparent 72%);box-shadow:0 0 6px #A57BFF55;opacity:0`;ov.appendChild(e);
+   e.animate([{opacity:0,transform:"scale(.4)",offset:0},{opacity:0,offset:.84},{opacity:.9,transform:"scale(1)",offset:.87},{opacity:0,transform:`translate(${(k%2?1:-1)*r*.4}px,${-r*2.2}px) scale(1.6)`,offset:1}],o)}
+  setTimeout(()=>ov.remove(),D+50)}
+ TATK.push([".gw-eyefl",gwStrike,3400])}
+/* Cinder Mercury: "Breach". It catches fire the moment air reaches it, and it's held down in ice. So it attacks by letting the
+   air in: the sun inside swells and burns white, the crown of ice cracks open, and the instant the air rushes in it ignites. A
+   fireball bursts out of it, a ring of heat rolls across the whole field, and shards of the shattered glacier are blasted at its
+   target ahead of a roaring jet of fire. Then the ice freezes shut over it again. */
+{const D=1700;
+ const css=document.createElement("style");css.textContent=`
+ .cmstrike .p-sway{animation:cmsShake ${D}ms linear both!important}
+ .cmstrike .p-head{animation:cmsSwell ${D}ms ease-in-out both!important}
+ @keyframes cmsShake{0%,12%{transform:none}16%{transform:translate(-2px,0)}20%{transform:translate(2px,-1px)}24%{transform:translate(-2px,1px)}28%{transform:translate(1px,0)}32%,100%{transform:none}}
+ @keyframes cmsSwell{0%{transform:none}28%{transform:scale(1.35)}34%{transform:scale(.9)}50%{transform:scale(1.1)}100%{transform:none}}`;
+ document.head.appendChild(css);
+ const shard=()=>`<svg viewBox="-6 -10 12 20" width="100%" height="100%"><path d="M0 -10 L5 -2 L2 9 L-4 6 L-5 -3 Z" fill="#CFF0FF" stroke="#0A1E3A" stroke-width="1.2" stroke-linejoin="round"/><path d="M0 -10 L2 9" stroke="#FFFFFF" stroke-width=".8" opacity=".8"/><path d="M-5 -3 L0 -10 L1 2 Z" fill="#7CC4F0" opacity=".7"/></svg>`;
+ function cmStrike(f){const box=tatkBox(f),B=box.getBoundingClientRect(),c=(f.querySelector(".p-head")||f).getBoundingClientRect(),rad=!!f.querySelector('[id^="cmr"]');
+  const C1=rad?"#F0E4FF":"#FFF4C0",C2=rad?"#B878FF":"#FFA830",C3=rad?"#6A28E0":"#F0581A";
+  f.classList.remove("cmstrike");void f.offsetWidth;f.classList.add("cmstrike");setTimeout(()=>f.classList.remove("cmstrike"),D);
+  const ov=document.createElement("div");ov.className="tatk-ov";box.appendChild(ov);
+  const sx=c.left+c.width/2-B.left,sy=c.top+c.height/2-B.top;
+  /* aim at the middle of the field on the far side: the opponent */
+  const tg=tatkTarget(f,B),tx=tg?tg[0]:(sx>B.width/2?B.width*.24:B.width*.76),ty=tg?tg[1]:(sy<B.height/2?B.height*.76:B.height*.26),ang=Math.atan2(ty-sy,tx-sx),dist=Math.hypot(tx-sx,ty-sy);
+  const o={duration:D,fill:"both"},mk=(css,html)=>{const e=document.createElement("div");e.style.cssText=css;if(html)e.innerHTML=html;ov.appendChild(e);return e};
+  /* the glow building, then the fireball */
+  const R=Math.max(B.width,B.height);
+  const glow=mk(`left:${sx-R/2}px;top:${sy-R/2}px;width:${R}px;height:${R}px;border-radius:50%;background:radial-gradient(circle,${C1} 0,${C2} 18%,${C3}88 36%,transparent 62%);opacity:0;mix-blend-mode:screen`);
+  glow.animate([{opacity:0,transform:"scale(.05)",offset:0},{opacity:.6,transform:"scale(.12)",offset:.26},{opacity:1,transform:"scale(.5)",offset:.36},{opacity:.7,transform:"scale(.75)",offset:.5},{opacity:0,transform:"scale(.9)",offset:.75},{opacity:0,offset:1}],o);
+  /* the ring of heat rolling out across the field */
+  const ring=mk(`left:${sx-R}px;top:${sy-R}px;width:${R*2}px;height:${R*2}px;border-radius:50%;border:${Math.max(4,R*.02)}px solid ${C2};box-shadow:0 0 30px ${C2},inset 0 0 30px ${C2};opacity:0`);
+  ring.animate([{opacity:0,transform:"scale(.02)",offset:0},{opacity:0,transform:"scale(.02)",offset:.32},{opacity:.9,transform:"scale(.15)",offset:.36},{opacity:0,transform:"scale(1)",offset:.66},{opacity:0,offset:1}],{...o,easing:"ease-out"});
+  /* the jet of fire roaring at the target */
+  const jw=dist*1.1,jh=Math.max(30,dist*.22);
+  const fl3=(c,sy2,op)=>`<path d="M0 50 C14 ${50-8*sy2} 30 ${50-26*sy2} 52 ${50-30*sy2} C64 ${50-34*sy2} 70 ${50-18*sy2} 78 ${50-26*sy2} C84 ${50-14*sy2} 92 ${50-20*sy2} 100 50 C92 ${50+20*sy2} 84 ${50+14*sy2} 78 ${50+26*sy2} C70 ${50+18*sy2} 64 ${50+34*sy2} 52 ${50+30*sy2} C30 ${50+26*sy2} 14 ${50+8*sy2} 0 50 Z" fill="${c}" opacity="${op}"/>`;
+  const jet=mk(`left:${sx}px;top:${sy-jh/2}px;width:${jw}px;height:${jh}px;transform-origin:0 50%;opacity:0;mix-blend-mode:screen`,`<svg viewBox="0 0 100 100" preserveAspectRatio="none" width="100%" height="100%" style="overflow:visible;filter:blur(.6px)">${fl3(C3,1.5,.9)}${fl3(C2,1.05,.95)}${fl3(C1,.55,1)}<path d="M0 50 L60 50" stroke="#FFFFFF" stroke-width="4" opacity=".8"/></svg>`);
+  const rot=`rotate(${ang}rad)`;
+  jet.animate([{opacity:0,transform:`${rot} scaleX(0)`,offset:0},{opacity:0,transform:`${rot} scaleX(0)`,offset:.38},{opacity:1,transform:`${rot} scaleX(1) scaleY(1)`,offset:.52},{opacity:1,transform:`${rot} scaleX(1) scaleY(1.25)`,offset:.6},{opacity:.8,transform:`${rot} scaleX(1) scaleY(.9)`,offset:.68},{opacity:0,transform:`${rot} scaleX(1.1) scaleY(.2)`,offset:.82},{opacity:0,offset:1}],o);
+  /* shards of the shattered glacier, blasted at the target */
+  const sw=Math.max(14,B.width*.04);
+  for(let k=0;k<12;k++){const spread=(k/11-.5)*1.3,a2=ang+spread*.6,d2=dist*(.7+(k%4)*.15),ex=Math.cos(a2)*d2,ey=Math.sin(a2)*d2,rr=(k%2?1:-1)*(200+k*40),s=.6+(k%3)*.3;
+   const e=mk(`left:${sx-sw/2}px;top:${sy-sw}px;width:${sw}px;height:${sw*1.6}px;opacity:0`,shard());
+   e.animate([{opacity:0,transform:`scale(${s})`,offset:0},{opacity:0,offset:.33},{opacity:1,transform:`scale(${s})`,offset:.36},{opacity:1,transform:`translate(${ex}px,${ey}px) rotate(${rr}deg) scale(${s})`,offset:.6,easing:"ease-out"},{opacity:0,transform:`translate(${ex*1.08}px,${ey*1.08+10}px) rotate(${rr*1.2}deg) scale(${s})`,offset:.72},{opacity:0,offset:1}],o)}
+  /* a white flash on impact */
+  const fl=mk(`inset:0;background:${C1};opacity:0;mix-blend-mode:screen`);
+  fl.animate([{opacity:0,offset:0},{opacity:0,offset:.34},{opacity:.55,offset:.37},{opacity:0,offset:.46},{opacity:0,offset:.56},{opacity:.35,offset:.58},{opacity:0,offset:.66},{opacity:0,offset:1}],o);
+  setTimeout(()=>ov.remove(),D+50)}
+ TATK.push(['[id^="cmn"],[id^="cmr"]',cmStrike,1700])}
+
+/* Hollow Star: "Event Horizon".
+   It's a hole with nothing in it, and it is still collapsing. So it pulls: the void in its middle opens wider, the space round it
+   goes dark, and light from all over the field streaks in and vanishes into it. Its target is dragged towards it, stretched out
+   long and thin the way anything near a collapsing star is. Then, at the edge, it lets go: a flash, a ring of force, and the
+   matter it was tearing off is thrown back out at the target in burning chunks while the target snaps back into shape.
+   Radiant: a white hole does all of it backwards: light pours OUT of it, and its target is shoved away and squashed instead. */
+{const D=2400;
+ const css=document.createElement("style");css.textContent=`
+ .hsstrike .p-head{animation:hssVoid ${D}ms ease-in-out both!important}
+ .hsstrike .cr-body{animation:hssShake ${D}ms linear both!important}
+ @keyframes hssVoid{0%{transform:none}40%{transform:scale(1.35)}52%{transform:scale(1.5)}56%{transform:scale(.85)}66%{transform:scale(1.08)}100%{transform:none}}
+ @keyframes hssShake{0%,30%{transform:none}34%{transform:translate(1px,-1px)}38%{transform:translate(-1px,1px)}42%{transform:translate(1px,1px)}46%{transform:translate(-1px,-1px)}50%{transform:translate(1px,0)}54%,100%{transform:none}}`;
+ document.head.appendChild(css);
+ function hsStrike(f){const box=tatkBox(f),B=box.getBoundingClientRect(),c=(f.querySelector(".p-head")||f).getBoundingClientRect(),rad=!!f.querySelector('[id^="hsr"]');
+  const L=rad?"#FFFFFF":"#F4ECFF",V=rad?"#E8B84A":"#8A6AE0",VD=rad?"#FFFDF2":"#04020A",CH=rad?"#E2DEF0":"#B8A0F0";
+  f.classList.remove("hsstrike");void f.offsetWidth;f.classList.add("hsstrike");setTimeout(()=>f.classList.remove("hsstrike"),D);
+  const ov=document.createElement("div");ov.className="tatk-ov";box.appendChild(ov);
+  const sx=c.left+c.width/2-B.left,sy=c.top+c.height/2-B.top;
+  const tg=tatkTarget(f,B),tx=tg?tg[0]:(sx>B.width/2?B.width*.24:B.width*.76),ty=tg?tg[1]:(sy<B.height/2?B.height*.76:B.height*.26),ang=Math.atan2(ty-sy,tx-sx),dist=Math.hypot(tx-sx,ty-sy);
+  const o={duration:D,fill:"both"},mk=(css,html)=>{const e=document.createElement("div");e.style.cssText=css;if(html)e.innerHTML=html;ov.appendChild(e);return e};
+  const R=Math.hypot(B.width,B.height);
+  /* the dark closing in round it (a white hole floods the field with light instead) */
+  const vg=mk(`left:${sx-R}px;top:${sy-R}px;width:${R*2}px;height:${R*2}px;border-radius:50%;background:radial-gradient(circle,transparent 4%,${rad?"#FFFDF2cc":"#04020Add"} 14%,${rad?"#FFFDF288":"#04020A99"} 30%,transparent 60%);opacity:0`);
+  vg.animate([{opacity:0,transform:"scale(.6)",offset:0},{opacity:1,transform:"scale(.35)",offset:.45},{opacity:1,transform:"scale(.3)",offset:.53},{opacity:0,transform:"scale(1)",offset:.62},{opacity:0,offset:1}],o);
+  /* the lensing ring, light bent round the edge of the hole */
+  const lr=Math.max(c.width,c.height)*.75;
+  const ring=mk(`left:${sx-lr}px;top:${sy-lr}px;width:${lr*2}px;height:${lr*2}px;border-radius:50%;border:2px solid ${L};box-shadow:0 0 12px ${L},0 0 24px ${V},inset 0 0 12px ${V};opacity:0`);
+  ring.animate([{opacity:0,transform:"scale(1.6)",offset:0},{opacity:.9,transform:"scale(1)",offset:.2},{opacity:1,transform:"scale(.85)",offset:.5},{opacity:0,transform:"scale(.3)",offset:.55},{opacity:0,offset:1}],o);
+  /* light streaking in from all over the field and vanishing into it */
+  for(let k=0;k<26;k++){const a=k/26*Math.PI*2+(k%3)*.2,d0=R*(.35+(k*37%10)/25),x0=sx+Math.cos(a)*d0,y0=sy+Math.sin(a)*d0,ln=14+(k%4)*10,b=.04+(k%7)*.05;
+   const e=mk(`left:${x0-ln/2}px;top:${y0-1}px;width:${ln}px;height:2px;border-radius:2px;background:linear-gradient(90deg,transparent,${rad?(k%3?"#E8B84A":"#FFFFFF"):(k%3?L:V)});opacity:0;transform-origin:50% 50%`);
+   const inward=`translate(${(sx-x0).toFixed(1)}px,${(sy-y0).toFixed(1)}px) rotate(${a+Math.PI}rad) scaleX(.2)`,start=`rotate(${a+Math.PI}rad)`;
+   const fr=rad?[start.replace("rotate","rotate")]:[];
+   e.animate(rad?[{opacity:0,transform:inward,offset:0},{opacity:0,transform:inward,offset:b},{opacity:1,offset:b+.04},{opacity:0,transform:start,offset:Math.min(.52,b+.3)},{opacity:0,offset:1}]
+               :[{opacity:0,transform:start,offset:0},{opacity:0,transform:start,offset:b},{opacity:1,offset:b+.04},{opacity:0,transform:inward,offset:Math.min(.52,b+.3)},{opacity:0,offset:1}],{...o,easing:"ease-in"})}
+  /* its target, dragged towards it and stretched (a white hole shoves it away and squashes it), then snapping back */
+  const side=f.closest("#as-o")?"p":f.closest("#as-p")?"o":null,tf=side&&document.querySelector(`#as-${side} .as-form`);
+  if(tf){const k=rad?-.11:.3,dx=-(tx-sx)*k,dy=-(ty-sy)*k,deg=ang*180/Math.PI,st=rad?"scaleX(.6) scaleY(1.25)":"scaleX(1.7) scaleY(.55)";
+   const pull=`translate(${dx.toFixed(1)}px,${dy.toFixed(1)}px) rotate(${deg}deg) ${st} rotate(${-deg}deg)`,half=`translate(${(dx*.4).toFixed(1)}px,${(dy*.4).toFixed(1)}px) rotate(${deg}deg) ${rad?"scaleX(.85) scaleY(1.1)":"scaleX(1.25) scaleY(.8)"} rotate(${-deg}deg)`;
+   tf.animate([{transform:"none",offset:0},{transform:"none",offset:.14},{transform:half,offset:.32,easing:"ease-in"},{transform:pull,offset:.52},
+     {transform:`rotate(${deg}deg) ${rad?"scaleX(1.15) scaleY(.9)":"scaleX(.8) scaleY(1.2)"} rotate(${-deg}deg)`,offset:.6},{transform:`rotate(${deg}deg) scaleX(1.06) scaleY(.96) rotate(${-deg}deg)`,offset:.68},{transform:"none",offset:.76},{transform:"none",offset:1}],o);
+   tf.animate([{filter:"none",offset:0},{filter:"none",offset:.2},{filter:`blur(1.5px) brightness(${rad?1.5:.6})`,offset:.5},{filter:"brightness(1.6)",offset:.56},{filter:"none",offset:.72},{filter:"none",offset:1}],o)}
+  /* it lets go: a flash, a ring of force rolling out */
+  const fl=mk(`inset:0;background:${L};opacity:0;mix-blend-mode:screen`);
+  fl.animate([{opacity:0,offset:0},{opacity:0,offset:.52},{opacity:.6,offset:.55},{opacity:0,offset:.64},{opacity:0,offset:1}],o);
+  const sw=mk(`left:${sx-R}px;top:${sy-R}px;width:${R*2}px;height:${R*2}px;border-radius:50%;border:${Math.max(3,R*.012)}px solid ${V};box-shadow:0 0 20px ${V};opacity:0`);
+  sw.animate([{opacity:0,transform:"scale(.03)",offset:0},{opacity:0,transform:"scale(.03)",offset:.53},{opacity:.95,transform:"scale(.08)",offset:.56},{opacity:0,transform:"scale(1)",offset:.8},{opacity:0,offset:1}],{...o,easing:"ease-out"});
+  /* the torn-off matter thrown back at its target in burning chunks */
+  const cs=Math.max(10,B.width*.026);
+  for(let k=0;k<9;k++){const sp=(k/8-.5)*.9,a2=ang+sp*.5,d2=dist*(.85+(k%3)*.1),ex=Math.cos(a2)*d2,ey=Math.sin(a2)*d2,s=.6+(k%3)*.35,rr=(k%2?1:-1)*(160+k*30);
+   const e=mk(`left:${sx-cs/2}px;top:${sy-cs/2}px;width:${cs}px;height:${cs}px;opacity:0`,`<svg viewBox="-6 -6 12 12" width="100%" height="100%" style="overflow:visible"><circle r="7" fill="${V}" opacity=".45" style="filter:blur(2px)"/><polygon points="${["-5,-4 4,-5 5,3 -3,5","0,-6 5,0 1,5 -5,2","-5,0 0,-5 5,1 0,5"][k%3]}" fill="${CH}" stroke="#1A1028" stroke-width="1.2"/><polygon points="-2,-2 2,-2 2,2 -2,2" fill="${L}" opacity=".7"/></svg>`);
+   e.animate([{opacity:0,transform:`scale(${s})`,offset:0},{opacity:0,offset:.54},{opacity:1,transform:`scale(${s})`,offset:.57},{opacity:1,transform:`translate(${ex}px,${ey}px) rotate(${rr}deg) scale(${s})`,offset:.74,easing:"ease-out"},{opacity:0,transform:`translate(${ex*1.06}px,${ey*1.06}px) rotate(${rr*1.2}deg) scale(${s*.6})`,offset:.82},{opacity:0,offset:1}],o)}
+  setTimeout(()=>ov.remove(),D+50)}
+ TATK.push(['[id^="hsn"],[id^="hsr"]',hsStrike,D])}
+
+/* Phoenix Lattice: "Burnout".
+   It's a projection that burns out and is reborn, so it attacks by spending itself. It throws its wings wide and flares white-hot;
+   then the projection tears loose from where it stands and dives at its target as a streak of light, trailing colour ghosts
+   (cyan and magenta, the way a projection does). It hits in a burst of broken lattice and burns out to ash on the spot. Back where
+   it started, it's reborn: the projector scans it back in, line by line, from the top. Radiant: real fire, threat red. */
+{const D=2600;
+ const css=document.createElement("style");css.textContent=`
+ .pxstrike .p-wingF{animation:pxsWingF ${D}ms ease-in-out both!important}
+ .pxstrike .p-wingB{animation:pxsWingB ${D}ms ease-in-out both!important}
+ .pxstrike .p-head{animation:pxsHead ${D}ms ease-in-out both!important}
+ .pxstrike .cr-body{animation:pxsBody ${D}ms linear both!important}
+ @keyframes pxsWingF{0%{transform:none}18%,24%{transform:rotate(28deg)}100%{transform:none}}
+ @keyframes pxsWingB{0%{transform:none}18%,24%{transform:rotate(-24deg)}100%{transform:none}}
+ @keyframes pxsHead{0%{transform:none}18%,24%{transform:rotate(-14deg)}100%{transform:none}}
+ /* flares, glitches out as it tears loose, then is scanned back in at the end */
+ @keyframes pxsBody{0%{opacity:1;filter:none;clip-path:inset(0 0 0 0)}18%{filter:brightness(1.8) saturate(1.4);opacity:1}22%{opacity:.2}23%{opacity:1}24%{opacity:.1}25%,82%{opacity:0;clip-path:inset(0 0 100% 0)}83%{opacity:1;clip-path:inset(0 0 100% 0);filter:brightness(2)}96%{clip-path:inset(0 0 0 0);filter:brightness(1.3)}100%{opacity:1;filter:none;clip-path:inset(0 0 0 0)}}`;
+ document.head.appendChild(css);
+ function pxStrike(f){const box=tatkBox(f),B=box.getBoundingClientRect(),sv=f.querySelector("svg");if(!sv)return;const r=sv.getBoundingClientRect(),rad=!!f.querySelector('[id^="pxr"]');
+  const M=rad?"#B0121E":"#FF4AC8",CY=rad?"#FF8A7A":"#78F0FF",W="#FFFFFF";
+  f.classList.remove("pxstrike");void f.offsetWidth;f.classList.add("pxstrike");setTimeout(()=>f.classList.remove("pxstrike"),D);
+  const ov=document.createElement("div");ov.className="tatk-ov";box.appendChild(ov);
+  const x0=r.left-B.left,y0=r.top-B.top,cx=x0+r.width/2,cy=y0+r.height/2;
+  const tg=tatkTarget(f,B),tx=tg?tg[0]:(cx>B.width/2?B.width*.24:B.width*.76),ty=tg?tg[1]:(cy<B.height/2?B.height*.76:B.height*.26);
+  const flip=!!f.closest("#as-p"),dx=tx-cx,dy=ty-cy,deg=Math.atan2(dy,Math.abs(dx))*180/Math.PI*(flip?-1:1)*.6;
+  const o={duration:D,fill:"both"},mk=(css,html)=>{const e=document.createElement("div");e.style.cssText=css;if(html)e.innerHTML=html;ov.appendChild(e);return e};
+  /* the projection, torn loose: the diving phoenix and its colour ghosts */
+  const dive=(k,tint,op)=>{const e=mk(`left:${x0}px;top:${y0}px;width:${r.width}px;height:${r.height}px;opacity:0`);const c=sv.cloneNode(true);c.style.cssText="width:100%;height:100%;overflow:visible"+(flip?";transform:scaleX(-1)":"");c.querySelectorAll('rect[fill^="url(#pxns"],rect[fill^="url(#pxrs"]').forEach(x=>x.remove());e.appendChild(c);
+   if(tint)e.style.filter=`drop-shadow(0 0 0 ${tint}) sepia(1) saturate(6) hue-rotate(${rad?(tint===CY?0:330):(tint===CY?150:290)}deg) brightness(1.4)`;
+   const lag=k*.025,mid=`translate(${dx*.45}px,${dy*.45-r.height*.18}px) rotate(${deg}deg) scale(.8)`,end=`translate(${dx}px,${dy}px) rotate(${deg*1.4}deg) scale(.55)`;
+   e.animate([{opacity:0,transform:"none",offset:0},{opacity:0,offset:.22+lag},{opacity:op,transform:"none",offset:.25+lag},{opacity:op,transform:mid,offset:.38+lag,easing:"ease-in"},{opacity:op,transform:end,offset:.5+lag,easing:"ease-in"},{opacity:0,transform:end,offset:.54+lag},{opacity:0,offset:1}],o)};
+  dive(3,M,.35);dive(2,CY,.45);dive(1,M,.55);dive(0,null,1);
+  /* a streak of light along its path */
+  const len=Math.hypot(dx,dy),ang=Math.atan2(dy,dx);
+  const st=mk(`left:${cx}px;top:${cy-3}px;width:${len}px;height:6px;transform-origin:0 50%;border-radius:3px;background:linear-gradient(90deg,transparent,${CY},${W});box-shadow:0 0 12px ${M};opacity:0`);
+  st.animate([{opacity:0,transform:`rotate(${ang}rad) scaleX(0)`,offset:0},{opacity:0,offset:.3},{opacity:.9,transform:`rotate(${ang}rad) scaleX(1)`,offset:.5},{opacity:0,transform:`rotate(${ang}rad) scaleX(1)`,offset:.62},{opacity:0,offset:1}],o);
+  /* impact: a burst of broken lattice, rings, a glitch band across the field */
+  const R=Math.max(B.width,B.height)*.5;
+  [M,CY].forEach((c,i)=>{const e=mk(`left:${tx-R/2}px;top:${ty-R/2}px;width:${R}px;height:${R}px;border-radius:50%;border:3px ${i?"dashed":"solid"} ${c};box-shadow:0 0 14px ${c};opacity:0`);
+   e.animate([{opacity:0,transform:"scale(.05)",offset:0},{opacity:0,offset:.5},{opacity:1,transform:"scale(.1)",offset:.52},{opacity:0,transform:`scale(${i?1.1:.8}) rotate(${i?60:0}deg)`,offset:.72},{opacity:0,offset:1}],{...o,easing:"ease-out"})});
+  const fl=mk(`left:${tx-R*.35}px;top:${ty-R*.35}px;width:${R*.7}px;height:${R*.7}px;border-radius:50%;background:radial-gradient(circle,${W},${CY}aa 30%,transparent 65%);opacity:0;mix-blend-mode:screen`);
+  fl.animate([{opacity:0,offset:0},{opacity:0,offset:.5},{opacity:1,offset:.53},{opacity:0,offset:.66},{opacity:0,offset:1}],o);
+  for(let k=0;k<22;k++){const a=k/22*Math.PI*2,d=R*(.25+(k%5)*.08),s=4+(k%3)*3,ex=Math.cos(a)*d,ey=Math.sin(a)*d+R*.12;
+   const e=mk(`left:${tx-s/2}px;top:${ty-s/2}px;width:${s}px;height:${s}px;background:${k%3?(k%2?M:CY):W};box-shadow:0 0 6px ${k%2?M:CY};opacity:0`);
+   e.animate([{opacity:0,transform:"none",offset:0},{opacity:0,offset:.51},{opacity:1,offset:.53},{opacity:.9,transform:`translate(${ex*.7}px,${ey*.7}px) rotate(${k*40}deg)`,offset:.66,easing:"ease-out"},{opacity:0,transform:`translate(${ex}px,${ey+R*.18}px) rotate(${k*60}deg)`,offset:.84},{opacity:0,offset:1}],o)}
+  const gb=mk(`left:0;right:0;top:${ty-10}px;height:20px;background:repeating-linear-gradient(90deg,${M}66 0 8px,transparent 8px 14px,${CY}66 14px 20px,transparent 20px 30px);opacity:0;mix-blend-mode:screen`);
+  gb.animate([{opacity:0,transform:"none",offset:0},{opacity:0,offset:.52},{opacity:1,transform:"translateX(-12px)",offset:.54},{opacity:.6,transform:"translateX(10px) scaleY(1.6)",offset:.58},{opacity:0,transform:"translateX(-4px)",offset:.64},{opacity:0,offset:1}],o);
+  /* the rebirth: a scan line runs down its spot as it's drawn back in */
+  const sc=mk(`left:${x0}px;top:${y0}px;width:${r.width}px;height:3px;background:${CY};box-shadow:0 0 10px ${CY},0 0 20px ${M};opacity:0`);
+  sc.animate([{opacity:0,transform:"none",offset:0},{opacity:0,offset:.82},{opacity:1,transform:"none",offset:.83},{opacity:1,transform:`translateY(${r.height}px)`,offset:.96},{opacity:0,transform:`translateY(${r.height}px)`,offset:1}],o);
+  setTimeout(()=>ov.remove(),D+50)}
+ TATK.push(['[id^="pxn"],[id^="pxr"]',pxStrike,D])}
+
+/* Everburn: "Wildfire".
+   In its fight it spits embers that start fires, and the fires grow and spread. So: it braces on its fists, throws its head
+   forward, drops its door jaw wide and belches the firebox at its target: three great clots of burning fuel and a spray of embers
+   arcing over, while its chimney roars a column of sparks. Where they land, fires catch, grow and spread out across the ground
+   round its target, then burn down. Radiant: it burns uranium-green. */
+{const D=2600;
+ const css=document.createElement("style");css.textContent=`
+ .ebstrike .p-head{animation:ebsHead ${D}ms ease-in-out both!important}
+ .ebstrike .p-jaw{animation:ebsJaw ${D}ms ease-in-out both!important}
+ .ebstrike .p-armF,.ebstrike .p-armB{animation:ebsArm ${D}ms ease-in-out both!important}
+ @keyframes ebsHead{0%{transform:none}16%{transform:translateY(4px) scale(.97,1.03)}26%,44%{transform:translate(-6px,-2px) scale(1.06)}60%,100%{transform:none}}
+ @keyframes ebsJaw{0%,16%{transform:none}24%,46%{transform:rotate(-38deg)}58%,100%{transform:none}}
+ @keyframes ebsArm{0%{transform:none}16%,46%{transform:translateY(5px) rotate(4deg)}60%,100%{transform:none}}`;
+ document.head.appendChild(css);
+ function ebStrike(f){const box=tatkBox(f),B=box.getBoundingClientRect(),jr=(f.querySelector(".p-jaw")||f).getBoundingClientRect(),sr=(f.querySelector("svg")||f).getBoundingClientRect(),rad=!!f.querySelector('[id^="ebr"]');
+  const C1=rad?"#F0FFE0":"#FFF2B0",C2=rad?"#9AFF6A":"#FFA030",C3=rad?"#2AC83A":"#E8481A";
+  f.classList.remove("ebstrike");void f.offsetWidth;f.classList.add("ebstrike");setTimeout(()=>f.classList.remove("ebstrike"),D);
+  const ov=document.createElement("div");ov.className="tatk-ov";box.appendChild(ov);
+  const sx=jr.left+jr.width/2-B.left,sy=jr.top-B.top;
+  const tg=tatkTarget(f,B),tx=tg?tg[0]:(sx>B.width/2?B.width*.24:B.width*.76),ty=tg?tg[1]+B.height*.06:(sy<B.height/2?B.height*.78:B.height*.3);
+  const o={duration:D,fill:"both"},mk=(css,html)=>{const e=document.createElement("div");e.style.cssText=css;if(html)e.innerHTML=html;ov.appendChild(e);return e};
+  const U=B.width/100,dx=tx-sx,dy=ty-sy,H=Math.max(B.height*.28,Math.abs(dy)*.6);
+  /* an arc over to the target (keyframe points along a parabola) */
+  const arc=(t0,t1,ox,oy,s0,s1)=>{const K=[];for(let i=0;i<=6;i++){const u=i/6,x=dx*u+ox*u,y=dy*u+oy*u-H*4*u*(1-u);K.push({transform:`translate(${x.toFixed(1)}px,${y.toFixed(1)}px) scale(${(s0+(s1-s0)*u).toFixed(2)})`,offset:+(t0+(t1-t0)*u).toFixed(3),opacity:1})}return K};
+  const flame=(c)=>`<svg viewBox="-12 -30 24 32" width="100%" height="100%" style="overflow:visible"><path d="M0 0 C-10 -6 -9 -18 -2 -30 C-1 -20 5 -20 5 -27 C12 -16 10 -5 0 0 Z" fill="${C3}"/><path d="M0 0 C-6 -4 -5 -12 -1 -20 C0 -13 3 -13 3 -18 C7 -10 6 -3 0 0 Z" fill="${C2}"/><path d="M0 0 C-3 -2 -2 -6 0 -10 C2 -6 3 -2 0 0 Z" fill="${C1}"/></svg>`;
+  /* the maw flaring */
+  const mg=mk(`left:${sx-U*10}px;top:${sy-U*8}px;width:${U*20}px;height:${U*16}px;border-radius:50%;background:radial-gradient(circle,${C1},${C2}aa 40%,transparent 70%);opacity:0;mix-blend-mode:screen`);
+  mg.animate([{opacity:0,offset:0},{opacity:0,offset:.16},{opacity:1,transform:"scale(1.3)",offset:.26},{opacity:.8,offset:.44},{opacity:0,transform:"scale(.6)",offset:.58},{opacity:0,offset:1}],o);
+  /* the chimney roaring sparks */
+  const cx=sr.left+sr.width*.45-B.left,cy=sr.top+sr.height*.08-B.top;
+  for(let k=0;k<16;k++){const s=U*(.6+(k%3)*.4),b=.18+(k%8)*.03,ex=(k%5-2)*U*3,ey=-B.height*(.18+(k%4)*.06);
+   const e=mk(`left:${cx}px;top:${cy}px;width:${s}px;height:${s}px;border-radius:50%;background:${k%2?C1:C2};box-shadow:0 0 6px ${C2};opacity:0`);
+   e.animate([{opacity:0,transform:"none",offset:0},{opacity:0,offset:b},{opacity:1,offset:b+.02},{opacity:0,transform:`translate(${ex}px,${ey}px)`,offset:Math.min(.95,b+.3)},{opacity:0,offset:1}],o)}
+  /* three great clots of burning fuel, and a spray of embers, arcing over */
+  const fb=U*9;
+  [[0,-1,1],[.03,1,.85],[.06,0,1.15]].forEach(([d,side,sz],i)=>{const ox=side*U*12,oy=side*U*3;const e=mk(`left:${sx-fb/2}px;top:${sy-fb/2}px;width:${fb}px;height:${fb}px;opacity:0`,
+    `<div style="position:absolute;inset:0;border-radius:50%;background:radial-gradient(circle at 40% 40%,${C1},${C2} 35%,${C3} 65%,transparent 72%);box-shadow:0 0 18px ${C2}"></div>`);
+   e.animate([{opacity:0,transform:"scale(.3)",offset:0},{opacity:0,transform:"scale(.3)",offset:.24+d},...arc(.26+d,.5+d,ox,oy,.4*sz,sz),{opacity:0,transform:`translate(${dx+ox}px,${dy+oy}px) scale(${sz*1.6})`,offset:.54+d},{opacity:0,offset:1}],o)});
+  for(let k=0;k<18;k++){const d=.24+(k%6)*.012,ox=((k*37)%21-10)*U*1.4,oy=((k*13)%9-4)*U,s=U*(.5+(k%3)*.35);
+   const e=mk(`left:${sx}px;top:${sy}px;width:${s}px;height:${s}px;border-radius:50%;background:${k%2?C1:C2};box-shadow:0 0 5px ${C3};opacity:0`);
+   e.animate([{opacity:0,offset:0},{opacity:0,offset:d},...arc(d+.02,d+.26,ox,oy,1,1),{opacity:0,offset:Math.min(.98,d+.3)},{opacity:0,offset:1}],o)}
+  /* the fires catching where they land, growing, spreading out round the target, then burning down */
+  const gl=mk(`left:${tx-U*26}px;top:${ty-U*6}px;width:${U*52}px;height:${U*12}px;border-radius:50%;background:radial-gradient(ellipse,${C2}aa,${C3}55 50%,transparent 72%);opacity:0;mix-blend-mode:screen`);
+  gl.animate([{opacity:0,offset:0},{opacity:0,offset:.5},{opacity:1,offset:.58},{opacity:.8,offset:.85},{opacity:0,offset:1}],o);
+  const spots=[[0,0,0,1.4],[-9,1,.04,1.1],[9,1,.05,1.15],[-17,3,.11,.9],[16,3,.12,.95],[-24,5,.18,.7],[23,5,.19,.75]];
+  spots.forEach(([ox,oy,d,s])=>{const w=U*9*s,h=w*32/24,e=mk(`left:${tx+ox*U-w/2}px;top:${ty+oy*U-h}px;width:${w}px;height:${h}px;transform-origin:50% 100%;opacity:0`,flame());
+   const t0=.5+d,sp=.97-t0,T=u=>+(t0+sp*u).toFixed(3);
+   e.animate([{opacity:0,transform:"scale(.1)",offset:0},{opacity:0,transform:"scale(.1)",offset:t0},{opacity:1,transform:"scale(.7)",offset:T(.07)},{transform:"scale(1.05,1.1)",offset:T(.22)},{transform:"scale(.95,.92)",offset:T(.37)},{transform:"scale(1.08,1.12)",offset:T(.52)},{opacity:1,transform:"scale(1,1)",offset:T(.72)},{opacity:0,transform:"scale(.3,.2)",offset:T(1)},{opacity:0,offset:1}],o)});
+  setTimeout(()=>ov.remove(),D+50)}
+ TATK.push(['[id^="ebn"],[id^="ebr"]',ebStrike,D])}
+
+/* Widow's Vein: "Venom Bite".
+   In its fight it webs and bites. So: she rears up on her back legs and spits a line of silk across the field that strikes her
+   target and bursts into a web over it. She hauls on the line, dragging it towards her, then strikes: her fangs come down out of
+   nowhere and bite, venom bursts over it, and it's left shaking and stained with venom as the web falls away.
+   Radiant: bleached silk, red venom. */
+{const D=2800;
+ const css=document.createElement("style");css.textContent=`
+ .wvstrike .p-legF{animation:wvsLegF ${D}ms ease-in-out both!important}
+ .wvstrike .p-head{animation:wvsHead ${D}ms ease-in-out both!important}
+ .wvstrike .p-jaw{animation:wvsJaw ${D}ms ease-in-out both!important}
+ .wvstrike .p-sway{animation:wvsRear ${D}ms ease-in-out both!important}
+ @keyframes wvsRear{0%{transform:none}14%,40%{transform:rotate(-8deg) translateY(-4px)}48%{transform:rotate(6deg) translate(-6px,2px)}60%,100%{transform:none}}
+ @keyframes wvsLegF{0%{transform:none}14%,40%{transform:rotate(-26deg)}48%{transform:rotate(10deg)}60%,100%{transform:none}}
+ @keyframes wvsHead{0%{transform:none}14%,20%{transform:rotate(-8deg)}24%{transform:rotate(4deg)}48%{transform:translate(-4px,3px) rotate(6deg)}60%,100%{transform:none}}
+ @keyframes wvsJaw{0%,14%{transform:none}18%,26%{transform:rotate(-30deg)}30%,42%{transform:none}46%,52%{transform:rotate(-36deg)}58%,100%{transform:none}}`;
+ document.head.appendChild(css);
+ function wvStrike(f){const box=tatkBox(f),B=box.getBoundingClientRect(),jr=(f.querySelector(".p-jaw")||f).getBoundingClientRect(),rad=!!f.querySelector('[id^="wvr"]');
+  const VN=rad?"#E8343A":"#AADC6E",VD=rad?"#7A0A10":"#3A6A1A",SILK=rad?"#F0E4E4":"#E8ECE0",FG=rad?"#D8D2C4":"#15170F",INK="#120A06";
+  f.classList.remove("wvstrike");void f.offsetWidth;f.classList.add("wvstrike");setTimeout(()=>f.classList.remove("wvstrike"),D);
+  const ov=document.createElement("div");ov.className="tatk-ov";box.appendChild(ov);
+  const sx=jr.left+jr.width/2-B.left,sy=jr.top+jr.height/2-B.top;
+  const tg=tatkTarget(f,B),tx=tg?tg[0]:(sx>B.width/2?B.width*.24:B.width*.76),ty=tg?tg[1]:(sy<B.height/2?B.height*.76:B.height*.26);
+  const o={duration:D,fill:"both"},mk=(css,html)=>{const e=document.createElement("div");e.style.cssText=css;if(html)e.innerHTML=html;ov.appendChild(e);return e};
+  const dx=tx-sx,dy=ty-sy,len=Math.hypot(dx,dy),ang=Math.atan2(dy,dx),U=B.width/100;
+  /* the line of silk, spat across the field; it sags as she hauls on it, then snaps */
+  const line=mk(`left:${sx}px;top:${sy-1.5}px;width:${len}px;height:3px;transform-origin:0 50%;background:linear-gradient(90deg,${SILK},${SILK}cc);box-shadow:0 0 4px ${SILK};opacity:0`);
+  line.animate([{opacity:0,transform:`rotate(${ang}rad) scaleX(0)`,offset:0},{opacity:0,offset:.17},{opacity:1,transform:`rotate(${ang}rad) scaleX(0)`,offset:.18},{opacity:1,transform:`rotate(${ang}rad) scaleX(1)`,offset:.26},
+   {opacity:1,transform:`rotate(${ang}rad) scaleX(.86)`,offset:.4},{opacity:0,transform:`rotate(${ang}rad) scaleX(.86) scaleY(.2)`,offset:.46},{opacity:0,offset:1}],o);
+  /* the web bursting over the target */
+  const wr=Math.max(70,B.width*.3);let web="";for(let k=0;k<10;k++){const a=k/10*Math.PI*2;web+=`<path d="M0 0 L${(Math.cos(a)*48).toFixed(1)} ${(Math.sin(a)*48).toFixed(1)}"/>`}
+  for(let r=1;r<=4;r++){const pts=Array.from({length:10},(_,k)=>{const a=k/10*Math.PI*2,rr=r*11*(1+((k*7+r)%3-1)*.06);return`${(Math.cos(a)*rr).toFixed(1)} ${(Math.sin(a)*rr).toFixed(1)}`});web+=`<path d="M${pts.join(" L")} Z"/>`}
+  const wb=mk(`left:${tx-wr/2}px;top:${ty-wr/2}px;width:${wr}px;height:${wr}px;opacity:0`,`<svg viewBox="-50 -50 100 100" width="100%" height="100%" style="overflow:visible"><g stroke="${SILK}" stroke-width="1.4" fill="none" stroke-linecap="round" opacity=".9">${web}</g></svg>`);
+  wb.animate([{opacity:0,transform:"scale(.1) rotate(-30deg)",offset:0},{opacity:0,offset:.25},{opacity:1,transform:"scale(1) rotate(0)",offset:.31,easing:"ease-out"},{opacity:1,offset:.56},{opacity:0,transform:"scale(1.2) translateY(14px)",offset:.7},{opacity:0,offset:1}],o);
+  /* the target: webbed, hauled towards her, bitten, shaking and venom-stained */
+  const side=f.closest("#as-o")?"p":f.closest("#as-p")?"o":null,tf=side&&document.querySelector(`#as-${side} .as-form`);
+  if(tf){const px=-dx*.14,py=-dy*.14;const vf=rad?"sepia(.55) saturate(2.2) hue-rotate(-40deg)":"sepia(.55) saturate(1.8) hue-rotate(40deg)";
+   tf.animate([{transform:"none",filter:"none",offset:0},{transform:"none",filter:"none",offset:.28},{transform:"scale(.96)",filter:"brightness(.85)",offset:.31},{transform:`translate(${px}px,${py}px) scale(.96)`,offset:.42,easing:"ease-in"},
+     {transform:`translate(${px*1.05}px,${py*1.05}px) scale(.9)`,filter:`${vf} brightness(1.2)`,offset:.5},{transform:`translate(${px*.6+6}px,${py*.6}px)`,offset:.54},{transform:`translate(${px*.3-5}px,${py*.3}px)`,offset:.58},{transform:"translate(3px,0)",filter:`${vf} brightness(.9)`,offset:.64},{transform:"none",offset:.72},{filter:`${vf} brightness(.95) opacity(1)`,offset:.82},{transform:"none",filter:"none",offset:1}],o)}
+  /* the fangs, coming down out of nowhere and biting */
+  const fs=Math.max(60,B.width*.24);
+  const fang=s=>`<svg viewBox="-20 -40 40 80" width="100%" height="100%" style="overflow:visible"><g transform="scale(${s} 1)"><path d="M-6 -40 Q14 -20 2 18 Q-2 24 -4 16 Q2 -14 -14 -36 Z" fill="${FG}" stroke="${INK}" stroke-width="2.4" stroke-linejoin="round"/><path d="M-4 -30 Q8 -14 0 8" stroke="#FFFFFF" stroke-width="1.2" fill="none" opacity=".45"/><circle cx="0" cy="20" r="3" fill="${VN}" stroke="${VD}" stroke-width=".8"/></g></svg>`;
+  [[-1,0],[1,0]].forEach(([s])=>{const e=mk(`left:${tx-fs/2+s*fs*.22}px;top:${ty-fs*1.05}px;width:${fs}px;height:${fs*2}px;opacity:0;transform-origin:50% 0`,fang(s));
+   e.animate([{opacity:0,transform:`translateY(${-fs*.6}px) rotate(${s*20}deg)`,offset:0},{opacity:0,offset:.42},{opacity:1,transform:`translateY(${-fs*.5}px) rotate(${s*26}deg)`,offset:.44},{opacity:1,transform:`translateY(0) rotate(${s*-6}deg)`,offset:.49,easing:"ease-in"},{opacity:1,transform:`translateY(${-fs*.04}px) rotate(${s*-4}deg)`,offset:.56},{opacity:0,transform:`translateY(${-fs*.5}px) rotate(${s*24}deg)`,offset:.66},{opacity:0,offset:1}],o)});
+  /* venom bursting over it, then dripping */
+  const vb=mk(`left:${tx-U*14}px;top:${ty-U*14}px;width:${U*28}px;height:${U*28}px;border-radius:50%;background:radial-gradient(circle,${VN}ee,${VN}66 40%,transparent 68%);opacity:0;mix-blend-mode:screen`);
+  vb.animate([{opacity:0,transform:"scale(.2)",offset:0},{opacity:0,offset:.48},{opacity:1,transform:"scale(1)",offset:.52},{opacity:0,transform:"scale(1.4)",offset:.68},{opacity:0,offset:1}],o);
+  for(let k=0;k<14;k++){const a=k/14*Math.PI*2,d=U*(10+(k%4)*4),s=U*(1+(k%3)*.6);
+   const e=mk(`left:${tx-s/2}px;top:${ty-s/2}px;width:${s}px;height:${s*1.3}px;border-radius:50% 50% 50% 50%/40% 40% 60% 60%;background:${VN};border:1px solid ${VD};opacity:0`);
+   e.animate([{opacity:0,transform:"none",offset:0},{opacity:0,offset:.5},{opacity:1,offset:.52},{opacity:1,transform:`translate(${Math.cos(a)*d}px,${Math.sin(a)*d}px)`,offset:.62,easing:"ease-out"},{opacity:0,transform:`translate(${Math.cos(a)*d*1.1}px,${Math.sin(a)*d+U*12}px)`,offset:.8},{opacity:0,offset:1}],o)}
+  for(let k=0;k<4;k++){const x=tx+(k-1.5)*U*5,e=mk(`left:${x}px;top:${ty}px;width:${U*1.2}px;height:${U*2}px;border-radius:50% 50% 50% 50%/40% 40% 60% 60%;background:${VN};border:1px solid ${VD};opacity:0`);
+   e.animate([{opacity:0,transform:"none",offset:0},{opacity:0,offset:.6+k*.04},{opacity:1,offset:.62+k*.04},{opacity:0,transform:`translateY(${U*14}px)`,offset:Math.min(.99,.82+k*.04)},{opacity:0,offset:1}],o)}
+  setTimeout(()=>ov.remove(),D+50)}
+ TATK.push(['[id^="wvn"],[id^="wvr"]',wvStrike,D])}
+
+/* The Unmaker: "Quicksilver Embrace".
+   She's the liquid itself, so she doesn't throw anything: she goes. She melts down into her pool, the pool runs across the floor
+   to her target as a fast silver streak, and she rises up out of it right beside it, taller than it, and takes hold. Silver veins
+   race through it from her grip, it cracks along them and pieces crumble off it. Then she sinks back into the floor, runs home,
+   and stands up where she was. Radiant: liquid gold. */
+{const D=3000;
+ const css=document.createElement("style");css.textContent=`
+ .umstrike .cr-body{animation:umsMelt ${D}ms ease-in-out both!important;transform-box:fill-box;transform-origin:50% 100%}
+ @keyframes umsMelt{0%{transform:none;opacity:1}6%{transform:scale(1.05,.95)}16%{transform:scale(1.5,.04);opacity:.9}18%,86%{transform:scale(1.5,.02);opacity:0}96%{transform:scale(.95,1.05);opacity:1}100%{transform:none;opacity:1}}`;
+ document.head.appendChild(css);
+ function umStrike(f){const box=tatkBox(f),B=box.getBoundingClientRect(),sv=f.querySelector("svg");if(!sv)return;const r=sv.getBoundingClientRect(),rad=!!f.querySelector('[id^="umr"]');
+  const C0=rad?"#FFF8D8":"#FFFFFF",C1=rad?"#F6D870":"#DCE6F0",MID=rad?"#B07A1A":"#7E8C9C",DK=rad?"#4A2C06":"#2E3846",INK="#10141A";
+  f.classList.remove("umstrike");void f.offsetWidth;f.classList.add("umstrike");setTimeout(()=>f.classList.remove("umstrike"),D);
+  const ov=document.createElement("div");ov.className="tatk-ov";box.appendChild(ov);
+  const o={duration:D,fill:"both"},mk=(css,html)=>{const e=document.createElement("div");e.style.cssText=css;if(html)e.innerHTML=html;ov.appendChild(e);return e};
+  const side=f.closest("#as-o")?"p":f.closest("#as-p")?"o":null,tf=side&&document.querySelector(`#as-${side} .as-form`);
+  const sx=r.left+r.width*.45-B.left,sy=r.bottom-r.height*.08-B.top;
+  let tx,tby,tcy,th;if(tf){const q=tf.getBoundingClientRect();tx=q.left+q.width/2-B.left;tby=q.bottom-q.height*.12-B.top;tcy=q.top+q.height*.5-B.top;th=q.height}
+  else{tx=sx>B.width/2?B.width*.28:B.width*.72;tby=sy<B.height/2?B.height*.85:B.height*.45;tcy=tby-B.height*.15;th=B.height*.3}
+  const dir=Math.sign(tx-sx)||1,U=B.width/100;
+  /* the silver streak running across the floor, there and back */
+  const pw=U*16,ph=U*3.2;
+  const pud=mk(`left:${sx-pw/2}px;top:${sy-ph/2}px;width:${pw}px;height:${ph}px;border-radius:50%;background:linear-gradient(${C0},${C1} 40%,${MID});border:1.5px solid ${INK};box-shadow:0 0 8px ${C1};opacity:0`);
+  const at=(x,y,sx2)=>`translate(${(x-sx).toFixed(1)}px,${(y-sy).toFixed(1)}px) scaleX(${sx2})`;
+  pud.animate([{opacity:0,transform:at(sx,sy,.6),offset:0},{opacity:0,offset:.1},{opacity:1,transform:at(sx,sy,1.2),offset:.16},{transform:at((sx+tx)/2,(sy+tby)/2,2.6),offset:.24},{transform:at(tx+dir*U*8,tby,1.6),offset:.32},
+   {transform:at(tx+dir*U*8,tby,1.4),offset:.68},{transform:at((sx+tx)/2,(sy+tby)/2,2.6),offset:.8},{transform:at(sx,sy,1.2),offset:.88},{opacity:1,transform:at(sx,sy,1),offset:.92},{opacity:0,transform:at(sx,sy,.8),offset:.96},{opacity:0,offset:1}],o);
+  /* she rises out of it beside her target, taller than it, facing it, and takes hold */
+  const ch=Math.max(th*1.35,r.height*.8),cw=ch*r.width/r.height,cxp=tx+dir*U*8;
+  const cl=mk(`left:${cxp-cw/2}px;top:${tby-ch*.94}px;width:${cw}px;height:${ch}px;transform-origin:50% 94%;opacity:0`);
+  const c=sv.cloneNode(true);c.style.cssText="width:100%;height:100%;overflow:visible"+(dir>0?";transform:scaleX(-1)":"");
+  c.querySelectorAll('g[transform*="scale(1.5 1)"]').forEach(x=>x.remove());cl.appendChild(c);
+  cl.animate([{opacity:0,transform:"scale(1.6,0)",offset:0},{opacity:0,transform:"scale(1.6,0)",offset:.3},{opacity:1,transform:"scale(1.2,.4)",offset:.34},{transform:"scale(.95,1.08)",offset:.42},{transform:`scale(1,1) rotate(${-dir*6}deg)`,offset:.48},
+   {transform:`rotate(${-dir*9}deg) translateX(${-dir*U*2}px)`,offset:.6},{transform:`rotate(${-dir*6}deg)`,offset:.68},{opacity:1,transform:"scale(1.3,.3)",offset:.76},{opacity:0,transform:"scale(1.6,0)",offset:.8},{opacity:0,offset:1}],o);
+  /* the target: held, shaking, losing its colour as it cracks; veins race through it; pieces crumble off */
+  if(tf)tf.animate([{transform:"none",filter:"none",offset:0},{transform:"none",filter:"none",offset:.44},{transform:"scale(.95,.97)",filter:"saturate(.4) brightness(.9)",offset:.48},{transform:"translate(3px,0) scale(.95,.97)",offset:.52},{transform:"translate(-3px,1px) scale(.95,.97)",offset:.56},{transform:"translate(2px,0) scale(.95,.97)",filter:"saturate(.15) brightness(.7) contrast(1.2)",offset:.64},{transform:"translate(-2px,0)",offset:.7},{transform:"none",filter:"saturate(.5) brightness(.85)",offset:.84},{transform:"none",filter:"none",offset:1}],o);
+  const vr=Math.max(70,th*1.1);let vp="";const br=(x,y,a,l,n)=>{if(n<0||l<4)return;const x2=x+Math.cos(a)*l,y2=y+Math.sin(a)*l;vp+=`M${x.toFixed(1)} ${y.toFixed(1)} L${x2.toFixed(1)} ${y2.toFixed(1)} `;br(x2,y2,a+.5,l*.62,n-1);br(x2,y2,a-.55,l*.6,n-1)};
+  for(let k=0;k<6;k++)br(0,0,k/6*Math.PI*2+.3,15,3);
+  const vn=mk(`left:${tx-vr/2}px;top:${tcy-vr/2}px;width:${vr}px;height:${vr}px;opacity:0`,`<svg viewBox="-50 -50 100 100" width="100%" height="100%" style="overflow:visible"><path d="${vp}" stroke="${INK}" stroke-width="2.4" fill="none" stroke-linecap="round" pathLength="1" stroke-dasharray="1 1"/><path d="${vp}" stroke="${C0}" stroke-width="1.1" fill="none" stroke-linecap="round" pathLength="1" stroke-dasharray="1 1" style="filter:drop-shadow(0 0 2px ${C1})"/></svg>`);
+  vn.querySelectorAll("path").forEach(p=>p.animate([{strokeDashoffset:1,offset:0},{strokeDashoffset:1,offset:.46},{strokeDashoffset:0,offset:.64},{strokeDashoffset:0,offset:1}],o));
+  vn.animate([{opacity:0,offset:0},{opacity:0,offset:.45},{opacity:1,offset:.47},{opacity:1,offset:.82},{opacity:0,offset:.94},{opacity:0,offset:1}],o);
+  for(let k=0;k<16;k++){const a=k/16*Math.PI*2,r0=vr*.25*(.6+(k%3)*.2),s=U*(1.2+(k%4)*.5),x=tx+Math.cos(a)*r0,y=tcy+Math.sin(a)*r0*.7,b=.54+(k%6)*.03;
+   const e=mk(`left:${x}px;top:${y}px;width:${s}px;height:${s}px;background:${k%3?"#8A7A6A":MID};border:1px solid ${INK};box-shadow:inset 0 0 0 1px ${C0}55;opacity:0`);
+   e.animate([{opacity:0,transform:`rotate(${k*23}deg)`,offset:0},{opacity:0,offset:b},{opacity:1,offset:b+.02},{opacity:1,transform:`translate(${Math.cos(a)*U*3}px,${U*4}px) rotate(${k*23+40}deg)`,offset:b+.07},{opacity:0,transform:`translate(${Math.cos(a)*U*6}px,${(tby-y)+U*4}px) rotate(${k*23+200}deg)`,offset:Math.min(.98,b+.26),easing:"ease-in"},{opacity:0,offset:1}],o)}
+  setTimeout(()=>ov.remove(),D+50)}
+ TATK.push(['[id^="umn"],[id^="umr"]',umStrike,D])}
+
+/* Drowned Fire: "Broadside".
+   It's the fire that sank the ship, and the ship is its body, guns and all. It heels over, every gunport flashes in turn down the
+   hull with a puff of smoke, and a broadside of burning shot arcs across the field. Each one bursts on its target in fire, and
+   because water only feeds it, the fire flares up through gouts of steam. The ship rocks back on the recoil. Radiant: the fire
+   burns white. */
+{const D=2800;
+ const css=document.createElement("style");css.textContent=`
+ .dfstrike .p-sway{animation:dfsRock ${D}ms ease-in-out both!important}
+ .dfstrike .p-head{animation:dfsRock2 ${D}ms ease-in-out both!important}
+ @keyframes dfsRock{0%{transform:none}12%{transform:rotate(-3deg)}22%{transform:rotate(4deg) translateX(4px)}30%{transform:rotate(-2deg)}38%{transform:rotate(3deg) translateX(3px)}48%{transform:rotate(-1deg)}60%,100%{transform:none}}
+ @keyframes dfsRock2{0%,100%{transform:none}}`;
+ document.head.appendChild(css);
+ function dfStrike(f){const box=tatkBox(f),B=box.getBoundingClientRect(),rad=!!f.querySelector('[id^="dfr"]');
+  const C1=rad?"#FFFFFF":"#FFF2C0",C2=rad?"#BFE4FF":"#FFA83A",C3=rad?"#3A9AFF":"#F05A1A",SM="#6A6A72";
+  f.classList.remove("dfstrike");void f.offsetWidth;f.classList.add("dfstrike");setTimeout(()=>f.classList.remove("dfstrike"),D);
+  const ov=document.createElement("div");ov.className="tatk-ov";box.appendChild(ov);
+  const o={duration:D,fill:"both"},mk=(css,html)=>{const e=document.createElement("div");e.style.cssText=css;if(html)e.innerHTML=html;ov.appendChild(e);return e};
+  const sr=(f.querySelector("svg")||f).getBoundingClientRect();
+  let ports=[...f.querySelectorAll('rect[width="4.4"][height="4.4"]')].map(e=>{const q=e.getBoundingClientRect();return[q.left+q.width/2-B.left,q.top+q.height/2-B.top]}).filter(p=>p[0]>-50);
+  if(!ports.length)ports=[0,1,2,3,4].map(i=>[sr.left+sr.width*(.35+i*.1)-B.left,sr.top+sr.height*.65-B.top]);
+  const tg=tatkTarget(f,B),cx0=sr.left+sr.width/2-B.left,tx=tg?tg[0]:(cx0>B.width/2?B.width*.24:B.width*.76),ty=tg?tg[1]:B.height*.7;
+  /* fire from the ports nearest the target first */
+  ports.sort((a,b)=>Math.abs(a[0]-tx)-Math.abs(b[0]-tx));ports=ports.slice(0,6);
+  const U=B.width/100,H=B.height*.22;
+  ports.forEach(([px,py],i)=>{const t0=.16+i*.045;
+   /* the muzzle flash and smoke */
+   const fl=mk(`left:${px-U*3}px;top:${py-U*3}px;width:${U*6}px;height:${U*6}px;border-radius:50%;background:radial-gradient(circle,${C1},${C2} 40%,transparent 70%);opacity:0;mix-blend-mode:screen`);
+   fl.animate([{opacity:0,transform:"scale(.3)",offset:0},{opacity:0,offset:t0},{opacity:1,transform:"scale(1.6)",offset:t0+.015},{opacity:0,transform:"scale(1)",offset:t0+.07},{opacity:0,offset:1}],o);
+   for(let k=0;k<3;k++){const s=U*(4+k*1.5),e=mk(`left:${px-s/2}px;top:${py-s/2}px;width:${s}px;height:${s}px;border-radius:50%;background:radial-gradient(circle,${SM}cc,${SM}55 60%,transparent 72%);opacity:0`);
+    e.animate([{opacity:0,transform:"scale(.3)",offset:0},{opacity:0,offset:t0+.01},{opacity:.85,transform:"scale(.8)",offset:t0+.03},{opacity:0,transform:`translate(${(k-1)*U*3}px,${-U*(8+k*4)}px) scale(${1.8+k*.4})`,offset:Math.min(.98,t0+.35)},{opacity:0,offset:1}],o)}
+   /* the burning shot, arcing over */
+   const ex=tx+((i%3)-1)*U*6,ey=ty+((i%2)?U*3:-U*2),dx=ex-px,dy=ey-py,K=[];
+   for(let j=0;j<=6;j++){const u=j/6;K.push({opacity:1,transform:`translate(${(dx*u).toFixed(1)}px,${(dy*u-H*4*u*(1-u)).toFixed(1)}px)`,offset:+(t0+.02+.2*u).toFixed(3)})}
+   const bs=U*3.4,b=mk(`left:${px-bs/2}px;top:${py-bs/2}px;width:${bs}px;height:${bs}px;border-radius:50%;background:radial-gradient(circle at 40% 40%,#3A3A40,#121216 70%);box-shadow:0 0 0 2px ${C2},0 0 12px 3px ${C3};opacity:0`);
+   b.animate([{opacity:0,transform:"none",offset:0},{opacity:0,offset:t0+.019},...K,{opacity:0,transform:`translate(${dx}px,${dy}px)`,offset:t0+.24},{opacity:0,offset:1}],o);
+   /* bursting on the target: fire, then steam */
+   const ti=t0+.22,fs=U*12,fb=mk(`left:${ex-fs/2}px;top:${ey-fs/2}px;width:${fs}px;height:${fs}px;border-radius:50%;background:radial-gradient(circle,${C1},${C2} 30%,${C3}bb 55%,transparent 72%);opacity:0;mix-blend-mode:screen`);
+   fb.animate([{opacity:0,transform:"scale(.2)",offset:0},{opacity:0,offset:ti},{opacity:1,transform:"scale(1.1)",offset:ti+.03},{opacity:.7,transform:"scale(1.3)",offset:ti+.08},{opacity:0,transform:"scale(1.5)",offset:Math.min(.98,ti+.18)},{opacity:0,offset:1}],o);
+   for(let k=0;k<3;k++){const s=U*(6+k*2),e=mk(`left:${ex-s/2+(k-1)*U*3}px;top:${ey-s/2}px;width:${s}px;height:${s}px;border-radius:50%;background:radial-gradient(circle,#F4F8FFee,#DDE6F099 55%,transparent 72%);opacity:0`);
+    e.animate([{opacity:0,transform:"scale(.4)",offset:0},{opacity:0,offset:ti+.04},{opacity:.9,transform:"scale(1)",offset:ti+.08},{opacity:0,transform:`translateY(${-U*(12+k*5)}px) scale(${2+k*.4})`,offset:Math.min(.99,ti+.4)},{opacity:0,offset:1}],o)}});
+  /* the target: rocked by each hit, scorched */
+  const side=f.closest("#as-o")?"p":f.closest("#as-p")?"o":null,tf=side&&document.querySelector(`#as-${side} .as-form`);
+  if(tf){const K=[{transform:"none",filter:"brightness(1) sepia(0)",offset:0}];ports.forEach((_,i)=>{const ti=.38+i*.045;const sc=`brightness(${(1-i*.05).toFixed(2)}) sepia(${(i*.08).toFixed(2)})`,pv=i?`brightness(${(1-(i-1)*.05).toFixed(2)}) sepia(${((i-1)*.08).toFixed(2)})`:"brightness(1) sepia(0)";K.push({transform:"none",filter:pv,offset:ti},{transform:`translate(${(i%2?4:-4)}px,${-2}px) scale(.96)`,filter:"brightness(1.8) sepia(.4)",offset:ti+.012},{transform:"none",filter:sc,offset:ti+.03})});
+   K.push({filter:"brightness(.72) sepia(.5)",offset:.8},{transform:"none",filter:"brightness(1) sepia(0)",offset:1});tf.animate(K,o)}
+  setTimeout(()=>ov.remove(),D+50)}
+ TATK.push(['[id^="dfn"],[id^="dfr"]',dfStrike,D])}
+
+/* Crown of Rays: "Coronation".
+   It's a crown hungry for a head, and it poisons whoever wears it. So it goes and finds one: it lifts off, its rays sweep across
+   the field and lock on its target, it sails over and drops onto its target's head, and bites down. While it's worn its glow
+   soaks into its target, sickly green, pulsing, until the crown lets go and floats back home. Radiant: blue glow, platinum. */
+{const D=3000;
+ const css=document.createElement("style");css.textContent=`.crstrike .cr-body{animation:crsGone ${D}ms linear both!important}
+ @keyframes crsGone{0%,14%{opacity:1}16%,88%{opacity:0}92%,100%{opacity:1}}`;document.head.appendChild(css);
+ function crStrike(f){const box=tatkBox(f),B=box.getBoundingClientRect(),sv=f.querySelector("svg");if(!sv)return;const r=sv.getBoundingClientRect(),rad=!!f.querySelector('[id^="crr"]');
+  const R1=rad?"#7AB8FF":"#8CFF9E",R0=rad?"#E8FBFF":"#EAFFEA",tint=rad?"sepia(.55) saturate(1.8) hue-rotate(170deg)":"sepia(.55) saturate(1.8) hue-rotate(70deg)";
+  f.classList.remove("crstrike");void f.offsetWidth;f.classList.add("crstrike");setTimeout(()=>f.classList.remove("crstrike"),D);
+  const ov=document.createElement("div");ov.className="tatk-ov";box.appendChild(ov);
+  const o={duration:D,fill:"both"},mk=(css,html)=>{const e=document.createElement("div");e.style.cssText=css;if(html)e.innerHTML=html;ov.appendChild(e);return e};
+  const side=f.closest("#as-o")?"p":f.closest("#as-p")?"o":null,tf=side&&document.querySelector(`#as-${side} .as-form`);
+  const x0=r.left-B.left,y0=r.top-B.top,cx=x0+r.width/2,cy=y0+r.height/2;
+  let tx,tTop,tcy,tw;if(tf){const q=tf.getBoundingClientRect();tx=q.left+q.width/2-B.left;tTop=q.top+q.height*.12-B.top;tcy=q.top+q.height/2-B.top;tw=q.width}else{tx=cx>B.width/2?B.width*.26:B.width*.74;tTop=B.height*.6;tcy=B.height*.72;tw=B.width*.3}
+  /* the crown itself, lifted off its spot, flown over and dropped on its target's head */
+  const cl=mk(`left:${x0}px;top:${y0}px;width:${r.width}px;height:${r.height}px;opacity:0;transform-origin:50% 50%`);const c=sv.cloneNode(true);c.style.cssText="width:100%;height:100%;overflow:visible";cl.appendChild(c);
+  const sc=Math.min(1,tw*.75/r.width),hx=tx-cx,minY=4-(y0+r.height*(1-sc)/2),hy=Math.max(minY,tTop-r.height*sc*.3-cy),top=Math.max(4-(y0+r.height*(1-(1+sc)/2)/2),Math.min(0,hy)-B.height*.08);
+  cl.animate([{opacity:1,transform:"none",offset:0},{transform:`translateY(${Math.max(4-y0,-8)}px) scale(1.04)`,offset:.1},{opacity:1,transform:`translateY(${Math.max(4-y0,-B.height*.08)}px) scale(1.06)`,offset:.2},
+   {transform:`translate(${hx*.5}px,${top}px) scale(${(1+sc)/2}) rotate(${hx>0?10:-10}deg)`,offset:.32},{transform:`translate(${hx}px,${Math.max(minY,hy-B.height*.12)}px) scale(${sc})`,offset:.4,easing:"ease-in"},
+   {transform:`translate(${hx}px,${hy}px) scale(${sc*1.06},${sc*.9})`,offset:.44},{transform:`translate(${hx}px,${hy}px) scale(${sc})`,offset:.48},{transform:`translate(${hx}px,${hy+2}px) scale(${sc*1.03},${sc*.96})`,offset:.58},{transform:`translate(${hx}px,${hy}px) scale(${sc})`,offset:.7},
+   {transform:`translate(${hx}px,${Math.max(minY,hy-B.height*.1)}px) scale(${sc})`,offset:.76},{transform:`translate(${hx*.4}px,${top*.6}px) scale(${(1+sc)/2})`,offset:.84},{opacity:1,transform:"none",offset:.9},{opacity:0,transform:"none",offset:.92},{opacity:0,offset:1}],o);
+  /* the rays sweeping across the field and locking on: beams from where it hangs, converging on its target */
+  const by=cy-B.height*.08;for(let k=0;k<5;k++){const a0=Math.atan2(tcy-by,tx-cx)+(k-2)*.5,a1=Math.atan2(tcy-by,tx-cx)+(k-2)*.03,L=Math.hypot(tx-cx,tcy-by)*1.05;
+   const e=mk(`left:${cx}px;top:${by-5}px;width:${L}px;height:10px;transform-origin:0 50%;background:linear-gradient(90deg,${R0},${R1}aa 40%,transparent);filter:blur(1px);opacity:0;mix-blend-mode:screen`);
+   e.animate([{opacity:0,transform:`rotate(${a0}rad) scaleY(.5)`,offset:0},{opacity:0,offset:.1},{opacity:.85,transform:`rotate(${a0}rad)`,offset:.13},{opacity:.95,transform:`rotate(${a1}rad) scaleY(.6)`,offset:.22,easing:"ease-in-out"},{opacity:0,transform:`rotate(${a1}rad) scaleY(.2)`,offset:.3},{opacity:0,offset:1}],o)}
+  const lk=Math.max(40,tw*.7),ring=mk(`left:${tx-lk/2}px;top:${tcy-lk/2}px;width:${lk}px;height:${lk}px;border-radius:50%;border:2px dashed ${R1};box-shadow:0 0 10px ${R1};opacity:0`);
+  ring.animate([{opacity:0,transform:"scale(1.8) rotate(0)",offset:0},{opacity:0,offset:.16},{opacity:1,transform:"scale(1) rotate(90deg)",offset:.24},{opacity:0,transform:"scale(.6) rotate(140deg)",offset:.32},{opacity:0,offset:1}],o);
+  /* worn: its glow soaking into its target, pulsing */
+  const gw=Math.max(70,tw*1.3),glo=mk(`left:${tx-gw/2}px;top:${tcy-gw/2}px;width:${gw}px;height:${gw}px;border-radius:50%;background:radial-gradient(circle,${R1}aa,${R1}33 45%,transparent 70%);opacity:0;mix-blend-mode:screen`);
+  glo.animate([{opacity:0,offset:0},{opacity:0,offset:.43},{opacity:1,transform:"scale(1.1)",offset:.46},{opacity:.5,transform:"scale(.9)",offset:.53},{opacity:.95,transform:"scale(1.1)",offset:.6},{opacity:.5,transform:"scale(.9)",offset:.67},{opacity:0,transform:"scale(1)",offset:.78},{opacity:0,offset:1}],o);
+  for(let k=0;k<10;k++){const s=4+(k%3)*2,x=tx+((k*37)%11-5)*tw*.08,e=mk(`left:${x}px;top:${tcy}px;width:${s}px;height:${s}px;border-radius:50%;background:${R1};box-shadow:0 0 6px ${R1};opacity:0`);
+   e.animate([{opacity:0,transform:"none",offset:0},{opacity:0,offset:.46+(k%5)*.04},{opacity:1,offset:.48+(k%5)*.04},{opacity:0,transform:`translateY(${-tw*.5}px)`,offset:Math.min(.98,.64+(k%5)*.04)},{opacity:0,offset:1}],o)}
+  if(tf)tf.animate([{transform:"none",filter:"none",offset:0},{transform:"none",filter:"none",offset:.42},{transform:"scale(1.03,.88)",filter:`${tint} brightness(1.1)`,offset:.45},{transform:"scale(.98,1.02)",offset:.5},{transform:"translate(-2px,0)",filter:`${tint} brightness(.8)`,offset:.56},{transform:"translate(2px,0)",filter:`${tint} brightness(1.15)`,offset:.62},{transform:"translate(-1px,0)",filter:`${tint} brightness(.85)`,offset:.68},{transform:"none",filter:`${tint} brightness(.95)`,offset:.76},{transform:"none",filter:`${tint} brightness(.95)`,offset:.86},{transform:"none",filter:"none",offset:.9},{transform:"none",filter:"none",offset:1}],{duration:D,fill:"none"});
+  setTimeout(()=>ov.remove(),D+50)}
+ TATK.push(['[id^="crn"],[id^="crr"]',crStrike,D])}
+
+/* Founder's Folly: "Redaction". It blacks out what you know. The quill lifts out of the inkwell, the ink rope pulling taut behind
+   it, and darts across the field; it strokes a great calligraphic bar of ink straight across its target, spattering as it lands,
+   the inkwell's lid snapping open and shut as it feeds the line. Its target is struck out under the bar, flickering, a stamp of
+   black over it, until the ink lifts away as loops of drifting script and the quill flies home. Radiant: white feather, red ink. */
+{const D=3000;
+ const css=document.createElement("style");css.textContent=`
+ .ffstrike .p-armF{animation:ffsQuill ${D}ms ease-in-out both!important}
+ .ffstrike .p-jaw{animation:ffsLid ${D}ms ease-in-out both!important}
+ .ffstrike .p-tail{animation:ffsRope ${D}ms ease-in-out both!important}
+ @keyframes ffsQuill{0%{opacity:1}12%{opacity:1;transform:translateY(-10px) rotate(-10deg)}16%,84%{opacity:0}90%,100%{opacity:1;transform:none}}
+ @keyframes ffsRope{0%,12%{transform:none}18%,80%{transform:scaleY(1.2)}90%,100%{transform:none}}
+ @keyframes ffsLid{0%,14%{transform:none}20%,26%{transform:rotate(-40deg)}30%{transform:none}36%,42%{transform:rotate(-40deg)}46%,100%{transform:none}}`;
+ document.head.appendChild(css);
+ function ffStrike(f){const box=tatkBox(f),B=box.getBoundingClientRect(),q=(f.querySelector(".p-armF")||f).getBoundingClientRect(),rad=!!f.querySelector('[id^="ffr"]');
+  const INK=rad?"#C8202A":"#141C34",INK2=rad?"#E8343A":"#2E3E5E",FE=rad?"#F6F2EA":"#2E3E5E",FED=rad?"#B8B0A0":"#1A2438",BR=rad?"#E0B040":"#C89A3A";
+  f.classList.remove("ffstrike");void f.offsetWidth;f.classList.add("ffstrike");setTimeout(()=>f.classList.remove("ffstrike"),D);
+  const ov=document.createElement("div");ov.className="tatk-ov";box.appendChild(ov);
+  const o={duration:D,fill:"both"},mk=(css,html)=>{const e=document.createElement("div");e.style.cssText=css;if(html)e.innerHTML=html;ov.appendChild(e);return e};
+  const side=f.closest("#as-o")?"p":f.closest("#as-p")?"o":null,tf=side&&document.querySelector(`#as-${side} .as-form`);
+  const qx=q.left+q.width/2-B.left,qy=q.top+q.height/2-B.top;let tx,ty,tw,th;
+  if(tf){const r=tf.getBoundingClientRect();tx=r.left+r.width/2-B.left;ty=r.top+r.height*.55-B.top;tw=r.width;th=r.height}else{tx=qx>B.width/2?B.width*.26:B.width*.74;ty=B.height*.7;tw=B.width*.3;th=B.height*.3}
+  const U=B.width/100,dir=Math.sign(tx-qx)||1;
+  /* the quill, flying over and stroking the bar */
+  const qs=Math.max(30,U*8.5),quill=mk(`left:${qx-qs/2}px;top:${qy-qs}px;width:${qs}px;height:${qs*2}px;transform-origin:50% 92%;opacity:0`,
+   `<svg viewBox="-20 -110 40 120" width="100%" height="100%" style="overflow:visible"><path d="M0 -22 C-12 -36 -16 -66 -6 -96 C-2 -104 4 -108 8 -104 C14 -82 16 -52 4 -30 Q2 -26 0 -22 Z" fill="${FE}" stroke="#0A0A10" stroke-width="2.4" stroke-linejoin="round"/><path d="M0 -22 C1 -50 4 -80 6 -104" stroke="${FED}" stroke-width="1.6" fill="none"/><path d="M-3 -24 L3 -24 L1 2 L0 6 L-1 2 Z" fill="${BR}" stroke="#0A0A10" stroke-width="1.6"/><circle cy="7" r="2" fill="${INK}"/></svg>`);
+  const L=tw*1.15,bx0=tx-dir*L/2,bx1=tx+dir*L/2,by=ty-th*.05,tilt=dir*-12;
+  const at=(x,y,r)=>`translate(${(x-qx).toFixed(1)}px,${(y-qy).toFixed(1)}px) rotate(${r}deg)`;
+  quill.animate([{opacity:0,transform:"none",offset:0},{opacity:0,offset:.13},{opacity:1,transform:at(qx,qy-U*8,-20*dir),offset:.16},{transform:at((qx+bx0)/2,Math.min(qy,by)-B.height*.18,30*dir),offset:.26},
+   {transform:at(bx0,by,35*dir),offset:.34,easing:"ease-in"},{transform:at(tx,by+U*1.5,45*dir),offset:.42},{transform:at(bx1,by-U*1,50*dir),offset:.48,easing:"ease-out"},{transform:at(bx1+dir*U*6,by-U*8,20*dir),offset:.54},
+   {transform:at(bx1+dir*U*6,by-U*10,10*dir),offset:.7},{transform:at((qx+tx)/2,Math.min(qy,by)-B.height*.15,-10*dir),offset:.8},{opacity:1,transform:at(qx,qy,0),offset:.88},{opacity:0,transform:"none",offset:.9},{opacity:0,offset:1}],o);
+  /* the bar of ink it strokes across its target: thick, calligraphic, tapering */
+  const bh=Math.max(18,th*.32);
+  const bar=mk(`left:${Math.min(bx0,bx1)}px;top:${by-bh/2}px;width:${L}px;height:${bh}px;transform:rotate(${tilt}deg);opacity:0`,
+   `<svg viewBox="0 0 100 20" preserveAspectRatio="none" width="100%" height="100%" style="overflow:visible"><path d="M0 12 C10 2 30 1 50 3 C70 4 88 2 100 8 C96 14 80 18 50 17 C26 16 8 20 0 12 Z" fill="${INK}"/><path d="M8 7 C30 4 60 5 92 6" stroke="${INK2}" stroke-width="1.6" fill="none" opacity=".7"/></svg>`);
+  const cl=dir>0?["inset(0 100% 0 0)","inset(0 0 0 0)"]:["inset(0 0 0 100%)","inset(0 0 0 0)"];
+  bar.animate([{opacity:0,clipPath:cl[0],offset:0},{opacity:0,clipPath:cl[0],offset:.34},{opacity:1,clipPath:cl[0],offset:.35},{opacity:1,clipPath:cl[1],offset:.48},{opacity:1,clipPath:cl[1],offset:.72},{opacity:0,clipPath:cl[1],offset:.84},{opacity:0,offset:1}],o);
+  /* spatter where it lands */
+  for(let k=0;k<14;k++){const u=k/13,x=bx0+(bx1-bx0)*u,s=U*(.8+(k%3)*.7),ex=((k*29)%13-6)*U*1.2,ey=((k*17)%11-5)*U*1.4,b=.35+u*.13;
+   const e=mk(`left:${x}px;top:${by}px;width:${s}px;height:${s}px;border-radius:50%;background:${INK};opacity:0`);
+   e.animate([{opacity:0,transform:"none",offset:0},{opacity:0,offset:b},{opacity:1,offset:b+.01},{opacity:1,transform:`translate(${ex}px,${ey}px)`,offset:b+.06,easing:"ease-out"},{opacity:1,offset:.72},{opacity:0,transform:`translate(${ex}px,${ey+U*3}px)`,offset:.84},{opacity:0,offset:1}],o)}
+  /* struck out: the target flickers under the ink */
+  if(tf)tf.animate([{filter:"none",transform:"none",offset:0},{filter:"none",transform:"none",offset:.4},{filter:"brightness(.35) contrast(1.4)",transform:"translateX(-3px)",offset:.44},{filter:"brightness(.9)",transform:"translateX(3px)",offset:.48},{filter:"brightness(.3)",transform:"none",offset:.52},{filter:"brightness(.8)",offset:.56},{filter:"brightness(.35) grayscale(.8)",offset:.62},{filter:"brightness(.45) grayscale(.6)",offset:.72},{filter:"none",transform:"none",offset:.88},{filter:"none",transform:"none",offset:1}],o);
+  /* the ink lifting away as loops of script */
+  for(let k=0;k<6;k++){const x=bx0+(bx1-bx0)*(k+.5)/6,w=U*8,e=mk(`left:${x-w/2}px;top:${by-w/2}px;width:${w}px;height:${w*.6}px;opacity:0`,`<svg viewBox="0 0 40 24" width="100%" height="100%" style="overflow:visible"><path d="M2 16 C6 2 12 22 16 10 C18 4 22 20 26 12 C28 8 32 16 38 8" stroke="${INK}" stroke-width="1.8" fill="none" stroke-linecap="round"/></svg>`);
+   e.animate([{opacity:0,transform:"none",offset:0},{opacity:0,offset:.72},{opacity:.9,transform:"translateY(-4px)",offset:.76},{opacity:0,transform:`translate(${(k%2?1:-1)*U*3}px,${-U*14}px) rotate(${(k%2?1:-1)*15}deg)`,offset:.96},{opacity:0,offset:1}],o)}
+  setTimeout(()=>ov.remove(),D+50)}
+ TATK.push(['[id^="ffn"],[id^="ffr"]',ffStrike,D])}
+
+/* Kiln Heart: "The Big Pour". It's the Syndicate's pour, standing up, and it has never once set. It raises a fist, its core flaring
+   white, and brings it down into the ground. A crack of molten light runs across the field to its target and bursts open under it:
+   a geyser of molten slag, with the stolen sample rods it was made from spewing up out of it and raining down. The ground glows
+   and cools to a crust. Radiant: copper-green. */
+{const D=2800;
+ const css=document.createElement("style");css.textContent=`
+ .khstrike .p-armF{animation:khsArm ${D}ms ease-in-out both!important}
+ .khstrike .p-head{animation:khsHead ${D}ms ease-in-out both!important}
+ .khstrike .cr-body{animation:khsBody ${D}ms ease-in-out both!important;transform-box:fill-box;transform-origin:50% 100%}
+ @keyframes khsArm{0%{transform:none}16%,22%{transform:rotate(60deg) translateY(-8px)}28%{transform:rotate(-10deg) translateY(6px)}34%{transform:rotate(-6deg) translateY(4px)}60%,100%{transform:none}}
+ @keyframes khsHead{0%{transform:none}16%,22%{transform:rotate(-8deg)}28%,40%{transform:rotate(6deg) translateY(3px)}60%,100%{transform:none}}
+ @keyframes khsBody{0%{transform:none}16%,22%{transform:scale(1.03,.98)}28%{transform:scale(.97,1.04) translateY(2px)}34%{transform:none}100%{transform:none}}`;
+ document.head.appendChild(css);
+ function khStrike(f){const box=tatkBox(f),B=box.getBoundingClientRect(),sv=(f.querySelector("svg")||f).getBoundingClientRect(),fr=(f.querySelector(".p-armF")||f).getBoundingClientRect(),rad=!!f.querySelector('[id^="khr"]');
+  const H0=rad?"#F0FFF4":"#FFF4C0",H1=rad?"#7AFFB8":"#FFB040",H2=rad?"#1AB46A":"#F0601A",S1=rad?"#222C26":"#3A2A20",INK="#0E0806";
+  const RODC=["#C9A04A","#C87040","#A8AEB4","#E8C860","#6A7ACA","#D8DCE2","#8AC0A8","#C890D0"];
+  f.classList.remove("khstrike");void f.offsetWidth;f.classList.add("khstrike");setTimeout(()=>f.classList.remove("khstrike"),D);
+  const ov=document.createElement("div");ov.className="tatk-ov";box.appendChild(ov);
+  const o={duration:D,fill:"both"},mk=(css,html)=>{const e=document.createElement("div");e.style.cssText=css;if(html)e.innerHTML=html;ov.appendChild(e);return e};
+  const side=f.closest("#as-o")?"p":f.closest("#as-p")?"o":null,tf=side&&document.querySelector(`#as-${side} .as-form`);
+  const gx=fr.left+fr.width/2-B.left,gy=sv.bottom-sv.height*.06-B.top;let tx,tby,tcy,tw,th;
+  if(tf){const r=tf.getBoundingClientRect();tx=r.left+r.width/2-B.left;tby=r.bottom-r.height*.1-B.top;tcy=r.top+r.height*.5-B.top;tw=r.width;th=r.height}else{tx=gx>B.width/2?B.width*.26:B.width*.74;tby=B.height*.85;tcy=tby-B.height*.15;tw=B.width*.3;th=B.height*.3}
+  const U=B.width/100;
+  /* the impact where its fist comes down */
+  const im=mk(`left:${gx-U*10}px;top:${gy-U*4}px;width:${U*20}px;height:${U*8}px;border-radius:50%;background:radial-gradient(ellipse,${H0},${H1}aa 40%,transparent 70%);opacity:0;mix-blend-mode:screen`);
+  im.animate([{opacity:0,transform:"scale(.3)",offset:0},{opacity:0,offset:.26},{opacity:1,transform:"scale(1.3)",offset:.29},{opacity:0,transform:"scale(1.8)",offset:.44},{opacity:0,offset:1}],o);
+  for(let k=0;k<8;k++){const s=U*(1.4+(k%3)*.6),e=mk(`left:${gx}px;top:${gy}px;width:${s}px;height:${s}px;background:${S1};border:1px solid ${INK};opacity:0`);
+   e.animate([{opacity:0,transform:"none",offset:0},{opacity:0,offset:.28},{opacity:1,offset:.29},{opacity:0,transform:`translate(${(k-3.5)*U*2.4}px,${-U*(6+(k%3)*4)}px) rotate(${k*50}deg)`,offset:.48},{opacity:0,offset:1}],o)}
+  /* the crack running across the ground to the target */
+  const len=Math.hypot(tx-gx,tby-gy),ang=Math.atan2(tby-gy,tx-gx);let zz="M0 10";for(let i=1;i<=10;i++)zz+=` L${i*10} ${10+((i*7)%5-2)*2.6}`;
+  const cr=mk(`left:${gx}px;top:${gy-U*2}px;width:${len}px;height:${U*4}px;transform-origin:0 50%;transform:rotate(${ang}rad);opacity:0`,
+   `<svg viewBox="0 0 100 20" preserveAspectRatio="none" width="100%" height="100%" style="overflow:visible"><path d="${zz}" stroke="${INK}" stroke-width="5" fill="none" stroke-linejoin="round" vector-effect="non-scaling-stroke"/><path d="${zz}" stroke="${H1}" stroke-width="2.6" fill="none" stroke-linejoin="round" vector-effect="non-scaling-stroke" style="filter:drop-shadow(0 0 3px ${H2})"/></svg>`);
+  cr.animate([{opacity:0,clipPath:"inset(0 100% 0 0)",offset:0},{opacity:0,offset:.28},{opacity:1,clipPath:"inset(0 100% 0 0)",offset:.29},{opacity:1,clipPath:"inset(0 0 0 0)",offset:.42},{opacity:1,offset:.7},{opacity:0,offset:.92},{opacity:0,offset:1}],o);
+  /* the geyser of molten slag bursting up under its target */
+  const gw2=Math.max(40,tw*.55),gh=Math.max(th*1.6,B.height*.35);
+  const gey=mk(`left:${tx-gw2/2}px;top:${tby-gh}px;width:${gw2}px;height:${gh}px;transform-origin:50% 100%;opacity:0;border-radius:45% 45% 20% 20%/70% 70% 10% 10%;background:linear-gradient(0deg,${H2},${H1} 40%,${H0} 75%,${H0}00);filter:blur(1px);mix-blend-mode:screen`);
+  gey.animate([{opacity:0,transform:"scaleY(0)",offset:0},{opacity:0,offset:.41},{opacity:1,transform:"scaleY(1.05) scaleX(.9)",offset:.47,easing:"ease-out"},{transform:"scaleY(.9) scaleX(1.05)",offset:.52},{opacity:.9,transform:"scaleY(1)",offset:.58},{opacity:0,transform:"scaleY(.2) scaleX(1.3)",offset:.7},{opacity:0,offset:1}],o);
+  const pool=mk(`left:${tx-tw*.6}px;top:${tby-U*3}px;width:${tw*1.2}px;height:${U*6}px;border-radius:50%;background:radial-gradient(ellipse,${H0},${H1} 40%,${H2} 65%,${S1} 80%,transparent 82%);opacity:0`);
+  pool.animate([{opacity:0,transform:"scale(.3)",offset:0},{opacity:0,offset:.41},{opacity:1,transform:"scale(1)",offset:.46},{opacity:1,offset:.72},{opacity:.6,filter:"saturate(.3) brightness(.5)",offset:.9},{opacity:0,offset:1}],o);
+  /* the stolen sample rods spewing up out of it and raining down */
+  for(let k=0;k<10;k++){const w=U*1.3,h=U*(6+(k%3)*1.5),ex=((k*37)%21-10)*U*1.6,peak=-gh*(.7+(k%4)*.12),b=.45+(k%5)*.012,rr=(k%2?1:-1)*(240+k*40);
+   const e=mk(`left:${tx-w/2}px;top:${tby-h}px;width:${w}px;height:${h}px;border-radius:2px;background:linear-gradient(90deg,${RODC[k%8]},#FFFFFF88 35%,${RODC[k%8]} 60%);border:1px solid ${INK};opacity:0`);
+   e.animate([{opacity:0,transform:"none",offset:0},{opacity:0,offset:b},{opacity:1,transform:"none",offset:b+.01},{opacity:1,transform:`translate(${ex*.6}px,${peak}px) rotate(${rr*.5}deg)`,offset:b+.12,easing:"ease-out"},{opacity:1,transform:`translate(${ex}px,${U*2}px) rotate(${rr}deg)`,offset:b+.3,easing:"ease-in"},{opacity:0,transform:`translate(${ex}px,${U*2}px) rotate(${rr}deg)`,offset:Math.min(.99,b+.4)},{opacity:0,offset:1}],o)}
+  for(let k=0;k<12;k++){const s=U*(.8+(k%3)*.5),ex=((k*29)%17-8)*U*1.6,peak=-gh*(.4+(k%4)*.15),b=.44+(k%5)*.01;
+   const e=mk(`left:${tx}px;top:${tby}px;width:${s}px;height:${s}px;border-radius:50%;background:${k%2?H0:H1};box-shadow:0 0 5px ${H2};opacity:0`);
+   e.animate([{opacity:0,transform:"none",offset:0},{opacity:0,offset:b},{opacity:1,offset:b+.01},{opacity:1,transform:`translate(${ex*.6}px,${peak}px)`,offset:b+.12,easing:"ease-out"},{opacity:0,transform:`translate(${ex}px,0px)`,offset:Math.min(.98,b+.32),easing:"ease-in"},{opacity:0,offset:1}],o)}
+  /* the target, thrown up by it and scorched */
+  if(tf)tf.animate([{transform:"none",filter:"none",offset:0},{transform:"none",filter:"none",offset:.43},{transform:`translateY(${-th*.18}px) scale(.95,1.05)`,filter:"brightness(1.7) sepia(.5)",offset:.48},{transform:"translateY(2px) scale(1.04,.95)",filter:"brightness(.8) sepia(.5)",offset:.56},{transform:"translate(-3px,0)",offset:.6},{transform:"translate(2px,0)",filter:"brightness(.7) sepia(.4)",offset:.64},{transform:"none",filter:"brightness(.85) sepia(.3)",offset:.8},{transform:"none",filter:"none",offset:1}],o);
+  setTimeout(()=>ov.remove(),D+50)}
+ TATK.push(['[id^="khn"],[id^="khr"]',khStrike,D])}
+
+/* in battle: when a form with its own attack attacks, play that instead of the stock swing */
+{const _aa=asAnim;asAnim=function(sd,k,ms){if(/^atk-/.test(k)){const f=document.querySelector(`#as-${sd} .as-form`);const t=f&&TATK.find(([q])=>f.querySelector(q));if(t){t[1](f);window.__tatkUntil=performance.now()+(t[2]||3000);return}}return _aa(sd,k,ms)}}
+/* let the attack play out before the battle moves on: the "used ..." line shows with it, anything after waits until it's done */
+{const _say=asSay;asSay=async function(msg,ms){const w=(window.__tatkUntil||0)-performance.now();if(w>0&&!/ used /.test(String(msg)))await new Promise(r=>setTimeout(r,w));return _say.apply(this,arguments)}}
+function threatAttack(f){const t=f&&TATK.find(([q])=>f.querySelector(q));if(t)t[1](f);return !!t}
+
 
 newRun();
 </script>
