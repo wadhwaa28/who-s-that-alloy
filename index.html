@@ -17687,6 +17687,10 @@ const LNT_NAMES=new Set(LNT_ALLOYS.map(o=>o.name));
    It hunts your light: SHUTTER the lantern when its eyes come close and it loses you. Your oil burns down, the wick can be turned
    down to save it, and if the Gutterwick reaches your light it drinks it and leaves you in the dark. */
 const GW_NAME="Gutterwick",WW_NAME="Wickwarden";
+/* the cold prints: the first hunt runs until the Wickwarden is registered. After that, a fresh visit to Hollowmere sometimes brings the
+   prints back (WWA.on 1) with the Wickwarden standing over a lantern again; win and that's it for this visit (WWA.on 2). */
+const WWA={on:0,odds:.3};
+const lntHunt=()=>lntF("gwOn")&&(!lntGot(WW_NAME)||WWA.on===1);
 {/* an old save may have rebuilt any of these already: keep the real ones, drop the copies, renumber */
   const names=new Set([...LNT_NAMES,GW_NAME]),out=ALLOYS.filter(a=>!(names.has(a.name)&&a.recovered));
   if(out.length!==ALLOYS.length){ALLOYS.length=0;out.forEach((a,i)=>{a.no=i+1;ALLOYS.push(a)})}
@@ -20657,7 +20661,7 @@ function lntGuise(i){const P=HM_DOOR_P[i],a=LNT_ALLOYS.find(o=>o.door===i).name,
     if(ok.some(w=>n.split(" ").includes(w)||n===w||n.includes(w))){lntSet("t"+i,1);lntSet("r"+i,ri+1);if(gate("lntok",500))sfx("pickup");talk(P.who,got?["Ha! Very good. There's another twist of paper in the bowl with your name on it."]:HM_TREAT[i],go)}
     else{lntSet("r"+i,ri+1);if(gate("lntno",500))sfx("miss");talk(P.who,[n?`'${ans}'? Ha! No. Away and think of a better turn, and come back.`:"Nothing? No turn, no treat. Away and think about it, and come back."])}})}
 /* ---- Dr. Marlow, Wren and the sexton ---- */
-function lntMarlowTalk(m){const cur=lntTrail(),gw=lntF("gwOn")&&!lntGot(WW_NAME);
+function lntMarlowTalk(m){const cur=lntTrail(),gw=lntHunt();
   if(!lntF("hm")){lntSet("hm",1);talk(m.n,[...(lntF("met")?["There you are! Welcome to Hollowmere, on Lantern Night."]:["You found the way down on your own! I was going to tell you about it. Welcome to Hollowmere, on Lantern Night."]),
    "Hollowmere keeps one night a year for lanterns, and somehow it keeps it going from the end of October to the end of November. The village has never explained how. I stopped asking in 1974.",
    "They hang neep lanterns everywhere. I do mean everywhere: the mine, the cove, the crater. Light any you come across. They like that.",
@@ -20675,7 +20679,7 @@ function lntMarlowTalk(m){const cur=lntTrail(),gw=lntF("gwOn")&&!lntGot(WW_NAME)
 function lntWrenTalk(w){const n=LNT_LEAF().filter(a=>lntGot(a.name)).length;
   talk(w.n,n>=LNT_LEAF().length?[`${["Zero","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten"][LNT_LEAF().length]}. Every one of the things from the leaf piles, registered.`+" I've written to the parish council. They wrote back asking if I'd seen their cat."]
    :["The storeroom was bricked up in 1932 with everything still in it. Somebody knocked a hole in the front wall last year to see what was inside.",`Things have been turning up in the leaf piles round the village ever since. ${["Zero","One","Two","Three","Four","Five","Six","Seven","Eight","Nine","Ten"][LNT_LEAF().length]} different kinds, I'm fairly sure. ${n?`You've registered ${n}.`:"Have a rummage."}`,"There's an armchair in there under a dust sheet that I am NOT going to look under."])}
-function lntSextonTalk(p){talk(p.n,lntF("gwOn")&&!lntGot(WW_NAME)?["It's out again. You'll know it by the cold prints and the lanterns it's drunk.","My grandmother used to say it never gets the last lantern. Something always stands over that one till morning.","The prints are never in the same place two nights running. Follow them while they're fresh."]
+function lntSextonTalk(p){talk(p.n,WWA.on===1?["It's out again. Prints from the bonfire, same as before, and the lanterns drunk dry behind them.","And if it's out, the other one's stood over a lantern somewhere till morning. You've met it once. It won't mind meeting you again."]:lntHunt()?["It's out again. You'll know it by the cold prints and the lanterns it's drunk.","My grandmother used to say it never gets the last lantern. Something always stands over that one till morning.","The prints are never in the same place two nights running. Follow them while they're fresh."]
   :lntGot(WW_NAME)?["You found the thing that stands over the last lantern. Sixty years I've kept this kirkyard and I've never once seen it.","The Gutterwick's still out there, mind. Nobody's ever laid a hand on that. Folk say it doesn't walk about on its own any more."]
   :["Evening. I keep the kirkyard. Sixty Lantern Nights, man and boy.","Most folk light their neeps for the fun of it. Us old ones light them so the Gutterwick has something to drink besides us.","Don't look at me like that. It's a story. Mostly."])}
 
@@ -20702,7 +20706,7 @@ function hollowPlace(){const sp=SPOTS["z-hollow"],add=(x,y,use)=>{const o={x,y,u
   if(!lntF("hm"))setTimeout(()=>{if(inHollow()&&S.phase==="explore"&&!DLG.open&&!CS.on){const m=EXP.npcs.find(p=>p.n==="Dr. Marlow");if(m)lntMarlowTalk(m)}},900)}
 {const _tt=talkTo;talkTo=function(p){if(p&&p.quest&&inHollow()){p.quest(p);return}_tt(p)}}
 function lntSpot(k){const s=HM_SPOTS[k];
-  if(EXP.gwSpot===k&&lntF("gwOn")&&!lntGot(WW_NAME)){if(gate("lntgw",800))sfx("alert");
+  if(EXP.gwSpot===k&&lntHunt()){if(gate("lntgw",800))sfx("alert");
     talk("",[`The cold prints stop a little way short of ${s.n}, as if whatever made them didn't dare go any closer.`,"Every lantern behind you is out. Here, one is still burning, and something tall with a crown of candles is standing over it. It turns its head and looks at your lantern."],()=>storyFight(WW_NAME,{intro:"It won't let your light anywhere near its lantern. Identify it before it slips off into the dark!"}));return}
   talk("",{yew:["The old yew in the kirkyard. It's older than the church, and it has seen every Lantern Night there has ever been. It's very cold underneath it."],
    hay:["A haystack on the hill, thatched against the rain. A good place to hide, if you didn't mind the hay."],
@@ -20711,7 +20715,7 @@ function lntSpot(k){const s=HM_SPOTS[k];
    well:["The village well. A bucket on a chain, and a long way down, a little round piece of night sky."]}[k])}
 /* ---- the Gutterwick leaves a trail ---- */
 function lntGwCheck(){if(lntF("gwOn")||!lntOn())return;const n=LNT_ALLOYS.filter(o=>lntGot(o.name)).length+lntTrail();if(n>=3)lntSet("gwOn",1)}
-function lntGwPlace(){EXP.gwSpot=null;EXP.gwPath=null;EXP.gwSnuff=new Set;lntGwCheck();if(!lntF("gwOn")||lntGot(WW_NAME))return;
+function lntGwPlace(){EXP.gwSpot=null;EXP.gwPath=null;EXP.gwSnuff=new Set;lntGwCheck();if(!lntHunt())return;
   const keys=Object.keys(HM_SPOTS),k=keys[Math.random()*keys.length|0],to=HM_SPOTS[k].from,from=[17,13];EXP.gwSpot=k;
   const W=EXP.W,H=EXP.H,key=(x,y)=>y*W+x,prev=new Map([[key(from[0],from[1]),-1]]),q=[from];
   for(let i=0;i<q.length;i++){const[x,y]=q[i];if(x===to[0]&&y===to[1])break;for(const[dx,dy]of[[1,0],[-1,0],[0,1],[0,-1]]){const nx=x+dx,ny=y+dy;if(nx<0||ny<0||nx>=W||ny>=H||prev.has(key(nx,ny))||!canWalk(tileAt(nx,ny)))continue;prev.set(key(nx,ny),key(x,y));q.push([nx,ny])}}
@@ -20719,7 +20723,7 @@ function lntGwPlace(){EXP.gwSpot=null;EXP.gwPath=null;EXP.gwSnuff=new Set;lntGwC
   path.forEach(([x,y],i)=>{if(i<1||i%2)return;const nx=path[Math.min(i+1,path.length-1)],ang=Math.atan2(nx[1]-y,nx[0]-x)*180/Math.PI+90;
     lntEl("mapobj lnt gwprint",x,y,lntSvg(`<g transform="rotate(${ang.toFixed(0)} 20 20)">${LNT_SVG.print()}</g>`))});
   (LNT_DECOR["z-hollow"]||[]).forEach(([kk,x,y])=>{if(kk==="neep"&&path.some(([px,py])=>Math.abs(px-x)+Math.abs(py-y)<=4))EXP.gwSnuff.add("z-hollow:"+x+","+y)});
-  setTimeout(()=>{if(inHollow()&&!DLG.open)say0("Half the lanterns along the green have gone out. By the bonfire, something has left a line of cold, frosted prints.")},1400)}
+  setTimeout(()=>{if(inHollow()&&!DLG.open)say0(WWA.on===1?"The lanterns along the green have gone out again. By the bonfire, a fresh line of cold, frosted prints.":"Half the lanterns along the green have gone out. By the bonfire, something has left a line of cold, frosted prints.")},1400)}
 /* ---- night: everything dims, and every lamp, window and lit neep throws its own pool of light ---- */
 function lntNight(){let n=$("#lnt-night");if(!inHollow()){if(n)n.remove();return}if(!n){n=document.createElement("div");n.id="lnt-night";$("#world").appendChild(n)}
   const W=EXP.W,H=EXP.H,lit=lntLit(),L=[],at=(x,y,r,c)=>L.push(`radial-gradient(circle calc(var(--tp,40px)*${r}) at ${((x+.5)/W*100).toFixed(2)}% ${((y+.5)/H*100).toFixed(2)}%,${c} 0,${c.replace(/[\d.]+\)$/,"0)")} 100%)`);
@@ -20802,7 +20806,7 @@ function lntMemory(box,head,end){box.innerHTML=head("LANTERN MEMORY","Watch the 
     const st=Object.values(HM_STALLS).filter(s=>!lntGot(s.a));if(st.length)out.push(it("LANTERN NIGHT · THE FAIR",`Prizes still to win on the green: ${st.map(s=>s.game).join(", ")}.`));
     const dr=HM_DOOR_P.filter((p,i)=>!lntGot(LNT_ALLOYS.find(o=>o.door===i).name));if(dr.length)out.push(it("LANTERN NIGHT · GUISING",`${dr.length===1?"One door":dr.length+" doors"} along Hollowmere's lane still to guise at. Do your turn, get your treat.`));
     const lf=LNT_LEAF().filter(a=>!lntGot(a.name)).length;if(lf)out.push(it("LANTERN NIGHT · THE LEAF PILES",`Archivist Wren thinks ${LNT_LEAF().length} different things are hiding in Hollowmere's leaf piles. ${LNT_LEAF().length-lf} registered so far.`));
-    if(lntF("gwOn")&&!lntGot(WW_NAME))out.push(it("LANTERN NIGHT · THE COLD PRINTS","Something is putting out the lanterns in Hollowmere and leaving cold prints behind. Follow them from the bonfire and see where they stop."))}
+    if(WWA.on===1)out.push(it("LANTERN NIGHT · THE COLD PRINTS","The cold prints are back tonight, and the lanterns along them are out. Follow them from the bonfire."));else if(lntHunt())out.push(it("LANTERN NIGHT · THE COLD PRINTS","Something is putting out the lanterns in Hollowmere and leaving cold prints behind. Follow them from the bonfire and see where they stop."))}
   const all=LNT_NEEPS(),n=all.filter(q=>lntLit().has(q)).length;out.push(it("LANTERN NIGHT · NEEPS",n>=all.length?`Every neep lantern on every map is lit (${n} of ${all.length}).`:`Neep lanterns lit across the maps: ${n} of ${all.length}. They're hung everywhere for Lantern Night.`));
   const none=list.querySelector(".obj-none");if(none)none.remove();const kids=[...list.children],lastObj=kids.filter(e=>e.classList.contains("obj")&&!e.classList.contains("fav")).pop(),after=lastObj?lastObj.nextSibling:list.firstChild;out.forEach(e=>list.insertBefore(e,after))}}
 /* ---- the Hollowmere Lantern: carried, from the wardrobe ---- */
@@ -23167,7 +23171,7 @@ function hmGate(){if(DLG.open)return;const st=hmBG();
     const k=hmFrags().includes("voice")?L[Math.random()*L.length|0]:L[0];hmFrag("voice");talk(p.n,[k,"...Sorry. Where was I? I came over all cold for a second."],()=>{});return}
   _tt(p)}}
 /* the well is a game now (unless the cold prints lead there tonight) */
-{const _sp=lntSpot;lntSpot=function(k){if(k==="well"&&!(EXP.gwSpot==="well"&&lntF("gwOn")&&!lntGot(WW_NAME))){hmWell();return}_sp(k)}}
+{const _sp=lntSpot;lntSpot=function(k){if(k==="well"&&!(EXP.gwSpot==="well"&&lntHunt())){hmWell();return}_sp(k)}}
 
 /* ---- the journal ---- */
 {const _oj=openJournal;openJournal=function(){_oj();if(!lntOn()||!lntF("hm"))return;const m=$("#journal");if(!m)return;const list=m.querySelector(".bag-list");if(!list)return;
@@ -23976,6 +23980,16 @@ function mvAsk(id,done){const d=asData(),s=d.inst[id];if(!s||!s.want||!s.want.le
 (function(){const st=document.createElement("style");st.textContent=`#mvask .mv-row{position:relative;padding-right:118px}#mvask .mv-forget{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:11px;padding:6px 10px}
 #mvask .mv-forget[disabled]{opacity:.45;cursor:not-allowed}.mv-ask-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.mv-ask-btns .btn{flex:1 1 160px}
 @media(max-width:520px){#mvask .mv-row{padding-right:8px;padding-bottom:44px}#mvask .mv-forget{top:auto;bottom:8px;transform:none}}`;document.head.appendChild(st)})();
+
+/* =============== THE WICKWARDEN, AGAIN ===============
+   Once it's registered, the first hunt is over. But on a fresh trip down to Hollowmere during Lantern Night there's a chance the
+   Gutterwick is out again: new cold prints from the bonfire, the lanterns along them dark, and at the end the Wickwarden standing over
+   the last one still burning. Win and you get another sample of it; that's it until your next trip down. Lose and the prints stay. */
+{const _se=startExplore;startExplore=function(){const z=EXP.forceZone;
+  if(z!==HOLLOW_ZONE)WWA.on=0;
+  else if(!EXP.resume&&!(EXP.stash&&EXP.stash.zone===HOLLOW_ZONE)&&!EXP.spawn)WWA.on=lntOn()&&lntF("gwOn")&&lntGot(WW_NAME)&&Math.random()<WWA.odds?1:0;
+  return _se.apply(this,arguments)}}
+{const _w=win;win=function(){const r=S.r,again=WWA.on===1&&r&&r.a&&r.a.name===WW_NAME;_w();if(again)WWA.on=2}}
 
 
 newRun();
