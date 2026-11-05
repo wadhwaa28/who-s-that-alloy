@@ -17668,7 +17668,7 @@ const LNT_ALLOYS=[
  {name:"Rattlecart",how:"stall",stall:"shuffle",comp:[["Fe",89],["Mn",9],["Si",1.5],["C",0.5]],d:7.8,mp:1410,mag:1,hard:5,cond:5,color:"#7E8088",finish:"m",rar:"uncommon",
   lore:"The old ghost train came to Hollowmere fair on a steam lorry in 1924 and never left. Its wheels wore down to nothing and something else wore on in their place. This is shavings of the something else.",uses:"Wheel rims and rail shoes that take a beating",tmade:"Shaved off the ghost train's wheels at the Hollowmere fair"},
  {name:"Festoonite",how:"stall",stall:"memory",comp:[["Cu",70],["Ni",18],["Zn",12]],d:8.7,mp:1060,mag:0,hard:3.8,cond:7,color:"#C8C4B4",finish:"p",rar:"rare",
-  lore:"Hollowmere hangs a mile of bunting on Lantern Night and takes it all down by the fifteenth, every flag counted. One year the count came out one flag over, and the extra flag was this.",uses:"Bunting clips, hooks and flagpole fittings",tmade:"Counted in among the Hollowmere bunting, one flag too many"},
+  lore:"Hollowmere hangs a mile of bunting on Lantern Night and takes it all down by the thirtieth, every flag counted. One year the count came out one flag over, and the extra flag was this.",uses:"Bunting clips, hooks and flagpole fittings",tmade:"Counted in among the Hollowmere bunting, one flag too many"},
  {name:"Guiser's Grin",how:"guise",door:0,comp:[["Zn",78],["Al",18],["Cu",4]],d:5.2,mp:420,mag:0,hard:2.8,cond:26,color:"#B4B8BC",finish:"p",rar:"uncommon",
   lore:"Guisers in Hollowmere have to do a turn before they get a treat: a song, a joke, a riddle. One year a guiser in a paper mask did a turn so good the whole street gave it everything they had, and it left this behind on the last doorstep.",uses:"Die-cast masks, buckles and button-backs",tmade:"Left on a Hollowmere doorstep by a guiser nobody recognised"},
  {name:"Soulcake",how:"guise",door:1,comp:[["Cu",86],["Sn",11],["Zn",3]],d:8.8,mp:980,mag:0,hard:3.4,cond:14,color:"#B08050",finish:"p",rar:"uncommon",
@@ -20396,13 +20396,13 @@ function ocMarlow(m){const s=OC.st;
   return J}}
 
 /* =============== LANTERN NIGHT AT HOLLOWMERE ===============
-   From 24 October to the end of 15 November, a hole into nothing opens in the floor of the Quillmoor specimen hall. Climb down it and you
+   From 24 October to the end of 30 November, a hole into nothing opens in the floor of the Quillmoor specimen hall. Climb down it and you
    come out in Hollowmere, on the one night of the year it keeps for lanterns. That hole is the ONLY way in: Hollowmere is never on the
    zone list, so no random pick, trail marker, survey map or quest can send anybody there.
    Every map gets hand-placed decorations while it's on, and all of them do something: neeps you can light, bunting you can tug,
    bats that scatter, spiders that climb, candles you can blow out, and tattie bogles that turn to watch you go by. */
 let LNT_FORCE=null;   // tests only: true or false overrides the calendar
-function lntOn(){if(LNT_FORCE!=null)return LNT_FORCE;const d=new Date(),m=d.getMonth()+1,day=d.getDate();return(m===10&&day>=24)||(m===11&&day<=15)}
+function lntOn(){if(LNT_FORCE!=null)return LNT_FORCE;const d=new Date(),m=d.getMonth()+1,day=d.getDate();return(m===10&&day>=24)||(m===11&&day<=30)}
 const LS=()=>store.get("wta_lnt",{});
 function lntSet(k,v){const s=LS();s[k]=v;store.set("wta_lnt",s);store.set("wta_qf_seenJ",0);if(typeof journalDot==="function")journalDot()}
 const lntF=k=>LS()[k];
@@ -20659,7 +20659,7 @@ function lntGuise(i){const P=HM_DOOR_P[i],a=LNT_ALLOYS.find(o=>o.door===i).name,
 /* ---- Dr. Marlow, Wren and the sexton ---- */
 function lntMarlowTalk(m){const cur=lntTrail(),gw=lntF("gwOn")&&!lntGot(WW_NAME);
   if(!lntF("hm")){lntSet("hm",1);talk(m.n,[...(lntF("met")?["There you are! Welcome to Hollowmere, on Lantern Night."]:["You found the way down on your own! I was going to tell you about it. Welcome to Hollowmere, on Lantern Night."]),
-   "Hollowmere keeps one night a year for lanterns, and somehow it keeps it going from the end of October to the middle of November. The village has never explained how. I stopped asking in 1974.",
+   "Hollowmere keeps one night a year for lanterns, and somehow it keeps it going from the end of October to the end of November. The village has never explained how. I stopped asking in 1974.",
    "They hang neep lanterns everywhere. I do mean everywhere: the mine, the cove, the crater. Light any you come across. They like that.",
    "And there's the lantern trail: iron lanterns on poles, one in each of six places, lit in order. Light one, and it tells you where the next one is.",
    "Here's the first. I had it off the sexton, and he had it off his grandmother:",`'${LNT_CLUES[0]}'`,
@@ -20739,7 +20739,7 @@ function quillHole(){const[x,y]=QUILL_HOLE;lntEl("mapobj lnt hole",x,y,lntSvg(LN
   if(p&&p.n==="Dr. Marlow"&&lntOn()&&!lntF("met")&&!lntF("hm")&&z&&z.cls==="z-quill"&&!z.special&&!(typeof TUT!=="undefined"&&TUT.on)&&p.el){lntSet("met",1);
     talk(p.n,["Ah, recruit! You'll have seen the hole in the floor of the specimen hall. Try not to fall in it by accident. It's much nicer to go in on purpose.",
       "It opens every year around now, where the old Hollowmere display case used to stand. It goes down to Hollowmere, on Lantern Night.",
-      "Wren and I are going down now. I'll be popping up and down all fortnight, so don't be surprised to find me here as well. Lantern Night lasts until the fifteenth of November, then the hole closes until next year.",
+      "Wren and I are going down now. I'll be popping up and down all month, so don't be surprised to find me here as well. Lantern Night lasts until the thirtieth of November, then the hole closes until next year.",
       "Come down when you're ready. We'll be by the bonfire."],()=>{const w=EXP.npcs.find(q=>q.n==="Archivist Wren");
         npcTravel(p,[24,20],true,()=>{say0("Dr. Marlow climbed down the hole in the specimen hall.");if(w&&w.el)npcTravel(w,[26,22],true,()=>say0("Archivist Wren went down the hole after him, holding her notebook over her head."))})});return}
   _tt(p)}}
@@ -20796,7 +20796,7 @@ function lntMemory(box,head,end){box.innerHTML=head("LANTERN MEMORY","Watch the 
 /* ---- the journal: everything Lantern Night has on the go ---- */
 {const _oj=openJournal;openJournal=function(){_oj();if(!lntOn())return;const m=$("#journal");if(!m)return;const list=m.querySelector(".bag-list");if(!list)return;
   const it=(t,p)=>{const d=document.createElement("div");d.className="bag-item key obj lnt-obj";d.innerHTML=`<b>${t}</b><p>${p}</p>`;return d},out=[],hm=lntF("hm");
-  if(!hm)out.push(it("LANTERN NIGHT",lntF("met")?"Dr. Marlow and Archivist Wren went down the hole in the floor of the Institute's specimen hall. Lantern Night is on in Hollowmere until the end of 15 November.":"Something has opened in the floor of the Institute's specimen hall. Dr. Marlow will know what it is. Lantern Night lasts until the end of 15 November."));
+  if(!hm)out.push(it("LANTERN NIGHT",lntF("met")?"Dr. Marlow and Archivist Wren went down the hole in the floor of the Institute's specimen hall. Lantern Night is on in Hollowmere until the end of 30 November.":"Something has opened in the floor of the Institute's specimen hall. Dr. Marlow will know what it is. Lantern Night lasts until the end of 30 November."));
   else{const cur=lntTrail();out.push(it("LANTERN NIGHT · THE TRAIL",cur>=7?"Every lantern on the trail is lit, all the way up to Hollowmere Hill.":`Lanterns lit: ${cur} of 7. ${cur?"The last tag said":"Dr. Marlow's clue"}: '${LNT_CLUES[cur]}'`));
     if(cur>=7&&!lntGot("Besomite"))out.push(it("LANTERN NIGHT · THE BESOM","Something is still wound round the besom on top of Hollowmere Hill."));
     const st=Object.values(HM_STALLS).filter(s=>!lntGot(s.a));if(st.length)out.push(it("LANTERN NIGHT · THE FAIR",`Prizes still to win on the green: ${st.map(s=>s.game).join(", ")}.`));
@@ -23929,6 +23929,53 @@ function threatBackfill(){if(threatBackfill.busy||typeof S==="undefined"||!S.cau
   setTimeout(()=>say0(`You've a sample of ${r.a.name.toUpperCase()}${s.rad?" (radiant)":""}, sealed for the Assays. ${s.where==="case"?"It's gone in your case.":"It's gone to your sample store."}`),3400)}}
 /* fill in the old registrations whenever the case, the store or an Assay is about to be used, and once on start */
 ["openCase","openStore","asStart","startExplore"].forEach(fn=>{if(typeof window[fn]!=="function")return;const _f=window[fn];window[fn]=function(){threatBackfill();return _f.apply(this,arguments)}});
+
+/* =============== LEARNING A FIFTH MOVE: THE PLAYER DECIDES ===============
+   A sample still learns new moves by itself as it's tempered. But once it already knows four, nothing is swapped out for you: it
+   asks. You pick which move it forgets, or tell it not to learn the new one at all. Close the question without answering and the
+   new move waits on the sample's record card until you decide. */
+asGiveXp=function(m,n){if(!m.inst)return;const d=asData(),s=d.inst[m.inst];if(!s)return;const was=gradeOf(s.xp);s.xp+=n;m.xpGain=(m.xpGain||0)+n;const now=gradeOf(s.xp);
+  if(now>was){AS.B.ups.push([s.n,now]);const a=alloyByName(s.n),L=learnset(a),isSig=id=>SIG[s.n]&&MV[id].n===SIG[s.n],want=s.want||[];
+    const ok=x=>!s.mv.includes(x.id)&&!want.includes(x.id);
+    let fresh=L.filter(x=>x.g>was&&x.g<=now&&ok(x)).map(x=>x.id);if(!fresh.length)fresh=L.filter(x=>x.g<=now&&ok(x)).map(x=>x.id);
+    if(fresh.length){const pick=fresh.find(isSig)||fresh[Math.floor(Math.random()*fresh.length)];
+      if(s.mv.length<4){s.mv.push(pick);(AS.B.learned=AS.B.learned||[]).push([s.n,null,MV[pick].n])}
+      else{s.want=want.concat(pick);(AS.B.wants=AS.B.wants||[]).push(s.id)}}}
+  asSave(d)};
+/* only one question at a time, and never over a conversation or a fight */
+function mvAskQueue(ids){const q=[...new Set(ids)];const next=()=>{const id=q.shift();if(!id)return;
+    const wait=()=>{const busy=(typeof DLG!=="undefined"&&DLG.open)||(typeof AS!=="undefined"&&AS.B)||document.querySelector(".modal:not([hidden])");
+      if(busy)return setTimeout(wait,400);mvAsk(id,next)};wait()};next()}
+function mvAsk(id,done){const d=asData(),s=d.inst[id];if(!s||!s.want||!s.want.length){done&&done();return}
+  const pick=s.want[0],P=MV[pick];if(!P||s.mv.includes(pick)){s.want.shift();asSave(d);return mvAsk(id,done)}
+  if(s.mv.length<4){s.mv.push(pick);s.want.shift();asSave(d);say0(`${s.n} learned ${P.n}.`);return done&&done()}
+  const m=modal("mvask","A NEW MOVE"),Lst=m.querySelector(".bag-list"),atkN=s.mv.filter(x=>MV[x].k==="a").length;
+  const row=(mv,extra)=>{const C=ACLS[mv.c];return`<div class="mv-row on" style="--c:${C.c}"><b>${mv.n}${SIG[s.n]===mv.n?" ✦":""}</b><span>${C.n.toUpperCase()} · ${mv.k==="a"?"PWR "+mv.p+" · ACC "+mv.acc:mv.k==="g"?"GUARD":"STATUS"}</span><em>${mv.sci}</em>${extra||""}</div>`};
+  Lst.innerHTML=`<p class="bag-empty"><b>${s.n}${s.rad?" ✦":""}</b> is trying to learn <b>${P.n}</b>, but it already knows four moves. Pick one for it to forget, or keep the four it has.</p>
+    <h5 class="bag-h">WANTS TO LEARN</h5>${row(P)}
+    <h5 class="bag-h">FORGET ONE</h5>${s.mv.map((x,i)=>{const mv=MV[x],last=mv.k==="a"&&atkN<=1&&P.k!=="a";
+      return row(mv,`<button class="btn mv-forget" data-i="${i}"${last?" disabled title=\"It needs at least one move that does damage.\"":""}>${last?"ITS ONLY ATTACK":"FORGET"}</button>`)}).join("")}
+    <div class="mv-ask-btns"><button class="btn mv-keep">DON'T LEARN ${P.n.toUpperCase()}</button><button class="btn mv-later">DECIDE LATER</button></div>`;
+  const close=()=>{m.hidden=true;done&&done()};
+  Lst.querySelectorAll(".mv-forget:not([disabled])").forEach(b=>b.onclick=()=>{const D=asData(),t=D.inst[id],old=MV[t.mv[+b.dataset.i]].n;t.mv[+b.dataset.i]=pick;t.want=(t.want||[]).filter(x=>x!==pick);asSave(D);sfx("sel");m.hidden=true;
+    say0(`${t.n} forgot ${old} and learned ${P.n}.`);(t.want.length?()=>mvAskQueue([id]):()=>{})();done&&done()});
+  Lst.querySelector(".mv-keep").onclick=()=>{const D=asData(),t=D.inst[id];t.want=(t.want||[]).filter(x=>x!==pick);asSave(D);sfx("sel");m.hidden=true;
+    say0(`${t.n} didn't learn ${P.n}. It keeps the four moves it knows.`);if(t.want.length)mvAskQueue([id]);done&&done()};
+  Lst.querySelector(".mv-later").onclick=close;m.querySelector(".bag-top .btn").onclick=close;m.onclick=e=>{if(e.target===m)close()}}
+{const _ae=asEnd;asEnd=async function(won,conceded){const B=AS.B,W=B&&B.wants,sim=AS.sim;const r=await _ae(won,conceded);
+  if(W&&W.length&&!sim)setTimeout(()=>mvAskQueue(W),700);return r}}
+/* the record card shows a move that's waiting, with a button to decide */
+{const _os=openSample;openSample=function(id){_os(id);const s=instOf(id);if(!s||!s.want||!s.want.length)return;const m=$("#sampleinfo");if(!m)return;
+  const L=m.querySelector(".bag-list"),P=MV[s.want[0]];if(!P)return;const box=document.createElement("div");
+  box.innerHTML=`<h5 class="bag-h">WAITING TO LEARN</h5><p class="bag-empty">${s.n} is trying to learn <b>${P.n}</b>${s.want.length>1?` and ${s.want.length-1} more`:""}. It already knows four moves, so you decide what happens.</p><button class="btn mv-decide">DECIDE NOW</button>`;
+  const knows=[...L.querySelectorAll("h5.bag-h")].find(h=>h.textContent==="KNOWS");L.insertBefore(box,knows||L.firstChild);
+  box.querySelector(".mv-decide").onclick=()=>{m.hidden=true;mvAsk(id,()=>openSample(id))}}}
+/* say so where the game explains how moves are learned */
+{const _os=openSample;openSample=function(id){_os(id);const p=[...document.querySelectorAll("#sampleinfo .bag-empty")].find(e=>/It learns by itself/.test(e.textContent));
+  if(p)p.textContent="It learns by itself as it's tempered: Worked, Tempered, Masterwork. Once it knows four moves, you choose what it forgets, or whether it learns the new one at all."}}
+(function(){const st=document.createElement("style");st.textContent=`#mvask .mv-row{position:relative;padding-right:118px}#mvask .mv-forget{position:absolute;right:8px;top:50%;transform:translateY(-50%);font-size:11px;padding:6px 10px}
+#mvask .mv-forget[disabled]{opacity:.45;cursor:not-allowed}.mv-ask-btns{display:flex;gap:8px;flex-wrap:wrap;margin-top:12px}.mv-ask-btns .btn{flex:1 1 160px}
+@media(max-width:520px){#mvask .mv-row{padding-right:8px;padding-bottom:44px}#mvask .mv-forget{top:auto;bottom:8px;transform:none}}`;document.head.appendChild(st)})();
 
 
 newRun();
